@@ -2,7 +2,7 @@ from . import __version__ as app_version
 
 app_name = "sks"
 app_title = "sks"
-app_publisher = "thirvusoft"
+app_publisher = "Thirvusoft"
 app_description = "sks"
 app_icon = "octicon octicon-file-directory"
 app_color = "grey"

@@ -10,7 +10,7 @@ setup(
 	name="sks",
 	version=version,
 	description="sks",
-	author="thirvusoft",
+	author="Thirvusoft",
 	author_email="thirvusoft@gmail.com",
 	packages=find_packages(),
 	zip_safe=False,
