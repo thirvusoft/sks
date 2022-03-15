@@ -51,7 +51,7 @@ frappe.ui.form.on("Delivery Note",{
 			}
 		}
 		if(total_matched_items!=data.items.length){
-			frappe.throw(not_verified_items+" are not verified, please check it")
+			frappe.throw(not_verified_items+" are not verified, please check it...")
 		}
 	}
 })
