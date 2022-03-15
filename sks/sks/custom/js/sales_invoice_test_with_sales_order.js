@@ -1,8 +1,8 @@
-frappe.ui.form.on("Delivery Note",{
+frappe.ui.form.on("Sales Invoice",{
 	scan_barcode_to_verify_the_items: function(frm,cdt,cdn){
 		let data=locals[cdt][cdn]
 		var search_value = data.scan_barcode_to_verify_the_items
-		var checking_sales_order = data.items[0].against_sales_order
+		var checking_sales_invoice = data.items[0].sales_order
 		if(search_value !="")
 		{
 		frappe.model.set_value(cdt,cdn,"check_box",1)
@@ -12,8 +12,8 @@ frappe.ui.form.on("Delivery Note",{
 			callback(r){
 				var item_code_checking = r["message"]["item_code"]
 				frappe.call({
-				 	method:"sks.sks.custom.py.delivery_note_test_with_sales_order.item_check_with_sales_order",
-				 	args:{item_code_checking,checking_sales_order},
+				 	method:"sks.sks.custom.py.sales_invoice_test_with_sales_order.item_check_with_sales_order",
+				 	args:{item_code_checking,checking_sales_invoice},
 					 callback(r){
 						if(r["message"]==0){
 							frappe.msgprint("Scanned Barcode Is Not Matching With The Sales Order Items")	
@@ -21,7 +21,7 @@ frappe.ui.form.on("Delivery Note",{
 						else{
 							for(var i=0;i<data.items.length;i++){
 								if(r["message"]==data.items[i].item_code){
-									frappe.model.set_value(data.items[i].doctype,data.items[i].child_docname,"item_verified",1)
+									frappe.model.set_value(data.items[i].doctype,data.items[i].name,"item_verified",1)
 								}
 							}
 							frappe.show_alert({ message: __('Item Matched'), indicator: 'green' });
@@ -34,7 +34,7 @@ frappe.ui.form.on("Delivery Note",{
 		}
 	}
 })
-frappe.ui.form.on("Delivery Note",{
+frappe.ui.form.on("Sales Invoice",{
 	before_save: function(frm,cdt,cdn){
 		var total_matched_items=0
 		var not_verified_items=[]
@@ -55,3 +55,4 @@ frappe.ui.form.on("Delivery Note",{
 		}
 	}
 })
+
