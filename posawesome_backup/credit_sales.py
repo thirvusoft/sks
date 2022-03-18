@@ -24,17 +24,24 @@ def customer_credit_sale(customer):
 
     
     alert_data = alert_data[:len(alert_data)-2]+"."
+    feed = frappe.db.get_value("Customer",customer,'feedback_required')
+    frappe.errprint(feed)
+    frappe.errprint('Feed')
     
-    return alert_data,pending_invoice,recievable
+    return alert_data,pending_invoice,recievable,feed
 
 @frappe.whitelist(allow_guest=True)
-def payment_entry(amount,mode,customer,pending_invoice,company,ref_no,ref_date):
+def payment_entry(amount,mode,customer,pending_invoice,company,ref_no=None,ref_date=None):
     mode_of_payment = frappe.get_doc("Mode of Payment",mode).accounts
     frappe.errprint(mode_of_payment)
     for i in mode_of_payment:
         if(i.company==company):
             acc_paid_to=i.default_account
             break
+    try:
+        if(acc_paid_to):pass
+    except:
+        frappe.throw(("Please set Company and Default account for ({0}) mode of payment").format(mode))
     bank_account_type = frappe.db.get_value("Account", acc_paid_to, "account_type")
     if bank_account_type == "Bank":
         if not ref_no or not ref_date:
