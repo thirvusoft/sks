@@ -92,7 +92,7 @@ def payment_entry(amount,mode,customer,pending_invoice,company,ref_no,ref_date):
 
 
 @frappe.whitelist(allow_guest=True)
-def customer_transaction_history(customer):
+def customer_transaction_history(customer): 
     from datetime import datetime   
     data = frappe.get_all("Sales Invoice",filters={'docstatus':1,'customer':customer},limit=10)
     item_list={}
@@ -111,7 +111,7 @@ def customer_transaction_history(customer):
         if(len(rates)>8):rates=rates[:8:]
         frappe.errprint(rates)
         for j in items:
-            if(j.rate in rates):invoice_item.append(j.item_name)
+            if(j.rate in rates):invoice_item.append(str(j.item_name + " (" + j.item_code + ")"))
         if(date.days == 0):creation_date[i['name']] = ['Today']
         else:creation_date[i['name']] = [str(date.days)+" days ago"]
         invoice_item=", ".join(invoice_item)
@@ -120,4 +120,9 @@ def customer_transaction_history(customer):
     frappe.errprint("In Py")
     frappe.errprint(item_list)
     frappe.errprint(creation_date)
-    return item_list, creation_date
+    ic_dict = frappe.db.get_list("Item",fields=['item_code'],filters={'disabled':0})
+    ic=[]
+    for i in ic_dict:
+        ic.append(i['item_code'])
+    frappe.errprint(ic)
+    return item_list, creation_date,ic
