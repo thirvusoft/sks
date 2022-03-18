@@ -42,3 +42,28 @@ def item_append(item_code=None,current_document=None):
 			})
 			doc.save()
 		return 0
+
+
+@frappe.whitelist()
+def subwarehouse(sub_warehouse,company):
+	sub_warehouse_list=[sub_warehouse]
+	ware_house=[]
+	while(True):
+		sub_warehouse1=[]
+		for i in sub_warehouse_list:
+			data = frappe.get_all("Warehouse",fields=['name','is_group','parent_warehouse'],filters={"parent_warehouse":i,"company":company})
+			for i in data:
+				if(i.is_group == 0):
+					ware_house.append(i.name)
+				else:
+					sub_warehouse1.append(i.name)
+			data = frappe.get_all("Warehouse",fields=['name','is_group','parent_warehouse'],filters={'parent_warehouse':sub_warehouse,'company':'company'})
+		sub_warehouse_list=sub_warehouse1
+		if(len(sub_warehouse_list) == 0):
+			break
+	if(len(ware_house) == 0):
+		ware_house.append(sub_warehouse)
+	bin_data = frappe.get_all("Bin",fields=['item_code','actual_qty','warehouse'],filters={'actual_qty':('>',0),'warehouse':('in',ware_house)})
+	item_warehouse={i['item_code']:i['warehouse'] for i in bin_data}
+	items=list(item_warehouse.keys())
+	return items

@@ -48,3 +48,23 @@ frappe.ui.form.on("Sales Order",{
     }
  })
  
+
+frappe.ui.form.on("Sales Order",{
+   set_warehouse:function(frm,cdt,cdn){
+       var data=locals[cdt][cdn]
+       frappe.call({
+           method:"sks.sks.custom.py.sales_order.subwarehouse",
+           args:{sub_warehouse:data.set_warehouse,company:data.company},
+           callback(r){
+               if(frm.fields_dict["items"].grid.get_field('item_code')) {
+                   frm.set_query("item_code", "items", function() {
+                       return {
+                           query: "erpnext.controllers.queries.item_query",
+                           filters: {'item_code' : ["in", r["message"]],'is_sales_item': 1, 'customer': cur_frm.doc.customer}
+                       }
+                   })
+               }
+           }
+       })
+   }
+})
