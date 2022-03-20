@@ -112,6 +112,7 @@ else{
 // df.hidden = 1;
 // df.set_df_property("item_verified","hidden",0)
 // b=frappe.db.get_doc("Sales Invoice Item")
+// 
 // console.log(b)
 // set_df_property("Sales Invoice Item","item_verified","hidden",0)
 
