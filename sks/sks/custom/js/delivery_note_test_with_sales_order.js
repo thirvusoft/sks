@@ -38,6 +38,8 @@ frappe.ui.form.on("Delivery Note",{
 		}
 	}
 })
+
+
 frappe.ui.form.on("Delivery Note",{
 	before_save: function(frm,cdt,cdn){
 		var total_matched_items=0
