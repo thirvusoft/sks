@@ -1,7 +1,3 @@
-var value=frappe.db.get_single_value("SKS Settings","allow_only_if_delivery_note_items_match_with_sales_order_items").then(value =>{
-if(value==1){
-cur_frm.set_df_property("scan_barcode","hidden",1)
-cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",0)
 frappe.ui.form.on("Delivery Note",{
 	scan_barcode_to_verify_the_items: function(frm,cdt,cdn){
 		let data=locals[cdt][cdn]
@@ -58,24 +54,4 @@ frappe.ui.form.on("Delivery Note",{
 			frappe.throw(not_verified_items+" are not verified, please check it...")
 		}
 	}
-})
-}
-else{
-	cur_frm.set_df_property("scan_barcode","hidden",0)
-	cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",1)
-	frappe.ui.form.on("Delivery Note Item",{
-		onload:function(frm,cdt,cdn){
-			// frm.get_docfield("items", "item_verified").hidden = 1;
-			// // console.log("gggggggggggggggggggggggggg")
-			// // // if(cur_frm.get_field("items")){
-			// // // hide_field(["items"]["item_verified"]);}
-			// // var df=frappe.meta.get_docfield(cdt,"item_verified",cdn);
-			// // df.hidden=1;
-			// // // frm.refresh_fields();
-			// frm.refresh_field("items");
-			// // console.log(df)
-			// // frm.set_df_property("item_verified","hidden",1)
-		}
-	})
-}
 })

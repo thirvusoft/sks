@@ -1,8 +1,3 @@
-var value=frappe.db.get_single_value("SKS Settings","allow_only_if_sales_invoice_items_match_with_sales_order_items").then(value =>{
-console.log(value)
-if(value==1){
-cur_frm.set_df_property("scan_barcode","hidden",1)
-cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",0)
 frappe.ui.form.on("Sales Invoice",{
 	scan_barcode_to_verify_the_items: function(frm,cdt,cdn){
 		let data=locals[cdt][cdn]
@@ -10,6 +5,7 @@ frappe.ui.form.on("Sales Invoice",{
 		var checking_sales_invoice = data.items[0].sales_order
 		if(search_value !="")
 		{
+		frappe.model.set_value(cdt,cdn,"check_box",1)
 		frappe.call({
 			method:"erpnext.selling.page.point_of_sale.point_of_sale.search_for_serial_or_batch_or_barcode_number",
 			args:{search_value},
@@ -59,59 +55,4 @@ frappe.ui.form.on("Sales Invoice",{
 		}
 	}
 })
-}
-else{
-	cur_frm.set_df_property("scan_barcode","hidden",0)
-	cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",1)
-	frappe.ui.form.on("Sales Invoice Item",{
-		item_code:function(frm,cdt,cdn){
-			// var df=frappe.meta.get_docfield("Sales Invoice Item","item_code",frm.doc.name);
-			// df.read_only=1;
-			// var df=frappe.meta.get_docfield("Sales Invoice Item","qty",frm.doc.name);
-			// df.read_only=1;
-			// frm.get_docfield("items", "item_verified").hidden = 1;
-			// // console.log("gggggggggggggggggggggggggg")
-			// // // if(cur_frm.get_field("items")){
-			// // // hide_field(["items"]["item_verified"]);}
-			// // var df=frappe.meta.get_docfield(cdt,"item_verified",cdn);
-			// // df.hidden=1;
-			// frm.refresh_fields();
-			// frm.refresh_field("items");
-			// // console.log(df)
-			// // frm.set_df_property("item_verified","hidden",1)
-		}
-	})
-}
-})
-// console.log("kkkkkkkkkkkkkkkkkk")
-// frappe.ui.form.on("Sales Invoice",{ 
-// 	before_load:function(frm) {
-// 	console.log("gggggggggggggggggggggggggg")
-// 	var df=frappe.meta.get_docfield("Sales Invoice Item","rate",frm.doc.name);
-// 	df.hidden=1;
-// 	frm.refresh_fields();
-// 	}
-// });
-// cur_frm.items.set_df_property("item_verified","hidden",0)
-// cur_frm.get_field("items").grid.fieldinfo["item_verified"].hidden = 0
-// var df = frappe.meta.get_docfield("items","item_verified", cur_frm.doc.name);
-// var d1 =  {   
-// 	"field_name": "Item_verified"
-// }
-
-// frappe.call({
-// args: d1,
-//   method: "sks.sks.custom.py.sales_invoice_test_with_sales_order.property",
-//   callback: function(r)
-// { }})
-// df.hidden = 1;
-// var df = frappe.meta.get_docfield("Chid DocType", fieldname , cur_frm.doc.name);
-// df.hidden = 1; 
-// console.log(df)
-// var df = frappe.meta.get_docfield("Sales Invoice Item",item_verified , cur_frm.doc.name);
-// df.hidden = 1;
-// df.set_df_property("item_verified","hidden",0)
-// b=frappe.db.get_doc("Sales Invoice Item")
-// console.log(b)
-// set_df_property("Sales Invoice Item","item_verified","hidden",0)
 

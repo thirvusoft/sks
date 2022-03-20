@@ -1,7 +1,7 @@
 import frappe
-from frappe.custom.doctype.property_setter.property_setter import make_property_setter
 @frappe.whitelist()
 def item_check_with_sales_order(item_code_checking=None,checking_sales_invoice=None):
+	print(checking_sales_invoice)
 	matched_item=0
 	item_code_from_sales_order=frappe.get_doc("Sales Order",checking_sales_invoice)
 	total_item=item_code_from_sales_order.__dict__["items"]
