@@ -72,7 +72,6 @@ else{
 			// // var df=frappe.meta.get_docfield(cdt,"item_verified",cdn);
 			// // df.hidden=1;
 			// // // frm.refresh_fields();
-			// 
 			// frm.refresh_field("items");
 			// // console.log(df)
 			// // frm.set_df_property("item_verified","hidden",1)
