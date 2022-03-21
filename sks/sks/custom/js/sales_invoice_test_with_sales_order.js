@@ -114,3 +114,8 @@ var value=frappe.db.get_single_value("SKS Settings","allow_only_if_sales_invoice
 	// console.log(b)
 	// set_df_property("Sales Invoice Item","item_verified","hidden",0)
 
+frappe.ui.form.on("Sales Invoice",{
+	update_stock:function(frm,cdt,cdn){
+		frappe.model.set_value(cdt,cdn,"set_warehouse","Reserved Stock For Sales Order - SKS")
+	}
+})

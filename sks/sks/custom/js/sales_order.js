@@ -68,3 +68,30 @@ frappe.ui.form.on("Sales Order",{
        })
    }
 })
+
+
+frappe.ui.form.on("Sales Order",{
+	after_save:function(frm,cdt,cdn){
+		var status=cur_frm.doc.docstatus
+		if(status==1){
+			console.log(status)
+			var data=locals[cdt][cdn]
+			var item_codes=[]
+			var source_warehouse=[]
+			var required_qty=[]
+			var basic_rate=[]
+			for(var i=0;i<data.items.length;i++){
+				item_codes.push(data.items[i].item_code)
+				source_warehouse.push(data.items[i].warehouse)
+				required_qty.push(data.items[i].qty)
+				basic_rate.push(data.items[i].amount)
+			}
+			frappe.call({
+				method:"sks.sks.custom.py.sales_order.reserved_stock_for_sales_order",
+				args:{item_codes,source_warehouse,required_qty,basic_rate}
+			})
+			console.log(item_codes,source_warehouse,required_qty,basic_rate)
+		}
+		
+	}
+})
