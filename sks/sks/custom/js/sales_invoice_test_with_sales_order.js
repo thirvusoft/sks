@@ -81,6 +81,7 @@ var value=frappe.db.get_single_value("SKS Settings","allow_only_if_sales_invoice
 			}
 		})
 	}
+})
 	// console.log("kkkkkkkkkkkkkkkkkk")
 	// frappe.ui.form.on("Sales Invoice",{ 
 	// 	before_load:function(frm) {
