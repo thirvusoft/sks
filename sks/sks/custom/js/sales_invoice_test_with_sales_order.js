@@ -1,5 +1,4 @@
 var value=frappe.db.get_single_value("SKS Settings","allow_only_if_sales_invoice_items_match_with_sales_order_items").then(value =>{
-	console.log(value)
 	if(value==1){
 	cur_frm.set_df_property("scan_barcode","hidden",1)
 	cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",0)
@@ -82,7 +81,6 @@ var value=frappe.db.get_single_value("SKS Settings","allow_only_if_sales_invoice
 			}
 		})
 	}
-	})
 	// console.log("kkkkkkkkkkkkkkkkkk")
 	// frappe.ui.form.on("Sales Invoice",{ 
 	// 	before_load:function(frm) {
@@ -114,3 +112,4 @@ var value=frappe.db.get_single_value("SKS Settings","allow_only_if_sales_invoice
 	// b=frappe.db.get_doc("Sales Invoice Item")
 	// console.log(b)
 	// set_df_property("Sales Invoice Item","item_verified","hidden",0)
+
