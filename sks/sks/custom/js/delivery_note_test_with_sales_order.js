@@ -79,3 +79,9 @@ var value=frappe.db.get_single_value("SKS Settings","allow_only_if_delivery_note
 		})
 	}
 })
+
+frappe.ui.form.on("Delivery Note",{
+	onload:function(frm,cdt,cdn){
+		frappe.model.set_value(cdt,cdn,"set_warehouse","Reserved Stock For Sales Order - SKS")
+	}
+})
