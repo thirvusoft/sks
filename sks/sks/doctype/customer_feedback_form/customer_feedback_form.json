@@ -1,0 +1,150 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:invoice_no",
+ "creation": "2022-03-11 09:52:49.057292",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "customer_name",
+  "invoice_no",
+  "ratings",
+  "compliant1",
+  "compliant2",
+  "compliant3",
+  "compliant4",
+  "compliant5",
+  "compliant6",
+  "compliant7",
+  "compliant8",
+  "compliant9",
+  "compliant10",
+  "others_check",
+  "others",
+  "data_16"
+ ],
+ "fields": [
+  {
+   "fieldname": "customer_name",
+   "fieldtype": "Link",
+   "label": "Customer Name",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "invoice_no",
+   "fieldtype": "Link",
+   "label": "Invoice No",
+   "options": "Sales Invoice",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "ratings",
+   "fieldtype": "Rating",
+   "in_list_view": 1,
+   "label": "Ratings",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "compliant1",
+   "fieldtype": "Check",
+   "label": "Compliant1"
+  },
+  {
+   "default": "0",
+   "fieldname": "compliant2",
+   "fieldtype": "Check",
+   "label": "Compliant2"
+  },
+  {
+   "default": "0",
+   "fieldname": "compliant3",
+   "fieldtype": "Check",
+   "label": "Compliant3"
+  },
+  {
+   "default": "0",
+   "fieldname": "compliant4",
+   "fieldtype": "Check",
+   "label": "Compliant4"
+  },
+  {
+   "default": "0",
+   "fieldname": "compliant5",
+   "fieldtype": "Check",
+   "label": "Compliant5"
+  },
+  {
+   "default": "0",
+   "fieldname": "compliant6",
+   "fieldtype": "Check",
+   "label": "Compliant6"
+  },
+  {
+   "default": "0",
+   "fieldname": "compliant7",
+   "fieldtype": "Check",
+   "label": "Compliant7"
+  },
+  {
+   "default": "0",
+   "fieldname": "compliant8",
+   "fieldtype": "Check",
+   "label": "Compliant8"
+  },
+  {
+   "default": "0",
+   "fieldname": "compliant9",
+   "fieldtype": "Check",
+   "label": "Compliant9"
+  },
+  {
+   "default": "0",
+   "fieldname": "compliant10",
+   "fieldtype": "Check",
+   "label": "Compliant10"
+  },
+  {
+   "default": "0",
+   "fieldname": "others_check",
+   "fieldtype": "Check",
+   "label": "Others"
+  },
+  {
+   "fieldname": "others",
+   "fieldtype": "Small Text",
+   "hidden": 1,
+   "label": "Others"
+  },
+  {
+   "fieldname": "data_16",
+   "fieldtype": "Data"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2022-03-18 14:51:01.388926",
+ "modified_by": "Administrator",
+ "module": "sks",
+ "name": "Customer Feedback Form",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

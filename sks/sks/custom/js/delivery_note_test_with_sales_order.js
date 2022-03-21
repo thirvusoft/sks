@@ -78,6 +78,3 @@ var value=frappe.db.get_single_value("SKS Settings","allow_only_if_delivery_note
 			}
 		})
 	}
-	})
-
-
