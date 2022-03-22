@@ -100,3 +100,54 @@ frappe.ui.form.on("Sales Order",{
         })
 	}
 })
+
+var loop
+frappe.ui.form.on("Sales Order",{
+    onload:function(){
+        loop=0
+    }
+})
+frappe.ui.form.on("Sales Order",{
+	after_save:function(frm,cdt,cdn){
+        if(cur_frm.doc.docstatus!=1){
+            if(loop==0){
+                var data1 = locals[cdt][cdn]
+                var customer = data1.customer
+                frappe.call({
+                    method:"sks.sks.custom.py.sales_order.customer_credit_sale",
+                    args:{customer},
+                    callback : function(r){
+                        if(r.message[2]>0){
+                            var d = new frappe.ui.Dialog({
+                                size: "extra large",
+                                title:"Customer: "+ customer +"'s Outstanding Amount",
+                                fields:[
+                                    {'fieldname':'alert','fieldtype':'HTML','read_only':1,'bold':1},
+                                    {'label':'Outstanding Amount','fieldname':'outstanding','fieldtype':'Currency','default':r.message[2],'read_only':1},
+                                ],
+                                primary_action : function(data){
+                                    loop=loop+1
+                                    frm.set_value("outstanding_amount",data.outstanding)
+                                    var data1 = locals[cdt][cdn]
+                                    var over_all_total = data1.outstanding_amount+data1.total
+                                    cur_frm.set_value("outstanding_amount_and_total",over_all_total)
+                                    d.hide();
+
+                                }
+                            })
+                            var template=r.message[3]
+                            d.set_df_property("alert","options",frappe.render(template,{}))
+                            d.show();
+                        }
+                    }  
+                })
+            }
+        }
+        if(loop==0){
+            loop=loop+1
+            var data1 = locals[cdt][cdn]
+            var over_all_total = data1.outstanding_amount+data1.total
+            cur_frm.set_value("outstanding_amount_and_total",over_all_total)
+        }
+    }
+})
