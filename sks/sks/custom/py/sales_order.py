@@ -67,29 +67,3 @@ def subwarehouse(sub_warehouse,company):
 	item_warehouse={i['item_code']:i['warehouse'] for i in bin_data}
 	items=list(item_warehouse.keys())
 	return items
-
-
-
-@frappe.whitelist()
-def reserved_stock_for_sales_order(item_codes,source_warehouse,required_qty,basic_rate):
-	item_codes=eval(item_codes)
-	source_warehouse=eval(source_warehouse)
-	required_qty=eval(required_qty)
-	basic_rate=eval(basic_rate)
-	doc=frappe.new_doc('Stock Entry')
-	doc.update(dict(
-    stock_entry_type="Material Transfer",
-    ))
-	items=[]
-	for i in range(0,len(item_codes),1):
-		items.append({
-			's_warehouse':source_warehouse[i],
-			't_warehouse':"Reserved Stock For Sales Order - SKS",
-			'item_code':item_codes[i],
-			'qty':required_qty[i],
-			'basic_rate':basic_rate[i],
-			'uom':'Nos',
-		})
-		doc.set('items',items)
-	doc.save()
-	doc.submit()
