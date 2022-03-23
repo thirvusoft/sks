@@ -114,40 +114,13 @@ frappe.db.get_single_value("SKS Settings","allow_only_if_sales_invoice_items_mat
 	// console.log(b)
 	// set_df_property("Sales Invoice Item","item_verified","hidden",0)
 
-var parent_data
-frappe.ui.form.on("Sales Invoice",{
-	onload:function(frm,cdt,cdn){
-		parent_data=locals[cdt][cdn]
-	}
-})
-frappe.ui.form.on("Sales Invoice Item",{
-	qty:function(frm,cdt,cdn){
-		frappe.db.get_single_value("SKS Settings","reserved_stock").then(value =>{
-			if(value==0){
-				var data = locals[cdt][cdn]
-				var item_code=data.item_code
-				var item_qty=data.qty
-				var source_warehouse=data.warehouse
-				frappe.call({
-					method:"erpnext.stock.dashboard.item_dashboard.get_data",
-					args:{item_code,warehouse:source_warehouse},
-					callback(r){
-						var projected_qty=r.message[0].projected_qty     
-						if(item_qty>projected_qty){
-							for(var i=0;i<parent_data.items.length;i++){
-								if(item_code==parent_data.items[i].item_code){
-									frappe.model.set_value(parent_data.items[i].doctype,parent_data.items[i].name,"qty",0)
-									frappe.throw({
-										title:"Stock Unavailable",
-										message:"For Item : "+item_code+", The Quantity must be less than : "+projected_qty
-									})
-								}
-							}
-						}
-					}
-				})
+
+frappe.db.get_single_value("SKS Settings","reserved_stock").then(value =>{
+	if(value==1){
+		frappe.ui.form.on("Sales Invoice",{
+			update_stock:function(frm,cdt,cdn){
+				frappe.model.set_value(cdt,cdn,"set_warehouse","Reserved Stock For Sales Order - SKS")
 			}
 		})
 	}
 })
-

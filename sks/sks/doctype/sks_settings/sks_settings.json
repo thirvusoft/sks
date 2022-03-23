@@ -29,10 +29,10 @@
   },
   {
    "default": "0",
-   "description": "Reserved Stock Items Are Allowed To Sales",
+   "description": "Sales Order Items Are Moved To The Reserved Stock",
    "fieldname": "reserved_stock",
    "fieldtype": "Check",
-   "label": "Allow Reserved Stock"
+   "label": "Reserved Stock"
   },
   {
    "default": "0",
@@ -49,7 +49,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-03-23 14:13:03.975301",
+ "modified": "2022-03-22 11:34:45.586843",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "SKS Settings",
