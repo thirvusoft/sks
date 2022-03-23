@@ -93,3 +93,28 @@ def reserved_stock_for_sales_order(item_codes,source_warehouse,required_qty,basi
 		doc.set('items',items)
 	doc.save()
 	doc.submit()
+
+
+
+@frappe.whitelist(allow_guest=True)
+def customer_credit_sale(customer):
+    doc = frappe.get_list("Sales Invoice",
+        filters={"customer":customer,
+            "status":('in',('Partly Paid','Unpaid','Overdue','Unpaid and Discounted', 
+            'Overdue and Discounted', 'Partly Paid and Discounted')),'docstatus':1},
+        fields=['base_paid_amount','name','base_rounded_total','outstanding_amount'])
+    pending_invoice={}
+    recievable=0
+    for i in doc[::-1]:
+        if(i['base_paid_amount'] != i['base_rounded_total']):
+            pending_invoice[i['name']] = i['outstanding_amount']
+    alert_data=""
+    html=str("<tr><td><b><right>" + "Sales Invoice No"  + "</right></b></td><td><b><center>" + "&#12288 Outstanding" + "</center></b></td></tr>")
+    for i in pending_invoice:
+        html+= "<tr><td><left>" + str(i) + "</left></td><td><center> &#12288 &#12288 " + str(pending_invoice[i]) + "</center></td></tr>"
+        recievable+=pending_invoice[i]
+        alert_data+=str(i)+" with amount "+str(pending_invoice[i])+", "
+    alert_data=("Customer: "+str(customer)+" has Unpaid amount of RS."+str(recievable))+" with the credit bills of "+alert_data 
+    html = "<html><style> table, th, td { border: 1px solid black; border-collapse: collapse;}   th, td {padding: 15px;} table {width:100%;} </style>" + "<table>" + html +"</table>"
+    alert_data = alert_data[:len(alert_data)-2]+"."
+    return alert_data,pending_invoice,recievable,html
