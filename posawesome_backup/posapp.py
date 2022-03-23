@@ -23,6 +23,7 @@ from erpnext.accounts.doctype.loyalty_program.loyalty_program import (
     get_loyalty_program_details_with_points,
 )
 from posawesome.posawesome.doctype.pos_coupon.pos_coupon import check_coupon_code
+from erpnext.stock.dashboard.item_dashboard import get_data
 
 # from posawesome import console
 
@@ -77,6 +78,20 @@ def create_opening_voucher(pos_profile, company, balance_details):
     data = {}
     data["pos_opening_shift"] = new_pos_opening.as_dict()
     update_opening_shift_data(data, new_pos_opening.pos_profile)
+
+    #code start
+    pos=frappe.new_doc("POS Awesome Outstanding Amount")
+    pos.update({
+        'pos_opening_shift' : new_pos_opening.name,
+        'pos_profile' : pos_profile,
+        'posting_date' : frappe.utils.getdate(),
+        'cashier' : frappe.session.user,
+        'docstatus' : 0
+    })
+    pos.insert()
+    frappe.db.commit()
+    #code end
+
     return data
 
 
@@ -115,8 +130,8 @@ def update_opening_shift_data(data, pos_profile):
 
 @frappe.whitelist()
 def get_items(pos_profile, price_list=None):
-    print("Loaded.... ")
-    frappe.errprint(eval(pos_profile)['warehouse'])
+    # print("Loaded.... ")
+    # frappe.errprint(eval(pos_profile)['warehouse'])
     pos_profile = json.loads(pos_profile)
     if not price_list:
         price_list = pos_profile.get("selling_price_list")
@@ -175,26 +190,31 @@ def get_items(pos_profile, price_list=None):
         if(len(sub_warehouses) == 0):
             break
     if(len(ware_house) == 0):ware_house.append(pos_profile.get("warehouse"))
-    frappe.errprint(ware_house)
-    frappe.errprint("Warehouse")
-    for i in items_data:frappe.errprint(i.item_code)
-    frappe.errprint(len(items_data))
+    # frappe.errprint(ware_house)
+    # frappe.errprint("Warehouse")
+    # for i in items_data:frappe.errprint(i.item_code)
+    # frappe.errprint(len(items_data))
     bin_data = frappe.get_all("Bin",fields=['item_code','actual_qty','warehouse'],filters={'actual_qty':('>',0),'warehouse':('in',ware_house)})
     item_warehouse={i['item_code']:i['warehouse'] for i in bin_data}
     # print(*item_warehouse,sep="\n")
     items=item_warehouse.keys()
     # print(*bin_data,sep="\n")
-    for i in range(len(items_data)):print(items_data[i].item_code)
+    # for i in range(len(items_data)):print(items_data[i].item_code)
     items_data1=[]
     for i in range(len(items_data)):
         if(items_data[i].item_code in items):
             items_data[i]['warehouse']=item_warehouse[items_data[i].item_code]
-            items_data[i]['actual_qty']= get_stock_availability(items_data[i].item_code,item_warehouse[items_data[i].item_code])
-            frappe.errprint(items_data[i]['warehouse'])
+            allow_reserved_stock=frappe.get_single('SKS Settings')
+            allow_reserved_stock=allow_reserved_stock.__dict__["reserved_stock"]
+            if(allow_reserved_stock==1):
+                items_data[i]['actual_qty']= get_data(items_data[i].item_code,item_warehouse[items_data[i].item_code])
+                items_data[i]['actual_qty']=items_data[i]['actual_qty'][0]["projected_qty"]
+            else:
+                items_data[i]['actual_qty']= get_stock_availability(items_data[i].item_code,item_warehouse[items_data[i].item_code])
+            # frappe.errprint(items_data[i]['warehouse'])
             items_data1.append(items_data[i])
     items_data=items_data1
     # print(">>>>>")
-    # frappe.errprint(items_data)
     # print(*item_warehouse,sep="\n")
     # print(*bin_data,sep="\n")
     # print(ware_house,"Warehouse")
@@ -219,11 +239,11 @@ def get_items(pos_profile, price_list=None):
         for d in item_prices_data:
             item_prices.setdefault(d.item_code, {})
             item_prices[d.item_code][d.get("uom") or "None"] = d  
-        print('items data out')
-        print(items_data)
+        # print('items data out')
+        # print(items_data)
         i=0
         for item in items_data:
-            print(item,"item")
+            # print(item,"item")
             item_code = item.item_code
             item_wh=item.warehouse
             item_price = {}
@@ -247,9 +267,18 @@ def get_items(pos_profile, price_list=None):
                 )
             item_stock_qty = 0
             if pos_profile.get("posa_display_items_in_stock"):
-                item_stock_qty = get_stock_availability(
+                # item_stock_qty = get_stock_availability(
+                #     item_code, item_wh
+                # )
+                allow_reserved_stock=frappe.get_single('SKS Settings')
+                allow_reserved_stock=allow_reserved_stock.__dict__["reserved_stock"]
+                if(allow_reserved_stock==1):
+                    item_stock_qty = get_data(item_code, item_wh)
+                    item_stock_qty=item_stock_qty[0]["projected_qty"]
+                else:
+                    item_stock_qty = get_stock_availability(
                     item_code, item_wh
-                )
+                    )
                 #items_data[i]['actual_qty']=item_stock_qty
             #else:
                 #items_data[i]['actual_qty']=0
@@ -284,10 +313,10 @@ def get_items(pos_profile, price_list=None):
                 )
                 result.append(row)
             i+=1
-    print("Result ...")
-    print(*result,sep="\n")  
-    frappe.errprint(result)   
-    frappe.errprint((result[0]))  
+    # print("Result ...")
+    # print(*result,sep="\n")  
+    # frappe.errprint(result)   
+    # frappe.errprint((result[0]))  
     return result
 
 
@@ -386,51 +415,51 @@ def get_customer_names(pos_profile):
 @frappe.whitelist()
 def update_invoice(data):
     data = json.loads(data)
-    frappe.errprint("In update invoice")
-    frappe.errprint(data)
+    # frappe.errprint("In update invoice")
+    # frappe.errprint(data)
     if data.get("name"):
         invoice_doc = frappe.get_doc("Sales Invoice", data.get("name"))
         invoice_doc.update(data)
-        frappe.errprint(invoice_doc.items[0].__dict__)
-        frappe.errprint("1111")
+        # frappe.errprint(invoice_doc.items[0].__dict__)
+        # frappe.errprint("1111")
     else:
         invoice_doc = frappe.get_doc(data)
-        frappe.errprint(invoice_doc.items[0].__dict__)
-        frappe.errprint("2222")
+        # frappe.errprint(invoice_doc.items[0].__dict__)
+        # frappe.errprint("2222")
 
     invoice_doc.flags.ignore_permissions = True
     frappe.flags.ignore_account_permission = True
     invoice_doc.set_missing_values()
-    frappe.errprint(invoice_doc.items[0].__dict__)
-    frappe.errprint("3333")
+    # frappe.errprint(invoice_doc.items[0].__dict__)
+    # frappe.errprint("3333")
     if invoice_doc.is_return and invoice_doc.return_against:
         ref_doc = frappe.get_doc(invoice_doc.doctype, invoice_doc.return_against)
         if not ref_doc.update_stock:
             invoice_doc.update_stock = 0
-            frappe.errprint(invoice_doc.items[0].__dict__)
-            frappe.errprint("4444")
+            # frappe.errprint(invoice_doc.items[0].__dict__)
+            # frappe.errprint("4444")
 
     for item in invoice_doc.items:
         add_taxes_from_tax_template(item, invoice_doc)
-        frappe.errprint(invoice_doc.items[0].__dict__)
-        frappe.errprint("5555")
+        # frappe.errprint(invoice_doc.items[0].__dict__)
+        # frappe.errprint("5555")
     if frappe.get_value("POS Profile", invoice_doc.pos_profile, "posa_tax_inclusive"):
         if invoice_doc.get("taxes"):
             for tax in invoice_doc.taxes:
                 tax.included_in_print_rate = 1
-    frappe.errprint("invoice doc")
-    frappe.errprint(invoice_doc.items[0].__dict__)
-    frappe.errprint("invoice doc 1")
+    # frappe.errprint("invoice doc")
+    # frappe.errprint(invoice_doc.items[0].__dict__)
+    # frappe.errprint("invoice doc 1")
     invoice_doc.save()
-    frappe.errprint(invoice_doc.items[0].warehouse)
-    frappe.errprint("In update py")
+    # frappe.errprint(invoice_doc.items[0].warehouse)
+    # frappe.errprint("In update py")
     return invoice_doc
 
 
 @frappe.whitelist()
 def submit_invoice(invoice, data):
-    frappe.errprint("{}{}{}{}{}{}{}")
-    frappe.errprint(invoice)
+    # frappe.errprint("{}{}{}{}{}{}{}")
+    # frappe.errprint(invoice)
     data = json.loads(data)
     invoice = json.loads(invoice)
     invoice_doc = frappe.get_doc("Sales Invoice", invoice.get("name"))
@@ -523,9 +552,9 @@ def submit_invoice(invoice, data):
     frappe.flags.ignore_account_permission = True
     invoice_doc.posa_is_printed = 1
     invoice_doc.save()
-    frappe.errprint("101010101")
-    frappe.errprint(invoice_doc.items[0].warehouse)
-    frappe.errprint("101010101")
+    # frappe.errprint("101010101")
+    # frappe.errprint(invoice_doc.items[0].warehouse)
+    # frappe.errprint("101010101")
     #frappe.errprint(invoice_doc.items[1].warehouse)
     invoice_doc.docstatus = 1
     invoice_doc.update_stock = 1
@@ -557,16 +586,15 @@ def submit_invoice(invoice, data):
                 },
             )
     else:
-        frappe.errprint("waiting")
-        print(invoice_doc)
+        # frappe.errprint("waiting")
         invoice_doc.submit()
         frappe.db.commit()
-        frappe.errprint("Submitted")
+        # frappe.errprint("Submitted")
         redeeming_customer_credit(
             invoice_doc, data, is_payment_entry, total_cash, cash_account
         )
-        print("...................")
-        print(invoice_doc)
+        # print("...................")
+        # print(invoice_doc)
 
     return {"name": invoice_doc.name, "status": invoice_doc.docstatus}
 
@@ -695,7 +723,7 @@ def submit_in_background_job(kwargs):
     cash_account = kwargs.get("cash_account")
 
     invoice_doc = frappe.get_doc("Sales Invoice", invoice)
-    print(invoice_doc)
+    # print(invoice_doc)
     invoice_doc.submit()
     redeeming_customer_credit(
         invoice_doc, data, is_payment_entry, total_cash, cash_account
@@ -784,7 +812,7 @@ def delete_invoice(invoice):
 def get_items_details(pos_profile, items_data):
     pos_profile = json.loads(pos_profile)
     items_data = json.loads(items_data)
-    frappe.errprint(items_data)
+    # frappe.errprint(items_data)
     warehouse = pos_profile.get("warehouse")
     result = []
     if len(items_data) > 0:
@@ -792,7 +820,7 @@ def get_items_details(pos_profile, items_data):
             item_code = item.get("item_code")
             item_stock_qty = item.get('actual_qty')
             #frappe.errprint(item.get('actual_qty'))
-            frappe.errprint("actual qty in details py")
+            # frappe.errprint("actual qty in details py")
             has_batch_no, has_serial_no = frappe.get_value(
                 "Item", item_code, ["has_batch_no", "has_serial_no"]
             )
@@ -866,7 +894,13 @@ def get_item_detail(item, doc=None, warehouse=None, price_list=None):
     )
     
     if item.get("is_stock_item") and warehouse:
-        res["actual_qty"] = get_stock_availability(item_code, warehouse)
+        allow_reserved_stock=frappe.get_single('SKS Settings')
+        allow_reserved_stock=allow_reserved_stock.__dict__["reserved_stock"]
+        if(allow_reserved_stock==1):
+            res["actual_qty"] = get_data(item_code, warehouse)
+            res["actual_qty"]=res["actual_qty"][0]["projected_qty"]
+        else:
+            res["actual_qty"] = get_stock_availability(item_code, warehouse)
     res["max_discount"] = max_discount
     return res
 
