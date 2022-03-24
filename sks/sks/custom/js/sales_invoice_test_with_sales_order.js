@@ -19,7 +19,7 @@ frappe.db.get_single_value("SKS Settings","allow_only_if_sales_invoice_items_mat
 						 args:{item_code_checking,checking_sales_invoice},
 						 callback(r){
 							if(r["message"]==0){
-								frappe.msgprint("Scanned Barcode Is Not Matching With The Sales Order Items")	
+								frappe.msgprint("Scanned Barcode Is Not Matching With The Sales Order Items")  
 							}
 							else{
 								for(var i=0;i<data.items.length;i++){
@@ -81,23 +81,23 @@ frappe.db.get_single_value("SKS Settings","allow_only_if_sales_invoice_items_mat
 			}
 		})
 	}
-})
+ })
 	// console.log("kkkkkkkkkkkkkkkkkk")
-	// frappe.ui.form.on("Sales Invoice",{ 
-	// 	before_load:function(frm) {
-	// 	console.log("gggggggggggggggggggggggggg")
-	// 	var df=frappe.meta.get_docfield("Sales Invoice Item","rate",frm.doc.name);
-	// 	df.hidden=1;
-	// 	frm.refresh_fields();
-	// 	}
+	// frappe.ui.form.on("Sales Invoice",{
+	//  before_load:function(frm) {
+	//  console.log("gggggggggggggggggggggggggg")
+	//  var df=frappe.meta.get_docfield("Sales Invoice Item","rate",frm.doc.name);
+	//  df.hidden=1;
+	//  frm.refresh_fields();
+	//  }
 	// });
 	// cur_frm.items.set_df_property("item_verified","hidden",0)
 	// cur_frm.get_field("items").grid.fieldinfo["item_verified"].hidden = 0
 	// var df = frappe.meta.get_docfield("items","item_verified", cur_frm.doc.name);
-	// var d1 =  {   
-	// 	"field_name": "Item_verified"
+	// var d1 =  {  
+	//  "field_name": "Item_verified"
 	// }
-	
+   
 	// frappe.call({
 	// args: d1,
 	//   method: "sks.sks.custom.py.sales_invoice_test_with_sales_order.property",
@@ -105,7 +105,7 @@ frappe.db.get_single_value("SKS Settings","allow_only_if_sales_invoice_items_mat
 	// { }})
 	// df.hidden = 1;
 	// var df = frappe.meta.get_docfield("Chid DocType", fieldname , cur_frm.doc.name);
-	// df.hidden = 1; 
+	// df.hidden = 1;
 	// console.log(df)
 	// var df = frappe.meta.get_docfield("Sales Invoice Item",item_verified , cur_frm.doc.name);
 	// df.hidden = 1;
@@ -113,14 +113,41 @@ frappe.db.get_single_value("SKS Settings","allow_only_if_sales_invoice_items_mat
 	// b=frappe.db.get_doc("Sales Invoice Item")
 	// console.log(b)
 	// set_df_property("Sales Invoice Item","item_verified","hidden",0)
-
-
-frappe.db.get_single_value("SKS Settings","reserved_stock").then(value =>{
-	if(value==1){
-		frappe.ui.form.on("Sales Invoice",{
-			update_stock:function(frm,cdt,cdn){
-				frappe.model.set_value(cdt,cdn,"set_warehouse","Reserved Stock For Sales Order - SKS")
+  
+ var parent_data
+ frappe.ui.form.on("Sales Invoice",{
+	onload:function(frm,cdt,cdn){
+		parent_data=locals[cdt][cdn]
+	}
+ })
+ frappe.ui.form.on("Sales Invoice Item",{
+	qty:function(frm,cdt,cdn){
+		frappe.db.get_single_value("SKS Settings","reserved_stock").then(value =>{
+			if(value==1){
+				var data = locals[cdt][cdn]
+				var item_code=data.item_code
+				var item_qty=data.qty
+				var source_warehouse=data.warehouse
+				frappe.call({
+					method:"erpnext.stock.dashboard.item_dashboard.get_data",
+					args:{item_code,warehouse:source_warehouse},
+					callback(r){
+						var projected_qty=r.message[0].projected_qty    
+						if(item_qty>projected_qty){
+							for(var i=0;i<parent_data.items.length;i++){
+								if(item_code==parent_data.items[i].item_code){
+									frappe.model.set_value(parent_data.items[i].doctype,parent_data.items[i].name,"qty",0)
+									frappe.throw({
+										title:"Stock Unavailable",
+										message:"For Item : "+item_code+", The Quantity must be less than : "+projected_qty
+									})
+								}
+							}
+						}
+					}
+				})
 			}
 		})
 	}
-})
+ })
+ 

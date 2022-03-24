@@ -10,7 +10,8 @@
   "allow_only_if_sales_invoice_items_match_with_sales_order_items",
   "column_break_3",
   "customer_transaction_history",
-  "reserved_stock"
+  "reserved_stock",
+  "credit_bill_history"
  ],
  "fields": [
   {
@@ -29,14 +30,14 @@
   },
   {
    "default": "0",
-   "description": "Sales Order Items Are Moved To The Reserved Stock",
+   "description": "Reserved Stock Items Are Not Allowed For Sales",
    "fieldname": "reserved_stock",
    "fieldtype": "Check",
    "label": "Reserved Stock"
   },
   {
    "default": "0",
-   "description": "History Details Popup In Sales Order",
+   "description": "Customer Sales History Details Popup In Sales Order",
    "fieldname": "customer_transaction_history",
    "fieldtype": "Check",
    "label": "Customer Transaction History"
@@ -44,12 +45,19 @@
   {
    "fieldname": "column_break_3",
    "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "Unpaid Credit Bill Customer History Will Be Popup",
+   "fieldname": "credit_bill_history",
+   "fieldtype": "Check",
+   "label": "Credit Bill History"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-03-22 11:34:45.586843",
+ "modified": "2022-03-23 15:11:46.054228",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "SKS Settings",
