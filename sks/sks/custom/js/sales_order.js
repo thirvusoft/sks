@@ -153,7 +153,7 @@ frappe.ui.form.on("Sales Order",{
                                     frappe.model.set_value(parent_data.items[i].doctype,parent_data.items[i].name,"qty",0)
                                     frappe.throw({
                                         title:"Stock Unavailable",
-                                        message:"For Item : "+item_code+", The Quantity must be less than : "+projected_qty
+                                        message:"For Item : "+item_code+", Available Quantity : "+projected_qty
                                     })
                                 }
                             }
