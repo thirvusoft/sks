@@ -47,6 +47,7 @@ frappe.ui.form.on("Purchase Receipt",{
 										})
 										d.hide();
 										frappe.show_alert({ message: __('Barcode Mapped'), indicator: 'green' });
+										frappe.model.set_value(cdt,cdn,"scan_barcode_to_verify_the_items","")
 										d.hide();
 									}
 								});d.show()
