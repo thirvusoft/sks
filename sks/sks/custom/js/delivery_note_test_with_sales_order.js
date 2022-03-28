@@ -9,7 +9,6 @@ frappe.db.get_single_value("SKS Settings","allow_only_if_delivery_note_items_mat
 			var checking_sales_order = data.items[0].against_sales_order
 			if(search_value !="")
 			{
-			// frappe.model.set_value(cdt,cdn,"check_box",1)
 			frappe.call({
 				method:"erpnext.selling.page.point_of_sale.point_of_sale.search_for_serial_or_batch_or_barcode_number",
 				args:{search_value},
