@@ -79,12 +79,12 @@ def customer_credit_sale(customer):
         if(i['base_paid_amount'] != i['base_rounded_total']):
             pending_invoice[i['name']] = i['outstanding_amount']
     alert_data=""
-    html=str("<tr><td><b><right>" + "Sales Invoice No"  + "</right></b></td><td><b><center>" + "&#12288 Outstanding" + "</center></b></td></tr>")
+    html=str("<tr class=clstr><td class=clstd><b><right>" + "Sales Invoice No"  + "</right></b></td><td class=clstd><b><center>" + "&#12288 Outstanding" + "</center></b></td></tr>")
     for i in pending_invoice:
-        html+= "<tr><td><left>" + str(i) + "</left></td><td><center> &#12288 &#12288 " + str(pending_invoice[i]) + "</center></td></tr>"
+        html+= "<tr class=clstr><td class=clstd><left><a href=/app/sales-invoice/"+str(i)+'>' + str(i) + "</a></left></td><td class=clstd><center> &#12288 &#12288 " + str(pending_invoice[i]) + "</center></td></tr>"
         recievable+=pending_invoice[i]
         alert_data+=str(i)+" with amount "+str(pending_invoice[i])+", "
     alert_data=("Customer: "+str(customer)+" has Unpaid amount of RS."+str(recievable))+" with the credit bills of "+alert_data 
-    html = "<html><style> table, th, td { border: 1px solid black; border-collapse: collapse;}   th, td {padding: 15px;} table {width:100%;} </style>" + "<table>" + html +"</table>"
+    html = "<html><style> .clstab, .clsth, .clstd { border: 1px solid black; border-collapse: collapse;}   .clsth, .clstd {padding: 15px;} .clstab {width:100%;} </style>" + "<table class=clstab>" + html +"</table>"
     alert_data = alert_data[:len(alert_data)-2]+"."
-    return alert_data,pending_invoice,recievable,html
+    return alert_data,pending_invoice,recievable, html
