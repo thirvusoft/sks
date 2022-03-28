@@ -15,7 +15,7 @@ frappe.db.get_single_value("SKS Settings","allow_only_if_delivery_note_items_mat
 				callback(r){
 					var item_code_checking = r["message"]["item_code"]
 					frappe.call({
-						 method:"sks.sks.custom.py.delivery_note_test_with_sales_order.item_check_with_sales_order",
+						 method:"sks.sks.custom.py.delivery_note.item_check_with_sales_order",
 						 args:{item_code_checking,checking_sales_order},
 						 callback(r){
 							if(r["message"]==0){

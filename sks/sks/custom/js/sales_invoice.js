@@ -15,7 +15,7 @@ frappe.db.get_single_value("SKS Settings","allow_only_if_sales_invoice_items_mat
 				callback(r){
 					var item_code_checking = r["message"]["item_code"]
 					frappe.call({
-						 method:"sks.sks.custom.py.sales_invoice_test_with_sales_order.item_check_with_sales_order",
+						 method:"sks.sks.custom.py.sales_invoice.item_check_with_sales_order",
 						 args:{item_code_checking,checking_sales_invoice},
 						 callback(r){
 							if(r["message"]==0){
@@ -113,7 +113,7 @@ frappe.db.get_single_value("SKS Settings","allow_only_if_sales_invoice_items_mat
 	// b=frappe.db.get_doc("Sales Invoice Item")
 	// console.log(b)
 	// set_df_property("Sales Invoice Item","item_verified","hidden",0)
-  
+
  var parent_data
  frappe.ui.form.on("Sales Invoice",{
 	onload:function(frm,cdt,cdn){
@@ -151,3 +151,112 @@ frappe.db.get_single_value("SKS Settings","allow_only_if_sales_invoice_items_mat
 	}
  })
  
+
+
+
+
+
+// frappe.ui.form.on("Sales Invoice",{
+// 	before_save:function(frm,cdt,cdn){
+// 		frappe.call({
+// 			method:"sks.sks.custom.py.sales_invoice_test_with_sales_order.payment_entry",
+// 			// args:{
+// 			// // amount,mode,customer,pending_invoice
+			
+// 			// 	amount:data.amount,
+// 			// 	mode:data.mode,
+// 			// 	customer:customer,
+// 			// 	pending_invoice:r.message[1],
+// 			// 	company:_vm._data.pos_profile.company.company_name,
+// 			// 	ref_no: data.ref_no,
+// 			// 	ref_date: data.ref_date
+				
+// 			// },
+// 			// callback : function(res){
+// 			// 	if(res.message[0]){
+// 			// 		evntBus.$emit('show_mesage', {
+// 			// 		text: __('Payment Entry Created Successfully.'),
+// 			// 		color: 'success',
+// 			// 		});
+// 			// 		var mode = r.message[1]
+// 			// 		var payment = r.message[0]
+			
+// 			// 	}
+// 			// }
+// 		})
+// 	}
+// })
+
+
+var loop
+frappe.ui.form.on("Sales Invoice",{
+    onload:function(){
+        loop=0
+    }
+})
+frappe.ui.form.on("Sales Invoice",{
+	after_save:function(frm,cdt,cdn){
+		frappe.db.get_single_value("SKS Settings","credit_bill_history").then(value =>{
+            if(value==1){
+				if(cur_frm.doc.docstatus!=1){
+					if(loop==0){
+						var data1 = locals[cdt][cdn]
+						var customer = data1.customer
+						frappe.call({
+							method : "sks.sks.custom.py.sales_order.customer_credit_sale",
+							args:{
+								customer: customer
+							},
+							callback : function(r){
+								if(r.message[2]>0){
+									var d = new frappe.ui.Dialog({
+										size: "extra large",
+										title:"Customer: "+ customer +"'s Outstanding Amount",
+										fields:[
+											{'fieldname':'alert','fieldtype':'HTML','read_only':1,'bold':1},
+											{'label':'Outstanding Amount','fieldname':'outstanding','fieldtype':'Currency','default':r.message[2],'read_only':1},
+											{'label':'Paid Amount','fieldname':'amount','fieldtype':'Currency','reqd':1},
+											{
+											'label':'Mode of Payment',
+											'fieldname':'mode',
+											'fieldtype':'Link',
+											'options':"Mode of Payment"
+											},
+											{'label':'Reference Date','fieldname':'ref_date','fieldtype':'Date'},
+											{'label':'Reference Number','fieldname':'ref_no','fieldtype':'Data'}
+											
+										],
+										primary_action : function(data){
+											loop=loop+1
+											frappe.call({
+												method:"sks.sks.custom.py.sales_invoice.payment_entry",
+												args:{
+													amount:data.amount,
+													mode:data.mode,
+													customer:customer,
+													pending_invoice:r.message[1],
+													company:frm.doc.company,
+													ref_no: data.ref_no,
+													ref_date: data.ref_date	
+												},
+												callback : function(res){
+													if(res.message[0]){
+														frappe.show_alert({ message: __('Payment Entry Created Successfully.'), indicator: 'green' });
+													}
+												}
+											});d.hide();
+										}
+									});
+								}
+								var template = r.message[3]
+								d.set_df_property('alert','options',frappe.render(template,{}))
+								d.show();
+							}
+						})
+					}
+				}
+			}
+		})
+	}
+})
+	
