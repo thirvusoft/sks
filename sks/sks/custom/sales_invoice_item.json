@@ -430,7 +430,7 @@
    "bold": 0,
    "collapsible": 0,
    "collapsible_depends_on": null,
-   "columns": 1,
+   "columns": 2,
    "creation": "2022-03-15 15:59:46.090380",
    "default": null,
    "depends_on": "",
