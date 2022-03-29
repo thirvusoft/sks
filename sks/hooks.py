@@ -38,7 +38,7 @@ doctype_js = {"Delivery Note" : "sks/custom/js/delivery_note.js",
 "Sales Order" : "sks/custom/js/sales_order.js",
 "Purchase Receipt":"sks/custom/js/purchase_receipt.js",
 "Purchase Order":"sks/custom/js/purchase_order.js"}
-doctype_js = {"Delivery Note" : "sks/sks/custom/js/outstanding_amount.js"}
+# doctype_js = {"Delivery Note" : "sks/sks/custom/js/outstanding_amount.js"}
 
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}

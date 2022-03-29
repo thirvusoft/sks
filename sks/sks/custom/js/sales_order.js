@@ -51,27 +51,64 @@ frappe.ui.form.on("Sales Order",{
         })   
     }
  })
-  
+
+
  frappe.ui.form.on("Sales Order",{
+    onload:function(frm,cdt,cdn){
+        frm.set_query("set_warehouse", function() {
+            return {
+                filters: [
+                    ["Warehouse", "company", "in", ["", cstr(frm.doc.company)]],
+				    ["Warehouse", "is_group", "=",1]
+                ]
+            };
+        });
+    },
     set_warehouse:function(frm,cdt,cdn){
         var data=locals[cdt][cdn]
         frappe.call({
             method:"sks.sks.custom.py.sales_order.subwarehouse",
             args:{sub_warehouse:data.set_warehouse,company:data.company},
             callback(r){
-                if(frm.fields_dict["items"].grid.get_field('item_code')) {
+                    var subwarehouse_item_code=r["message"][0]
                     frm.set_query("item_code", "items", function() {
                         return {
                             query: "erpnext.controllers.queries.item_query",
-                            filters: {'item_code' : ["in", r["message"]],'is_sales_item': 1, 'customer': cur_frm.doc.customer}
+                            filters: {'item_code' : ["in", subwarehouse_item_code],'is_sales_item': 1, 'customer': cur_frm.doc.customer}
                         }
                     })
-                }
             }
         })
+    },
+    before_submit:function(frm,cdt,cdn){
+        if(frm.doc.status=="Draft"){
+            var data=locals[cdt][cdn]
+            var doctype_name=data.doctype
+            var document_name=data.name
+            var total_item_code=[]
+            for(var i=0;i<data.items.length;i++){
+                total_item_code.push(data.items[i].item_code)
+            }
+            frappe.call({
+                method:"sks.sks.custom.py.sales_order.subwarehouse",
+                args:{sub_warehouse:data.set_warehouse,company:data.company},
+                callback(r){
+                        var subwarehouse_item_codes=r["message"][0]
+                        var subwarehouse_item_bins=r["message"][1]
+                        frappe.call({
+                            method:"sks.sks.custom.py.sales_order.bins",
+                            args:{total_item_code,subwarehouse_item_codes,subwarehouse_item_bins,doctype_name,document_name},
+                            callback(r){
+                                if(r["message"]==0){
+                                    frm.refresh();
+                                }
+                            }
+                        })
+                }
+            })
+        }
     }
- })
-
+})
 
 var loop
 frappe.ui.form.on("Sales Order",{
