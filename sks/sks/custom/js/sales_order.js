@@ -117,7 +117,7 @@ frappe.ui.form.on("Sales Order",{
     }
 })
 frappe.ui.form.on("Sales Order",{
-	after_save:function(frm,cdt,cdn){
+	customer:function(frm,cdt,cdn){
         frappe.db.get_single_value("SKS Settings","credit_bill_history").then(value =>{
             if(value==1){
                 if(cur_frm.doc.docstatus!=1){
