@@ -166,21 +166,42 @@ frappe.ui.form.on("Sales Order",{
         })
     }
 })
-  
- var parent_data
- frappe.ui.form.on("Sales Order",{
+var subwarehouse_item_codes
+var subwarehouse_item_bins
+frappe.ui.form.on("Sales Order",{
+    set_warehouse:function(frm,cdt,cdn){
+        var data=locals[cdt][cdn]
+        frappe.call({
+            method:"sks.sks.custom.py.sales_order.subwarehouse",
+            args:{sub_warehouse:data.set_warehouse,company:data.company},
+            callback(r){
+                subwarehouse_item_codes=r["message"][0]
+                subwarehouse_item_bins=r["message"][1]
+            }
+        })
+    }
+})
+
+var parent_data
+frappe.ui.form.on("Sales Order",{
     onload:function(frm,cdt,cdn){
         parent_data=locals[cdt][cdn]
     }
- })
- frappe.ui.form.on("Sales Order Item",{
+})
+
+frappe.ui.form.on("Sales Order Item",{
     qty:function(frm,cdt,cdn){
         frappe.db.get_single_value("SKS Settings","reserved_stock").then(value =>{
             if(value==1){
                 var data = locals[cdt][cdn]
                 var item_code=data.item_code
                 var item_qty=data.qty
-                var source_warehouse=data.warehouse
+                for(var i=0;i<subwarehouse_item_codes.length;i++){
+                    if(subwarehouse_item_codes[i]==item_code){
+                        var source_warehouse=subwarehouse_item_bins[i]
+                        item_code=subwarehouse_item_codes[i]
+                    }
+                }
                 frappe.call({
                     method:"erpnext.stock.dashboard.item_dashboard.get_data",
                     args:{item_code,warehouse:source_warehouse},
@@ -202,5 +223,4 @@ frappe.ui.form.on("Sales Order",{
             }
         })
     }
- })
- 
+})
