@@ -27,7 +27,11 @@ def customer_transaction_history(customer):
     item_code=[]
     for i in item_code_dict:
         item_code.append(i['item_code'])
-    return item_list, creation_date,item_code
+    length_creation_date=len(creation_date)
+    if(length_creation_date!=0):
+        return item_list, creation_date,item_code
+    else:
+        return 0
 
 @frappe.whitelist()
 def item_append(item_code=None,current_document=None):
