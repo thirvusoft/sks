@@ -95,17 +95,17 @@ frappe.ui.form.on("Sales Order",{
                 method:"sks.sks.custom.py.sales_order.subwarehouse",
                 args:{sub_warehouse:data.set_warehouse,company:data.company},
                 callback(r){
-                        var subwarehouse_item_codes=r["message"][0]
-                        var subwarehouse_item_bins=r["message"][1]
-                        frappe.call({
-                            method:"sks.sks.custom.py.sales_order.bins",
-                            args:{total_item_code,subwarehouse_item_codes,subwarehouse_item_bins,doctype_name,document_name},
-                            callback(r){
-                                if(r["message"]==0){
-                                    frm.refresh();
-                                }
+                    var subwarehouse_item_codes=r["message"][0]
+                    var subwarehouse_item_bins=r["message"][1]
+                    frappe.call({
+                        method:"sks.sks.custom.py.sales_order.bins",
+                        args:{total_item_code,subwarehouse_item_codes,subwarehouse_item_bins,doctype_name,document_name},
+                        callback(r){
+                            if(r["message"]==0){
+                                frm.refresh();
                             }
-                        })
+                        }
+                    })
                 }
             })
         }
