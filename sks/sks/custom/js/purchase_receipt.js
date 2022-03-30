@@ -1,6 +1,13 @@
 var total_barcode_number_item=[]
 var total_barcode_item_code=[]
+var item_codes=[]
 frappe.ui.form.on("Purchase Receipt",{
+	onload:function(frm,cdt,cdn){
+		var data=locals[cdt][cdn]
+		for(var i=0;i<data.items.length;i++){
+			item_codes.push(data.items[i].item_name)
+		}
+	},
 	scan_barcode_to_verify_the_items: function(frm,cdt,cdn){
 		let data=locals[cdt][cdn]
 		var search_value = data.scan_barcode_to_verify_the_items
@@ -32,6 +39,7 @@ frappe.ui.form.on("Purchase Receipt",{
 											"label": "Item code",
 											"fieldname": "item_code",
 											"fieldtype": "Link",
+											"filters": {'item_code' : ["in", item_codes]},
 											"reqd": 1,
 											"options":"Item"
 										},
