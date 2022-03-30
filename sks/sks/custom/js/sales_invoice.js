@@ -5,7 +5,6 @@ frappe.db.get_single_value("SKS Settings","allow_only_if_sales_invoice_items_mat
 	frappe.ui.form.on("Sales Invoice",{
 		scan_barcode_to_verify_the_items: function(frm,cdt,cdn){
 			let data=locals[cdt][cdn]
-			// console.log(data.)
 			if(data.update_stock==1){
 				var search_value = data.scan_barcode_to_verify_the_items
 				var checking_sales_invoice = data.items[0].sales_order
