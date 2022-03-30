@@ -493,7 +493,7 @@
    "columns": 0,
    "creation": "2022-03-15 15:06:42.272754",
    "default": null,
-   "depends_on": "",
+   "depends_on": "eval:doc.update_stock==1",
    "description": null,
    "docstatus": 0,
    "dt": "Sales Invoice",
