@@ -13,27 +13,23 @@ def customer_credit_sale(customer):
     for i in doc[::-1]:
         if(i['base_paid_amount'] != i['base_rounded_total']):
             pending_invoice[i['name']] = i['outstanding_amount']
-    frappe.errprint(pending_invoice)
     alert_data=""
+    html=str("<tr class=clstr><td class=clstd><b><right>" + "Sales Invoice No"  + "</right></b></td><td class=clstd><b><center>" + "&#12288 Outstanding" + "</center></b></td></tr>")
     for i in pending_invoice:
+        html+= "<tr class=clstr><td class=clstd><left><a href=/app/sales-invoice/"+str(i)+'>' + str(i) + "</a></left></td><td class=clstd><center> &#12288 &#12288 " + str(pending_invoice[i]) + "</center></td></tr>"
         recievable+=pending_invoice[i]
         alert_data+=str(i)+" with amount "+str(pending_invoice[i])+", "
     alert_data=("Customer: "+str(customer)+" has Unpaid amount of RS."+str(recievable))+" with the credit bills of "+alert_data 
-   # if(recievable>0):frappe.msgprint(alert_data[:len(alert_data)-2]+".")
-    
+    html = "<html><style> .clstab, .clsth, .clstd { border: 1px solid black; border-collapse: collapse;}   .clsth, .clstd {padding: 15px;} .clstab {width:100%;} </style>" + "<table class=clstab>" + html +"</table>"
 
     
     alert_data = alert_data[:len(alert_data)-2]+"."
-    feed = frappe.db.get_value("Customer",customer,'feedback_required')
-    frappe.errprint(feed)
-    frappe.errprint('Feed')
     
-    return alert_data,pending_invoice,recievable,feed
+    return alert_data,pending_invoice,recievable, html
 
 @frappe.whitelist(allow_guest=True)
-def payment_entry(amount,mode,customer,pending_invoice,company,ref_no=None,ref_date=None):
+def payment_entry(amount,mode,customer,pending_invoice,company,opening,ref_no=None,ref_date=None):
     mode_of_payment = frappe.get_doc("Mode of Payment",mode).accounts
-    frappe.errprint(mode_of_payment)
     for i in mode_of_payment:
         if(i.company==company):
             acc_paid_to=i.default_account
@@ -44,26 +40,21 @@ def payment_entry(amount,mode,customer,pending_invoice,company,ref_no=None,ref_d
         frappe.throw(("Please set Company and Default account for ({0}) mode of payment").format(mode))
     bank_account_type = frappe.db.get_value("Account", acc_paid_to, "account_type")
     if bank_account_type == "Bank":
-        if not ref_no or not ref_date:
+        if(ref_no == None or ref_date == None):
             frappe.throw("Reference No and Reference Date is mandatory for Bank transaction11")
     acc_currency = frappe.db.get_value('Account',acc_paid_to,'account_currency')
     pending_invoice = eval(pending_invoice)
-    frappe.errprint("Reached")
     doc = frappe.new_doc('Payment Entry')
     references=[]
     amount1 = int(amount)
     for i in pending_invoice:
         amount_allocated = 0
-        frappe.errprint(str(amount1)+" "+str(pending_invoice[i]))
         if(amount1 >= pending_invoice[i]):
             amount_allocated = pending_invoice[i]
             amount1 -= pending_invoice[i]
         else:
-            #amount1=pending_invoice[i]
             amount_allocated=amount1
             amount1 -= amount_allocated
-        frappe.errprint(str(amount1)+" "+str(pending_invoice[i]))
-        frappe.errprint(i)
         if(amount_allocated>0):
             references.append({
                 'reference_doctype':'Sales Invoice',
@@ -72,7 +63,6 @@ def payment_entry(amount,mode,customer,pending_invoice,company,ref_no=None,ref_d
                 'exchange_rate': 1,
                 'allocated_amount': amount_allocated
             })
-    frappe.errprint(references)
     doc.update({
         'company':company,
         'payment_type':"Receive",
@@ -86,25 +76,42 @@ def payment_entry(amount,mode,customer,pending_invoice,company,ref_no=None,ref_d
         'received_amount':int(amount),
         'target_exchange_rate':1,
         'paid_to': acc_paid_to,
-        'paid_to_account_currency': acc_currency
+        'paid_to_account_currency': acc_currency,
+        'pos_opening_shift_id': opening
     })
-    frappe.errprint("doc is printing below.....")
-    frappe.errprint(doc.difference_amount)
+    if(bank_account_type == 'Bank'):
+        doc.update({
+            'reference_no':ref_no,
+            'reference_date':ref_date
+        })
     doc.insert()
     doc.submit()
     frappe.db.commit()
-    frappe.errprint(doc.__dict__)
-    return doc
+    if(doc.docstatus == 1):
+        pos = frappe.get_doc("POS Awesome Outstanding Amount",opening)
+        outstanding={
+            'customer': customer,
+            'payment_entry': doc.name,
+            'mode_of_payment' : mode,
+            'date': doc.posting_date,
+            'amount': doc.paid_amount
+        }
+        pos.append('outstanding_amount' ,outstanding )
+        pos.save()
+        frappe.db.commit()
+    return doc.paid_amount, mode
 
 
 
 @frappe.whitelist(allow_guest=True)
 def customer_transaction_history(customer): 
-    from datetime import datetime   
+    from datetime import datetime  
+    from pytz import timezone 
     data = frappe.get_all("Sales Invoice",filters={'docstatus':1,'customer':customer},limit=10)
     item_list={}
     creation_date={}
-    today = datetime.now()
+    today = datetime.now(timezone("Asia/Kolkata")).replace(tzinfo=None)
+    html=""
     for i in data[::-1]:
         item_rate={}
         invoice_item=[]
@@ -116,20 +123,17 @@ def customer_transaction_history(customer):
         rates=list(item_rate.keys())
         rates.sort(reverse=True)
         if(len(rates)>8):rates=rates[:8:]
-        frappe.errprint(rates)
         for j in items:
             if(j.rate in rates):invoice_item.append(str(j.item_name + " (" + j.item_code + ")"))
         if(date.days == 0):creation_date[i['name']] = ['Today']
         else:creation_date[i['name']] = [str(date.days)+" days ago"]
         invoice_item=", ".join(invoice_item)
-        invoice_item=[frappe.bold(i['name'])+":   &#12288"+invoice_item+"&#12288"]   
+        html+= "<tr class=clstr>"+"<td class=clstd>"+"<b><a href=/app/sales-invoice/"+i['name']+'>'+i['name']+"</a></b>"+"</td><td class=clstd>"+"&#12288"+invoice_item+"</td>"+"<td class=clstd>"+" &#12288 "+creation_date[i['name']][0]+"</td>"+"</tr>"
+        invoice_item=[frappe.bold(i['name'])+":   &#12288"+invoice_item+"&#12288"] 
         item_list[i['name']] = invoice_item
-    frappe.errprint("In Py")
-    frappe.errprint(item_list)
-    frappe.errprint(creation_date)
     ic_dict = frappe.db.get_list("Item",fields=['item_code'],filters={'disabled':0})
     ic=[]
     for i in ic_dict:
         ic.append(i['item_code'])
-    frappe.errprint(ic)
-    return item_list, creation_date,ic
+    html = "<html><style> .clstab, .clsth, .clstd { border: 1px solid black; border-collapse: collapse;}   .clsth, .clstd {padding: 10px;} .clstab {width:100%;} </style>" + "<table class=clstab><tr class=clstr><td class=clstd><b>Invoice No</b></td><td class=clstd><b>Items Purchased</b></td><td class=clstd><b>Days ago</b></td><tr>" + html +"</table>"
+    return item_list, len(creation_date),ic,html
