@@ -1,50 +1,56 @@
 import frappe
 @frappe.whitelist(allow_guest=True)
-def customer_transaction_history(customer): 
-    from datetime import datetime   
+def customer_transaction_history(customer,item_codes): 
+    from datetime import datetime
+    from pytz import timezone
     data = frappe.get_all("Sales Invoice",filters={'docstatus':1,'customer':customer},limit=10)
     item_list={}
     creation_date={}
-    today = datetime.now()
+    total_items=[]
+    today = datetime.now(timezone("Asia/Kolkata")).replace(tzinfo=None)
+    html=""
     for i in data[::-1]:
         item_rate={}
         invoice_item=[]
         doc = frappe.get_doc("Sales Invoice",i['name'])
         items=doc.items
         date = today - doc.creation
+
         item_rate={k.rate:k.item_code for k in items}
         rates=list(item_rate.keys())
         rates.sort(reverse=True)
         if(len(rates)>8):rates=rates[:8:]
         for j in items:
-            if(j.rate in rates):invoice_item.append(str(j.item_name + " (" + j.item_code + ")"))
-        if(date.days == 0):creation_date[i['name']] = ['Today']
-        else:creation_date[i['name']] = [str(date.days)+" days ago"]
-        invoice_item=", ".join(invoice_item)
-        invoice_item=[frappe.bold(i['name'])+":   &#12288"+invoice_item+"&#12288"]   
-        item_list[i['name']] = invoice_item
-    item_code_dict = frappe.db.get_list("Item",fields=['item_code'],filters={'disabled':0})
-    item_code=[]
-    for i in item_code_dict:
-        item_code.append(i['item_code'])
-    length_creation_date=len(creation_date)
-    if(length_creation_date!=0):
-        return item_list, creation_date,item_code
-    else:
-        return 0
+            if(j.item_code not in item_codes):
+                total_items.append(j.item_code)
+                if(j.rate in rates):invoice_item.append(str(j.item_name + " (" + j.item_code + ")"))
+        if(invoice_item):
+            if(date.days == 0):creation_date[i['name']] = ['Today']
+            else:creation_date[i['name']] = [str(date.days)+" days ago"]
+            invoice_item=", ".join(invoice_item)
+            html+= "<tr class=clstr>"+"<td class=clstd>"+"<b><aappend href=/app/sales-invoice/"+i['name']+'>'+i['name']+"</a></b>"+"</td><td class=clstd>"+"&#12288"+invoice_item+"</td>"+"<td class=clstd>"+" &#12288 "+creation_date[i['name']][0]+"</td>"+"</tr>"
+            invoice_item=[frappe.bold(i['name'])+":   &#12288"+invoice_item+"&#12288"] 
+            item_list[i['name']] = invoice_item
+    ic_dict = frappe.db.get_list("Item",fields=['item_code'],filters={'disabled':0})
+    ic=[]
+    for i in ic_dict:
+        ic.append(i['item_code'])
+    html = "<html><style> .clstab, .clsth, .clstd { border: 1px solid black; border-collapse: collapse;}   .clsth, .clstd {padding: 10px;} .clstab {width:100%;} </style>" + "<table class=clstab><tr class=clstr><td class=clstd><b>Invoice No</b></td><td class=clstd><b>Items Purchased</b></td><td class=clstd><b>Days ago</b></td><tr>" + html +"</table>"
+    item_list_length=len(item_list)
+    return item_list,creation_date,ic,html,item_list_length,total_items
 
 @frappe.whitelist()
 def item_append(item_code=None,current_document=None):
-	if(item_code!=None):
-		item_code=eval(item_code)
-		length_item_list=len(item_code)
-		for i in range(0,length_item_list,1):
-			doc = frappe.get_doc("Sales Order",current_document)
-			doc.append("items",
-				{"item_code" :item_code[i],"qty":1
-			})
-			doc.save()
-		return 0
+    if(item_code!=None):
+        item_code=eval(item_code)
+        length_item_list=len(item_code)
+        for i in range(0,length_item_list,1):
+            doc = frappe.get_doc("Sales Order",current_document)
+            doc.append("items",
+                {"item_code" :item_code[i],"qty":1
+            })
+            doc.save()
+        return 0
 
 @frappe.whitelist()
 def subwarehouse(sub_warehouse=None,company=None):
