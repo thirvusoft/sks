@@ -6,6 +6,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "item_verifed_in_purchase_receipt",
   "allow_only_if_delivery_note_items_match_with_sales_order_items",
   "allow_only_if_sales_invoice_items_match_with_sales_order_items",
   "column_break_3",
@@ -84,6 +85,8 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
+
+
  "modified": "2022-04-06 12:09:57.774302",
  "modified_by": "Administrator",
  "module": "sks",
