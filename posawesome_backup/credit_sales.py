@@ -1,4 +1,5 @@
 import frappe
+import json
 
 @frappe.whitelist(allow_guest=True)
 def customer_credit_sale(customer):
@@ -104,7 +105,10 @@ def payment_entry(amount,mode,customer,pending_invoice,company,opening,ref_no=No
 
 
 @frappe.whitelist(allow_guest=True)
-def customer_transaction_history(customer): 
+def customer_transaction_history(customer, items): 
+    items1 = json.loads(items)
+    current_pur_item = [i['item_code'] for i in items1]
+    frappe.errprint(current_pur_item)
     from datetime import datetime  
     from pytz import timezone 
     data = frappe.get_all("Sales Invoice",filters={'docstatus':1,'customer':customer},limit=10)
@@ -124,13 +128,14 @@ def customer_transaction_history(customer):
         rates.sort(reverse=True)
         if(len(rates)>8):rates=rates[:8:]
         for j in items:
-            if(j.rate in rates):invoice_item.append(str(j.item_name + " (" + j.item_code + ")"))
-        if(date.days == 0):creation_date[i['name']] = ['Today']
-        else:creation_date[i['name']] = [str(date.days)+" days ago"]
-        invoice_item=", ".join(invoice_item)
-        html+= "<tr class=clstr>"+"<td class=clstd>"+"<b><a href=/app/sales-invoice/"+i['name']+'>'+i['name']+"</a></b>"+"</td><td class=clstd>"+"&#12288"+invoice_item+"</td>"+"<td class=clstd>"+" &#12288 "+creation_date[i['name']][0]+"</td>"+"</tr>"
-        invoice_item=[frappe.bold(i['name'])+":   &#12288"+invoice_item+"&#12288"] 
-        item_list[i['name']] = invoice_item
+            if(j.rate in rates and j.item_code not in current_pur_item):invoice_item.append(str(j.item_name + " (" + j.item_code + ")"))
+        if(len(invoice_item)):
+            if(date.days == 0):creation_date[i['name']] = ['Today']
+            else:creation_date[i['name']] = [str(date.days)+" days ago"]
+            invoice_item=", ".join(invoice_item)
+            html+= "<tr class=clstr>"+"<td class=clstd>"+"<b><a href=/app/sales-invoice/"+i['name']+'>'+i['name']+"</a></b>"+"</td><td class=clstd>"+"&#12288"+invoice_item+"</td>"+"<td class=clstd>"+" &#12288 "+creation_date[i['name']][0]+"</td>"+"</tr>"
+            invoice_item=[frappe.bold(i['name'])+":   &#12288"+invoice_item+"&#12288"] 
+            item_list[i['name']] = invoice_item
     ic_dict = frappe.db.get_list("Item",fields=['item_code'],filters={'disabled':0})
     ic=[]
     for i in ic_dict:
