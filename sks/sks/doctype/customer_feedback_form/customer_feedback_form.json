@@ -21,8 +21,7 @@
   "compliant9",
   "compliant10",
   "others_check",
-  "others",
-  "data_16"
+  "others"
  ],
  "fields": [
   {
@@ -115,17 +114,12 @@
   {
    "fieldname": "others",
    "fieldtype": "Small Text",
-   "hidden": 1,
    "label": "Others"
-  },
-  {
-   "fieldname": "data_16",
-   "fieldtype": "Data"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-03-18 14:51:01.388926",
+ "modified": "2022-04-06 15:37:06.564169",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Customer Feedback Form",
