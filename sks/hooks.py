@@ -37,7 +37,8 @@ doctype_js = {"Delivery Note" : "sks/custom/js/delivery_note.js",
 "Sales Invoice" : "sks/custom/js/sales_invoice.js",
 "Sales Order" : "sks/custom/js/sales_order.js",
 "Purchase Receipt":"sks/custom/js/purchase_receipt.js",
-"Purchase Order":"sks/custom/js/purchase_order.js"}
+"Purchase Order":"sks/custom/js/purchase_order.js"
+}
 # doctype_js = {"Delivery Note" : "sks/sks/custom/js/outstanding_amount.js"}
 
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
@@ -97,13 +98,11 @@ doctype_js = {"Delivery Note" : "sks/custom/js/delivery_note.js",
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-#	}
-# }
+doc_events = {
+	"Supplier": {
+		"before_save": "sks.sks.custom.py.supplier.validate_gstin",		
+	}
+ }
 
 # Scheduled Tasks
 # ---------------
