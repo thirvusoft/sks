@@ -1,8 +1,6 @@
 import frappe
 import erpnext
 from erpnext.regional.india.utils import validate_gstin_check_digit
-from frappe.contacts.doctype.address.address import get_address_display
-
 import re
 from frappe import _
 
@@ -28,26 +26,3 @@ def validate_gstin(doc,action):
 
 			validate_gstin_check_digit(doc.gstin)
 
-def create_address(doc):
-	if doc.supplier_name != "NULL" :	
-		if not frappe.db.get_value("Address",{'address_title' : 'supplier_name'}):
-			addr = frappe.new_doc("Address")
-			if doc.name:
-				addr.append("links", {
-					"link_doctype" : doc.doctype,
-					"link_name": doc.name
-				})
-			addr.address_title = doc.supplier_name
-			addr.address_line1 = doc.address_line_1
-			addr.address_line2 = doc.address_line_2
-			addr.gstin =doc.gstin
-			addr.gst_state =doc.state
-			addr.city = doc.city
-			addr.state = doc.state
-			addr.pincode = doc.pin_code
-			addr.save()
-		else:
-			return
-	if doc.is_primary_address == 1:
-		frappe.db.set_value('Supplier',doc.name, 'supplier_primary_address',addr.name)
-		frappe.db.set_value('Supplier',doc.name, 'primary_address',get_address_display(addr.name))
