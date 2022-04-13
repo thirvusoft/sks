@@ -118,8 +118,6 @@ doc_events = {
 	"User": {
 		"validate":"sks.sks.custom.py.user.validate_phone"
 	}	
-	
-	
  }
 
 # Scheduled Tasks
