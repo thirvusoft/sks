@@ -26,3 +26,35 @@ def validate_gstin(doc,action):
 
 			validate_gstin_check_digit(doc.gstin)
 
+def validate(doc,action):
+	validate_phone(doc)
+	validate_primary_contact(doc)
+
+def validate_phone(doc):
+	phone_no_md = doc.phone_no_md
+	if phone_no_md:
+		if not phone_no_md.isdigit() or len(phone_no_md) != 10:
+			frappe.throw(frappe._("{0} is not a valid Phone Number of MD.").format(phone_no_md), frappe.InvalidPhoneNumberError)
+		else :
+			phone_no_md
+			
+	phone_no_acc = doc.phone_no_acc
+	if phone_no_acc:
+		if not phone_no_acc.isdigit() or len(phone_no_acc) != 10:
+			frappe.throw(frappe._("{0} is not a valid Phone Number of Accounts.").format(phone_no_acc), frappe.InvalidPhoneNumberError)
+		else :
+			phone_no_acc
+			
+	phone_no_mgr = doc.phone_no_mgr
+	if phone_no_mgr:
+		if not phone_no_mgr.isdigit() or len(phone_no_mgr) != 10:
+			frappe.throw(frappe._("{0} is not a valid Phone Number of Manager.").format(phone_no_mgr), frappe.InvalidPhoneNumberError)
+		else :
+			phone_no_mgr
+def validate_primary_contact(doc):
+	if ((doc.is_primary_contact and doc.is_primary_contact2) or (doc.is_primary_contact2 and doc.is_primary_contact3) or
+	(doc.is_primary_contact and doc.is_primary_contact3)) or (doc.is_primary_contact and doc.is_primary_contact2 and doc.is_primary_contact3):
+		frappe.throw("Only one Primary Contact is allowed.")
+
+	else :
+		return
