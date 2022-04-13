@@ -100,8 +100,24 @@ doctype_js = {"Delivery Note" : "sks/custom/js/delivery_note.js",
 
 doc_events = {
 	"Supplier": {
-		"before_save": "sks.sks.custom.py.supplier.validate_gstin",		
-	}
+		"before_save": "sks.sks.custom.py.supplier.validate_gstin"
+		
+	},
+	"Address": {
+		"validate":"sks.sks.custom.py.address.validate_phone"
+	},
+	"Contact": {
+		"validate":"sks.sks.custom.py.contact.validate_phone"
+	},
+	"Employee": {
+		"validate":"sks.sks.custom.py.employee.validate_phone"
+	},
+	"Lead": {
+		"validate":"sks.sks.custom.py.lead.validate_phone"
+	},
+	"User": {
+		"validate":"sks.sks.custom.py.user.validate_phone"
+	}	
  }
 
 # Scheduled Tasks
