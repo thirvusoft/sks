@@ -70,11 +70,11 @@ def auto_batch_creation(expiry_date=None,item_rate=None,item_code=None,total_bar
                 if(item_code[i]==item.__dict__["item_code"]):
                     frappe.set_value(item.doctype,item.name,"batch_no",correct_batch_name)
         else:
-            for item in item_document.items:
-                if(item_code[i]==item.__dict__["item_code"]):
-                    # frappe.set_value(item.doctype,item.name,"barcode",changed_barcode)
-                    pass
-            frappe.db.set_value("Item",item_code[i],"create_new_batch",1)
+            if(total_barcode_number_item):
+                for item in item_document.items:
+                    if(item_code[i]==item.__dict__["item_code"]):
+                        frappe.set_value(item.doctype,item.name,"barcode",changed_barcode)
+                frappe.db.set_value("Item",item_code[i],"create_new_batch",1)
         item_changes_count=0
         item_changes_details=[]
     return 0
