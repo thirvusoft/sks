@@ -740,10 +740,11 @@ def delete_invoice(invoice):
 def get_items_details(pos_profile, items_data):
     pos_profile = json.loads(pos_profile)
     items_data = json.loads(items_data)
-    warehouse = pos_profile.get("warehouse")
+    # warehouse = pos_profile.get("warehouse")
     result = []
     if len(items_data) > 0:
         for item in items_data:
+            warehouse = item.get('warehouse')
             item_code = item.get("item_code")
             item_stock_qty = item.get('actual_qty')
             has_batch_no, has_serial_no = frappe.get_value(
@@ -817,7 +818,6 @@ def get_item_detail(item, doc=None, warehouse=None, price_list=None):
         doc,
         overwrite_warehouse=False,
     )
-    
     if item.get("is_stock_item") and warehouse:
         res["actual_qty"] = get_stock_availability(item_code, warehouse)
     res["max_discount"] = max_discount
