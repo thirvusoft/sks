@@ -124,8 +124,7 @@ frappe.db.get_single_value("SKS Settings","allow_only_if_delivery_note_items_mat
     frappe.model.set_value(cdt,cdn,'outstanding_amount_and_total_amount',f.message.outstanding_amount_and_total_amount)
    
     })
-    
-    
-    }
+    },
     });
     
+
