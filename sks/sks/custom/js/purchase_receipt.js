@@ -3,7 +3,7 @@ var total_barcode_item_code=[]
 var item_codes=[]
 frappe.ui.form.on("Purchase Receipt",{
 	onload:function(frm,cdt,cdn){
-		frappe.db.get_single_value("SKS Settings","item_verifed_in_purchase_receipt").then(value =>{
+		frappe.db.get_single_value("Thirvu Retail Settings","item_verifed_in_purchase_receipt").then(value =>{
 			if(value==1){
 				cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",0)
 			}
@@ -96,7 +96,7 @@ frappe.ui.form.on("Purchase Receipt",{
 		}
 	}
 })
-frappe.db.get_single_value("SKS Settings","item_verifed_in_purchase_receipt").then(value =>{
+frappe.db.get_single_value("Thirvu Retail Settings","item_verifed_in_purchase_receipt").then(value =>{
 	if(value==1){
 		frappe.ui.form.on("Purchase Receipt",{
 			before_save: function(frm,cdt,cdn){
@@ -124,7 +124,7 @@ frappe.db.get_single_value("SKS Settings","item_verifed_in_purchase_receipt").th
 
 
 
-frappe.db.get_single_value("SKS Settings","automatic_batch_creation").then(value =>{
+frappe.db.get_single_value("Thirvu Retail Settings","automatic_batch_creation").then(value =>{
 	if(value==1){
 		frappe.ui.form.on("Purchase Receipt",{
 			after_save:function(frm,cdt,cdn){
