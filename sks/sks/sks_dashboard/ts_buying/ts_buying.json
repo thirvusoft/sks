@@ -1,0 +1,52 @@
+{
+ "cards": [
+  {
+   "card": "Purchase Orders to Bill"
+  },
+  {
+   "card": "Purchase Orders to Receive"
+  },
+  {
+   "card": "Purchase Today"
+  },
+  {
+   "card": "Annual Purchase"
+  },
+  {
+   "card": "Incoming Bills Today"
+  },
+  {
+   "card": "Total Incoming Bills"
+  }
+ ],
+ "charts": [
+  {
+   "chart": "Incoming Bills (Purchase Invoice)",
+   "width": "Half"
+  },
+  {
+   "chart": "Purchase Order Analysis",
+   "width": "Half"
+  },
+  {
+   "chart": "Purchase Order Trends",
+   "width": "Half"
+  },
+  {
+   "chart": "Purchase Receipt Trends",
+   "width": "Half"
+  }
+ ],
+ "creation": "2022-04-21 08:07:43.450820",
+ "dashboard_name": "TS Buying",
+ "docstatus": 0,
+ "doctype": "Dashboard",
+ "idx": 0,
+ "is_default": 0,
+ "is_standard": 1,
+ "modified": "2022-04-21 09:57:26.070161",
+ "modified_by": "Administrator",
+ "module": "sks",
+ "name": "TS Buying",
+ "owner": "navin@thirvusoft.in"
+}

@@ -3,7 +3,7 @@ var total_barcode_item_code=[]
 var item_codes=[]
 frappe.ui.form.on("Purchase Receipt",{
 	onload:function(frm,cdt,cdn){
-		frappe.db.get_single_value("SKS Settings","item_verifed_in_purchase_receipt").then(value =>{
+		frappe.db.get_single_value("Thirvu Retail Settings","item_verifed_in_purchase_receipt").then(value =>{
 			if(value==1){
 				cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",0)
 			}
@@ -96,7 +96,7 @@ frappe.ui.form.on("Purchase Receipt",{
 		}
 	}
 })
-frappe.db.get_single_value("SKS Settings","item_verifed_in_purchase_receipt").then(value =>{
+frappe.db.get_single_value("Thirvu Retail Settings","item_verifed_in_purchase_receipt").then(value =>{
 	if(value==1){
 		frappe.ui.form.on("Purchase Receipt",{
 			before_save: function(frm,cdt,cdn){
@@ -124,7 +124,7 @@ frappe.db.get_single_value("SKS Settings","item_verifed_in_purchase_receipt").th
 
 
 
-frappe.db.get_single_value("SKS Settings","automatic_batch_creation").then(value =>{
+frappe.db.get_single_value("Thirvu Retail Settings","automatic_batch_creation").then(value =>{
 	if(value==1){
 		frappe.ui.form.on("Purchase Receipt",{
 			after_save:function(frm,cdt,cdn){
@@ -173,6 +173,39 @@ frappe.ui.form.on("Purchase Receipt",{
 					})
 				}
 			})
+		}
+	}
+})
+
+
+frappe.ui.form.on("Purchase Receipt",{
+	validate:function(frm,cdt,cdn){
+		var count = 0
+		let list_item_code={}
+		let l=locals[cdt][cdn]
+		if(l.items[0].purchase_order){
+			for(let i=0;i<(l.items).length;i++){
+				let p=locals[cur_frm.doc.items[i].doctype][cur_frm.doc.items[i].name]
+				list_item_code[p.item_code]=[p.rate]
+				frappe.call({
+					method:"sks.sks.custom.py.purchase_receipt.purchase_price_checking_with_order",
+					args:{e:list_item_code,po:l.items[0].purchase_order},
+					callback:function(r){
+						if(count==0){
+							if(r["message"]!=0){
+								var item_changed=(r.message).toString()
+								item_changed=item_changed.bold()
+								frappe.show_alert("Some Item Price Is Differ from Purchase Order For This Items : "+item_changed+" To submit this Purchase Invoice Please Get Approvel From Authority People")
+								count=count+1
+								frm.set_value("ts_item_price_changed",1)
+							}
+							else{
+								frm.set_value("ts_item_price_changed",0)
+							}
+						}
+					}
+				})
+			}
 		}
 	}
 })

@@ -4,5 +4,5 @@
 # import frappe
 import unittest
 
-class TestSKSSettings(unittest.TestCase):
+class TestThirvuRetailSettings(unittest.TestCase):
 	pass

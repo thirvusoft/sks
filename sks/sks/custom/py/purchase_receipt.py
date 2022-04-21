@@ -35,6 +35,7 @@ def auto_batch_creation(expiry_date=None,item_rate=None,item_code=None,total_bar
     matched_creation_date=[]
     item_changes_count=0
     item_changes_details=[]
+    correct_batch_name=0
     batch_expiry=frappe.get_all("Batch",fields=["name","item","expiry_date","creation"])
     for i in range(0,len(item_code),1):
         for j in range(0,(len(batch_expiry)),1):
@@ -68,16 +69,41 @@ def auto_batch_creation(expiry_date=None,item_rate=None,item_code=None,total_bar
             frappe.db.set_value("Item",item_code[i],"create_new_batch",0)
             for item in item_document.items:
                 if(item_code[i]==item.__dict__["item_code"]):
-                    frappe.set_value(item.doctype,item.name,"batch_no",correct_batch_name)
+                    if(correct_batch_name!=0):
+                        frappe.set_value(item.doctype,item.name,"batch_no",correct_batch_name)
         else:
-            for item in item_document.items:
-                if(item_code[i]==item.__dict__["item_code"]):
-                    # frappe.set_value(item.doctype,item.name,"barcode",changed_barcode)
-                    pass
+            if(total_barcode_number_item):
+                for item in item_document.items:
+                    if(item_code[i]==item.__dict__["item_code"]):
+                        frappe.set_value(item.doctype,item.name,"barcode",changed_barcode)
             frappe.db.set_value("Item",item_code[i],"create_new_batch",1)
         item_changes_count=0
         item_changes_details=[]
     return 0
         
         
+@frappe.whitelist()
+def purchase_price_checking_with_order(e,po):
+   item_changed=[]
+   price_change_count=0
+   item_code=[]
+   item_rate=[]
+   e=eval(e)
+   k=(list(e.keys()))
+   v=(list(e.values()))
+   doc=frappe.get_doc("Purchase Order",po)
+   total_item=doc.__dict__["items"]
+   len_items=len(total_item)
+   for j in range(0,len_items,1):
+       item_code.append(total_item[j].__dict__["item_code"])
+       item_rate.append(total_item[j].__dict__["rate"])
+   for i in range(0,len(k),1):
+           if(k[i]==item_code[i]):
+               if(item_rate[i]!=v[i][0]):
+                   item_changed.append(total_item[i].__dict__["item_name"])
+                   price_change_count=price_change_count+1
+   if(price_change_count==0):
+        return 0
+   else:
+       return  item_changed
 

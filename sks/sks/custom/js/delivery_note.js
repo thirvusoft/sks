@@ -1,4 +1,4 @@
-frappe.db.get_single_value("SKS Settings","allow_only_if_delivery_note_items_match_with_sales_order_items").then(value =>{
+frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note_items_match_with_sales_order_items").then(value =>{
 	if(value==1){
 	cur_frm.set_df_property("scan_barcode","hidden",1)
 	cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",0)
@@ -87,7 +87,7 @@ frappe.db.get_single_value("SKS Settings","allow_only_if_delivery_note_items_mat
  })
  frappe.ui.form.on("Delivery Note Item",{
 	qty:function(frm,cdt,cdn){
-		frappe.db.get_single_value("SKS Settings","reserved_stock").then(value =>{
+		frappe.db.get_single_value("Thirvu Retail Settings","reserved_stock").then(value =>{
 			if(value==1){
 				var data = locals[cdt][cdn]
 				var item_code=data.item_code

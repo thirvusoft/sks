@@ -7,7 +7,7 @@ frappe.ui.form.on("Sales Order",{
 frappe.ui.form.on("Sales Order",{
     after_save:function(frm,cdt,cdn){
         if(loading==0){
-            frappe.db.get_single_value("SKS Settings","customer_transaction_history").then(value =>{
+            frappe.db.get_single_value("Thirvu Retail Settings","customer_transaction_history").then(value =>{
                 if(value==1){
                     var data=locals[cdt][cdn]
                     var item_codes=[]
@@ -136,7 +136,7 @@ frappe.ui.form.on("Sales Order",{
 })
 frappe.ui.form.on("Sales Order",{
 	customer:function(frm,cdt,cdn){
-        frappe.db.get_single_value("SKS Settings","credit_bill_history").then(value =>{
+        frappe.db.get_single_value("Thirvu Retail Settings","credit_bill_history").then(value =>{
             if(value==1){
                 if(cur_frm.doc.docstatus!=1){
                     if(loop==0){
@@ -207,7 +207,7 @@ frappe.ui.form.on("Sales Order",{
 
 frappe.ui.form.on("Sales Order Item",{
     qty:function(frm,cdt,cdn){
-        frappe.db.get_single_value("SKS Settings","reserved_stock").then(value =>{
+        frappe.db.get_single_value("Thirvu Retail Settings","reserved_stock").then(value =>{
             if(value==1){
                 var data = locals[cdt][cdn]
                 var item_code=data.item_code

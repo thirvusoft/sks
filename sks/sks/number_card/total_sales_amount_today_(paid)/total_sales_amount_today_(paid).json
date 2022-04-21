@@ -1,0 +1,23 @@
+{
+ "aggregate_function_based_on": "base_rounded_total",
+ "creation": "2022-04-21 08:26:42.353379",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "document_type": "Sales Invoice",
+ "dynamic_filters_json": "[]",
+ "filters_json": "[[\"Sales Invoice\",\"status\",\"=\",\"Paid\",false],[\"Sales Invoice\",\"posting_date\",\"Timespan\",\"today\",false]]",
+ "function": "Sum",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "label": "Total Sales Amount Today (Paid)",
+ "modified": "2022-04-21 09:21:58.735878",
+ "modified_by": "Administrator",
+ "module": "sks",
+ "name": "Total Sales Amount Today (Paid)",
+ "owner": "navin@thirvusoft.in",
+ "report_function": "Sum",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Daily",
+ "type": "Document Type"
+}
