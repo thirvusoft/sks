@@ -82,4 +82,28 @@ def auto_batch_creation(expiry_date=None,item_rate=None,item_code=None,total_bar
     return 0
         
         
+@frappe.whitelist()
+def purchase_price_checking_with_order(e,po):
+   item_changed=[]
+   price_change_count=0
+   item_code=[]
+   item_rate=[]
+   e=eval(e)
+   k=(list(e.keys()))
+   v=(list(e.values()))
+   doc=frappe.get_doc("Purchase Order",po)
+   total_item=doc.__dict__["items"]
+   len_items=len(total_item)
+   for j in range(0,len_items,1):
+       item_code.append(total_item[j].__dict__["item_code"])
+       item_rate.append(total_item[j].__dict__["rate"])
+   for i in range(0,len(k),1):
+           if(k[i]==item_code[i]):
+               if(item_rate[i]!=v[i][0]):
+                   item_changed.append(total_item[i].__dict__["item_name"])
+                   price_change_count=price_change_count+1
+   if(price_change_count==0):
+        return 0
+   else:
+       return  item_changed
 

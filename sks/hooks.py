@@ -68,6 +68,7 @@ doctype_js = {"Delivery Note" : "sks/custom/js/delivery_note.js",
 
 # before_install = "sks.install.before_install"
 # after_install = "sks.install.after_install"
+after_install = "sks.sks.custom.py.workflow.workflow_document_creation"
 
 # Desk Notifications
 # ------------------
