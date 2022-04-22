@@ -133,16 +133,18 @@ frappe.db.get_single_value("Thirvu Retail Settings","automatic_batch_creation").
 				var document_name=data.name
 				var expiry_date=[]
 				var item_rate=[]
+				var item_mrp=[]
 				var item_code=[]
 				for(var i=0;i<data.items.length;i++){
 					var against_purchase_order_name=data.items[i].purchase_order
 					expiry_date.push(data.items[i].expiry_date)
 					item_rate.push(data.items[i].rate)
 					item_code.push(data.items[i].item_code)
+					item_mrp.push(data.items[i].ts_mrp)
 				}
 				frappe.call({
 					method:"sks.sks.custom.py.purchase_receipt.auto_batch_creation",
-					args:{expiry_date,item_rate,item_code,total_barcode_number_item,total_barcode_item_code,against_purchase_order_name,doctype_name,document_name},
+					args:{expiry_date,item_rate,item_code,item_mrp,total_barcode_number_item,total_barcode_item_code,against_purchase_order_name,doctype_name,document_name},
 					callback(r){
 						if(r["message"]==0){
 							frm.refresh();
@@ -179,33 +181,56 @@ frappe.ui.form.on("Purchase Receipt",{
 
 
 frappe.ui.form.on("Purchase Receipt",{
-	validate:function(frm,cdt,cdn){
+	before_save:function(frm,cdt,cdn){
 		var count = 0
 		let list_item_code={}
 		let l=locals[cdt][cdn]
-		if(l.items[0].purchase_order){
-			for(let i=0;i<(l.items).length;i++){
-				let p=locals[cur_frm.doc.items[i].doctype][cur_frm.doc.items[i].name]
-				list_item_code[p.item_code]=[p.rate]
-				frappe.call({
-					method:"sks.sks.custom.py.purchase_receipt.purchase_price_checking_with_order",
-					args:{e:list_item_code,po:l.items[0].purchase_order},
-					callback:function(r){
-						if(count==0){
-							if(r["message"]!=0){
-								var item_changed=(r.message).toString()
-								item_changed=item_changed.bold()
-								frappe.show_alert("Some Item Price Is Differ from Purchase Order For This Items : "+item_changed+" To submit this Purchase Invoice Please Get Approvel From Authority People")
-								count=count+1
-								frm.set_value("ts_item_price_changed",1)
-							}
-							else{
-								frm.set_value("ts_item_price_changed",0)
+		if(l.items){
+			if(l.items[0].purchase_order){
+				for(let i=0;i<(l.items).length;i++){
+					let p=locals[cur_frm.doc.items[i].doctype][cur_frm.doc.items[i].name]
+					list_item_code[p.item_code]=[p.rate]
+					frappe.call({
+						method:"sks.sks.custom.py.purchase_receipt.purchase_price_checking_with_order",
+						args:{e:list_item_code,po:l.items[0].purchase_order},
+						callback:function(r){
+							if(count==0){
+								if(r["message"]!=0){
+									var item_changed=(r.message).toString()
+									item_changed=item_changed.bold()
+									frappe.show_alert("Some Item Price Is Differ from Purchase Order For This Items : "+item_changed+" To submit this Purchase Invoice Please Get Approvel From Authority People")
+									count=count+1
+									frm.set_value("ts_item_price_changed",1)
+								}
+								else{
+									frm.set_value("ts_item_price_changed",0)
+								}
 							}
 						}
-					}
-				})
+					})
+				}
 			}
 		}
 	}
 })
+
+// frappe.ui.form.on("Purchase Receipt",{
+// 	validate:function(frm,cdt,cdn){
+// 		var ts_data=locals[cdt][cdn]
+// 		var ts_item_code=[]
+// 		var ts_mrp=[]
+// 		for(var i=0;i<ts_data.items.length;i++){
+// 			ts_item_code.push(ts_data.items[i].item_code)
+// 			ts_mrp.push(ts_data.items[i].ts_mrp)
+// 		}
+// 		frappe.call({
+// 			method:"sks.sks.custom.py.purchase_receipt.markup_and_markdown_calculator",
+// 			args:{ts_item_code,ts_mrp},
+// 			callback(ts_r){
+// 				alert("hiiii")
+// 				frappe.throw("hiiii")
+// 			}
+// 		})
+// 	}
+//  })
+ 

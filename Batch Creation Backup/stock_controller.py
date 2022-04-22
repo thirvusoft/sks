@@ -238,7 +238,7 @@ class StockController(AccountsController):
 						expiry_date=d.expiry_date,
 						posa_btach_price=d.rate,
 						barcode=d.barcode,
-						# End
+						ts_mrp=d.ts_mrp,
 						supplier=getattr(self, 'supplier', None),
 						reference_doctype=self.doctype,
 						reference_name=self.name)).insert().name

@@ -25,10 +25,11 @@ def adding_barcode(barcode,item_code):
 
 from frappe.utils import getdate
 @frappe.whitelist()
-def auto_batch_creation(expiry_date=None,item_rate=None,item_code=None,total_barcode_number_item=None,total_barcode_item_code=None,against_purchase_order_name=None,doctype_name=None,document_name=None):
+def auto_batch_creation(expiry_date=None,item_rate=None,item_code=None,item_mrp=None,total_barcode_number_item=None,total_barcode_item_code=None,against_purchase_order_name=None,doctype_name=None,document_name=None):
     expiry_date=eval(expiry_date)
     item_rate=eval(item_rate)
     item_code=eval(item_code)
+    item_mrp=eval(item_mrp)
     total_barcode_item_code=eval(total_barcode_item_code)
     total_barcode_number_item=eval(total_barcode_number_item)
     matched_batch_name=[]
@@ -36,7 +37,8 @@ def auto_batch_creation(expiry_date=None,item_rate=None,item_code=None,total_bar
     item_changes_count=0
     item_changes_details=[]
     correct_batch_name=0
-    batch_expiry=frappe.get_all("Batch",fields=["name","item","expiry_date","creation"])
+    changed_barcode=0
+    batch_expiry=frappe.get_all("Batch",fields=["name","posa_btach_price","item","expiry_date","creation","ts_mrp"])
     for i in range(0,len(item_code),1):
         for j in range(0,(len(batch_expiry)),1):
                 if(item_code[i]==batch_expiry[j]["item"]):
@@ -53,17 +55,17 @@ def auto_batch_creation(expiry_date=None,item_rate=None,item_code=None,total_bar
                     if(batch_expiry[c]["expiry_date"]!=formatted_expiry_date):
                         item_changes_count=item_changes_count+1
                         item_changes_details.append("Expiry date")
+                    if(batch_expiry[c]["ts_mrp"]!=item_mrp[i]):
+                        item_changes_count=item_changes_count+1
+                        item_changes_details.append("MRP")
+                    if(batch_expiry[c]["posa_btach_price"]!=item_rate[i]):
+                        item_changes_count=item_changes_count+1
+                        item_changes_details.append("Price")
         for b in range(0,len(total_barcode_item_code),1):
             if(item_code[i]==total_barcode_item_code[b]):
                 item_changes_count=item_changes_count+1
                 item_changes_details.append("Barcode")
                 changed_barcode=total_barcode_number_item[b]
-        items_price_changed=frappe.get_doc("Purchase Order",against_purchase_order_name)
-        items_price_changed_list=items_price_changed.__dict__["item_price_changed"].split(",")
-        for p in range(0,len(items_price_changed_list),1):
-            if(item_code[i]==items_price_changed_list[p]):
-                item_changes_count=item_changes_count+1
-                item_changes_details.append("Price")
         item_document=frappe.get_doc(doctype_name,document_name)
         if(item_changes_count==0):
             frappe.db.set_value("Item",item_code[i],"create_new_batch",0)
@@ -75,7 +77,8 @@ def auto_batch_creation(expiry_date=None,item_rate=None,item_code=None,total_bar
             if(total_barcode_number_item):
                 for item in item_document.items:
                     if(item_code[i]==item.__dict__["item_code"]):
-                        frappe.set_value(item.doctype,item.name,"barcode",changed_barcode)
+                        if(changed_barcode!=0):
+                            frappe.set_value(item.doctype,item.name,"barcode",changed_barcode)
             frappe.db.set_value("Item",item_code[i],"create_new_batch",1)
         item_changes_count=0
         item_changes_details=[]
@@ -107,3 +110,39 @@ def purchase_price_checking_with_order(e,po):
    else:
        return  item_changed
 
+# @frappe.whitelist()
+# def markup_and_markdown_calculator(ts_item_code,ts_mrp):
+#     ts_item_code=eval(ts_item_code)
+#     ts_mrp=eval(ts_mrp)
+#     ts_unmatched_item=[]
+#     # ts_matched_batch_name=[]
+#     # ts_matched_creation_date=[]
+#     ts_total_mrp=[]
+#     print(ts_item_code,'aaaaaaaaaaaaaaaaaaa')
+#     print(ts_mrp,"bbbbbbbbbbbbbbbbbbbb")
+#     ts_batch=frappe.get_all("Batch",fields=["name","posa_btach_price","item","expiry_date","creation","ts_mrp"])
+#     for i in range(0,len(ts_item_code),1):
+#         ts_matched_creation_date=[]
+#         ts_matched_batch_name=[]
+#         for j in range(0,(len(ts_batch)),1):
+#                 if(ts_item_code[i]==ts_batch[j]["item"]):
+#                     ts_matched_batch_name.append(ts_batch[j]["name"])
+#         for l in range(0,len(ts_matched_batch_name),1):
+#             for n in range(0,(len(ts_batch)),1):
+#                 if(ts_matched_batch_name[l]==ts_batch[n]["name"]):
+#                     ts_matched_creation_date.append(ts_batch[n]["creation"])
+#         for c in range(0,(len(ts_batch)),1):
+#             if(ts_matched_creation_date!=[]):
+#                 if(max(ts_matched_creation_date)==ts_batch[c]["creation"]):
+#                     ts_total_mrp.append(ts_batch[c]["ts_mrp"])
+#     print(ts_total_mrp,"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
+#     for i in range(0,len(ts_item_code),1):
+#         ts_item_detais=frappe.get_doc("Item",ts_item_code[i])
+#         if(ts_item_detais.__dict__["select_selling_price_type"]=="Markdown"):
+#             ts_markup=(ts_mrp[i]/100)*ts_item_detais.__dict__["ts_markup_price"]
+#             if(ts_markup<ts_total_mrp[i]):
+#                 print(ts_markup)
+#                 ts_unmatched_item.append(ts_item_code[i])
+#     print(ts_unmatched_item)
+#                 # frappe.throw("hiiii")
+#             # else:print("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj")
