@@ -214,23 +214,23 @@ frappe.ui.form.on("Purchase Receipt",{
 	}
 })
 
-frappe.ui.form.on("Purchase Receipt",{
-	validate:function(frm,cdt,cdn){
-		var ts_data=locals[cdt][cdn]
-		var ts_item_code=[]
-		var ts_mrp=[]
-		for(var i=0;i<ts_data.items.length;i++){
-			ts_item_code.push(ts_data.items[i].item_code)
-			ts_mrp.push(ts_data.items[i].ts_mrp)
-		}
-		frappe.call({
-			method:"sks.sks.custom.py.purchase_receipt.markup_and_markdown_calculator",
-			args:{ts_item_code,ts_mrp},
-			callback(ts_r){
-				alert("hiiii")
-				frappe.throw("hiiii")
-			}
-		})
-	}
- })
+// frappe.ui.form.on("Purchase Receipt",{
+// 	validate:function(frm,cdt,cdn){
+// 		var ts_data=locals[cdt][cdn]
+// 		var ts_item_code=[]
+// 		var ts_mrp=[]
+// 		for(var i=0;i<ts_data.items.length;i++){
+// 			ts_item_code.push(ts_data.items[i].item_code)
+// 			ts_mrp.push(ts_data.items[i].ts_mrp)
+// 		}
+// 		frappe.call({
+// 			method:"sks.sks.custom.py.purchase_receipt.markup_and_markdown_calculator",
+// 			args:{ts_item_code,ts_mrp},
+// 			callback(ts_r){
+// 				alert("hiiii")
+// 				frappe.throw("hiiii")
+// 			}
+// 		})
+// 	}
+//  })
  
