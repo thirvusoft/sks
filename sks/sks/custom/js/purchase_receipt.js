@@ -133,16 +133,18 @@ frappe.db.get_single_value("Thirvu Retail Settings","automatic_batch_creation").
 				var document_name=data.name
 				var expiry_date=[]
 				var item_rate=[]
+				var item_mrp=[]
 				var item_code=[]
 				for(var i=0;i<data.items.length;i++){
 					var against_purchase_order_name=data.items[i].purchase_order
 					expiry_date.push(data.items[i].expiry_date)
 					item_rate.push(data.items[i].rate)
 					item_code.push(data.items[i].item_code)
+					item_mrp.push(data.items[i].ts_mrp)
 				}
 				frappe.call({
 					method:"sks.sks.custom.py.purchase_receipt.auto_batch_creation",
-					args:{expiry_date,item_rate,item_code,total_barcode_number_item,total_barcode_item_code,against_purchase_order_name,doctype_name,document_name},
+					args:{expiry_date,item_rate,item_code,item_mrp,total_barcode_number_item,total_barcode_item_code,against_purchase_order_name,doctype_name,document_name},
 					callback(r){
 						if(r["message"]==0){
 							frm.refresh();
