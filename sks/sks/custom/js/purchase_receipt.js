@@ -229,6 +229,8 @@ frappe.ui.form.on("Purchase Receipt Item",{
 		}
 	}
 })
+
+
 // frappe.ui.form.on("Purchase Receipt",{
 // 	validate:function(frm,cdt,cdn){
 // 		var ts_data=locals[cdt][cdn]
