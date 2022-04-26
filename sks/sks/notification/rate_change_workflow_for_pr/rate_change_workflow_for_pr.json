@@ -1,0 +1,33 @@
+{
+ "attach_print": 0,
+ "channel": "Email",
+ "condition": "",
+ "creation": "2022-04-21 13:56:32.307014",
+ "days_in_advance": 0,
+ "docstatus": 0,
+ "doctype": "Notification",
+ "document_type": "Purchase Receipt",
+ "enabled": 1,
+ "event": "Value Change",
+ "idx": 0,
+ "is_standard": 1,
+ "message": "Add your message here",
+ "modified": "2022-04-21 14:08:45.378086",
+ "modified_by": "Administrator",
+ "module": "sks",
+ "name": "Rate change workflow for PR",
+ "owner": "Administrator",
+ "recipients": [
+  {
+   "condition": "doc.workflow_state==\"Approval Pending\"",
+   "receiver_by_role": "Purchase Manager"
+  }
+ ],
+ "send_system_notification": 1,
+ "send_to_all_assignees": 1,
+ "sender": "Purchase Manager",
+ "sender_email": "thirvusoft@gmail.com",
+ "set_property_after_alert": "",
+ "subject": "Purchase Receipt : {{ doc.name }} Is updated with new rate by {{ doc.owner }}.",
+ "value_changed": "workflow_state"
+}

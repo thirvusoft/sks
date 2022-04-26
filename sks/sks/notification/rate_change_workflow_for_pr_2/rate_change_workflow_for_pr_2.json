@@ -1,0 +1,31 @@
+{
+ "attach_print": 0,
+ "channel": "Email",
+ "creation": "2022-04-21 14:10:53.892747",
+ "days_in_advance": 0,
+ "docstatus": 0,
+ "doctype": "Notification",
+ "document_type": "Purchase Receipt",
+ "enabled": 1,
+ "event": "Value Change",
+ "idx": 0,
+ "is_standard": 1,
+ "message": "Add your message here",
+ "modified": "2022-04-21 14:11:24.260278",
+ "modified_by": "Administrator",
+ "module": "sks",
+ "name": "Rate change workflow for PR 2",
+ "owner": "Administrator",
+ "recipients": [
+  {
+   "condition": "workflow_state==\"Rejected\"",
+   "receiver_by_role": "Purchase User"
+  }
+ ],
+ "send_system_notification": 1,
+ "send_to_all_assignees": 0,
+ "sender": "Purchase Manager",
+ "sender_email": "thirvusoft@gmail.com",
+ "subject": "Purchase Receipt : {{ doc.name }} has been rejected by {{ doc.owner }}.",
+ "value_changed": "workflow_state"
+}
