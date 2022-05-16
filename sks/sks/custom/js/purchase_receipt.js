@@ -231,23 +231,43 @@ frappe.ui.form.on("Purchase Receipt Item",{
 })
 
 
-// frappe.ui.form.on("Purchase Receipt",{
-// 	validate:function(frm,cdt,cdn){
-// 		var ts_data=locals[cdt][cdn]
-// 		var ts_item_code=[]
-// 		var ts_mrp=[]
-// 		for(var i=0;i<ts_data.items.length;i++){
-// 			ts_item_code.push(ts_data.items[i].item_code)
-// 			ts_mrp.push(ts_data.items[i].ts_mrp)
-// 		}
-// 		frappe.call({
-// 			method:"sks.sks.custom.py.purchase_receipt.markup_and_markdown_calculator",
-// 			args:{ts_item_code,ts_mrp},
-// 			callback(ts_r){
-// 				alert("hiiii")
-// 				frappe.throw("hiiii")
-// 			}
-// 		})
-// 	}
-//  })
+frappe.ui.form.on("Purchase Receipt",{
+	validate:function(frm,cdt,cdn){
+		var ts_data=locals[cdt][cdn]
+		var ts_item_code=[]
+		var ts_mrp=[]
+		var ts_buying_rate=[]
+		for(var i=0;i<ts_data.items.length;i++){
+			ts_item_code.push(ts_data.items[i].item_code)
+			ts_mrp.push(ts_data.items[i].ts_mrp)
+			ts_buying_rate.push(ts_data.items[i].rate)
+		}
+		frappe.call({
+			method:"sks.sks.custom.py.purchase_receipt.markup_and_markdown_calculator",
+			args:{ts_item_code,ts_mrp,ts_buying_rate},
+			callback(ts_r){
+				var ts_unmatched_items_name=ts_r.message[0]
+				// var ts_unmatched_items_price=ts_r.message[1]
+				var ts_matched_items_name=ts_r.message[2]
+				var ts_matched_items_price=ts_r.message[3]
+				if(ts_matched_items_name){
+					for(var i=0;i<ts_matched_items_name.length;i++){
+						for(var j=0;j<ts_data.items.length;j++){
+							if(ts_matched_items_name[i]==ts_data.items[j].item_code){
+								frappe.model.set_value(ts_data.items[j].doctype,ts_data.items[j].name,"ts_selling_rate",ts_matched_items_price[i])
+							}
+						}
+					}
+					for(var i=0;i<ts_unmatched_items_name.length;i++){
+						for(var j=0;j<ts_data.items.length;j++){
+							if(ts_unmatched_items_name[i]==ts_data.items[j].item_code){
+								frappe.model.set_value(ts_data.items[j].doctype,ts_data.items[j].name,"ts_selling_rate","")
+							}
+						}
+					}
+				}
+			}
+		})
+	}
+ })
  
