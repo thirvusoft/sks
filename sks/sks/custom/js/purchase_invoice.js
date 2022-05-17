@@ -19,3 +19,19 @@ frappe.ui.form.on("Purchase Invoice",{
         }
 	}
 })
+
+frappe.ui.form.on("Purchase Invoice Item",{
+	item_code:function(frm,cdt,cdn){
+		var ts_data=locals[cdt][cdn]
+		var ts_item_code=ts_data.item_code
+		if(ts_item_code!=""){
+			frappe.call({
+				method:"sks.sks.custom.py.item_mrp_finder.ts_mrp_finder",
+				args:{ts_item_code},
+				callback(ts_r){
+					frappe.model.set_value(cdt,cdn,"ts_mrp",ts_r.message)
+				}
+			})
+		}
+	}
+})

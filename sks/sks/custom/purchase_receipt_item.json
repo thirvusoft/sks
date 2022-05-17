@@ -317,7 +317,7 @@
    "description": null,
    "docstatus": 0,
    "dt": "Purchase Receipt Item",
-   "fetch_from": "Purchase Order.ts_mrp",
+   "fetch_from": "Purchase Order.ts_mrp and Purchase Invoice.ts_mrp",
    "fetch_if_empty": 0,
    "fieldname": "ts_mrp",
    "fieldtype": "Currency",

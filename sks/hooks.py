@@ -103,8 +103,7 @@ after_install = "sks.sks.custom.py.workflow.workflow_document_creation"
 
 doc_events = {
 	"Supplier": {
-		"before_save": "sks.sks.custom.py.supplier.validate_gstin"
-		
+		"before_save": "sks.sks.custom.py.supplier.validate_gstin"	
 	},
 	"Address": {
 		"validate":"sks.sks.custom.py.address.validate_phone"
@@ -120,7 +119,10 @@ doc_events = {
 	},
 	"User": {
 		"validate":"sks.sks.custom.py.user.validate_phone"
-	}	
+	},
+	"Batch":{
+		"after_insert":"sks.sks.custom.py.batch.item_price_creator"
+	}
  }
 
 # Scheduled Tasks
