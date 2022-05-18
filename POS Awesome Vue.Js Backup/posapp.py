@@ -742,9 +742,7 @@ def get_items_details(pos_profile, items_data):
     if len(items_data) > 0:
         for item in items_data:
             warehouse = item.get('warehouse')
-            print(warehouse)
             item_code = item.get("item_code")
-            print(item_code)
             item_stock_qty = item.get('actual_qty')
             has_batch_no, has_serial_no = frappe.get_value(
                 "Item", item_code, ["has_batch_no", "has_serial_no"]
@@ -1448,3 +1446,19 @@ def get_customer_info(customer):
 
 def get_company_domain(company):
     return frappe.get_cached_value("Company", cstr(company), "domain")
+
+
+# Customized By Thirvusoft
+# Start
+@frappe.whitelist()
+def batch_finder(ts_barcode=None,ts_item=None):
+    if ts_barcode:
+        ts_batchs=frappe.db.get_all('Batch', fields=['name','expiry_date','batch_qty','ts_selling_price'], filters={'barcode':ts_barcode})
+        return(ts_batchs)
+    else:
+        ts_batchs=frappe.db.get_all('Batch', fields=['name'], filters={'item':ts_item})
+        if ts_batchs:
+            return(ts_batchs[len(ts_batchs)-1]["name"])
+        else:
+            return 0
+# End

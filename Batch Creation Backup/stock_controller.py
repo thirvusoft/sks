@@ -239,6 +239,8 @@ class StockController(AccountsController):
 						posa_btach_price=d.rate,
 						barcode=d.barcode,
 						ts_mrp=d.ts_mrp,
+						ts_selling_price=d.ts_selling_rate,
+						#end
 						supplier=getattr(self, 'supplier', None),
 						reference_doctype=self.doctype,
 						reference_name=self.name)).insert().name
