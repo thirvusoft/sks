@@ -1,6 +1,3 @@
-# Copyright (c) 2020, Youssef Restom and contributors
-# For license information, please see license.txt
-
 from __future__ import unicode_literals
 import json
 import frappe
@@ -1449,3 +1446,19 @@ def get_customer_info(customer):
 
 def get_company_domain(company):
     return frappe.get_cached_value("Company", cstr(company), "domain")
+
+
+# Customized By Thirvusoft
+# Start
+@frappe.whitelist()
+def batch_finder(ts_barcode=None,ts_item=None):
+    if ts_barcode:
+        ts_batchs=frappe.db.get_all('Batch', fields=['name','expiry_date','batch_qty','ts_selling_price'], filters={'barcode':ts_barcode})
+        return(ts_batchs)
+    else:
+        ts_batchs=frappe.db.get_all('Batch', fields=['name'], filters={'item':ts_item})
+        if ts_batchs:
+            return(ts_batchs[len(ts_batchs)-1]["name"])
+        else:
+            return 0
+# End
