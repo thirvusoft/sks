@@ -1,4 +1,5 @@
 import frappe
+from frappe.utils import flt
 @frappe.whitelist()
 def item_check_with_purchase_order(item_code_checking=None,checking_purchase_order=None):
 	matched_item=0
@@ -110,14 +111,40 @@ def purchase_price_checking_with_order(e,po):
    else:
        return  item_changed
 
-@frappe.whitelist()
-def markup_and_markdown_calculator(ts_item_code,ts_mrp,ts_buying_rate):
-    if ts_item_code:
-        ts_item_code=eval(ts_item_code)
-        if ts_mrp:
-            ts_mrp=eval(ts_mrp)
-        if ts_buying_rate:
-            ts_buying_rate=eval(ts_buying_rate)
+
+def markup_and_markdown_calculator(document,event):
+    ts_items=document.items
+    if ts_items:
+        ts_val_rate=0
+        ts_landed_cost_voucher_table=document.ts_landed_cost_voucher_table
+        if ts_landed_cost_voucher_table:
+            ts_val_rate=1
+            ts_valuation_details=calculating_landed_cost_voucher_amount(document)
+            ts_val_item=[]
+            ts_val_rate=[]
+            ts_val_tot_item=ts_valuation_details[0]
+            ts_val_tot_rate=ts_valuation_details[1]
+            for v in range(0,len(ts_val_tot_item),1):
+                ts_val_item.append(ts_val_tot_item[v])
+                ts_val_rate.append(ts_val_tot_rate[v])
+            for item in document.get('items'):
+                for vi in range(0,len(ts_val_item),1):
+                    if ts_val_item[vi]==item.item_code:
+                        ts_rate=ts_val_rate[vi]+item.rate
+                        item.ts_valuation_rate=ts_rate
+        else:
+            for item in document.get('items'):
+                item.ts_valuation_rate=item.rate
+                        
+
+        ts_item_code=[]
+        ts_mrp=[]
+        ts_valuation_rate=[]
+        for item in document.get('items'):
+            ts_item_code.append(item.item_code)
+            ts_mrp.append(item.ts_mrp)
+            ts_valuation_rate.append(item.ts_valuation_rate)
+         
         ts_unmatched_item=[]
         ts_unmatched_selling_rate=[]
         ts_matched_item=[]
@@ -128,7 +155,7 @@ def markup_and_markdown_calculator(ts_item_code,ts_mrp,ts_buying_rate):
                 if(ts_item_detais.__dict__["select_selling_price_type"]=="Markdown"):
                     ts_markdown=(ts_mrp[i]/100)*ts_item_detais.__dict__["ts_markdown_price"]
                     ts_markdown=ts_mrp[i]-ts_markdown
-                    if(ts_markdown<ts_mrp[i] and ts_markdown>ts_buying_rate[i]):
+                    if(ts_markdown<ts_mrp[i] and ts_markdown>ts_valuation_rate[i]):
                         ts_matched_item.append(ts_item_code[i])
                         ts_matched_selling_rate.append(ts_markdown)
                     else:
@@ -137,11 +164,33 @@ def markup_and_markdown_calculator(ts_item_code,ts_mrp,ts_buying_rate):
                         
                 elif(ts_item_detais.__dict__["select_selling_price_type"]=="Markup"):
                     ts_markup=(ts_mrp[i]/100)*ts_item_detais.__dict__["ts_markup_price"]
-                    ts_markup=ts_buying_rate[i]+ts_markup
-                    if(ts_markup<ts_mrp[i] and ts_markup>ts_buying_rate[i]):
+                    ts_markup=ts_valuation_rate[i]+ts_markup
+                    if(ts_markup<ts_mrp[i] and ts_markup>ts_valuation_rate[i]):
                         ts_matched_item.append(ts_item_code[i])
                         ts_matched_selling_rate.append(ts_markup)
                     else:
                         ts_unmatched_item.append(ts_item_code[i])
                         ts_unmatched_selling_rate.append(ts_markup)
-            return ts_unmatched_item, ts_unmatched_selling_rate, ts_matched_item, ts_matched_selling_rate
+        for item in document.get('items'):
+            for m in range (0,len(ts_matched_item),1):
+                if item.item_code==ts_matched_item[m]:
+                    item.ts_selling_rate=ts_matched_selling_rate[m]
+
+
+def calculating_landed_cost_voucher_amount(self):
+    total_item_cost = 0.0
+    total_charges = 0.0
+    item_count = 0
+    ts_item_code=[]
+    ts_separate_amount=[]
+    based_on_field = frappe.scrub(self.ts_distribute_charges_based_on)
+    for item in self.get('items'):
+            total_item_cost += item.get(based_on_field)
+    for item in self.get('items'):
+            ts_total_value = flt(flt(item.get(based_on_field)) * (flt(self.ts_total_amount) / flt(total_item_cost)),
+                )
+            total_charges += ts_total_value
+            item_count += 1
+            ts_item_code.append(item.item_code)
+            ts_separate_amount.append(ts_total_value)
+    return ts_item_code,ts_separate_amount
