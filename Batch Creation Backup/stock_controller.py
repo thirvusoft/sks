@@ -240,6 +240,7 @@ class StockController(AccountsController):
 						barcode=d.barcode,
 						ts_mrp=d.ts_mrp,
 						ts_selling_price=d.ts_selling_rate,
+						ts_valuation_rate=d.ts_valuation_rate,
 						#end
 						supplier=getattr(self, 'supplier', None),
 						reference_doctype=self.doctype,
