@@ -9,12 +9,12 @@
  "field_order": [
   "driver",
   "vehicle",
-  "delivery",
+  "column_break_3",
   "status",
   "company",
   "delivery_trip",
-  "invoice_details",
-  "amended_from"
+  "invoice_details_section",
+  "invoice_details"
  ],
  "fields": [
   {
@@ -26,11 +26,6 @@
    "fieldname": "vehicle",
    "fieldtype": "Data",
    "label": "Vehicle"
-  },
-  {
-   "fieldname": "delivery",
-   "fieldtype": "HTML",
-   "label": "delivery"
   },
   {
    "fieldname": "company",
@@ -51,15 +46,6 @@
    "options": "TS Invoice Delivery Trip"
   },
   {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "TS Driver Delivery Trip",
-   "print_hide": 1,
-   "read_only": 1
-  },
-  {
    "fieldname": "status",
    "fieldtype": "Select",
    "in_global_search": 1,
@@ -67,11 +53,20 @@
    "in_standard_filter": 1,
    "label": "Status",
    "options": "Hold\nClosed\nOpen\nOn Process"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "invoice_details_section",
+   "fieldtype": "Section Break",
+   "label": "Invoice Details"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-06-14 15:24:21.925077",
+ "modified": "2022-06-14 16:53:59.609515",
  "modified_by": "Administrator",
  "module": "Driver",
  "name": "TS Driver Delivery Trip",
