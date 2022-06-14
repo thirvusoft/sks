@@ -79,3 +79,59 @@ def payment_entry(amount,mode,customer,pending_invoice,company,ref_no=None,ref_d
     doc.submit()
     frappe.db.commit()
     return doc.paid_amount,mode
+
+
+def feed_back_form(doc, action): 
+    si=frappe.get_all('Customer Feedback Form', 
+		    filters={'customer_name': doc.customer},
+		    fields=['name'])
+    
+    compliants_dict={}
+    print(frappe.get_meta("Customer Feedback Form").fields[0].__dict__)
+    for i in frappe.get_meta("Customer Feedback Form").fields:
+        compliants_dict[i.fieldname]=i.label
+    print(compliants_dict)
+    if si:
+        cff=frappe.get_doc("Customer Feedback Form", si[0]['name'])
+        compliants_list=[]
+        feedback1=cff.invoice_no
+        feedback2=cff.customer_name
+        feedback3=cff.ratings
+        feedback4=cff.compliant1
+        if(cff.compliant1==1):
+            compliants_list.append("<li>"+compliants_dict['compliant1']+"</li>")
+        
+        if(cff.compliant2==1):
+            compliants_list.append("<li>"+compliants_dict['compliant2']+"</li>")
+        
+        if(cff.compliant3==1):
+            compliants_list.append("<li>"+compliants_dict['compliant3']+"</li>")
+        
+        if(cff.compliant4==1):
+            compliants_list.append("<li>"+compliants_dict['compliant4']+"</li>")
+        
+        if(cff.compliant5==1):
+            compliants_list.append("<li>"+compliants_dict['compliant5']+"</li>")
+       
+        if(cff.compliant6==1):
+            compliants_list.append("<li>"+compliants_dict['compliant6']+"</li>")
+        
+        if(cff.compliant7==1):
+            compliants_list.append("<li>"+compliants_dict['compliant7']+"</li>")
+        
+        if(cff.compliant8==1):
+            compliants_list.append("<li>"+compliants_dict['compliant8']+"</li>")
+        
+        if(cff.compliant9==1):
+            compliants_list.append("<li>"+compliants_dict['compliant9']+"</li>")
+        
+        if(cff.compliant10==1):
+            compliants_list.append("<li>"+compliants_dict['compliant10']+"</li>")
+        feedback5=cff.others
+        if(cff.others_check==1):
+            compliants_list.append("<p>"+feedback5+"</p>")
+        frappe.msgprint('<b>Rating: </b> '+('⭐'*feedback3)+'<p><b>Feedback: </b> </p><ul>'+" ".join(compliants_list)+'</ul>')
+
+
+            
+            

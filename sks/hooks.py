@@ -123,6 +123,9 @@ doc_events = {
 	},
 	"Batch":{
 		"after_insert":"sks.sks.custom.py.batch.item_price_creator"
+	},
+	"Sales Invoice":{
+		"validate":"sks.sks.custom.py.sales_invoice.feed_back_form"
 	}
  }
 
