@@ -126,7 +126,7 @@ doc_events = {
 	},
 	"Delivery Trip": {
         "on_submit" :"sks.sks.custom.py.delivery_trip.assign_to_driver"
-    }
+    },
 	"Purchase Receipt":{
 		"validate":"sks.sks.custom.py.purchase_receipt.markup_and_markdown_calculator"
 	}
