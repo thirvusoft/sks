@@ -1,0 +1,96 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-06-07 17:22:07.921805",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "driver",
+  "vehicle",
+  "delivery",
+  "company",
+  "delivery_trip",
+  "invoice_details",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "driver",
+   "fieldtype": "Data",
+   "label": "Driver"
+  },
+  {
+   "fieldname": "vehicle",
+   "fieldtype": "Data",
+   "label": "Vehicle"
+  },
+  {
+   "fieldname": "delivery_trip",
+   "fieldtype": "Data",
+   "label": "Delivery Trip"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "TS Driver Delivery Trip",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "invoice_details",
+   "fieldtype": "Table",
+   "label": "Invoice Details",
+   "options": "TS Invoice Delivery Trip"
+  },
+  {
+   "fieldname": "delivery",
+   "fieldtype": "HTML",
+   "label": "delivery"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Company",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2022-06-14 10:23:09.267675",
+ "modified_by": "Administrator",
+ "module": "sks",
+ "name": "TS Driver Delivery Trip",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Delivery Trip",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
