@@ -79,3 +79,37 @@ def payment_entry(amount,mode,customer,pending_invoice,company,ref_no=None,ref_d
     doc.submit()
     frappe.db.commit()
     return doc.paid_amount,mode
+
+
+def feed_back_form(doc, action): 
+    si=frappe.get_all('Customer Feedback Form', 
+		    filters={'customer_name': doc.customer},
+		    fields=['name'])
+    
+    compliants_dict={}
+    compliants=[]
+    print(frappe.get_meta("Customer Feedback Form").fields[0].__dict__)
+    for i in frappe.get_meta("Customer Feedback Form").fields:
+        compliants_dict[i.fieldname]=i.label
+        if(i.fieldtype == "Check"):
+            compliants.append(i.fieldname)
+  
+    
+    if si:
+        cff=frappe.get_doc("Customer Feedback Form", si[0]['name'])
+        compliants_list=[]
+        feedback1=cff.invoice_no
+        feedback2=cff.customer_name
+        feedback3=cff.ratings
+        for i in compliants:
+            if(cff.__dict__[i]==1 and i!="others_check"):
+                compliants_list.append("<li>"+compliants_dict[i]+"</li>")
+            elif(i=="others_check"):
+                if(cff.__dict__[i]==1):
+                    compliants_list.append("<p>"+cff.others+"</p>")
+        
+        frappe.msgprint('<b>Rating: </b> '+('⭐'*feedback3)+'<p><b>Feedback: </b> </p><ul>'+" ".join(compliants_list)+'</ul>')
+
+
+            
+            
