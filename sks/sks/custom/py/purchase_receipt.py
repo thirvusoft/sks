@@ -113,6 +113,9 @@ def purchase_price_checking_with_order(e,po):
 
 
 def markup_and_markdown_calculator(document,event):
+    document.update({
+                    'thirvu_items_to_verify':{}
+                })
     ts_items=document.items
     if ts_items:
         ts_val_rate=0
@@ -138,17 +141,25 @@ def markup_and_markdown_calculator(document,event):
                         
 
         ts_item_code=[]
+        ts_item_name=[]
         ts_mrp=[]
+        ts_selling_rate=[]
         ts_valuation_rate=[]
         for item in document.get('items'):
             ts_item_code.append(item.item_code)
+            ts_item_name.append(item.item_name)
             ts_mrp.append(item.ts_mrp)
+            ts_selling_rate.append(item.ts_selling_rate)
             ts_valuation_rate.append(item.ts_valuation_rate)
          
         ts_unmatched_item=[]
         ts_unmatched_selling_rate=[]
         ts_matched_item=[]
         ts_matched_selling_rate=[]
+        ts_markdown_items_to_verify = []
+        ts_markup_items_to_verify = []
+        ts_markup_items = ""
+        ts_markdown_items = ""
         for i in range(0,len(ts_item_code),1):
             ts_item_detais=frappe.get_doc("Item",ts_item_code[i])
             if ts_item_detais:
@@ -161,6 +172,11 @@ def markup_and_markdown_calculator(document,event):
                     else:
                         ts_unmatched_item.append(ts_item_code[i])
                         ts_unmatched_selling_rate.append(ts_markdown)
+                        item_row = frappe._dict({})                                              
+                        item_row.update({'items':ts_item_code[i],'selling_rate':ts_selling_rate[i],'difference':round(abs(ts_valuation_rate[i]-ts_selling_rate[i]),2)})
+                        ts_markdown_items_to_verify.append(item_row)
+                        ts_markdown_items += f"{ts_item_name[i]}:{round(abs(ts_mrp[i]-ts_selling_rate[i]),2)}\n"
+                            
                         
                 elif(ts_item_detais.__dict__["select_selling_price_type"]=="Markup"):
                     ts_markup=(ts_mrp[i]/100)*ts_item_detais.__dict__["ts_markup_price"]
@@ -171,12 +187,47 @@ def markup_and_markdown_calculator(document,event):
                     else:
                         ts_unmatched_item.append(ts_item_code[i])
                         ts_unmatched_selling_rate.append(ts_markup)
+                        item_row = frappe._dict({})                                              
+                        item_row.update({'items':ts_item_code[i],'selling_rate':ts_selling_rate[i],'difference':round(abs(ts_mrp[i]-ts_selling_rate[i]),2)})
+                        ts_markup_items_to_verify.append(item_row)
+                        ts_markup_items += f"{ts_item_name[i]}:{round(abs(ts_valuation_rate[i]-ts_selling_rate[i]),2)}\n"
+        document.ts_markdown_items = ts_markdown_items
+        document.ts_markup_items = ts_markup_items
         for item in document.get('items'):
             for m in range (0,len(ts_matched_item),1):
                 if item.item_code==ts_matched_item[m]:
                     item.ts_selling_rate=ts_matched_selling_rate[m]
 
-
+                
+            for m in range (0,len(ts_unmatched_item),1):
+                if item.item_code==ts_unmatched_item[m]:
+                    item.ts_selling_rate=ts_unmatched_selling_rate[m]
+    costing_details = []
+    if(ts_markup_items_to_verify):
+        for i in range(0,len(ts_markup_items_to_verify),1):
+            ts_markup_items_to_verify_ = [{
+                    'items':ts_markup_items_to_verify[i]['items'],
+                    'markup__markdown':"Markup",
+                    'selling_rate':ts_markup_items_to_verify[i]['selling_rate'],
+                    'difference':ts_markup_items_to_verify[i]['difference'],
+                    }]
+            document.update({
+                    'thirvu_items_to_verify':costing_details+ts_markup_items_to_verify_
+                })
+    costing_details= document.get('thirvu_items_to_verify') or []
+    if(ts_markdown_items_to_verify):
+        for i in range(0,len(ts_markdown_items_to_verify)):
+            ts_markdown_items_to_verify_ = [{
+                    'items':ts_markdown_items_to_verify[i]['items'],
+                    'markup__markdown':"MarkDown",
+                    'selling_rate':ts_markdown_items_to_verify[i]['selling_rate'],
+                    'difference':ts_markdown_items_to_verify[i]['difference'],
+                    }]
+            document.update({
+                    'thirvu_items_to_verify':costing_details+ts_markdown_items_to_verify_
+                })
+    if(len(document.thirvu_items_to_verify)>0):document.ts_markup_and_markdown_variations=1
+    else:document.ts_markup_and_markdown_variations=0
 def calculating_landed_cost_voucher_amount(self):
     total_item_cost = 0.0
     total_charges = 0.0
@@ -194,3 +245,12 @@ def calculating_landed_cost_voucher_amount(self):
             ts_item_code.append(item.item_code)
             ts_separate_amount.append(ts_total_value)
     return ts_item_code,ts_separate_amount
+
+def msg(self,action):
+    if(self.ts_markup_items and self.ts_markdown_items):
+        frappe.msgprint(f"Markdown items {self.ts_markdown_items}<br>  Markup items {self.ts_markup_items}")
+    elif(self.ts_markup_items):
+        frappe.msgprint(f"Markup items {self.ts_markup_items}")
+    elif(self.ts_markdown_items):
+        frappe.msgprint(f"Markdown items {self.ts_markdown_items}")
+    

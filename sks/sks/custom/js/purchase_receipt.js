@@ -229,3 +229,10 @@ frappe.ui.form.on("Purchase Receipt Item",{
 		}
 	}
 })
+frappe.ui.form.on("Purchase Receipt",{
+	onload:function(frm,cdt,cdn){
+		if(cur_frm.doc.ts_markup_and_markdown_variations == 1){
+			show_alert("Some items price has to be changed. Kindly please verify it !!! ")
+		}
+	},
+})
