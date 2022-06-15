@@ -1,6 +1,7 @@
 import frappe
 import json
 from datetime import date
+from frappe.desk.form import assign_to
 
 @frappe.whitelist()
 def update_invoice(invoice,fields):
@@ -97,9 +98,9 @@ def get_condition_from_dialog(data):
         filter1['sales_order'] = ['in',sales_order]
         if('invoice' in data_key):
             filter1['parent'] = data['invoice']
+        # filter1 = {'delivery_status': ['not in', ['Delivered', 'Returned']]}
         sales_invoice = get_sales_invoice(filter1, 'Sales Invoice Item','parent')
     if(len(sales_invoice)):
-        # filter1 = {'delivery_status': ['not in', ['Delivered', 'Returned']]}
         if('outstanding' in data_key):
             filter1['outstanding_amount'] = ['>=', data['outstanding']]
             filter1['name'] = ['in', sales_invoice]
@@ -116,4 +117,33 @@ def get_sales_invoice(filter,doctype,name):
     return frappe.get_all(doctype, filters= filter, pluck = name)
 
 def get_sales_invoice_details(sales_invoice):
-    return frappe.get_all("Sales Invoice",fields=['name','customer_address','customer','delivery_status','reason','contact_person','time_of_delivery','rounded_total','outstanding_amount'],filters ={'name':['in',sales_invoice]})
+    return frappe.get_all("Sales Invoice",fields=['name','customer_address','customer','delivery_status','reason','contact_person','time_of_delivery','rounded_total','outstanding_amount'],filters ={'name':['in',sales_invoice],'delivery_status':['not in', ['Delivered', 'Returned']]})
+def assign_to_driver(del_trip,a):
+    allow=0
+    row=0
+    for i in del_trip.delivery_stops:
+        if(i.delivery_status != "Delivered"):
+            allow=1
+    if(allow==1):
+        doc = frappe.new_doc('TS Driver Delivery Trip')
+        del_trip_doc = frappe.get_doc('Delivery Trip', del_trip.name)
+        doc.update({
+            'driver': del_trip_doc.driver_name,
+            'vehicle': del_trip_doc.vehicle,
+            'delivery_trip': del_trip_doc.name,
+            'company': del_trip_doc.company,
+            'status': "Open"
+        })
+        doc.insert(ignore_permissions=True)
+        if(del_trip.driver):
+            assign_to.add(
+                dict(
+                    assign_to=[del_trip.user_id],
+                    doctype="TS Driver Delivery Trip",
+                    name=doc.name,
+                    notify=True,
+                )
+            )
+        return doc
+    else:
+        frappe.throw("All the Sales Invoice are Delivered")

@@ -124,6 +124,9 @@ doc_events = {
 	"Batch":{
 		"after_insert":"sks.sks.custom.py.batch.item_price_creator"
 	},
+	"Delivery Trip": {
+        "on_submit" :"sks.sks.custom.py.delivery_trip.assign_to_driver"
+    },
 	"Sales Invoice":{
 		"validate":"sks.sks.custom.py.sales_invoice.feed_back_form"
 	},
