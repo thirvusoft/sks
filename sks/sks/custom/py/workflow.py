@@ -1,5 +1,6 @@
 import frappe
 def workflow_document_creation():
+    property_creator()
     create_state()
     create_action()
     create_rate_changer_from_purchase_order()
@@ -78,3 +79,300 @@ def create_action():
             new_doc = frappe.new_doc('Workflow Action Master')
             new_doc.workflow_action_name = row
             new_doc.save()
+def property_creator():
+    employee=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Employee",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"last_name",
+        "value":1
+    })
+    employee.save(ignore_permissions=True)
+
+    employee=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Employee",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"middle_name",
+        "value":1
+    })
+    employee.save(ignore_permissions=True)
+
+    employee=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Employee",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"salutation",
+        "value":1
+    })
+    employee.save(ignore_permissions=True) 
+
+    employee=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Employee",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"grade",
+        "value":1
+    })
+    employee.save(ignore_permissions=True)
+
+    employee=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Employee",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"branch",
+        "value":1
+    })
+    employee.save(ignore_permissions=True)
+
+    employee=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Employee",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"employment_type",
+        "value":1
+    })
+    employee.save(ignore_permissions=True)
+    
+    employee=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Employee",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"reports_to",
+        "value":1
+    })
+    employee.save(ignore_permissions=True)
+
+    employee=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Employee",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"default_shift",
+        "value":1
+    })
+    employee.save(ignore_permissions=True) 
+
+    employee=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Employee",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"employment_details",
+        "value":1
+    })
+    employee.save(ignore_permissions=True)
+
+    employee=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Employee",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"approvers_section",
+        "value":1
+    })
+    employee.save(ignore_permissions=True)
+
+    employee=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Employee",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"salary_information",
+        "value":1
+    })
+    employee.save(ignore_permissions=True) 
+
+    employee=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Employee",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"health_insurance_section",
+        "value":1
+    })
+    employee.save(ignore_permissions=True)
+    
+    employee=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Employee",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"sb53",
+        "value":1
+    })
+    employee.save(ignore_permissions=True)
+    
+    salary_structure=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Salary Structure",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"letter_head",
+        "value":1
+    })
+    salary_structure.save(ignore_permissions=True) 
+
+    salary_structure=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Salary Structure",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"time_sheet_earning_detail",
+        "value":1
+    })
+    salary_structure.save(ignore_permissions=True) 
+
+    salary_structure=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Salary Structure",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"account",
+        "value":1
+    })
+    salary_structure.save(ignore_permissions=True)
+
+    salary_structure_assignment=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Salary Structure",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"income_tax_slab",
+        "value":1
+    })
+    salary_structure_assignment.save(ignore_permissions=True)
+
+    salary_structure_assignment=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Salary Structure",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"payroll_payable_account",
+        "value":1
+    })
+    salary_structure_assignment.save(ignore_permissions=True)
+
+    payroll_entry=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Payroll Entry",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"branch",
+        "value":1
+    })
+    payroll_entry.save(ignore_permissions=True)
+
+    payroll_entry=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Payroll Entry",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"salary_slip_based_on_timesheet",
+        "value":1
+    })
+    payroll_entry.save(ignore_permissions=True) 
+
+    payroll_entry=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Payroll Entry",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"accounting_dimensions_section",
+        "value":1
+    })
+    payroll_entry.save(ignore_permissions=True)
+
+    payroll_entry=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Payroll Entry",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"account",
+        "value":1
+    })
+    payroll_entry.save(ignore_permissions=True)
+
+    salary_slip=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Salary Slip",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"deduct_tax_for_unclaimed_employee_benefits",
+        "value":1
+    })
+    salary_slip.save(ignore_permissions=True)
+
+    salary_slip=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Salary Slip",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"deduct_tax_for_unsubmitted_tax_exemption_proof",
+        "value":1
+    })
+    salary_slip.save(ignore_permissions=True) 
+
+    salary_slip=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Salary Slip",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"salary_slip_based_on_timesheet",
+        "value":1
+    })
+    salary_slip.save(ignore_permissions=True)
+
+    attendance=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Attendance",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"details_section",
+        "value":1
+    })
+    attendance.save(ignore_permissions=True) 
+
+    employee_checkin=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Employee Checkin",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"skip_auto_attendance",
+        "value":1
+    })
+    employee_checkin.save(ignore_permissions=True)
