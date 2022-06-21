@@ -47,7 +47,7 @@ def custom_fields():
                 fieldtype='Currency', insert_after='ts_mrp',read_only=1),
             dict(fieldname='ts_valuation_rate', label='Valuation Rate',
                 fieldtype='Currency', insert_after='retain_sample', read_only=1),
-        ],
+        ], 
     }
     create_custom_fields(custom_fields)
     property_setter()
