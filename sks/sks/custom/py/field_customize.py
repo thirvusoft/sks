@@ -1,6 +1,6 @@
 import frappe
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
-from sks.sks.custom.py.property_setter import sales_invoice
+from sks.sks.custom.py.property_setter import property_setter
 def custom_fields():
     custom_fields = {
         "Sales Invoice": [
@@ -22,4 +22,4 @@ def custom_fields():
         ]
     }
     create_custom_fields(custom_fields)
-    sales_invoice()
+    property_setter()

@@ -1,4 +1,7 @@
 import frappe
+def property_setter():
+    sales_invoice()
+
 def sales_invoice():
     ts_new=frappe.get_doc({
         'doctype':'Property Setter',
