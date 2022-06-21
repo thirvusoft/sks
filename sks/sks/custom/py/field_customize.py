@@ -47,7 +47,11 @@ def custom_fields():
                 fieldtype='Currency', insert_after='ts_mrp',read_only=1),
             dict(fieldname='ts_valuation_rate', label='Valuation Rate',
                 fieldtype='Currency', insert_after='retain_sample', read_only=1),
-        ],  
+        ],
+        "Purchase Invoice Item":[
+           dict(fieldname='ts_mrp', label='MRP',reqd=1,
+               fieldtype='Currency', insert_after='sec_break2',read_only=1,in_list_view=1,columns=2,fetch_from="Purchase Receipt.ts_mrp and Purchase Order.ts_mrp"),
+       ] 
     }
     create_custom_fields(custom_fields)
     property_setter()
