@@ -222,6 +222,17 @@ def property_creator():
         "value":1
     })
     employee.save(ignore_permissions=True)
+
+    employee=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Employee",
+        'property':"label",
+        'property_type':"Section Break",
+        'field_name':"erpnext_user",
+        "value":"Thirvu User"
+    })
+    employee.save(ignore_permissions=True)
     
     salary_structure=frappe.get_doc({
         'doctype':'Property Setter',
@@ -321,6 +332,28 @@ def property_creator():
         "value":1
     })
     payroll_entry.save(ignore_permissions=True)
+
+    payroll_entry=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Payroll Entry",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"deduct_tax_for_unclaimed_employee_benefits",
+        "value":1
+    })
+    payroll_entry.save(ignore_permissions=True)
+
+    payroll_entry=frappe.get_doc({
+        'doctype':'Property Setter',
+        'doctype_or_field': "DocField",
+        'doc_type': "Payroll Entry",
+        'property':"hidden",
+        'property_type':"Check",
+        'field_name':"deduct_tax_for_unsubmitted_tax_exemption_proof",
+        "value":1
+    })
+    payroll_entry.save(ignore_permissions=True) 
 
     salary_slip=frappe.get_doc({
         'doctype':'Property Setter',
