@@ -19,7 +19,23 @@ def custom_fields():
         "Sales Invoice Item":[
              dict(fieldname='item_verified', label='Item Verified',
                 fieldtype='Check', insert_after='amount',read_only=1,in_list_view=1,columns=2),
-        ]
+        ],
+        "Purchase Receipt": [
+            dict(fieldname='thirvu_items_to_verify', label='Items To Verify',
+                fieldtype='Table', insert_after='items',options="Thirvu Items To Verify",no_copy=1),
+            dict(fieldname='ts_item_price_changed', label='Item Price Changed',
+                fieldtype='Check', insert_after='thirvu_items_to_verify',permlevel=2,hidden=1,read_only=1),
+            dict(fieldname='ts_markup_and_markdown_variations', label='TS Markup And Markdown Variations',
+                fieldtype='Check', insert_after='range', read_only=1,no_copy=1,),
+            dict(fieldname='ts_markdown_items', label='TS Markdown Items',
+                fieldtype='Long Text', insert_after='ts_markup_and_markdown_variations',read_only=1,no_copy=1,),
+            dict(fieldname='ts_markup_items', label='TS Markup Items',
+                fieldtype='Long Text', insert_after='ts_markdown_items', read_only=1,no_copy=1),
+            dict(fieldname='column_break_47',fieldtype='Column Break',
+                 insert_after='scan_barcode'),
+            dict(fieldname='scan_barcode_to_verify_the_items', label='Scan Barcode To Verify The Items',
+                fieldtype='Data', insert_after='column_break_47',options="Barcode"),
+        ], 
     }
     create_custom_fields(custom_fields)
     property_setter()
