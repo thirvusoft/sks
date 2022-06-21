@@ -114,7 +114,7 @@ doc_events = {
 		"validate":"sks.sks.custom.py.contact.validate_phone"
 	},
 	"Employee": {
-		"validate":"sks.sks.custom.py.employee.validate_phone"
+		"validate":"sks.sks.custom.py.employee.validate_phone",
 	},
 	"Lead": {
 		"validate":"sks.sks.custom.py.lead.validate_phone"
