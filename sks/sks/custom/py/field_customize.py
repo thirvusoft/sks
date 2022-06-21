@@ -35,7 +35,19 @@ def custom_fields():
                  insert_after='scan_barcode'),
             dict(fieldname='scan_barcode_to_verify_the_items', label='Scan Barcode To Verify The Items',
                 fieldtype='Data', insert_after='column_break_47',options="Barcode"),
-        ], 
+        ],
+        "Purchase Receipt Item":[
+            dict(fieldname='expiry_date', label='Expiry Date',
+                fieldtype='Date', insert_after='rejected_qty'),
+            dict(fieldname='item_verified', label='Item Verified',
+                fieldtype='Check', insert_after='amount', read_only=1),
+            dict(fieldname='ts_mrp', label='MRP',
+                fieldtype='Currency', insert_after='expiry_date'),
+            dict(fieldname='ts_selling_rate', label='Selling Rate',
+                fieldtype='Currency', insert_after='ts_mrp',read_only=1),
+            dict(fieldname='ts_valuation_rate', label='Valuation Rate',
+                fieldtype='Currency', insert_after='retain_sample', read_only=1),
+        ],  
     }
     create_custom_fields(custom_fields)
     property_setter()
