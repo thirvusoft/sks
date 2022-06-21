@@ -35,7 +35,7 @@ def custom_fields():
                  insert_after='scan_barcode'),
             dict(fieldname='scan_barcode_to_verify_the_items', label='Scan Barcode To Verify The Items',
                 fieldtype='Data', insert_after='column_break_47',options="Barcode"),
-        ],
+        ], 
     }
     create_custom_fields(custom_fields)
     property_setter()
