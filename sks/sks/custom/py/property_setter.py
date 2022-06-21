@@ -1,6 +1,8 @@
 import frappe
+from frappe.custom.doctype.property_setter.property_setter import make_property_setter
 def property_setter():
     sales_invoice()
+    purchase_invoice()
 
 def sales_invoice():
     ts_new=frappe.get_doc({
@@ -143,6 +145,7 @@ def sales_invoice():
         "value":'1'
     })
     ts_new.save()
+
     from frappe.custom.doctype.property_setter.property_setter import make_property_setter
     make_property_setter("Purchase Order Item", "supplier_part_no", "Hidden", 1, "Check")
     make_property_setter("Purchase Order Item", "image", "Hidden", 1, "Check")
@@ -353,3 +356,16 @@ def sales_invoice():
     purchase_order.save(ignore_permissions=True)
 
  
+
+
+def purchase_invoice():
+    make_property_setter("Sales Invoice", "party_account_currency", "hidden", "1", "Link")
+    make_property_setter("Sales Invoice", "subscription_section", "hidden", "1", "Section Break")
+    make_property_setter("Sales Invoice", "accounting_dimensions_section", "hidden", "1", "Section Break")
+    make_property_setter("Sales Invoice", "supplier_invoice_details", "hidden", "1", "Section Break")
+    make_property_setter("Sales Invoice", "update_stock", "hidden", "1", "Check")
+    make_property_setter("Sales Invoice", "scan_barcode", "hidden", "1", "Data")
+    make_property_setter("Sales Invoice", "terms_section_break", "hidden", "1", "Section Break")
+    make_property_setter("Sales Invoice", "more_info", "hidden", "1", "Section Break")
+    make_property_setter("Sales Invoice", "accounting_details_section", "hidden", "1", "Section Break")
+
