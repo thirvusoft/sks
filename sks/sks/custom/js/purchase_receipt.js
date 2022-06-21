@@ -229,6 +229,7 @@ frappe.ui.form.on("Purchase Receipt Item",{
 		}
 	}
 })
+<<<<<<< HEAD
 frappe.ui.form.on("Purchase Receipt",{
 	onload:function(frm,cdt,cdn){
 		if(cur_frm.doc.ts_markup_and_markdown_variations == 1){
@@ -236,3 +237,5 @@ frappe.ui.form.on("Purchase Receipt",{
 		}
 	},
 })
+=======
+>>>>>>> e7ed9646e8968c26748de06d44d007471731dd3e
