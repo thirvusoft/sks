@@ -44,7 +44,6 @@ def payment_entry(amount,mode,customer,pending_invoice,company,opening,ref_no=No
             ref_no = "1234567"
         if(ref_date == None):
             ref_date = frappe.utils.datetime.datetime.now()
-            # frappe.throw("Reference No and Reference Date is mandatory for Bank transaction")
     acc_currency = frappe.db.get_value('Account',acc_paid_to,'account_currency')
     pending_invoice = eval(pending_invoice)
     doc = frappe.new_doc('Payment Entry')
@@ -154,14 +153,10 @@ def validate_delivery_type(data,customer):
         if(data[i] == 1):
             mode = i
             break
-    # if(data['bus_delivery'] == 1):
-    #     bus = frappe.db.get_all('TS Bus Details',fields=['name','destination'])
-    #     bus_dict={i['name']:i['destination'] for i in bus}
-    #     return bus_dict,mode
+    
     if(data['delivery_pickup'] == 1):
         link = frappe.db.get_all('Dynamic Link',fields=['parent','name'],filters={'link_name':customer,'parenttype':'Contact','parentfield':'links','link_doctype':'Customer'})
         contact = [i['parent'] for i in link]
-        # invoice_contact = {}
         cnt = frappe.db.get_list('Contact',fields=['first_name'],filters={'name':['in',contact]})
         cnt_name = [i['first_name'] for i in cnt]
         return contact,mode
