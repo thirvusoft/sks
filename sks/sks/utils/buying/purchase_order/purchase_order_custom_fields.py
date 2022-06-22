@@ -32,6 +32,8 @@ def purchase_order_custom_field():
 def purchase_order_property_setter():                
           make_property_setter("Purchase Order", "item_price_changed", "Hidden", 1, "Check")
           make_property_setter("Purchase Order", "party_account_currency", "Hidden", 1, "Check")
+          make_property_setter("Purchase Order", "apply_tds", "hidden", 1, "Check")
+          make_property_setter("Purchase Order", "order_confirmation_no", "hidden", 1, "Data")
           purchase_order=frappe.get_doc({
           'doctype':'Property Setter',
           'doctype_or_field': "DocField",

@@ -6,7 +6,7 @@ def delivery_note_item_custom_fields():
     custom_fields={
         "Delivery Note Item":[
             dict(fieldname='item_verified', label='Item Verified',
-                fieldtype='Check', insert_after='column_break_54',options="Barcode",in_list_view=1,columns=2,read_only=1),
+                fieldtype='Check', insert_after='amount',options="Barcode",in_list_view=1,columns=2,read_only=1),
         ]
     }
     create_custom_fields(custom_fields)

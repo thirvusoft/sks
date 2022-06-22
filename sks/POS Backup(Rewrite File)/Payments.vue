@@ -461,6 +461,17 @@
           </v-col>
           <v-col
             cols="6"
+            v-if="thirvu_settings"
+          >
+            <v-switch
+              v-model="feedback_required"
+              flat
+              :label="frappe._('Feedback Required')"
+              class="my-0 py-0"
+            ></v-switch>
+          </v-col>
+          <v-col
+            cols="6"
             v-if="pos_profile.posa_allow_credit_sale && !invoice_doc.is_return"
           >
             <v-switch
@@ -639,6 +650,8 @@ export default {
       loading: false,
       pos_profile: '',
       invoice_doc: '',
+      thirvu_settings: 0,
+      feedback_required: 0,
       loyalty_amount: 0,
       is_credit_sale: 0,
       is_write_off_change: 0,
@@ -673,18 +686,39 @@ export default {
           frappe.utils.play_sound('error');
           return;
         }
-
-        if (
-          !this.pos_profile.posa_allow_partial_payment &&
-          this.total_payments < this.invoice_doc.grand_total
-        ) {
-          evntBus.$emit('show_mesage', {
-         text: `The amount paid is not complete`,
-            color: 'error',
-          });
-          frappe.utils.play_sound('error');
-          return;
+        if(this.total_payments < this.invoice_doc.grand_total)
+        {
+          if(this.pos_profile.posa_allow_partial_payment){
+            if(!this.customer_info.is_credit_customer){
+              evntBus.$emit('show_mesage', {
+              text: `The amount paid is not complete`,
+                  color: 'error',
+                });
+                frappe.utils.play_sound('error');
+                return;
+            }
+          }
+          else{
+            evntBus.$emit('show_mesage', {
+              text: `The amount paid is not complete`,
+                  color: 'error',
+                });
+                frappe.utils.play_sound('error');
+                return;
+          }
         }
+          // if (
+          //   !this.pos_profile.posa_allow_partial_payment && 
+          //   this.total_payments < this.invoice_doc.grand_total && 
+          //   !this.customer_info.is_credit_customer
+          // ) {
+          //   evntBus.$emit('show_mesage', {
+          //  text: `The amount paid is not complete`,
+          //     color: 'error',
+          //   });
+          //   frappe.utils.play_sound('error');
+          //   return;
+          // }
 
         if (
           this.pos_profile.posa_allow_partial_payment &&
@@ -747,98 +781,13 @@ export default {
           frappe.utils.play_sound('error');
           return;
         }
-        var out=this;
-        var d = new frappe.ui.Dialog({
-          'title':"Delivery Type",
-          'fields':[
-            {fieldname:'delivery_pickup',label:'Delivery Pickup',fieldtype:'Check'},
-            {fieldname:'courier',label:'Courier',fieldtype:'Check'},
-            {fieldname:'bus_delivery',label:'Bus Delivery',fieldtype:'Check'},
-            {fieldname:'direct_selling', label:'Direct Selling',fieldtype:'Check'}
-          ],
-          primary_action_label: "Next",
-          primary_action : function(data){
-            frappe.call({
-              'method':"posawesome.posawesome.api.credit_sales.validate_delivery_type",
-              args:{data:data,customer:out.invoice_doc.customer},
-              callback: function(r){
-                if(r.message){
-                    if(data.delivery_pickup){
-                      var fields=[
-                        {fieldname:'contact_person',label:'Contact Person',fieldtype:'Select',options:r.message[0],reqd:1}
-                      ]
-                    }
-                    if(data.courier){
-                      var fields=[
-                        {fieldname:'courier_no',label:"Courier No",fieldtype:'Data',reqd:1},
-                        {fieldname:'destination',label:"Destination",fieldtype:'Data'}
-                      ]
-                    }
-                    if(data.bus_delivery){
-                      var fields=[
-                        {fieldname:'bus_no',label:"Bus No",fieldtype:'Link',options:'TS Bus Details',reqd:1},
-                        // {fieldname:'destination',label:"Destination",fieldtype:'Data',default:r.message[0][bus_no]}
-                      ]
-                    }
-                    if(data.direct_selling){
-                        d.hide();
-                        out.submit_invoice();
-                        vehicle_details_dict=[];
-                        vehicle_list=[];
-                        choosed_vehicle = ""
-                        this.vehicle = ""
-                        out.customer_credit_dict = [];
-                        out.redeem_customer_credit = false;
-                        out.is_cashback = true;
-
-                        evntBus.$emit('new_invoice', 'false');
-                        out.back_to_invoice();
-                    }
-                    var dialog = new frappe.ui.Dialog({
-                      title:'Fill the delivery details',
-                      fields: fields,
-                      primary_action:function(data1){
-                        let mode_of_delivery = {
-                          'delivery_pickup':'Delivery Pickup',
-                           'courier' : 'Courier',
-                           'bus_delivery' : 'Bus Delivery'
-                          }
-                        out.invoice_doc.delivery_mode = mode_of_delivery[r.message[1]]
-                        if(mode_of_delivery[r.message[1]] == 'Delivery Pickup'){
-                          out.invoice_doc.contact_person_for_delivery = data1.contact_person
-                        }
-                        if(mode_of_delivery[r.message[1]] == 'Courier'){
-                          out.invoice_doc.courier_no = data1.courier_no
-                          out.invoice_doc.courier_destination = data1.destination
-                        }
-                        if(mode_of_delivery[r.message[1]] == 'Bus Delivery'){
-                          out.invoice_doc.bus_delivery = data1.bus_no
-                        }
-                        dialog.hide()
-                        out.submit_invoice();
-                        vehicle_details_dict=[];
-                        vehicle_list=[];
-                        vehicle = ""
-                        out.customer_credit_dict = [];
-                        out.redeem_customer_credit = false;
-                        out.is_cashback = true;
-
-                        evntBus.$emit('new_invoice', 'false');
-                        out.back_to_invoice();
-                      }
-                    });
-                    if(!data.direct_selling){
-                    dialog.show();}
-                    
-              }
-            }
-            })
-            d.hide()
-          }
-        });
-        d.show();
-        
-        
+        this.submit_invoice();
+        this.customer_credit_dict = [];
+        this.redeem_customer_credit = false;
+        this.is_cashback = true;
+        this.sales_person = '';
+        evntBus.$emit('new_invoice', 'false');
+        this.back_to_invoice();        
       },
       submit_invoice() {
         let data = {};
@@ -1047,12 +996,12 @@ export default {
             method: 'posawesome.posawesome.api.posapp.update_invoice',
             args: {
               data: formData,
-              vehicle: choosed_vehicle
             },
             async: false,
             callback: function (r) {
               if (r.message) {
-                vm.invoice_doc = r.message;
+                vm.invoice_doc = r.message[0];
+                vm.thirvu_settings = r.message[1]
               }
             },
           })
@@ -1253,8 +1202,21 @@ export default {
 
     created: function () {
       this.$nextTick(function () {
-        evntBus.$on('send_invoice_doc_payment', (invoice_doc) => {
+        evntBus.$on('send_invoice_doc_payment', (invoice_doc, thirvu_settings, feedback_required) => {
         this.invoice_doc = invoice_doc;
+        if(thirvu_settings == "1"){
+          this.thirvu_settings = 1
+        }
+        else{
+          this.thirvu_settings = 0
+        }
+        if(feedback_required == "1"){
+          this.feedback_required = 1
+        }
+        else{
+          this.feedback_required = 0
+        }
+        
         const default_payment = this.invoice_doc.payments.find(
           (payment) => payment.default == 1
           );
@@ -1269,6 +1231,100 @@ export default {
            evntBus.$on('register_pos_profile', (data) => {
         this.pos_profile = data.pos_profile;
         this.get_mpesa_modes();
+      });
+      evntBus.$on('add_the_new_address', (data) => {
+        this.addresses.push(data);
+        this.$forceUpdate();
+      });
+      evntBus.$on('update_invoice_type', (data) => {
+        this.invoiceType = data;
+        if (this.invoice_doc && data != 'Order') {
+          this.invoice_doc.posa_delivery_date = null;
+          this.invoice_doc.posa_notes = null;
+          this.invoice_doc.shipping_address_name = null;
+        }
+      });
+    });
+    evntBus.$on('update_customer', (customer) => {
+      if (this.customer != customer) {
+        this.customer_credit_dict = [];
+        this.redeem_customer_credit = false;
+        this.is_cashback = true;
+      }
+    });
+    evntBus.$on('set_pos_settings', (data) => {
+      this.pos_settings = data;
+    });
+    evntBus.$on('set_customer_info_to_edit', (data) => {
+      this.customer_info = data;
+    });
+    evntBus.$on('set_mpesa_payment', (data) => {
+      this.set_mpesa_payment(data);
+    });
+    document.addEventListener('keydown', this.shortPay.bind(this));
+  },
+
+  destroyed() {
+    document.removeEventListener('keydown', this.shortPay);
+  },
+
+  watch: {
+    loyalty_amount(value) {
+      if (value > this.available_pioints_amount) {
+        this.invoice_doc.loyalty_amount = 0;
+        this.invoice_doc.redeem_loyalty_points = 0;
+        this.invoice_doc.loyalty_points = 0;
+        evntBus.$emit('show_mesage', {
+          text: `Loyalty Amount can not be more then ${this.available_pioints_amount}`,
+          color: 'error',
+        });
+      } else {
+        this.invoice_doc.loyalty_amount = flt(this.loyalty_amount);
+        this.invoice_doc.redeem_loyalty_points = 1;
+        this.invoice_doc.loyalty_points =
+          flt(this.loyalty_amount) * this.customer_info.conversion_factor;
+      }
+    },
+    is_credit_sale(value) {
+      if (value == 1) {
+        this.invoice_doc.payments.forEach((payment) => {
+          payment.amount = 0;
+          payment.base_amount = 0;
+        });
+      }
+    },
+    feedback_required(value){
+      frappe.call({
+        method:"posawesome.posawesome.api.posapp.update_feedback_status",
+        args:{
+          customer:this.customer_info.name,
+          status:value
+        }
+      })
+    },
+    is_write_off_change(value) {
+      if (value == 1) {
+        this.invoice_doc.write_off_amount = this.diff_payment;
+        this.invoice_doc.write_off_outstanding_amount_automatically = 1;
+      } else {
+        this.invoice_doc.write_off_amount = 0;
+        this.invoice_doc.write_off_outstanding_amount_automatically = 0;
+      }
+    },
+    redeemed_customer_credit(value) {
+      if (value > this.available_customer_credit) {
+        evntBus.$emit('show_mesage', {
+          text: `You can redeem customer credit upto ${this.available_customer_credit}`,
+          color: 'error',
+        });
+      }
+    },
+  },
+};
+</script>
+
+        this.currency_precision =
+          frappe.defaults.get_default('currency_precision') || 2;
       });
       evntBus.$on('add_the_new_address', (data) => {
         this.addresses.push(data);
@@ -1348,7 +1404,18 @@ export default {
         });
       }
     },
+    sales_person() {
+      if (this.sales_person) {
+        this.invoice_doc.sales_team = [
+          {
+            sales_person: this.sales_person,
+            allocated_percentage: 100,
+          },
+        ];
+      } else {
+        this.invoice_doc.sales_team = [];
+      }
+    },
   },
 };
 </script>
-
