@@ -70,7 +70,8 @@ doctype_js = {"Delivery Note" : "sks/custom/js/delivery_note.js",
 
 # before_install = "sks.install.before_install"
 # after_install = "sks.install.after_install"
-after_install = "sks.sks.custom.py.workflow.workflow_document_creation"
+after_install = ["sks.sks.custom.py.workflow.workflow_document_creation",
+ 	       "sks.sks.utils.after_install.after_install"]
 
 # Desk Notifications
 # ------------------
@@ -113,7 +114,7 @@ doc_events = {
 		"validate":"sks.sks.custom.py.contact.validate_phone"
 	},
 	"Employee": {
-		"validate":"sks.sks.custom.py.employee.validate_phone"
+		"validate":"sks.sks.custom.py.employee.validate_phone",
 	},
 	"Lead": {
 		"validate":"sks.sks.custom.py.lead.validate_phone"
