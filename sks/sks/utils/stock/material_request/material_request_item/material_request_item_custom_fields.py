@@ -6,4 +6,8 @@ def material_request_item_customization():
 def materaial_request_item_custom_fields():
     pass
 def materaial_request_item_property_setter():
-    pass
+    make_property_setter("Material Request Item", "is_nil_exempt", "hidden", "1", "Check")
+    make_property_setter("Material Request Item", "is_non_gst", "hidden", "1", "Check")
+    make_property_setter("Material Request Item", "section_break_46", "hidden", "1", "Section Break")
+    make_property_setter("Material Request Item", "manufacture_details", "hidden", "1", "Section Break")
+    make_property_setter("Material Request Item", "more_info", "hidden", "1", "Section Break")
