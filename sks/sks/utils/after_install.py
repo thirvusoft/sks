@@ -5,6 +5,8 @@ from sks.sks.utils.selling.delivery_note.delivery_note_custom_fields import deli
 from sks.sks.utils.selling.sales_order.sales_order_custom_fields import sales_order_customization
 from sks.sks.utils.selling.sales_invoice.sales_invoice_custom_fields import sales_invoice_customization
 from sks.sks.utils.stock.item.item_custom_fields import item_customization
+from sks.sks.utils.stock.item.item_barcode_custom_fields import item_barcode_customization
+from sks.sks.utils.stock.item.item_tax_custom_fields import item_tax_customization
 def after_install():
     purchase_order_customization()
     delivery_note_customization()
@@ -13,5 +15,7 @@ def after_install():
     item_customization()
     purchase_invoice_customization()
     purchase_receipt_customization()
+    item_tax_customization()
+    item_barcode_customization()
 
 
