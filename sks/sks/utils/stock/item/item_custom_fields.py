@@ -1,4 +1,3 @@
-import frappe
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 from frappe.custom.doctype.property_setter.property_setter import make_property_setter
 def item_customization():
@@ -112,7 +111,6 @@ def item_custom_fields():
              ],
             
     }
-    print("cccccccccccccccccccccc")
     create_custom_fields(custom_fields)
 def item_property_setter():                
           make_property_setter("Item", "supplier_details", "hidden", 1, "Check")
@@ -138,8 +136,8 @@ def item_property_setter():
           make_property_setter("Item", "item_code", "reqd", 1, "Check")
           make_property_setter("Item", "item_code", "hidden", 0, "Check")
           make_property_setter("Item", "manufacturing", "collapsible_depends_on","is_stock_item", "Code")
-          make_property_setter("Item", "default_discount_account", "hidden", 1, "Check")
-          print("pppppppppppppppppppppppp")
+          make_property_setter("Item", "default_discount_account", "hidden", 1, "Check") 
+
 
 
 
