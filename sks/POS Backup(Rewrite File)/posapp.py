@@ -280,72 +280,6 @@ def get_items(pos_profile, price_list=None):
     return result
 
 
-@frappe.whitelist()
-def get_vehicle_list_from_customer(customer):
-    vehicle_list = frappe.get_all("TS Vehicle", fields=['name','vehicle_category','ts_vehicle_model', 'vehicle_year', 'customer', 'ts_vehicle_no'],filters={'customer':customer})
-    return vehicle_list , [i['name'] for i in vehicle_list]
-
-# @frappe.whitelist()
-# def set_vehicle(vehicle, customer):
-#     si=frappe.get_all("Sales Invoice",filters={'customer':customer},fields=['name'])
-#     sales= frappe.get_doc("Sales_invoice",si[0].name)
-#     frappe.errprint(si)
-#     ee
-#     sales.update({
-#         'doctype':'Sales Invoice',
-#         'vehicle':vehicle
-#     })
-#     sales.insert(ignore_permissions = True) 
-#     return sales
-
-     
-
-
-@frappe.whitelist()
-def get_vehicle_info(customer,vehicle):
-    vehicle_info = frappe.get_all("TS Vehicle", fields=['name','vehicle_category','ts_vehicle_model', 'vehicle_year', 'customer', 'ts_vehicle_no'],filters={'customer':customer,'name':vehicle})
-    return vehicle_info
-
-@frappe.whitelist()
-def create_vehicle(data):
-   
-    data = json.loads(data)
-    doc = frappe.new_doc("TS Vehicle")
-    for i in data:
-        doc.update({
-            i: data[i]
-        }) 
-    doc.save(ignore_permissions = True) 
-   
-    return doc
-
-@frappe.whitelist()
-def update_vehicle(data):
-    data = json.loads(data)
-    doc = frappe.get_doc("TS Vehicle", data.get('name'))
-    for i in data:
-        if(i != 'name'):
-            doc.update({
-                i: data.get(i)
-            }) 
-    doc.save(ignore_permissions = True) 
-    return doc
-@frappe.whitelist()
-def vehicle_link_details():
-    v_category = frappe.get_all("TS Vehicle Group", {'parent_ts_vehicle_group': "HYDRAULIC MACHINES"}, pluck='name' )
-    v_model=[]
-    for i in v_category:
-        v_model += frappe.get_all("TS Vehicle Group", {'parent_ts_vehicle_group': i}, pluck='name')
-    return v_model, v_category
-
-@frappe.whitelist()
-def customer_list():
-    customers= frappe.get_all("Customer",pluck='name')
-    v_category= frappe.get_all("TS Vehicle Group", {'parent_ts_vehicle_group': "HYDRAULIC MACHINES"}, pluck='name' )
-    v_model= []
-    for i in v_category:
-        v_model += frappe.get_all("TS Vehicle Group", {'parent_ts_vehicle_group': i}, pluck='name')
-    return customers, v_category, v_model
 
 
 @frappe.whitelist()
@@ -452,7 +386,7 @@ def get_customer_names(pos_profile):
 
 
 @frappe.whitelist()
-def update_invoice(data, vehicle = None):
+def update_invoice(data):
     data = json.loads(data)
     if data.get("name"):
         invoice_doc = frappe.get_doc("Sales Invoice", data.get("name"))
@@ -460,10 +394,6 @@ def update_invoice(data, vehicle = None):
     else:
         invoice_doc = frappe.get_doc(data)
 
-    if(vehicle != None):
-        invoice_doc.update({
-            'vehicle': vehicle
-        })
 
     invoice_doc.flags.ignore_permissions = True
     frappe.flags.ignore_account_permission = True
@@ -479,8 +409,10 @@ def update_invoice(data, vehicle = None):
             for tax in invoice_doc.taxes:
                 tax.included_in_print_rate = 1
     invoice_doc.save()
-    invoice_doc.grand_total = invoice_doc.rounded_total 
-    return invoice_doc
+    ts_settings = frappe.get_value("Thirvu Retail Settings",'Thirvu Retail Settings','allow_display_feedback_required_option')
+    frappe.errprint(ts_settings)
+    feedback_required = frappe.get_value("Customer", invoice_doc.customer, 'feedback_required')
+    return invoice_doc, ts_settings, feedback_required
 
 
 @frappe.whitelist()
@@ -826,10 +758,11 @@ def delete_invoice(invoice):
 def get_items_details(pos_profile, items_data):
     pos_profile = json.loads(pos_profile)
     items_data = json.loads(items_data)
-    warehouse = pos_profile.get("warehouse")
+    # warehouse = pos_profile.get("warehouse")
     result = []
     if len(items_data) > 0:
         for item in items_data:
+            warehouse = item.get('warehouse')
             item_code = item.get("item_code")
             item_stock_qty = item.get('actual_qty')
             has_batch_no, has_serial_no = frappe.get_value(
@@ -963,14 +896,14 @@ def create_customer(
                 'links': reference
             })
             address.save(ignore_permissions=True)
-    #         contact = frappe.get_all("Contact Phone", filters={'is_primary_mobile_no':1,'phone':mobile_no},pluck='parent')
-    #         if(len(contact)):
-    #             customer.customer_primary_contact = contact[0]
-    #             customer.save(ignore_permissions=True)
+            contact = frappe.get_all("Contact Phone", filters={'is_primary_mobile_no':1,'phone':mobile1},pluck='parent')
+            if(len(contact)):
+                customer.customer_primary_contact = contact[0]
+                customer.save(ignore_permissions=True)
         
-    #     return customer
-    # else:
-    #     return f"Company {customer_name} already Exists."
+        return customer
+    else:
+        return f"Company {customer_name} already Exists."
 
 
 @frappe.whitelist()
@@ -1559,7 +1492,8 @@ def get_customer_info(customer):
     res["customer_price_list"] = customer.default_price_list
     res["posa_discount"] = customer.posa_discount
     res["name"] = customer.name
-    
+    res['is_credit_customer'] = customer.is_credit_customer
+    # frappe.errprint(customer.is_credit_customer)
     res["loyalty_program"] = customer.loyalty_program
     res["customer_group_price_list"] = frappe.get_value(
         "Customer Group", customer.customer_group, "default_price_list"
@@ -1582,3 +1516,113 @@ def get_customer_info(customer):
 def get_company_domain(company):
     return frappe.get_cached_value("Company", cstr(company), "domain")
 
+@frappe.whitelist()
+def get_fields_for_denomination():
+    amounts = frappe.get_all("Denomination Rupees", pluck = 'amount',order_by = '`amount` desc')
+    fields=[]
+    for i in amounts:
+        fields+=(
+            {'fieldname':f'amt{i}','label':f"<b>Amount ₹{i}</b>",'default':i,'read_only':1,'fieldtype':'Currency'},
+            {'fieldtype':"Column Break"},
+            {'fieldname':f'sales{i}','label':f"<b>Enter here (For ₹{i})</b>", 'fieldtype':"Currency"},
+            {'fieldtype':"Section Break"}
+        )
+    frappe.errprint(amounts)
+    fields = '''<html><body><table><form>'''
+    for i in amounts:
+        fields+=f''' 
+            <tr><td>
+                    <label for="name"> <b style="font-size: 15px;color:solid black;">{int(i)}</b> </label>
+                </td>
+                <td><p> &#8205;&#8205;  </p></td>
+                <td> 
+                    <input type="number" id={int(i)} style="border: 1px solid black;width: 100px" />
+                </td>
+                </tr>
+        '''
+
+    fields += '''</form></table>
+                     <script>
+                        function myFunction() {
+                        alert("FFF");
+                        }
+                    </script>
+                    <div style="float:left">
+                        
+                        <button class="btn btn-primary btn-sm btn-modal-primary" type="button" onclick= getdenomination("kkk");>
+                            Get Value
+                        </button>
+
+                    </div>
+                        <button onclick="myFunction()">Click me</button>
+                    <script>
+                        function myFunction() {
+                        alert("FFF");
+                        }
+                    </script>
+                </body></html>'''
+    # fields = '''
+    # <table>
+    #     <form>
+    #         <tr>
+    #             <td>
+    #                 <label for="name">
+    #                     Name
+    #                 </label>
+    #             </td>
+    #             <td> <label for="name">
+    #                     Name
+    #                 </label><input type="text" id="name" />
+    #             </td>
+    #         </tr>
+    #         <tr>
+    #             <td><label for="email">
+    #                     Email
+    #                 </label>
+    #             </td>
+    #             <td><input type="email" id="email" />
+    #             </td>
+    #         </tr>
+    #         <tr>
+    #             <td><label for="telnum">
+    #                     Tel No.
+    #                 </label>
+    #             </td>
+    #             <td><input type="telnum" id="telnum" />
+    #             </td>
+    #         </tr>
+    #         <tr>
+    #             <td><label for="Roll No.">
+    #                     Roll No.
+    #                 </label>
+    #             </td>
+    #             <td><input type="number" id="rollno" />
+    #             </td>
+    #         </tr>
+    #     </form>
+    # </table>
+    # '''
+    return fields
+
+
+
+# Customized By Thirvusoft
+# Start
+@frappe.whitelist()
+def batch_finder(ts_barcode=None,ts_item=None):
+    if ts_barcode:
+        ts_batchs=frappe.db.get_all('Batch', fields=['name','expiry_date','batch_qty','ts_selling_price'], filters={'barcode':ts_barcode, 'disabled':0})
+        return(ts_batchs)
+    else:
+        ts_batchs=frappe.db.get_all('Batch', fields=['name'], filters={'item':ts_item})
+        if ts_batchs:
+            return(ts_batchs[len(ts_batchs)-1]["name"])
+        else:
+            return 0
+# End
+
+@frappe.whitelist()
+def update_feedback_status(customer,status):
+    if(status == "false"):status=0
+    else:status=1
+    frappe.db.set_value("Customer", customer, 'feedback_required', status)

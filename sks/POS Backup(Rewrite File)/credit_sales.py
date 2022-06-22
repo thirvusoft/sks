@@ -40,8 +40,11 @@ def payment_entry(amount,mode,customer,pending_invoice,company,opening,ref_no=No
         frappe.throw(("Please set Company and Default account for ({0}) mode of payment").format(mode))
     bank_account_type = frappe.db.get_value("Account", acc_paid_to, "account_type")
     if bank_account_type == "Bank":
-        if(ref_no == None or ref_date == None):
-            frappe.throw("Reference No and Reference Date is mandatory for Bank transaction")
+        if(ref_no == None):
+            ref_no = "1234567"
+        if(ref_date == None):
+            ref_date = frappe.utils.datetime.datetime.now()
+            # frappe.throw("Reference No and Reference Date is mandatory for Bank transaction")
     acc_currency = frappe.db.get_value('Account',acc_paid_to,'account_currency')
     pending_invoice = eval(pending_invoice)
     doc = frappe.new_doc('Payment Entry')
