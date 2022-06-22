@@ -15,3 +15,12 @@ def purchase_invoice_item_custom_fields():
           ],
           }
           create_custom_fields(custom_fields)
+
+def purchase_invoice_item_property_setter():
+    make_property_setter("Purchase Invoice Item", "is_nil_exempt", "hidden", "1", "Check")
+    make_property_setter("Purchase Invoice Item", "is_non_gst", "hidden", "1", "Check")
+    make_property_setter("Purchase Invoice Item", "section_break_82", "hidden", "1", "Section Break")
+    make_property_setter("Purchase Invoice Item", "manufacture_details", "hidden", "1", "Section Break")
+    make_property_setter("Purchase Invoice Item", "accounting", "hidden", "1", "Section Break")
+    make_property_setter("Purchase Invoice Item", "deferred_expense_section", "hidden", "1", "Section Break")
+    make_property_setter("Purchase Invoice Item", "reference", "hidden", "1", "Section Break")
