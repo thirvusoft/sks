@@ -10,6 +10,7 @@ from sks.sks.utils.stock.item.item_barcode_custom_fields import item_barcode_cus
 from sks.sks.utils.stock.item.item_tax_custom_fields import item_tax_customization
 from sks.sks.utils.stock.material_request.material_request_custom_fields import material_request_customization
 from sks.sks.utils.stock.batch.batch_custom_fields import batch_customization
+from sks.sks.utils.stock.delivery_trip.delivery_trip_custom_fields import delivery_trip_customization
 def after_install():
     purchase_order_customization()
     delivery_note_customization()
@@ -23,6 +24,7 @@ def after_install():
     item_barcode_customization()
     material_request_customization()
     batch_customization()
+    delivery_trip_customization()
 
 
 
