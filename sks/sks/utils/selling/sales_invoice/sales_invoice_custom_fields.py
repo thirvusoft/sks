@@ -93,7 +93,7 @@ def sales_invoice_property_setter():
         'doc_type': "Sales Invoice",
         'property':"hidden",
         "property_type":"Section Break",
-        'field_name':"more_info",
+        'field_name':"more_information",
         "value":"1"
     })
     ts_new.save(ignore_permissions=True)
@@ -167,4 +167,5 @@ def sales_invoice_property_setter():
         "value":'1'
     })
     ts_new.save(ignore_permissions=True)
+    make_property_setter("Sales Invoice", "column_break4", "hidden", "1", "Section Break")
 
