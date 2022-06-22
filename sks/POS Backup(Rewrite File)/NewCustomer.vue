@@ -189,13 +189,24 @@ export default {
           method: 'posawesome.posawesome.api.posapp.create_customer',
           args: args,
           callback: (r) => {
-             
+            if (!r.exc && r.message.name) {
               evntBus.$emit('show_mesage', {
-              text: __('Customer contact updated successfully.'),
-              color: 'success',
-              
-              })
+                text: __('Customer contact created successfully.'),
+                color: 'success',
+              });
+              args.name = r.message.name;
+              frappe.utils.play_sound('submit');
+              evntBus.$emit('add_customer_to_list', args);
+              evntBus.$emit('set_customer', r.message.name);
+              this.customer_name='',
+              this.mobile1=''
+              this.address1=''
+              this.address2=''
+              this.territory=''
+              this.city=''
+              this.group=''
               this.customerDialog = false;
+            }
           },
         });
         
@@ -240,25 +251,10 @@ export default {
   
   data: () => ({
     customerDialog: false,
-    vehicleDialog: false,
     pos_profile: '',
     customer: '',
-    vehicle_category: '',
-    ts_vehicle_model: '',
-    vehicle_year: '',
-    ts_vehicle_no: '',
-   
   }),
   watch: {},
-  
-
-
-
-  // created: function(){
-  //      evntBus.$on('open_new_vehicle',()=>{
-  //         this.vehicleDialog = true;
-  //      })
-  // }
 };
 
  

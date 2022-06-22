@@ -17,11 +17,10 @@
       hide-details
       :filter="customFilter"
       :disabled="readonly"
-      append-icon="mdi-plus"
+      append-icon="mdi-account-plus"
       @click:append="new_customer"
       prepend-inner-icon="mdi-account-edit"
       @click:prepend-inner="edit_customer"
-      @change= "get_vehicle_list"
     >
       <template v-slot:item="data">
         <template>
@@ -67,7 +66,6 @@ export default {
     pos_profile: '',
     customers: [],
     customer: '',
-    vehicle: '',
     readonly: false,
   }),
 
@@ -85,6 +83,7 @@ export default {
         callback: function (r) {
           if (r.message) {
             vm.customers = r.message;
+            console.info('loadCustomers');
             if (vm.pos_profile.posa_local_storage) {
               localStorage.setItem('customer_storage', '');
               localStorage.setItem(
@@ -129,12 +128,10 @@ export default {
 // CREATE
    created: function () {
     this.customer = customer;
-    this.vehicle = customer; 
     var vm = this;
     var customer = vm.customer;
     var _h = vm.$createElement;
     var _c = vm._self._c || _h;
-    var choosed_vehicle;
     var  credit_limit;
     
     this.$nextTick(function () {
@@ -149,10 +146,7 @@ export default {
       //.....................................................
 
         customer =vm.customer;
-       var vehicle_details_dict = []
-        var vehicle_list =[]
          if(customer){
-         // this.get_vehicle_list();
 
           frappe.db.get_value("Customer",customer,'payment_terms').then(function(value){
             credit_limit = value.message.payment_terms
@@ -181,8 +175,8 @@ export default {
                   'fieldtype':'Select',
                   'options':modes
                 },
-                {'label':'Reference Number','fieldname':'ref_no','fieldtype':'Data'},
-                {'label':'Reference Date','fieldname':'ref_date','fieldtype':'Date'}
+                {'label':'Reference Number','fieldname':'ref_no','fieldtype':'Data', 'depends_on':'eval:doc.mode=="Credit Card"'},
+                {'label':'Reference Date','fieldname':'ref_date','fieldtype':'Date', 'default':'Today','depends_on':'eval:doc.mode=="Credit Card"'}
               ],
               primary_action : function(data){
                 frappe.call(
@@ -230,114 +224,6 @@ export default {
         }
         });
         }
-
-        //...................................................
- 
-      return _c(
-         _c("v-autocomplete", {
-          attrs: {
-            dense: "",
-            clearable: "",
-            "auto-select-first": "",
-            outlined: "",
-            color: "indigo",
-            label: vm.frappe._("Vehicle"),
-            items: vehicle_details_dict,
-            "item-text": "name",
-            "item-value": "name",
-            "background-color": "white",
-            "no-data-text": vm.__("Vehicle not found"),
-            "hide-details": "",
-            filter: vm.customFilterVehicle,
-            disabled: vm.readonly,
-            "append-icon": "mdi-plus",
-            "prepend-inner-icon": "mdi-account-edit"
-          },
-          on: {
-            "click:append": vm.new_vehicle,
-            "click:prepend-inner": vm.edit_vehicle,
-            change: function($$v) {
-              vm.get_vehicle_list()
-               choosed_vehicle = $$v;
-              vehicle_details_dict.forEach(function(r){
-                if(r.name === choosed_vehicle){
-                  vehicle_info = r
-                  return ''
-                }
-              })
-            },
-          },
-          scopedSlots: vm._u([
-            {
-              key: "item",
-              fn: function(data) {
-                return [
-                  [
-                    _c(
-                      "v-list-item-content",
-                      [
-                        _c("v-list-item-title", {
-                          staticClass: "indigo--text subtitle-1",
-                          domProps: { innerHTML: vm._s(data.item.name) }
-                        }),
-                        vm._v(" "),
-                        data.item.customer_name != data.item.name
-                          ? _c("v-list-item-subtitle", {
-                              domProps: {
-                                innerHTML: vm._s("ID: " + data.item.name)
-                              }
-                            })
-                          : vm._e(),
-                        vm._v(" "),
-                        data.item.vehicle_category
-                          ? _c("v-list-item-subtitle", {
-                              domProps: {
-                                innerHTML: vm._s("Category: " + data.item.vehicle_category)
-                              }
-                            })
-                          : vm._e(),
-                        vm._v(" "),
-                        data.item.ts_vehicle_model
-                          ? _c("v-list-item-subtitle", {
-                              domProps: {
-                                innerHTML: vm._s("Model: " + data.item.ts_vehicle_model)
-                              }
-                            })
-                          : vm._e(),
-                        vm._v(" "),
-                        data.item.vehicle_year
-                          ? _c("v-list-item-subtitle", {
-                              domProps: {
-                                innerHTML: vm._s(
-                                  "Year: " + data.item.vehicle_year
-                                )
-                              }
-                            })
-                          : vm._e()
-                      ],
-                      1
-                    )
-                  ]
-                ]
-              }
-            }
-          ]),
-          model: {
-            value: choosed_vehicle,
-            callback: function($$v) {
-              choosed_vehicle = $$v;
-              vm.choosed_vehicle = $$v
-            },
-            expression: "choosed_vehicle"
-          }
-         
-        })
-
-      )  
-
-
-
-        //.............................................................
       });
       evntBus.$on('add_customer_to_list', (customer) => {
         this.customers.push(customer);

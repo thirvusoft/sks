@@ -494,7 +494,7 @@
     <v-card class="cards mb-0 mt-3 py-0 grey lighten-5">
       <v-row no-gutters>
         <v-col cols="7">
-          <v-row no-gutters class="pa-1 pt-9 pr-1">
+          <v-row no-gutters class="pa-1 pt-2 pl-0">
             <v-col cols="6" class="pa-1">
               <v-text-field
                 :value="formtCurrency(total_qty)"
@@ -550,10 +550,10 @@
               ></v-text-field>
 <!--code start -->        
             </v-col>
-            <v-col cols="6" class="pa-1 mt-2">
+            <v-col cols="6" class="pa-1">
               <v-text-field
                 :value="formtCurrency(total_items_discount_amount)"
-                :label="frappe._('Discounts Amount')"
+                :label="frappe._('Item Wise Discount Amount')"
                 outlined
                 dense
                 readonly
@@ -567,7 +567,7 @@
                <v-text-field
                 v-model="add_disc_amt"
                 :value="formtCurrency(add_disc_amt)"
-                :label="frappe._('Additional Discount ₹')"
+                :label="frappe._('Overall Additional Discount ₹')"
                 ref="add_disc_amt"
                 outlined
                 dense
@@ -581,7 +581,7 @@
 
             </v-col>
 
-            <v-col cols="6" class="pa-1 mt-2">
+            <v-col cols="6" class="pa-1">
               <v-text-field
                 :value="formtCurrency(subtotal)"
                 :label="frappe._('Total')"
@@ -665,12 +665,12 @@ export default {
       pos_profile: '',
       pos_opening_shift: '',
       stock_settings: '',
+      thirvu_settings: '',
+      feedback_required: 0,
       invoice_doc: '',
-      vehicle:'',
       return_doc: '',
       customer: '',
       customer_info: '',
-      vehicle_info: '',
       discount_amount: 0,
       additional_discount_percentage: 0,
       add_disc_amt:0,
@@ -778,13 +778,16 @@ export default {
         if (!item.uom) {
           item.uom = item.stock_uom;
         }
-        var index = this.items.findIndex(
-          function (el) { return el.item_code === item.item_code &&
-            el.uom === item.uom &&
-            !el.posa_is_offer &&
-            !el.posa_is_replace; }
-        );
-        if (index === -1) {
+              const index = this.items.findIndex(
+        (el) =>
+          el.item_code === item.item_code &&
+          el.batch_no === item.ts_current_batch &&
+          el.uom === item.uom &&
+          !el.posa_is_offer &&
+          !el.posa_is_replace
+      );
+      if (index === -1) {
+
           var new_item = this.get_new_item(item);
           if (item.has_serial_no && item.to_set_serial_no) {
             new_item.serial_no_selected = [];
@@ -924,8 +927,6 @@ export default {
         if (!data.name && !data.is_return) {
           this.items = [];
           this.customer = this.pos_profile.customer;
-          // this.choosed_vehicle = ""
-          this.vehicle='';
           this.invoice_doc = '';
           this.discount_amount = 0;
           this.additional_discount_percentage = 0;
@@ -937,7 +938,6 @@ export default {
             this.invoiceType = 'Return';
             this.invoiceTypes = ['Return'];
           }
-          this.vehicle = data.vehicle;
           this.invoice_doc = data;
           this.items = data.items;
           this.update_items_details(this.items);
@@ -952,7 +952,6 @@ export default {
           });
           this.customer = data.customer;
           this.add_disc_amt = data.discount_amount;
-          this.vehicle = data.vehicle
           this.discount_amount = data.discount_amount;
           this.additional_discount_percentage =
             data.additional_discount_percentage;
@@ -999,7 +998,6 @@ export default {
         doc.return_against = this.invoice_doc.return_against;
         doc.posa_offers = this.posa_offers;
         doc.posa_coupons = this.posa_coupons;
-        doc.vehicle = this.vehicle;
         return doc;
       },
 
@@ -1056,7 +1054,9 @@ export default {
           async: false,
           callback: function (r) {
             if (r.message) {
-              vm.invoice_doc = r.message;
+              vm.invoice_doc = r.message[0];
+              vm.thirvu_settings = r.message[1]
+              vm.feedback_required = r.message[2]
             }
           },
         });
@@ -1126,7 +1126,9 @@ export default {
         }
         evntBus.$emit('show_payment', 'true');
         var invoice_doc = this.proces_invoice();
-        evntBus.$emit('send_invoice_doc_payment', invoice_doc);
+        var thirvu_settings = this.thirvu_settings
+        var feedback_required = this.feedback_required
+        evntBus.$emit('send_invoice_doc_payment', invoice_doc,thirvu_settings, feedback_required);
       },
 
      validate: function validate() {
@@ -1332,7 +1334,7 @@ export default {
               price_list: this.get_price_list(),
               has_batch_no: item.has_batch_no,
               serial_no: item.serial_no,
-              batch_no: item.batch_no,
+              batch_no: item.ts_current_batch,
               is_stock_item: item.is_stock_item,
             },
           },
@@ -1411,27 +1413,6 @@ export default {
           });
         }
       },
-      
-
-      fetch_vehicle_details: function  fetch_vehicle_details(){
-       var vm = this; 
-       if(this.vehicle){
-        frappe.call({
-        method: "posawesome.posawesome.api.posapp.get_vehicle_info",
-        args:{
-          customer:vm.customer,
-          vehicle:vm.vehicle,
-          },
-        callback(r){
-
-         vm.vehicle_info = Object.assign({}, r.message);
-        }
-        
-      })
-      }
-      },
-
-
     get_price_list: function get_price_list() {
         var price_list = this.pos_profile.selling_price_list;
         if (this.customer_info && this.pos_profile) {
@@ -1577,11 +1558,14 @@ export default {
         );
         item.actual_batch_qty = batch_no.batch_qty;
         item.batch_no_expiry_date = batch_no.expiry_date;
-        if (batch_no.btach_price) {
-          item.btach_price = batch_no.btach_price;
-          item.price_list_rate = batch_no.btach_price;
-          item.rate = batch_no.btach_price;
-        } else if (update) {
+      // Customized By Thirvusoft
+      // Start
+      if (batch_no.ts_selling_price) {
+        item.btach_price = batch_no.ts_selling_price;
+        item.price_list_rate = batch_no.ts_selling_price;
+        item.rate = batch_no.ts_selling_price;
+      // End
+        }else if (update) {
           item.btach_price = null;
           this.update_item_detail(item);
         }
@@ -2380,9 +2364,61 @@ export default {
         this$1.pos_opening_shift = data.pos_opening_shift;
         this$1.stock_settings = data.stock_settings;
       });
-      evntBus.$on('add_item', function (item) {
-        this$1.add_item(item);
-      });
+     evntBus.$on('add_item', (item) => {
+      // Customized By Thirvusoft
+      // Start
+      var ts_barcode=item.ts_matched_barcode
+      var ts_item=item.item_code
+      var out=this
+      frappe.call({
+        async:false,
+        method:"posawesome.posawesome.api.posapp.batch_finder",
+        args:{ts_barcode,
+              ts_item},
+        callback(ts_r){
+          if(ts_r.message === 0){
+            out.add_item(item);
+          }
+          if(typeof ts_r.message === 'string'){
+            item["ts_current_batch"]=ts_r.message
+            out.add_item(item);
+          }else{
+            if(ts_r.message.length>1){
+              const ls=[]
+            for (var i = 0; i < ts_r.message.length; i++) {
+                ls.push("Batch No:- "+ts_r.message[i]["name"] + " |Expiry Date:- " + ts_r.message[i]["expiry_date"] + " |Batch Qty:- " + ts_r.message[i]["batch_qty"] + " |Selling Price:- " + ts_r.message[i]["ts_selling_price"])
+            }
+              let d = new frappe.ui.Dialog({
+              title: 'Batch Selection',
+              fields: [               
+                  {
+                      label: 'Batch No',
+                      fieldname: 'batch_no',
+                      fieldtype: "Select",
+                      options: ls
+                  },
+              ],
+              primary_action_label: 'OK',
+              primary_action(values) {
+                  var ts_current_batch = values["batch_no"].split(" ");
+                  ts_current_batch=ts_current_batch[2]
+                  item["ts_current_batch"]=ts_current_batch
+                  out.add_item(item);
+                  d.hide();
+                  evntBus.$emit('focus_on_search');
+              }
+          });
+          d.show();
+            }
+            else{
+              item["ts_current_batch"]=ts_r.message[0]["name"]
+              out.add_item(item);
+            }
+          }
+        }
+      })
+      // End
+    });
       evntBus.$on('update_customer', function (customer) {
         this$1.customer = customer;
       });
@@ -2433,16 +2469,9 @@ export default {
         this.close_payments();
         evntBus.$emit('set_customer', this.customer);
         this.fetch_customer_details();
-        this. fetch_vehicle_details();
-      },
-      vehicle: function vehicle() {
-        this. fetch_vehicle_details();
       },
       customer_info: function customer_info() {
         evntBus.$emit('set_customer_info_to_edit', this.customer_info);
-      },
-      vehicle_info: function vehicle_info() {
-        evntBus.$emit('set_vehicle_info_to_edit', this.vehicle_info);
       },
       expanded: function expanded(data_value) {
         this.update_items_details(data_value);
