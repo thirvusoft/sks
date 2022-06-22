@@ -410,7 +410,6 @@ def update_invoice(data):
                 tax.included_in_print_rate = 1
     invoice_doc.save()
     ts_settings = frappe.get_value("Thirvu Retail Settings",'Thirvu Retail Settings','allow_display_feedback_required_option')
-    frappe.errprint(ts_settings)
     feedback_required = frappe.get_value("Customer", invoice_doc.customer, 'feedback_required')
     return invoice_doc, ts_settings, feedback_required
 
@@ -1493,7 +1492,6 @@ def get_customer_info(customer):
     res["posa_discount"] = customer.posa_discount
     res["name"] = customer.name
     res['is_credit_customer'] = customer.is_credit_customer
-    # frappe.errprint(customer.is_credit_customer)
     res["loyalty_program"] = customer.loyalty_program
     res["customer_group_price_list"] = frappe.get_value(
         "Customer Group", customer.customer_group, "default_price_list"
@@ -1527,7 +1525,6 @@ def get_fields_for_denomination():
             {'fieldname':f'sales{i}','label':f"<b>Enter here (For ₹{i})</b>", 'fieldtype':"Currency"},
             {'fieldtype':"Section Break"}
         )
-    frappe.errprint(amounts)
     fields = '''<html><body><table><form>'''
     for i in amounts:
         fields+=f''' 
