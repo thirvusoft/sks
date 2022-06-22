@@ -22,7 +22,7 @@ def batch_custom_fields():
                 fieldname="ts_selling_price",
                 fieldtype="Currency",
                 label="Selling Price",
-                insert_after="posa_btach_price"
+                insert_after="manufacturing_date"
             ),
             dict(
                 fieldname="ts_valuation_rate",
@@ -34,4 +34,5 @@ def batch_custom_fields():
     }
     create_custom_fields(custom_fields)
 def batch_property_setter():                
-          pass
+    make_property_setter("Batch", "manufacturing_section", "hidden", "1", "Section Break")
+    make_property_setter("Batch", "section_break_7", "hidden", "1", "Section Break")
