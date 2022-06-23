@@ -1,9 +1,9 @@
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 from frappe.custom.doctype.property_setter.property_setter import make_property_setter
 def supplier_customization():
-    supplier_fields()
+    supplier_custom_fields()
     supplier_property_setter()
-def supplier_fields():
+def supplier_custom_fields():
     custom_fields = {
         "Supplier": [
             dict(
