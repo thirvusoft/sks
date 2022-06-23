@@ -16,6 +16,12 @@ from sks.sks.utils.hr.driver.driver_custom_fields import driver_customization
 from sks.sks.utils.crm.address.address_custom_fields import address_customization
 from sks.sks.utils.accounting.pricing_rule.pricing_rule_custom_fields import pricing_rule_customization
 from sks.sks.utils.buying.supplier.supplier_custom_fields import supplier_customization
+from sks.sks.utils.hr.attendance.attendance_custom_fields import create_attendance_property_setter
+from sks.sks.utils.hr.employee.employee_custom_fields import create_employee_property_setter
+from sks.sks.utils.hr.employee_checkin.employee_checkin_custom_fields import create_employee_checkin_property_setter
+from sks.sks.utils.hr.payroll_entry.payroll_entry_custom_fields import create_payroll_entry_property_setter
+from sks.sks.utils.hr.salary_slip.salary_slip_custom_fields import create_salary_slip_property_setter
+from sks.sks.utils.hr.salary_structure.salary_structure_custom_fields import create_salary_structure_property_setter
 from sks.sks.utils.buying.supplier_quotation.supplier_quotation_custom_fields import supplier_quotation_customization
 
 def after_install():
@@ -37,5 +43,10 @@ def after_install():
     address_customization()
     pricing_rule_customization()
     supplier_customization()
+    create_attendance_property_setter()
+    create_employee_property_setter()
+    create_employee_checkin_property_setter()
+    create_payroll_entry_property_setter()
+    create_salary_slip_property_setter()
+    create_salary_structure_property_setter()
     supplier_quotation_customization()
-
