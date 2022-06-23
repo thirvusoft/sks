@@ -12,8 +12,8 @@ def supplier_custom_fields():
                 label="GSTIN",
                 insert_after="default_bank_account",
                 fetch_from="supplier_primary_address.gstin"
-            ),
-            ],      
+            )
+            ]    
     }
     create_custom_fields(custom_fields)
 def supplier_property_setter():                
