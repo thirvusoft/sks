@@ -14,7 +14,7 @@ def delivery_note_custom_field():
             dict(fieldname='scan_barcode_to_verify_the_items',
                 label='Scan Barcode To Verify The Items',
                 fieldtype='Data', 
-                insert_after='column_break_54',
+                insert_after='scan_barcode',
                 options="Barcode",
                 hidden=1),
             dict(fieldname='mode_of_delivery', 

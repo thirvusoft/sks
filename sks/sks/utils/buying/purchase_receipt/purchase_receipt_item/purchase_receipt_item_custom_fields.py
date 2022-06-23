@@ -44,6 +44,11 @@ def purchase_receipt_item_custom_fields():
           ],
           }
           create_custom_fields(custom_fields)
+          
 def purchase_receipt_item_property_setter():
-          make_property_setter("Purchase Receipt Item", "barcode", "Hidden", 1, "Check")
+    make_property_setter("Purchase Receipt Item", "is_nil_exempt", "hidden", "1", "Check")
+    make_property_setter("Purchase Receipt Item", "is_non_gst", "hidden", "1", "Check")
+    make_property_setter("Purchase Receipt Item", "section_break_80", "hidden", "1", "Section Break")
+    make_property_setter("Purchase Receipt Item", "manufacture_details", "hidden", "1", "Section Break")
+    make_property_setter("Purchase Receipt Item", "allow_zero_valuation_rate", "hidden", "1", "Check")
          

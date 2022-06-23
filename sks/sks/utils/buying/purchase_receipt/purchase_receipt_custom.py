@@ -50,20 +50,22 @@ def purchase_receipt_custom_field():
                                         no_copy=1
                               ),
                               dict(
-                                        fieldname='column_break_47',
-                                        fieldtype='Column Break',
-                                        insert_after='scan_barcode'
-                              ),
-                              dict(
                                         fieldname='scan_barcode_to_verify_the_items', 
                                         label='Scan Barcode To Verify The Items',
                                         fieldtype='Data', 
-                                        insert_after='column_break_47',
+                                        insert_after='scan_barcode',
                                         options="Barcode"
                               ),
                     ],
           }
           create_custom_fields(custom_fields)
 def purchase_receipt_property_setter(): 
-          make_property_setter("Purchase Receipt", "scan_barcode", "Hidden", 1, "Check")
+    make_property_setter("Purchase Receipt", "scan_barcode", "hidden", 1, "Check")
+    make_property_setter("Purchase Receipt", "supplier_delivery_note", "hidden", 1, "Data")
+    make_property_setter("Purchase Receipt", "raw_material_details", "hidden", 1, "Section Break")
+    make_property_setter("Purchase Receipt", "transporter_info", "hidden", 1, "Section Break")
+    make_property_setter("Purchase Receipt", "printing_settings", "hidden", 1, "Section Break")
+    make_property_setter("Purchase Receipt", "subscription_detail", "hidden", 1, "Section Break")
+    make_property_setter("Purchase Receipt", "more_info", "hidden", 1, "Section Break")
+    make_property_setter("Purchase Receipt", "accounting_details_section", "hidden", 1, "Section Break")
           
