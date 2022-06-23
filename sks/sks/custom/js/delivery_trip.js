@@ -38,15 +38,12 @@ frappe.ui.form.on('Delivery Trip',{
                                     data: data
                                 },
                                 callback(r){
-<<<<<<< HEAD
                                         if(r.message.length == 0){
                                             frappe.throw({
                                                 title: "No Invoice",
                                                 message: "All Invoice are Deliver"
                                              })
                                         }
-=======
->>>>>>> e7ed9646e8968c26748de06d44d007471731dd3e
                                     let p = locals[cdt][cdn]
                                     frm.set_value("delivery_stops",[])
                                         for(let i = 0; i<r.message.length;i++){
@@ -229,19 +226,6 @@ frappe.ui.form.on("Delivery Stop",{
             company: company,
         },
         callback(res){
-<<<<<<< HEAD
-            // frappe.call({
-            //     method: "sks.sks.custom.py.delivery_trip.get_condition_from_dialog",
-            //     args: {
-            //         data: filter
-            //     },
-            //     callback(r){
-            //         update_fields(p,r)
-
-
-            //     }
-            // })
-=======
             frappe.call({
                 method: "sks.sks.custom.py.delivery_trip.get_condition_from_dialog",
                 args: {
@@ -253,7 +237,6 @@ frappe.ui.form.on("Delivery Stop",{
 
                 }
             })
->>>>>>> e7ed9646e8968c26748de06d44d007471731dd3e
             frappe.show_alert({
                 message: res.message[0],
                 indicator: res.message[1]

@@ -95,3 +95,4 @@ def delivery_trip_fields():
     create_custom_fields(custom_fields)
 def delivery_trip_property_setter():                
         make_property_setter("Delivery Trip", "delivery_stops", "allow_on_submit", 1,"Check")
+        make_property_setter("Delivery Trip", "email_notification_sent", "hidden", "1","Check")
