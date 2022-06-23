@@ -38,4 +38,4 @@ def after_install():
     create_employee_property_setter()
     create_employee_checkin_property_setter()
     create_payroll_entry_property_setter()
-    
+    create_salary_slip_property_setter()
