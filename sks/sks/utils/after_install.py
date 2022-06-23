@@ -14,6 +14,7 @@ from sks.sks.utils.stock.delivery_trip.delivery_trip_custom_fields import delive
 from sks.sks.utils.crm.contact.contact_custom_fields import contact_customization
 from sks.sks.utils.hr.driver.driver_custom_fields import driver_customization
 from sks.sks.utils.crm.address.address_custom_fields import address_customization
+from sks.sks.utils.selling.delivery_note.packed_item.packed_item_custom_fields import packed_item_customization
 def after_install():
     purchase_order_customization()
     delivery_note_customization()
@@ -31,3 +32,4 @@ def after_install():
     contact_customization()
     driver_customization()
     address_customization()
+    packed_item_customization()
