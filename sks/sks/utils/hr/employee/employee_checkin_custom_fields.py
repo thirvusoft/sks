@@ -1,4 +1,10 @@
+from xml.dom.pulldom import parseString
 import frappe
+
+def employee_checkin_customisation():
+    create_employee_checkin_property_setter()
+    create_custom_fields()
+
 
 def create_employee_checkin_property_setter():
     employee_checkin=frappe.get_doc({
@@ -11,3 +17,6 @@ def create_employee_checkin_property_setter():
         "value":1
     })
     employee_checkin.save(ignore_permissions=True)
+
+def create_custom_fields():
+    pass
