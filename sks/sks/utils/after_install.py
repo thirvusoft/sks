@@ -35,3 +35,5 @@ def after_install():
     delivery_trip_customization()
     driver_customization()
     create_attendance_property_setter()
+    create_employee_property_setter()
+    create_employee_checkin_property_setter()
