@@ -6,10 +6,8 @@ def supplier_quotation_customization():
     supplier_quotation_property_setter()
     supplier_quotation_item_customization()
 def supplier_quotation_custom_fields():
-    print("Pass12")
     pass
 def supplier_quotation_property_setter():                
         make_property_setter("Supplier Quotation", "terms", "hidden", 1,"Check")
         make_property_setter("Supplier Quotation", "more_info", "hidden", 1,"Check")
         make_property_setter("Supplier Quotation", "printing_settings", "hidden", 1,"Check")
-        print("Pass13")
