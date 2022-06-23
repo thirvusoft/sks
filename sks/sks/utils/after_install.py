@@ -39,15 +39,12 @@ def after_install():
     delivery_trip_customization()
     contact_customization()
     driver_customization()
-<<<<<<< HEAD
+    address_customization()
+    pricing_rule_customization()
+    supplier_customization()
     create_attendance_property_setter()
     create_employee_property_setter()
     create_employee_checkin_property_setter()
     create_payroll_entry_property_setter()
     create_salary_slip_property_setter()
     create_salary_structure_property_setter()
-=======
-    address_customization()
-    pricing_rule_customization()
-    supplier_customization()
->>>>>>> e6ce8e955fb12241f63dad7dfb4b44639c9321ad
