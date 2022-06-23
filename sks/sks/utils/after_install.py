@@ -11,7 +11,11 @@ from sks.sks.utils.stock.item.item_tax_custom_fields import item_tax_customizati
 from sks.sks.utils.stock.material_request.material_request_custom_fields import material_request_customization
 from sks.sks.utils.stock.batch.batch_custom_fields import batch_customization
 from sks.sks.utils.stock.delivery_trip.delivery_trip_custom_fields import delivery_trip_customization
+<<<<<<< HEAD
 from sks.sks.utils.crm.customer.contact.contact_custom_fields import contact_customization
+=======
+from sks.sks.utils.hr.driver.driver_custom_fields import driver_customization
+>>>>>>> fb12923a0d8455ab4910131f17e76ecd1b3d3880
 def after_install():
     purchase_order_customization()
     delivery_note_customization()
@@ -26,7 +30,11 @@ def after_install():
     material_request_customization()
     batch_customization()
     delivery_trip_customization()
+<<<<<<< HEAD
     contact_customization()
+=======
+    driver_customization()
+>>>>>>> fb12923a0d8455ab4910131f17e76ecd1b3d3880
 
 
 
