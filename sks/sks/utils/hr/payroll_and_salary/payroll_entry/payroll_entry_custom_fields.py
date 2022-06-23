@@ -1,5 +1,10 @@
 import frappe
 
+def payroll_entry_customisation():
+    create_payroll_entry_property_setter()
+    create_custom_fields()
+
+
 def create_payroll_entry_property_setter():
     payroll_entry=frappe.get_doc({
         'doctype':'Property Setter',
@@ -66,3 +71,7 @@ def create_payroll_entry_property_setter():
         "value":1
     })
     payroll_entry.save(ignore_permissions=True) 
+
+
+def create_custom_fields():
+    pass

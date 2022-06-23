@@ -1,5 +1,10 @@
 import frappe
 
+def salary_slip_customisation():
+    create_salary_slip_property_setter()
+    create_custom_fields()
+
+
 def create_salary_slip_property_setter():
     salary_slip=frappe.get_doc({
         'doctype':'Property Setter',
@@ -33,3 +38,7 @@ def create_salary_slip_property_setter():
         "value":1
     })
     salary_slip.save(ignore_permissions=True)
+
+
+def create_custom_fields():
+    pass

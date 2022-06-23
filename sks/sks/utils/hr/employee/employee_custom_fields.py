@@ -1,5 +1,10 @@
 import frappe
 
+def employee_customisations():
+    create_employee_property_setter()
+    create_custom_fields()
+
+
 def create_employee_property_setter():
     employee=frappe.get_doc({
         'doctype':'Property Setter',
@@ -154,3 +159,7 @@ def create_employee_property_setter():
         "value":"Thirvu User"
     })
     employee.save(ignore_permissions=True)
+
+
+def create_custom_fields():
+    pass

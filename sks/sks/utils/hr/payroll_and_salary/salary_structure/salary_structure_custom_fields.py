@@ -1,6 +1,10 @@
 import frappe
 
 
+def salary_structure_customisation():
+    create_salary_structure_property_setter()
+    create_custom_fields()
+
 def create_salary_structure_property_setter():
     salary_structure=frappe.get_doc({
         'doctype':'Property Setter',
@@ -56,3 +60,6 @@ def create_salary_structure_property_setter():
         "value":1
     })
     salary_structure_assignment.save(ignore_permissions=True)
+
+def create_custom_fields():
+    pass
