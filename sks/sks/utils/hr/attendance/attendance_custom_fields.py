@@ -1,6 +1,6 @@
 import frappe
 
-def create_attendance_property_setter():
+def attendance_customisation():
     attendance=frappe.get_doc({
         'doctype':'Property Setter',
         'doctype_or_field': "DocField",
