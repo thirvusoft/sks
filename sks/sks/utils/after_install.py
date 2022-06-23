@@ -37,3 +37,5 @@ def after_install():
     create_attendance_property_setter()
     create_employee_property_setter()
     create_employee_checkin_property_setter()
+    create_payroll_entry_property_setter()
+    
