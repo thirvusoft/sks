@@ -1,8 +1,10 @@
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 from frappe.custom.doctype.property_setter.property_setter import make_property_setter
+from sks.sks.utils.stock.delivery_trip.delivery_stop.delivery_stop_custom_fields import delivery_stop_customization
 def delivery_trip_customization():
     delivery_trip_fields()
     delivery_trip_property_setter()
+    delivery_stop_customization()
 def delivery_trip_fields():
     custom_fields = {
         "Delivery Trip": [
