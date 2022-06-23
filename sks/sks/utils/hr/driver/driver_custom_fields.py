@@ -13,7 +13,7 @@ def driver_custom_fields():
                 label="User Id",
                 insert_after="address",
                 options ="User"
-            ),
+            )
         ]
     }
     create_custom_fields(custom_fields)
