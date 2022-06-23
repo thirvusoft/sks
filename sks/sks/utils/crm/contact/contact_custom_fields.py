@@ -12,4 +12,7 @@ def contact_property_setter():
     make_property_setter("Contact", "more_info", "hidden", "1", "Check")
     make_property_setter("Contact", "department", "hidden", "1", "Check")
     make_property_setter("Contact", "unsubscribed", "hidden", "1", "Check")
+    make_property_setter("Contact", "sync_with_google_contacts", "hidden", "1", "Check")
+    make_property_setter("Contact", "user", "hidden", "1", "Link")
+    make_property_setter("Contact", "salutation", "hidden", "1", "Link")
    
