@@ -16,6 +16,7 @@ from sks.sks.utils.hr.driver.driver_custom_fields import driver_customization
 from sks.sks.utils.crm.address.address_custom_fields import address_customization
 from sks.sks.utils.accounting.pricing_rule.pricing_rule_custom_fields import pricing_rule_customization
 from sks.sks.utils.buying.supplier.supplier_custom_fields import supplier_customization
+from sks.sks.utils.buying.supplier_quotation.supplier_quotation_custom_fields import supplier_quotation_customization
 
 def after_install():
     purchase_order_customization()
@@ -36,3 +37,5 @@ def after_install():
     address_customization()
     pricing_rule_customization()
     supplier_customization()
+    supplier_quotation_customization()
+
