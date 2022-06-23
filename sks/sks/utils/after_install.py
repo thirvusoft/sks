@@ -12,6 +12,7 @@ from sks.sks.utils.stock.material_request.material_request_custom_fields import 
 from sks.sks.utils.stock.batch.batch_custom_fields import batch_customization
 from sks.sks.utils.stock.delivery_trip.delivery_trip_custom_fields import delivery_trip_customization
 from sks.sks.utils.hr.driver.driver_custom_fields import driver_customization
+from sks.sks.utils.accounting.pricing_rule.pricing_rule_custom_fields import pricing_rule_customization
 def after_install():
     purchase_order_customization()
     delivery_note_customization()
@@ -27,6 +28,7 @@ def after_install():
     batch_customization()
     delivery_trip_customization()
     driver_customization()
+    pricing_rule_customization()
 
 
 
