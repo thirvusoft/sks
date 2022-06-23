@@ -22,6 +22,7 @@ from sks.sks.utils.hr.employee_checkin.employee_checkin_custom_fields import cre
 from sks.sks.utils.hr.payroll_entry.payroll_entry_custom_fields import create_payroll_entry_property_setter
 from sks.sks.utils.hr.salary_slip.salary_slip_custom_fields import create_salary_slip_property_setter
 from sks.sks.utils.hr.salary_structure.salary_structure_custom_fields import create_salary_structure_property_setter
+from sks.sks.utils.buying.supplier_quotation.supplier_quotation_custom_fields import supplier_quotation_customization
 
 def after_install():
     purchase_order_customization()
@@ -48,3 +49,4 @@ def after_install():
     create_payroll_entry_property_setter()
     create_salary_slip_property_setter()
     create_salary_structure_property_setter()
+    supplier_quotation_customization()
