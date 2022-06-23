@@ -8,3 +8,6 @@ def supplier_quotation_item_custom_fields():
 def supplier_quotation_item_property_setter():
     make_property_setter("Supplier Quotation Item", "ad_sec_break", "hidden", 1,"Check")
     make_property_setter("Supplier Quotation Item", "manufacture_details", "hidden", 1,"Check")
+    make_property_setter("Supplier Quotation Item", "is_nil_exempt", "hidden", 1,"Check")
+    make_property_setter("Supplier Quotation Item", "is_non_gst", "hidden", 1,"Check")
+    make_property_setter("Supplier Quotation Item", "section_break_44", "hidden", 1,"Section Break")
