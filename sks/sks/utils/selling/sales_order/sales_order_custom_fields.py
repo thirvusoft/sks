@@ -23,6 +23,7 @@ def sales_order_custom_field():
 
 def sales_order_property_setter():
     make_property_setter("Sales Order", "po_no", "hidden", "1", "Data")
+    make_property_setter("Sales Order", "order_type", "hidden", "1", "Select")
     make_property_setter("Sales Order", "ignore_pricing_rule", "hidden", "1", "Check")
     make_property_setter("Sales Order", "more_info", "hidden", "1", "Section Break")
     make_property_setter("Sales Order", "printing_details", "hidden", "1", "Section Break")
