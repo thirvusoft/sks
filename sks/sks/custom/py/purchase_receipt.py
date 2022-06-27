@@ -171,7 +171,6 @@ def markup_and_markdown_calculator(document,event):
                     if(ts_markdown<ts_mrp[i] and ts_markdown>ts_valuation_rate[i]):
                         ts_matched_item.append(ts_item_code[i])
                         ts_matched_selling_rate.append(ts_markdown)
-                        ts_markdown_items_to_verify = []
                     else:
                         ts_unmatched_item.append(ts_item_code[i])
                         ts_unmatched_selling_rate.append(ts_markdown)
@@ -187,7 +186,6 @@ def markup_and_markdown_calculator(document,event):
                     if(ts_markup<ts_mrp[i] and ts_markup>ts_valuation_rate[i]):
                         ts_matched_item.append(ts_item_code[i])
                         ts_matched_selling_rate.append(ts_markup)
-                        ts_markup_items_to_verify = []
                     else:
                         ts_unmatched_item.append(ts_item_code[i])
                         ts_unmatched_selling_rate.append(ts_markup)
