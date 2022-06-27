@@ -20,6 +20,7 @@ from sks.sks.utils.hr.attendance.attendance_custom_fields import attendance_cust
 from sks.sks.utils.hr.employee.employee_customisation import employee_customisation
 from sks.sks.utils.hr.payroll_and_salary.payroll_and_salary_customisation import payroll_salary_customisation
 from sks.sks.utils.buying.supplier_quotation.supplier_quotation_custom_fields import supplier_quotation_customization
+from sks.sks.utils.stock.item.item_supplier_custom_fields import item_supplier_customization
 
 def after_install():
     purchase_order_customization()
@@ -44,3 +45,4 @@ def after_install():
     employee_customisation()
     payroll_salary_customisation()
     supplier_quotation_customization()
+    item_supplier_customization()
