@@ -84,7 +84,7 @@ def item_custom_fields():
             dict(
                 fieldname="ts_markup_price",
                 fieldtype="Percent",
-                label="Markup Price",
+                label="Markup Percentage",
                 depends_on="eval:doc.select_selling_price_type==\"Markup\"",
                 mandatory_depends_on="eval:doc.select_selling_price_type==\"Markup\"",
                 insert_after="ts_column_break",
@@ -93,7 +93,7 @@ def item_custom_fields():
             dict(
                 fieldname="ts_markdown_price",
                 fieldtype="Percent",
-                label="Markdown Price",
+                label="Markdown Percentage",
                 depends_on="eval:doc.select_selling_price_type==\"Markdown\"",
                 mandatory_depends_on="eval:doc.select_selling_price_type==\"Markdown\"",
                 insert_after="ts_markup_price",
@@ -113,30 +113,32 @@ def item_custom_fields():
     }
     create_custom_fields(custom_fields)
 def item_property_setter():                
-          make_property_setter("Item", "supplier_details", "hidden", 1, "Check")
-          make_property_setter("Item", "supplier_details", "collapsible", 0, "Check")
-          make_property_setter("Item", "column_break2", "hidden", 1, "Check")
-          make_property_setter("Item", "delivered_by_supplier", "hidden", 1, "Check")
-          make_property_setter("Item", "is_item_from_hub", "hidden", 1, "Check")
-          make_property_setter("Item", "include_item_in_manufacturing", "hidden", 1, "Check")
-          make_property_setter("Item", "item_name", "reqd", 1, "Check")
-          make_property_setter("Item", "image", "in_preview", 0, "Check")
-          make_property_setter("Item", "image", "hidden", 1, "Check")
-          make_property_setter("Item", "deferred_expense_section", "hidden", 1, "Check")
-          make_property_setter("Item", "purchase_details", "hidden", 1, "Check")
-          make_property_setter("Item", "customer_details", "hidden", 1, "Check")
-          make_property_setter("Item", "deferred_revenue", "hidden", 1, "Check")
-          make_property_setter("Item", "sales_details", "hidden", 1, "Check")
-          make_property_setter("Item", "foreign_trade_details", "hidden", 1, "Check")
-          make_property_setter("Item", "more_information_section", "hidden", 1, "Check")
-          make_property_setter("Item", "hub_publishing_sb", "hidden", 1, "Check")
-          make_property_setter("Item", "manufacturing", "hidden", 1, "Check")
-          make_property_setter("Item", "inspection_criteria", "hidden", 1, "Check")
-          make_property_setter("Item", "barcodes", "hidden", 1, "Check")
-          make_property_setter("Item", "item_code", "reqd", 1, "Check")
-          make_property_setter("Item", "item_code", "hidden", 0, "Check")
-          make_property_setter("Item", "manufacturing", "collapsible_depends_on","is_stock_item", "Code")
-          make_property_setter("Item", "default_discount_account", "hidden", 1, "Check") 
+    make_property_setter("Item", "supplier_details", "hidden", 1, "Check")
+    make_property_setter("Item", "supplier_details", "collapsible", 0, "Check")
+    make_property_setter("Item", "column_break2", "hidden", 1, "Check")
+    make_property_setter("Item", "delivered_by_supplier", "hidden", 1, "Check")
+    make_property_setter("Item", "is_item_from_hub", "hidden", 1, "Check")
+    make_property_setter("Item", "include_item_in_manufacturing", "hidden", 1, "Check")
+    make_property_setter("Item", "item_name", "reqd", 1, "Check")
+    make_property_setter("Item", "image", "in_preview", 0, "Check")
+    make_property_setter("Item", "image", "hidden", 1, "Check")
+    make_property_setter("Item", "deferred_expense_section", "hidden", 1, "Check")
+    make_property_setter("Item", "purchase_details", "hidden", 1, "Check")
+    make_property_setter("Item", "customer_details", "hidden", 1, "Check")
+    make_property_setter("Item", "deferred_revenue", "hidden", 1, "Check")
+    make_property_setter("Item", "sales_details", "hidden", 1, "Check")
+    make_property_setter("Item", "foreign_trade_details", "hidden", 1, "Check")
+    make_property_setter("Item", "more_information_section", "hidden", 1, "Check")
+    make_property_setter("Item", "hub_publishing_sb", "hidden", 1, "Check")
+    make_property_setter("Item", "manufacturing", "hidden", 1, "Check")
+    make_property_setter("Item", "inspection_criteria", "hidden", 1, "Check")
+    make_property_setter("Item", "item_code", "reqd", 1, "Check")
+    make_property_setter("Item", "item_code", "hidden", 0, "Check")
+    make_property_setter("Item", "manufacturing", "collapsible_depends_on","is_stock_item", "Code")
+    make_property_setter("Item", "default_discount_account", "hidden", 1, "Check")
+    make_property_setter("Item", "over_delivery_receipt_allowance", "hidden", 1, "Float")
+    make_property_setter("Item", "over_billing_allowance", "hidden", 1, "Float")
+    make_property_setter("Item", "opening_stock", "hidden", 1, "Float")
 
 
 
