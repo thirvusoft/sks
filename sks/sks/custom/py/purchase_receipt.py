@@ -192,7 +192,7 @@ def markup_and_markdown_calculator(document,event):
                         item_row = frappe._dict({})                                              
                         item_row.update({'items':ts_item_code[i],'selling_rate':ts_markup,'difference':round(abs(ts_mrp[i]-ts_markup),2)})
                         ts_markup_items_to_verify.append(item_row)
-                        ts_markup_items += f"{ts_item_name[i]}:{round(abs(ts_valuation_rate[i]-ts_markdown),2)}\n"
+                        ts_markup_items += f"{ts_item_name[i]}:{round(abs(ts_valuation_rate[i]-ts_markup),2)}\n"
         document.ts_markdown_items = ts_markdown_items
         document.ts_markup_items = ts_markup_items
         for item in document.get('items'):
