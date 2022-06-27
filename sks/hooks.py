@@ -98,6 +98,9 @@ after_install = ["sks.sks.custom.py.workflow.workflow_document_creation",
 # override_doctype_class = {
 # 	"ToDo": "custom_app.overrides.CustomToDo"
 # }
+# override_doctype_class = {
+# 	"Batch": "sks.sks.custom.py.batch.STOCK"
+# }
 
 # Document Events
 # ---------------

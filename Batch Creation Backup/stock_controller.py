@@ -224,8 +224,6 @@ class StockController(AccountsController):
 
 	def make_batches(self, warehouse_field):
 		'''Create batches if required. Called before submit'''
-		a=self.items
-		print(a)
 		for d in self.items:
 			if d.get(warehouse_field) and not d.batch_no:
 				has_batch_no, create_new_batch = frappe.db.get_value('Item', d.item_code, ['has_batch_no', 'create_new_batch'])
