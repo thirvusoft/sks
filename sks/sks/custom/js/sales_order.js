@@ -139,7 +139,7 @@ frappe.ui.form.on("Sales Order",{
         frappe.db.get_single_value("Thirvu Retail Settings","credit_bill_history").then(value =>{
             if(value==1){
                 if(cur_frm.doc.docstatus!=1){
-                    if(loop==0){
+                    // if(loop==0){
                         var data1 = locals[cdt][cdn]
                         var customer = data1.customer
                         frappe.call({
@@ -170,7 +170,7 @@ frappe.ui.form.on("Sales Order",{
                                 }
                             }  
                         })
-                    }
+                    // }
                 }
                 if(loop==0){
                     loop=loop+1
