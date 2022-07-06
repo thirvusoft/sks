@@ -140,7 +140,7 @@ def purchase_order_property_setter():
           'property':"default",
           'property_type':"Text",
           'field_name':"disable_rounded_total",
-          "value":0
+          "value":1
           })
           purchase_order.save(ignore_permissions=True)
 
@@ -218,6 +218,116 @@ def purchase_order_property_setter():
           'property_type':"Check",
           'field_name':"base_rounded_total",
           "value":0
+          })
+          
+          purchase_order.save(ignore_permissions=True)
+
+          purchase_order=frappe.get_doc({
+          'doctype':'Property Setter',
+          'doctype_or_field': "DocField",
+          'doc_type': "Purchase Order",
+          'property':"reqd",
+          'field_name':"schedule_date",
+          "value":1
+          })
+          purchase_order.save(ignore_permissions=True)
+
+          purchase_order=frappe.get_doc({
+          'doctype':'Property Setter',
+          'doctype_or_field': "DocField",
+          'doc_type': "Purchase Order",
+          'property':"default",
+          'field_name':"naming_series",
+          "value":"PUR-ORD-.YYYY.-"
+          })
+          purchase_order.save(ignore_permissions=True)
+
+          purchase_order=frappe.get_doc({
+          'doctype':'Property Setter',
+          'doctype_or_field': "DocField",
+          'doc_type': "Purchase Order",
+          'property':"hidden",
+          'field_name':"naming_series",
+          "value":1
+          })
+          purchase_order.save(ignore_permissions=True)
+
+          purchase_order=frappe.get_doc({
+          'doctype':'Property Setter',
+          'doctype_or_field': "DocField",
+          'doc_type': "Purchase Order",
+          'property':"hidden",
+          'property_type':"Check",
+          'field_name':"before_items_section",
+          "value":1
+          })
+          purchase_order.save(ignore_permissions=True)
+
+          purchase_order=frappe.get_doc({
+          'doctype':'Property Setter',
+          'doctype_or_field': "DocField",
+          'doc_type': "Purchase Order",
+          'property':"hidden",
+          'property_type':"Section Break",
+          'field_name':"taxes_section",
+          "value":1
+          })
+          
+          purchase_order.save(ignore_permissions=True)
+
+          purchase_order=frappe.get_doc({
+          'doctype':'Property Setter',
+          'doctype_or_field': "DocField",
+          'doc_type': "Purchase Order",
+          'property':"hidden",
+          'property_type':"Check",
+          'field_name':"section_break_52",
+          "value":1
+          })
+          purchase_order.save(ignore_permissions=True)
+
+          purchase_order=frappe.get_doc({
+          'doctype':'Property Setter',
+          'doctype_or_field': "DocField",
+          'doc_type': "Purchase Order",
+          'property':"hidden",
+          'property_type':"Check",
+          'field_name':"total",
+          "value":1
+          })
+          purchase_order.save(ignore_permissions=True)
+
+          purchase_order=frappe.get_doc({
+          'doctype':'Property Setter',
+          'doctype_or_field': "DocField",
+          'doc_type': "Purchase Order",
+          'property':"hidden",
+          'property_type':"Check",
+          'field_name':"discount_section",
+          "value":1
+          })
+          
+          purchase_order.save(ignore_permissions=True)
+
+          purchase_order=frappe.get_doc({
+          'doctype':'Property Setter',
+          'doctype_or_field': "DocField",
+          'doc_type': "Purchase Order",
+          'property':"hidden",
+          'property_type':"Check",
+          'field_name':"payment_schedule_section",
+          "value":1
+          })
+          
+          purchase_order.save(ignore_permissions=True)
+          purchase_order=frappe.get_doc({
+          'doctype':'Property Setter',
+          'doctype_or_field': "DocField",
+          'doc_type': "Purchase Order",
+          'property':"hidden",
+          'property_type':"Check",
+          'field_name':"grand_total",
+          "value":1
           })
           
           purchase_order.save(ignore_permissions=True)
