@@ -1,5 +1,3 @@
-from audioop import avgpp
-from email import message
 import frappe
 @frappe.whitelist()
 def last_purchase_price_validate(items_code,items_rate):
