@@ -3,6 +3,7 @@ let company;
 frappe.ui.form.on('Delivery Trip',{
     refresh: function(frm,cdt,cdn){
         company = frm.doc.company;
+        cur_frm.remove_custom_button('Delivery Note', 'Get customers from') 
         if(frm.doc.docstatus == 0){
         frm.add_custom_button( __("Sales Invoice"),function(){
             frappe.call({
@@ -13,18 +14,20 @@ frappe.ui.form.on('Delivery Trip',{
                     var d = new frappe.ui.Dialog({
                         title: "Choose Invoices For Delivery 🛻🛻🛻🛻..",
                         fields: [
+                            {label:'Delivery Day',fieldname:'sec',fieldtype:'Section Break'},
+                            {label:'Day',fieldname:'day',fieldtype:'Select', options:'\nSunday\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday'},
+                            {label:'Select territory',fieldname:'sec1',fieldtype:'Section Break'},
+                            {label:'Territory',fieldname:'territory',fieldtype: 'MultiSelectPills',
+                            get_data: function() {
+                                return r.message
+                            }
+                        },
+                            {label:'Other Details',fieldname:'sec2',fieldtype:'Section Break'},
                             {label:'Customer',fieldname:'customer',fieldtype:'Link',options: 'Customer'},
                             {fieldtype:'Column Break'},
                             {label:'Invoice',fieldname:'invoice',fieldtype:'Link',options: 'Sales Invoice'},
                             {fieldtype:'Column Break'},
                             {label:'Outstanding greater than',fieldname:'outstanding',fieldtype:'Float'},
-                            {label:'Delivery date between',fieldname:'sec',fieldtype:'Section Break'},
-                            {label:'Day',fieldname:'day',fieldtype:'Select', options:'\nSunday\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday'},                            {label:'Select territory',fieldname:'sec1',fieldtype:'Section Break'},
-                            {label:'Territory',fieldname:'territory',fieldtype: 'MultiSelectPills',
-                            get_data: function() {
-                                return r.message
-                            }
-                        }
                         ],
                         primary_action_label: "Submit",
                         primary_action: function(data){
@@ -67,7 +70,7 @@ frappe.ui.form.on('Delivery Trip',{
                 }
             })
             
-        }, __('Get customers from'))
+        }).addClass('btn-primary')
     }
     },
     update_invoice: function(frm,cdt,cdn){
