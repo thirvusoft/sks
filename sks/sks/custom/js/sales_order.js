@@ -210,6 +210,11 @@ frappe.ui.form.on("Sales Order",{
 		var a = new Date(cur_frm.doc.delivery_date);
 		var weekdays=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
 		cur_frm.set_value("delivery_day",weekdays[a.getDay()])
+	},
+    onload:function(frm,cdt,cdn){
+		var a = new Date(cur_frm.doc.delivery_date);
+		var weekdays=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+		cur_frm.set_value("delivery_day",weekdays[a.getDay()])
 	}
  })
 
