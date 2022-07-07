@@ -22,13 +22,38 @@ def sales_order_custom_field():
     create_custom_fields(custom_fields)
 
 def sales_order_property_setter():
-    make_property_setter("Sales Order", "po_no", "hidden", "1", "Data")
-    make_property_setter("Sales Order", "order_type", "hidden", "1", "Select")
+    make_property_setter("Sales Order", "po_no", "hidden", "1", "Check")
+    make_property_setter("Sales Order", "order_type", "hidden", "1", "Check")
     make_property_setter("Sales Order", "ignore_pricing_rule", "hidden", "1", "Check")
-    make_property_setter("Sales Order", "more_info", "hidden", "1", "Section Break")
-    make_property_setter("Sales Order", "printing_details", "hidden", "1", "Section Break")
-    make_property_setter("Sales Order", "section_break_78", "hidden", "1", "Section Break")
-    make_property_setter("Sales Order", "sales_team_section_break", "hidden", "1", "Section Break")
-    make_property_setter("Sales Order", "section_break1", "hidden", "1", "Section Break")
-    make_property_setter("Sales Order", "subscription_section", "hidden", "1", "Section Break")
+    make_property_setter("Sales Order", "more_info", "hidden", "1", "Check")
+    make_property_setter("Sales Order", "printing_details", "hidden", "1", "Check")
+    make_property_setter("Sales Order", "section_break_78", "hidden", "1", "Check")
+    make_property_setter("Sales Order", "sales_team_section_break", "hidden", "1", "Check")
+    make_property_setter("Sales Order", "section_break1", "hidden", "1", "Check")
+    make_property_setter("Sales Order", "subscription_section", "hidden", "1", "Check")
+    make_property_setter("Sales Order", "taxes_section", "hidden", "1", "Check")
+    make_property_setter("Sales Order", "taxes_and_charges", "hidden", "1", "Check")
+    make_property_setter("Sales Order", "taxes", "hidden", "1", "Check")
+    make_property_setter("Sales Order", "sec_tax_breakup", "1","hidden", "Check")
+    make_property_setter("Sales Order", "ts_tax_breakup", "1", "hidden", "Check")
+    make_property_setter("Sales Order", "scan_barcode", "hidden", "1", "Check")
+    make_property_setter("Sales Order", "set_warehouse", "hidden", "1", "Check")
+    make_property_setter("Sales Order", "total", "hidden", "1", "Check")
+    make_property_setter("Sales Order", "section_break_48", "hidden", "1", "Check")
+    make_property_setter("Sales Order", "section_break_40", "hidden", "1", "Check")
+    make_property_setter("Sales Order", "section_break_43", "hidden", "1", "Check")
+    make_property_setter("Sales Order", "terms_section_break", "hidden", "1", "Check")
+    make_property_setter("Sales Order", "grand_total", "hidden", "1", "Check")
+    make_property_setter("Sales Order", "disable_rounded_total", "hidden", "1", "Data")
+    make_property_setter("Sales Order", "totals", "label", "Totals", "Data")
+    make_property_setter("Sales Order", "payment_schedule_section", "hidden", "1", "Check")
+    make_property_setter("Sales Order", "terms_section_break", "1", "hidden", "Check")
+    make_property_setter("Sales Order", "currency_and_price_list", "1", "hidden", "Check")
+    make_property_setter("Sales Order", "packing_list", "1", "hidden", "Check")
+    make_property_setter("Sales Order", "currency_and_price_list", "hidden", "1", "Check")
+   
 
+
+
+
+   
