@@ -51,11 +51,7 @@ def sales_order_property_setter():
     make_property_setter("Sales Order", "currency_and_price_list", "1", "hidden", "Check")
     make_property_setter("Sales Order", "packing_list", "1", "hidden", "Check")
     make_property_setter("Sales Order", "currency_and_price_list", "hidden", "1", "Check")
-    make_property_setter("Sales Order", "customer_type", "default", "Individual", "Data")
-    make_property_setter("Sales Order", "customer_type", "reqd", "0", "Check")
-    make_property_setter("Sales Order", "is_credit_customer", "allow_in_quick_entry", "0", "Check")
-    make_property_setter("Sales Order", "feedback_required", "allow_in_quick_entry", "0", "Check")
-
+   
 
 
 
