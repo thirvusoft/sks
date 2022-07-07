@@ -18,11 +18,8 @@ frappe.ui.form.on('Delivery Trip',{
                             {label:'Invoice',fieldname:'invoice',fieldtype:'Link',options: 'Sales Invoice'},
                             {fieldtype:'Column Break'},
                             {label:'Outstanding greater than',fieldname:'outstanding',fieldtype:'Float'},
-                            {label:'Detlivery date between',fieldname:'sec',fieldtype:'Section Break'},
-                            {label:'From Date',fieldname:'from_date',fieldtype:'Date'},
-                            {fieldtype:'Column Break'},
-                            {label:'To Date',fieldname:'to_date',fieldtype:'Date'},
-                            {label:'Select territory',fieldname:'sec1',fieldtype:'Section Break'},
+                            {label:'Delivery date between',fieldname:'sec',fieldtype:'Section Break'},
+                            {label:'Day',fieldname:'day',fieldtype:'Select', options:'\nSunday\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday'},                            {label:'Select territory',fieldname:'sec1',fieldtype:'Section Break'},
                             {label:'Territory',fieldname:'territory',fieldtype: 'MultiSelectPills',
                             get_data: function() {
                                 return r.message
