@@ -140,7 +140,9 @@ doc_events = {
 		]
 	},
 	"Purchase Order":{
-		"validate":"sks.sks.custom.py.purchase_order.validate_buying_rate_with_mrp"
+		"validate":[
+			"sks.sks.custom.py.buying_module.validate_buying_rate_with_mrp"
+		]
 	}
  }
 
