@@ -1,3 +1,4 @@
+from frappe import read_only
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 from frappe.custom.doctype.property_setter.property_setter import make_property_setter
 def batch_customization():
@@ -29,6 +30,13 @@ def batch_custom_fields():
                 fieldtype="Currency",
                 label="Valuation Rate",
                 insert_after="ts_mrp"
+            ),
+            dict(
+                fieldname="purchase_qty",
+                fieldtype="Float",
+                label="Purchase Qty",
+                insert_after="batch_qty",
+                read_only=1
             ),
             ],      
     }
