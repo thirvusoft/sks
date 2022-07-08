@@ -82,12 +82,8 @@ def get_condition_from_dialog(data):
     data_key = list(data.keys())
     if('customer' in data_key):
         filter['customer'] = data['customer']
-    if('from_date' in data_key and 'to_date' in data_key):
-        filter['delivery_date'] = ['between',(data['from_date'],data['to_date'])]
-    elif('from_date' in data_key):
-        filter['delivery_date'] = ['>=', data['from_date']]
-    elif('to_date' in data_key):
-        filter['delivery_date'] = ['<=', data['to_date']]
+    if('day' in data_key):
+        filter['delivery_day'] = (data['day'])
     if('territory' in data_key):
         filter['territory'] = ['in', data['territory']]
     sales_order = get_sales_order(filter)

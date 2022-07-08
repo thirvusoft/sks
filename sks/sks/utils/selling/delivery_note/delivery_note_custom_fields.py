@@ -35,6 +35,10 @@ def delivery_note_custom_field():
                 fieldtype='Currency', 
                 insert_after='outstanding_amount',
                 read_only=1),
+            dict(fieldname='posting_day', label='Posting Day',
+                fieldtype='Data', 
+                insert_after='posting_date', 
+                read_only=1)
         ]
     }
     create_custom_fields(custom_fields)

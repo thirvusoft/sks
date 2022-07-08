@@ -98,3 +98,6 @@ def delivery_trip_fields():
 def delivery_trip_property_setter():                
         make_property_setter("Delivery Trip", "delivery_stops", "allow_on_submit", 1,"Check")
         make_property_setter("Delivery Trip", "email_notification_sent", "hidden", "1","Check")
+        make_property_setter("Delivery Trip", "delivery_stops", "label", "Sales Invoice","Data")
+        make_property_setter("Delivery Trip", "delivered_driver", "hidden", "1","Check")
+        make_property_setter("Delivery Trip", "driver_address", "hidden", "1","Check")

@@ -115,6 +115,15 @@ frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note
 		})
 	}
  })
+
+ frappe.ui.form.on("Delivery Note",{
+	onload:function(frm,cdt,cdn){
+		var day = new Date(cur_frm.doc.posting_date);
+		var weekdays=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+		cur_frm.set_value("posting_day",weekdays[day.getDay()])
+	}
+ })
+
  
  frappe.ui.form.on('Delivery Note', {
     sales_order: function(frm, cdt, cdn) {

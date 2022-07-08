@@ -205,6 +205,19 @@ frappe.ui.form.on("Sales Order",{
     }
 })
 
+frappe.ui.form.on("Sales Order",{
+	delivery_date:function(frm,cdt,cdn){
+		var day = new Date(cur_frm.doc.delivery_date);
+		var weekdays=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+		cur_frm.set_value("delivery_day",weekdays[day.getDay()])
+	},
+    	onload:function(frm,cdt,cdn){
+		var day = new Date(cur_frm.doc.delivery_date);
+		var weekdays=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+		cur_frm.set_value("delivery_day",weekdays[day.getDay()])
+	}
+ })
+
 frappe.ui.form.on("Sales Order Item",{
     qty:function(frm,cdt,cdn){
         frappe.db.get_single_value("Thirvu Retail Settings","reserved_stock").then(value =>{
