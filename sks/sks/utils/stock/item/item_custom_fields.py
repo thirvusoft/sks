@@ -108,6 +108,7 @@ def item_custom_fields():
                 insert_after="ts_markup_and_markdown",
                 allow_in_quick_entry=1,
             ),
+           
              ],
             
     }
