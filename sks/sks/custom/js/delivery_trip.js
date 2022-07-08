@@ -5,7 +5,7 @@ frappe.ui.form.on('Delivery Trip',{
         company = frm.doc.company;
         cur_frm.remove_custom_button('Delivery Note', 'Get customers from') 
         if(frm.doc.docstatus == 0){
-        frm.add_custom_button( __("Sales Invoice"),function(){
+        frm.add_custom_button( __("Get from Sales Invoice"),function(){
             frappe.call({
                 'method':"sks.sks.custom.py.delivery_trip.get_customer_territory",
                 'args': {},
@@ -70,7 +70,7 @@ frappe.ui.form.on('Delivery Trip',{
                 }
             })
             
-        }).addClass('btn-primary')
+        }).addClass('btn-danger')
     }
     },
     update_invoice: function(frm,cdt,cdn){
