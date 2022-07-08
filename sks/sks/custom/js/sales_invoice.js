@@ -159,14 +159,14 @@ frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_sales_invoice
 
  frappe.ui.form.on("Sales Invoice",{
 	onload:function(frm,cdt,cdn){
-		var a = new Date(cur_frm.doc.due_date);
+		var day = new Date(cur_frm.doc.due_date);
 		var weekdays=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
-		cur_frm.set_value("due_day",weekdays[a.getDay()])
+		cur_frm.set_value("due_day",weekdays[day.getDay()])
 	},
 	due_date:function(frm,cdt,cdn){
-		var a = new Date(cur_frm.doc.due_date);
+		var day = new Date(cur_frm.doc.due_date);
 		var weekdays=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
-		cur_frm.set_value("due_day",weekdays[a.getDay()])
+		cur_frm.set_value("due_day",weekdays[day.getDay()])
 	}
  })
 
