@@ -1,7 +1,7 @@
 {
  "category": "Modules",
  "charts": [],
- "creation": "2022-06-14 10:05:20.803780",
+ "creation": "2022-07-05 16:51:47.035823",
  "developer_mode_only": 0,
  "disable_user_customization": 0,
  "docstatus": 0,
@@ -11,21 +11,20 @@
  "idx": 0,
  "is_default": 0,
  "is_standard": 1,
- "label": "Thrivu Driver",
+ "label": "Retail Settings",
  "links": [],
- "modified": "2022-07-05 14:57:22.145348",
+ "modified": "2022-07-05 16:51:47.035823",
  "modified_by": "pparameshwari@thirvusoft.in",
- "module": "Driver",
- "name": "Thrivu Driver",
- "onboarding": "",
- "owner": "saranesh@gmail.com",
+ "module": "sks",
+ "name": "Retail Settings",
+ "owner": "pparameshwari@thirvusoft.in",
  "pin_to_bottom": 0,
- "pin_to_top": 0,
+ "pin_to_top": 1,
  "shortcuts": [
   {
-   "doc_view": "",
-   "label": "TS Driver Delivery Trip",
-   "link_to": "TS Driver Delivery Trip",
+   "doc_view": "List",
+   "label": "Thirvu Retail Settings",
+   "link_to": "Thirvu Retail Settings",
    "type": "DocType"
   }
  ]
