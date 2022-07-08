@@ -10,8 +10,8 @@
         style="cursor: pointer"
         class="text-uppercase indigo--text"
       >
-        <span class="font-weight-light">Thirvusoft</span>
-        <span>POS</span>
+        <span class="font-weight-light">Thirvu</span>
+        <span>Retail</span>
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
