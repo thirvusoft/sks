@@ -233,6 +233,7 @@ class StockController(AccountsController):
 						item=d.item_code,
 						# Customize By Thirvusoft
 						# Start
+						purchase_qty=d.qty,
 						expiry_date=d.expiry_date,
 						posa_btach_price=d.rate,
 						barcode=d.barcode,

@@ -106,6 +106,7 @@ frappe.ui.form.on("Purchase Order Item",{
 				}
 			}),
 			frappe.call({
+
 				method:"sks.sks.custom.py.buying_module.last_purchased_and_sold_qty",
 				args:{ts_item_code},
 				callback(returned){
