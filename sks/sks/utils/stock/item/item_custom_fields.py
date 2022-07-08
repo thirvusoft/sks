@@ -108,6 +108,28 @@ def item_custom_fields():
                 insert_after="ts_markup_and_markdown",
                 allow_in_quick_entry=1,
             ),
+            dict(
+                fieldname="buying_margin_sec_break",
+                fieldtype="Section Break",
+                insert_after="ts_markdown_price",
+            ),
+            dict(
+                fieldname="ts_buying_margin",
+                fieldtype="Select",
+                label="Buying Margin",
+                options="\nCustom",
+                insert_after="buying_margin_sec_break",
+                allow_in_quick_entry=1,
+            ),
+            dict(
+                fieldname="buying_margin_percentage",
+                fieldtype="Percent",
+                label="Buying Margin Percentage",
+                depends_on="eval:doc.ts_buying_margin==\"Custom\"",
+                mandatory_depends_on="eval:doc.ts_buying_margin==\"Custom\"",
+                insert_after="ts_buying_margin",
+                allow_in_quick_entry=1,
+            ),
              ],
             
     }

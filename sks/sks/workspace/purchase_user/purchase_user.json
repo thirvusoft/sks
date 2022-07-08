@@ -1,7 +1,7 @@
 {
  "category": "Modules",
  "charts": [],
- "creation": "2022-06-30 09:32:35.426635",
+ "creation": "2022-07-05 16:20:45.103316",
  "developer_mode_only": 0,
  "disable_user_customization": 0,
  "docstatus": 0,
@@ -13,28 +13,28 @@
  "is_standard": 1,
  "label": "Purchase User",
  "links": [],
- "modified": "2022-06-30 09:32:35.426635",
- "modified_by": "parameshwari@gmail.com",
+ "modified": "2022-07-05 16:20:53.300386",
+ "modified_by": "naveen.kumar@thirvusoft.in",
  "module": "sks",
  "name": "Purchase User",
- "owner": "parameshwari@gmail.com",
+ "owner": "naveen.kumar@thirvusoft.in",
  "pin_to_bottom": 0,
- "pin_to_top": 1,
+ "pin_to_top": 0,
  "shortcuts": [
   {
-   "doc_view": "",
+   "doc_view": "List",
    "label": "Purchase Order",
    "link_to": "Purchase Order",
    "type": "DocType"
   },
   {
-   "doc_view": "",
+   "doc_view": "List",
    "label": "Purchase Receipt",
    "link_to": "Purchase Receipt",
    "type": "DocType"
   },
   {
-   "doc_view": "",
+   "doc_view": "List",
    "label": "Purchase Invoice",
    "link_to": "Purchase Invoice",
    "type": "DocType"
