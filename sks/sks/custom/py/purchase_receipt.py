@@ -256,3 +256,12 @@ def msg(self,action):
         frappe.msgprint(f"Markup items Percentage {self.ts_markup_items}")
     elif(self.ts_markdown_items):
         frappe.msgprint(f"Markdown items Percentage {self.ts_markdown_items}")
+
+@frappe.whitelist()
+def validate(purchase_order,item,qty):
+    doc = frappe.get_doc("Purchase Order", purchase_order)
+    for i in doc.items:
+        if i.item_code == item:
+            if int(i.qty) < int(qty):
+                return False
+    return True

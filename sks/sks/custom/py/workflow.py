@@ -50,7 +50,11 @@ def create_rate_changer_from_purchase_order():
     ))
     workflow.append('transitions', dict(
         state = 'Draft', action='Submit', next_state = 'To Bill',
-        allowed='Purchase User', allow_self_approval= 1,condition="doc.ts_item_price_changed==0 and doc.ts_markup_and_markdown_variations == 0 and doc.total_rejected_qty ==0"
+        allowed='Purchase User', allow_self_approval= 1,condition="doc.check1 == 0 and doc.ts_item_price_changed==0 and doc.ts_markup_and_markdown_variations == 0 and doc.total_rejected_qty ==0"
+    ))
+    workflow.append('transitions', dict(
+        state = 'Draft', action='Review', next_state = 'Approval Pending',
+        allowed='Purchase User', allow_self_approval= 1,condition="doc.check1 == 1"
     ))
     workflow.insert(ignore_permissions=True)
     return workflow

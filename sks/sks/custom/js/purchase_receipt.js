@@ -235,6 +235,31 @@ frappe.ui.form.on("Purchase Receipt",{
 			show_alert("Some items price has to be changed. Kindly please verify it !!! ")
 		}
 	},
+	validate:function(frm){
+		var c=1
+		cur_frm.set_value("check1",0)
+		for(var i=0;i<cur_frm.doc.items.length;i++){
+			if(c == 1){
+				frappe.call({
+					method:"sks.sks.custom.py.purchase_receipt.validate",
+					args:{
+						qty:cur_frm.doc.items[i].qty,
+						purchase_order:cur_frm.doc.items[i].purchase_order,
+						item:cur_frm.doc.items[i].item_code
+					},
+					callback(res){
+						if(res.message == false){
+							cur_frm.set_value("check1",1)
+							c=0	
+						}
+						else if(res.message == true){
+							cur_frm.set_value("check1",0)
+						}
+					}
+				})
+			}
+		}
+	}
 })
 
 frappe.ui.form.on('Purchase Receipt',{
