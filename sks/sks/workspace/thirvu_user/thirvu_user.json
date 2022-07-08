@@ -1,7 +1,7 @@
 {
  "category": "Modules",
  "charts": [],
- "creation": "2022-07-05 15:07:38.924662",
+ "creation": "2022-06-30 09:53:40.653531",
  "developer_mode_only": 0,
  "disable_user_customization": 0,
  "docstatus": 0,
@@ -13,28 +13,28 @@
  "is_standard": 1,
  "label": "Thirvu User",
  "links": [],
- "modified": "2022-07-05 16:19:31.082797",
- "modified_by": "pparameshwari@thirvusoft.in",
+ "modified": "2022-06-30 10:06:15.118859",
+ "modified_by": "parameshwari@gmail.com",
  "module": "sks",
  "name": "Thirvu User",
- "owner": "naveen.kumar@thirvusoft.in",
+ "owner": "parameshwari@gmail.com",
  "pin_to_bottom": 0,
  "pin_to_top": 1,
  "shortcuts": [
   {
-   "doc_view": "List",
-   "label": "Thirvu Opening Shift",
-   "link_to": "POS Opening Shift",
+   "doc_view": "",
+   "label": "Thirvu Opening Entry",
+   "link_to": "POS Opening Entry",
    "type": "DocType"
   },
   {
-   "doc_view": "List",
-   "label": "Thirvu Closing Shift",
-   "link_to": "POS Closing Shift",
+   "doc_view": "",
+   "label": "Thirvu Closing Entry",
+   "link_to": "POS Closing Entry",
    "type": "DocType"
   },
   {
-   "doc_view": "List",
+   "doc_view": "",
    "label": "Thirvu Retail",
    "link_to": "posapp",
    "type": "Page"

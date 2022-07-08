@@ -56,20 +56,6 @@ def purchase_receipt_custom_field():
                                         insert_after='scan_barcode',
                                         options="Barcode"
                               ),
-                               dict(
-                                        fieldname='total_rejected_qty', 
-                                        label='Total Rejected Qty',
-                                        fieldtype='Int', 
-                                        insert_after='items',
-                                        read_only=1
-                              ),
-                                dict(
-                                        fieldname="is_approved",
-                                        fieldtype='Check',
-                                        label="Approved All Rejected Items",
-                                        insert_after="total_rejected_qty",
-                                        depends_on="eval:doc.total_rejected_qty>0 ||doc.workflow_state=='Approval Pending'",
-                              ),
                     ],
           }
           create_custom_fields(custom_fields)

@@ -8,7 +8,63 @@ def delivery_trip_customization():
 def delivery_trip_fields():
     custom_fields = {
         "Delivery Trip": [
-
+            dict(
+                fieldname="reason",
+                fieldtype="Data",
+                label="Reason",
+                insert_after="mode_of_payment"
+            ),
+            dict(
+                fieldname="time_of_delivery",
+                fieldtype="Time",
+                label="Time of Delivery",
+                insert_after="reason"
+            ),
+            dict(
+                fieldname="sales_invoice",
+                fieldtype="Link",
+                label="Reason",
+                options="Sales Invoice",
+                insert_after="delivery_stop_helper"
+            ),
+            dict(
+                fieldname="amount",
+                fieldtype="Data",
+                label="Amount",
+                insert_after="time_of_delivery"
+            ),
+            dict(
+                fieldname="column_break_19",
+                fieldtype="Column Break",
+                insert_after="update_invoice"
+            ),
+            dict(
+                fieldname="delivery_status",
+                fieldtype="Select",
+                insert_after="sales_invoice",
+                label="Delivery Status",
+                options="Attempt\nDelivered\nNot Delivered\nReady To Dispatch\nReattempt\nReturned",
+            ),
+            dict(
+                fieldname="delivery_stop_helper",
+                fieldtype="Section Break",
+                insert_after="employee",
+                label="Delivery Stop Helper",
+            ),
+            dict(
+                fieldname="mode_of_payment",
+                fieldtype="Link",
+                insert_after="column_break_19",
+                label="Mode of Payment",
+                options="Mode of Payment"
+            ),
+            dict(
+                fieldname="update_invoice",
+                fieldtype="Button",
+                insert_after="delivery_status",
+                label="Update Invoice",
+                options="Mode of Payment"
+            ),
             dict(
                 fieldname="delivery_date",
                 fieldtype="Date",
@@ -16,6 +72,15 @@ def delivery_trip_fields():
                 label="Delivery Date",
                 options="Mode of Payment",
                 default="Today"
+
+            ),
+            dict(
+                fieldname="delivered_driver",
+                fieldtype="Link",
+                insert_after="section_break_3",
+                label="Delivered Driver",
+                options="TS Driver Delivery Trip",
+                
             ),
             dict(
                 fieldname="user_id",
@@ -25,6 +90,7 @@ def delivery_trip_fields():
                 label="User ID",
                 options="User",
                 read_only=1,
+                
             ),
             ],      
     }
@@ -33,5 +99,5 @@ def delivery_trip_property_setter():
         make_property_setter("Delivery Trip", "delivery_stops", "allow_on_submit", 1,"Check")
         make_property_setter("Delivery Trip", "email_notification_sent", "hidden", "1","Check")
         make_property_setter("Delivery Trip", "delivery_stops", "label", "Sales Invoice","Data")
+        make_property_setter("Delivery Trip", "delivered_driver", "hidden", "1","Check")
         make_property_setter("Delivery Trip", "driver_address", "hidden", "1","Check")
-        make_property_setter("Delivery Trip", "status", "hidden", "1","Check")

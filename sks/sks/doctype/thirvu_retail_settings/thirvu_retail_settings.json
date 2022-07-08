@@ -9,8 +9,6 @@
   "allow_only_if_delivery_note_items_match_with_sales_order_items",
   "allow_only_if_sales_invoice_items_match_with_sales_order_items",
   "item_verifed_in_purchase_receipt",
-  "buying_rate_calculation",
-  "add_item_from_not_processed_purchase_order",
   "column_break_3",
   "customer_transaction_history",
   "automatic_batch_creation",
@@ -116,26 +114,12 @@
   {
    "fieldname": "column_break_15",
    "fieldtype": "Column Break"
-  },
-  {
-   "default": "0",
-   "description": "Calculates buying rate by mrp",
-   "fieldname": "buying_rate_calculation",
-   "fieldtype": "Check",
-   "label": "Buying Rate Calculation"
-  },
-  {
-   "default": "0",
-   "description": "Adds items from not processed purchase order of a supplier",
-   "fieldname": "add_item_from_not_processed_purchase_order",
-   "fieldtype": "Check",
-   "label": "Add items from not processed purchase order"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-07-08 15:01:05.356469",
+ "modified": "2022-06-22 18:57:55.588667",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Thirvu Retail Settings",

@@ -13,8 +13,8 @@
  "is_standard": 1,
  "label": "Thrivu Driver",
  "links": [],
- "modified": "2022-07-05 14:57:22.145348",
- "modified_by": "pparameshwari@thirvusoft.in",
+ "modified": "2022-06-14 11:04:54.552040",
+ "modified_by": "Administrator",
  "module": "Driver",
  "name": "Thrivu Driver",
  "onboarding": "",
@@ -24,7 +24,7 @@
  "shortcuts": [
   {
    "doc_view": "",
-   "label": "TS Driver Delivery Trip",
+   "label": "Driver Delivery Trip",
    "link_to": "TS Driver Delivery Trip",
    "type": "DocType"
   }

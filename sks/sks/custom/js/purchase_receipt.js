@@ -236,18 +236,3 @@ frappe.ui.form.on("Purchase Receipt",{
 		}
 	},
 })
-
-frappe.ui.form.on('Purchase Receipt',{
-	before_save:function(frm,cdt,cdn)
-	{
-		var total_rejected_qty=0;
-		for(var i=0;i<cur_frm.doc.items.length;i++)
-		{
-			total_rejected_qty+=cur_frm.doc.items[i].rejected_qty?cur_frm.doc.items[i].rejected_qty:0;
-		}
-		frm.set_value("total_rejected_qty",total_rejected_qty);
-	}
-
-})
-
-

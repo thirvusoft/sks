@@ -21,7 +21,8 @@ from sks.sks.utils.hr.employee.employee_customisation import employee_customisat
 from sks.sks.utils.hr.payroll_and_salary.payroll_and_salary_customisation import payroll_salary_customisation
 from sks.sks.utils.buying.supplier_quotation.supplier_quotation_custom_fields import supplier_quotation_customization
 from sks.sks.utils.stock.item.item_supplier_custom_fields import item_supplier_customization
-def after_install(): 
+
+def after_install():
     purchase_order_customization()
     delivery_note_customization()
     sales_order_customization()
