@@ -207,14 +207,14 @@ frappe.ui.form.on("Sales Order",{
 
 frappe.ui.form.on("Sales Order",{
 	delivery_date:function(frm,cdt,cdn){
-		var a = new Date(cur_frm.doc.delivery_date);
+		var day = new Date(cur_frm.doc.delivery_date);
 		var weekdays=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
-		cur_frm.set_value("delivery_day",weekdays[a.getDay()])
+		cur_frm.set_value("delivery_day",weekdays[day.getDay()])
 	},
-    onload:function(frm,cdt,cdn){
-		var a = new Date(cur_frm.doc.delivery_date);
+    	onload:function(frm,cdt,cdn){
+		var day = new Date(cur_frm.doc.delivery_date);
 		var weekdays=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
-		cur_frm.set_value("delivery_day",weekdays[a.getDay()])
+		cur_frm.set_value("delivery_day",weekdays[day.getDay()])
 	}
  })
 
