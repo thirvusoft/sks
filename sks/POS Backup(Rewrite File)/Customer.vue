@@ -158,23 +158,49 @@ export default {
             customer: customer
           },
           callback : function(r){
-            if(r.message[2]>0){
+            if(r.message[0]>0){
               let modes=[];
               for(var i=0; i<vm.pos_profile.pos_profile.payments.length; i++){
                 modes.push(vm.pos_profile.pos_profile.payments[i].mode_of_payment)
               }
             var d = new frappe.ui.Dialog({
+              size: "large",
               title:"Customer: "+ customer +"'s Outstanding Amount",
               fields:[
-                {'fieldname':'alert','fieldtype':'HTML','read_only':1,'bold':1},
-                {'label':'Outstanding Amount','fieldname':'outstanding','fieldtype':'Currency','default':r.message[2],'read_only':1},
-                {'label':'Paid Amount','fieldname':'amount','fieldtype':'Currency','reqd':1},
+                {fieldname:'items', fieldtype:'Table', fields:[
                 {
-                  'label':'Mode of Payment',
-                  'fieldname':'mode',
-                  'fieldtype':'Select',
-                  'options':modes
+                  label: 'Sales Invoice No',
+                  fieldname: 'sales_invoice',
+                  fieldtype: 'Read Only',
+                  options: 'Sales Invoice',
+                  in_list_view:1,
+                  columns:3
                 },
+                {
+                  label: 'Outstanding Amount',
+                  fieldname: 'amount',
+                  fieldtype: 'Read Only',
+                  in_list_view:1,
+                  columns:3
+                },
+                {
+                  label: 'Paying Amount',
+                  fieldname: 'paid',
+                  fieldtype: 'Float',
+                  in_list_view:1,
+                  columns:2
+                },
+                 {
+                  label: 'Mode of Payment',
+                  fieldname: 'mode_of_payment',
+                  fieldtype: 'Select',
+                  options:modes,
+                  in_list_view:1,
+                  columns:2
+                }
+                ],
+                data:r.message[1]},
+                {'label':'Outstanding Amount','fieldname':'outstanding','fieldtype':'Currency','default':r.message[0],'read_only':1},
                 {'label':'Reference Number','fieldname':'ref_no','fieldtype':'Data', 'depends_on':'eval:doc.mode=="Credit Card"'},
                 {'label':'Reference Date','fieldname':'ref_date','fieldtype':'Date', 'default':'Today','depends_on':'eval:doc.mode=="Credit Card"'}
               ],
@@ -182,16 +208,12 @@ export default {
                 frappe.call(
                   'posawesome.posawesome.api.posapp.check_opening_shift', 
                   {user: frappe.session.user,}).then(function (id) {
-                    if (r.message && data.amount && data.mode) {
+                    if (r.message && data.items) {
                       frappe.call({
                         method:"posawesome.posawesome.api.credit_sales.payment_entry",
                         args:{
-                        // amount,mode,customer,pending_invoice
-      
-                          amount:data.amount,
-                          mode:data.mode,
                           customer:customer,
-                          pending_invoice:r.message[1],
+                          pending_invoice:data.items,
                           company:vm._data.pos_profile.company.company_name,
                           opening : id.message.pos_opening_shift.name,
                           ref_no: data.ref_no,
@@ -199,13 +221,11 @@ export default {
                           
                         },
                         callback : function(res){
-                            if(res.message[0]){
+                            if(res.message){
                               evntBus.$emit('show_mesage', {
-                                text: __('Payment Entry Created Successfully.'),
+                                text: __(`${res.message} Payment Entries Created Successfully.`),
                                 color: 'success',
                               });
-                              var mode = r.message[1]
-                              var payment = r.message[0]
 
                             }
                         }
@@ -217,8 +237,6 @@ export default {
                 d.hide();
               }
             });
-            var template = r.message[3]
-            d.set_df_property('alert','options',frappe.render(template,{}))
             d.show();
           }
         }
