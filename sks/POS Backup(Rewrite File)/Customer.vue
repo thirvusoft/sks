@@ -205,7 +205,6 @@ export default {
                 {'label':'Reference Date','fieldname':'ref_date','fieldtype':'Date', 'default':'Today','depends_on':'eval:doc.mode=="Credit Card"'}
               ],
               primary_action : function(data){
-                console.log(data)
                 frappe.call(
                   'posawesome.posawesome.api.posapp.check_opening_shift', 
                   {user: frappe.session.user,}).then(function (id) {
