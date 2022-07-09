@@ -1,0 +1,23 @@
+{
+ "creation": "2022-07-08 19:57:26.355344",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "dynamic_filters_json": "{}",
+ "filters_json": "{\"from_date\":\"2022-07-08\",\"to_date\":\"2022-07-08\"}",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "label": "Cash in Hand",
+ "modified": "2022-07-08 19:57:26.355344",
+ "modified_by": "navin@gmail.com",
+ "module": "sks",
+ "name": "Cash in Hand",
+ "owner": "navin@gmail.com",
+ "report_field": "paid_amount",
+ "report_function": "Sum",
+ "report_name": "Thirvu Total Outgoing Bills -User",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Daily",
+ "type": "Report"
+}

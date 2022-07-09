@@ -41,7 +41,8 @@ frappe.ui.form.on("Purchase Order",{
 						method:"sks.sks.custom.py.buying_module.not_processed_po",
 						args:{ts_supplier},
 						callback(ts_po_details){
-							if(ts_po_details){
+							console.log(ts_po_details)
+							if(ts_po_details.message[1]!=[]){
 								const d = new frappe.ui.Dialog({
 									title: "Pending purchase orders with the supplier",
 									static: true,
