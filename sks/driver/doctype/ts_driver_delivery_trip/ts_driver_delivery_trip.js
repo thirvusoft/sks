@@ -90,10 +90,10 @@ frappe.ui.form.on("TS Invoice Delivery Trip",{
 			await frappe.db.get_doc('Customer',data.customer,'is_credit_customer' ).then( (is_credit) => {
 				if (is_credit.is_credit_customer == 0){
 					if(data.amount > data.dis_amount){
-						frappe.throw("Paid Amount is more than Amount")
+						frappe.throw({title: "Message", message: "Paid Amount is more than Amount"})
 					}
 					else if (data.amount != data.dis_amount){
-						frappe.throw("The Customer is not credit customer")
+						frappe.throw({title: "Message", message: "The Customer is not credit customer"})
 					}
 				} 
 			} )
