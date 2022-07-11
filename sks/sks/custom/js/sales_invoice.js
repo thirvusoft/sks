@@ -272,5 +272,15 @@ frappe.ui.form.on("Sales Invoice",{
 			}
 		})
 	}
+	
 })
 	
+frappe.ui.form.on("Sales Invoice",{
+	onload:function(frm,cdt,cdn){
+		if(cur_frm.doc.items[0].delivery_note){
+			console.log("hhjdjdj")
+			frm.set_df_property('update_stock', 'hidden', 1);
+		
+	}},
+	
+ })
