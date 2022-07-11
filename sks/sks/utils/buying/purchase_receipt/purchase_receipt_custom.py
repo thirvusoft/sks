@@ -88,5 +88,5 @@ def purchase_receipt_property_setter():
     make_property_setter("Purchase Receipt", "printing_settings", "hidden", 1, "Section Break")
     make_property_setter("Purchase Receipt", "subscription_detail", "hidden", 1, "Section Break")
     make_property_setter("Purchase Receipt", "more_info", "hidden", 1, "Section Break")
-    make_property_setter("Purchase Receipt", "accounting_details_section", "hidden", 1, "Section Break")
-          
+    make_property_setter("Purchase Receipt", "accounting_details_section", "hidden", 0, "Section Break")
+    
