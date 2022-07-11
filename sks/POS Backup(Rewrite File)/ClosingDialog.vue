@@ -3,7 +3,7 @@
     <v-dialog v-model="closingDialog" max-width="900px">
       <v-card>
         <v-card-title>
-          <span class="headline indigo--text">{{__('Closing POS Shift')}}</span>
+          <span class="headline indigo--text">{{__('THIRVU RETAIL')}}</span>
         </v-card-title>
         <v-card-text class="pa-0">
           <v-container>
@@ -37,9 +37,15 @@
                     </template>
                     <template v-slot:item.difference="{ item }">{{
                       (item.difference = formtCurrency(
-                        item.expected_amount - item.closing_amount
+                         item.expected_amount - item.closing_amount
                       ))
                     }}</template>
+                    <template v-slot:item.billed_amount="{ item }">{{
+                      (item.billed_amount = formtCurrency(
+                        item.closing_amount-item.expected_amount
+                      ))
+                    }}</template>
+                    
                     <template v-slot:item.opening_amount="{ item }">{{
                       formtCurrency(item.opening_amount)
                     }}</template>
@@ -57,6 +63,8 @@
           <v-btn color="indigo" dark @click="show_denomination">{{__('Open Denomination')}}</v-btn>
           <v-btn color="error" dark @click="close_dialog">{{__('Close')}}</v-btn>
           <v-btn color="primary" dark @click="submit_dialog">{{__('Submit')}}</v-btn>
+          
+          
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -83,9 +91,15 @@ export default {
         sortable: true,
         value: 'opening_amount',
       },
-      {
+       {
         text: __('Closing Amount'),
         value: 'closing_amount',
+        align: 'end',
+        sortable: true,
+      },
+      {
+        text: __('Billed Amount'),
+        value: 'billed_amount',
         align: 'end',
         sortable: true,
       },
@@ -106,15 +120,18 @@ export default {
     pagination: {},
   }),
   watch: {},
+
   methods: {
     close_dialog() {
       this.closingDialog = false;
     },
 
+
     submit_dialog() {
       evntBus.$emit('submit_closing_pos', this.dialog_data);
       this.closingDialog = false;
     },
+
     formtCurrency(value) {
       value = parseFloat(value);
       return value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
@@ -204,34 +221,6 @@ export default {
 			filters: { company: dialog.fields_dict.company.get_value() }
 		}
 
-                        
-
-
-      // evntBus.$emit('set_customer', 'aaaa');
-
-
-       
-            // frappe.call({
-            //   method:"posawesome.posawesome.api.posapp.get_fields_for_denomination",
-            //   callback(r){
-            //       console.log(r.message)
-            //  var d = new frappe.ui.Dialog({
-            //     title: "Denomination",
-            //     fields:[
-            //       {'fieldname':'table','fieldtype':'Data','label':"kkk",'default':"lkkkkk",'in_place_edit':1},
-            //       {'fieldname':'table','fieldtype':'Data','options':"r.message"}
-            //     ],
-            //     primary_action_label:"Close",
-            //     primary_action: function(data){
-            //       console.log(data)
-            //       d.hide()
-            //     }
-            //   });
-
-            //   d.show()
-            
-            //    }
-            // })
     }
     
   },
