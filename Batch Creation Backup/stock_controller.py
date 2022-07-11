@@ -241,12 +241,12 @@ class StockController(AccountsController):
 							ts_mrp=d.ts_mrp,
 							ts_selling_price=d.ts_selling_rate,
 							ts_valuation_rate=d.ts_valuation_rate,
-							purchase_qty=d.qty
+							purchase_qty=d.qty,
 							#End
 							supplier=getattr(self, 'supplier', None),
 							reference_doctype=self.doctype,
 							reference_name=self.name)).insert().name
-	    else:
+		else:
 			for d in self.items:
 				if d.get(warehouse_field) and not d.batch_no:
 					has_batch_no, create_new_batch = frappe.db.get_value('Item', d.item_code, ['has_batch_no', 'create_new_batch'])
