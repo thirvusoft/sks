@@ -234,7 +234,8 @@ frappe.ui.form.on("Sales Invoice",{
 											'label':'Mode of Payment',
 											'fieldname':'mode',
 											'fieldtype':'Link',
-											'options':"Mode of Payment"
+											'options':"Mode of Payment",
+											'reqd':1
 											},
 											{'label':'Reference Date','fieldname':'ref_date','fieldtype':'Date'},
 											{'label':'Reference Number','fieldname':'ref_no','fieldtype':'Data'}
