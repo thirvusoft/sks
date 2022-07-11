@@ -62,19 +62,24 @@ frappe.ui.form.on("Purchase Order",{
 									],
 									primary_action_label: "Cancel and add items",
 									primary_action : function(data){
-										frappe.call({
-											method:"sks.sks.custom.py.buying_module.fetching_items_from_not_processed_po",
-											args:{reqd_po:data.po_add},
-											callback(po_items){
-												for(let i = 0; i<po_items.message.length;i++){
-													frappe.model.set_value(ts_data.items[i].doctype,ts_data.items[i].name,"item_code",po_items.message[i][0])
-													frappe.model.set_value(ts_data.items[i].doctype,ts_data.items[i].name,"qty",po_items.message[i][1])
-													if(i<(po_items.message.length-1)){
-														cur_frm.add_child("items")
+										if(data.po_add){
+											frappe.call({
+												method:"sks.sks.custom.py.buying_module.fetching_items_from_not_processed_po",
+												args:{reqd_po:data.po_add},
+												callback(po_items){
+													for(let i = 0; i<po_items.message.length;i++){
+														frappe.model.set_value(ts_data.items[i].doctype,ts_data.items[i].name,"item_code",po_items.message[i][0])
+														frappe.model.set_value(ts_data.items[i].doctype,ts_data.items[i].name,"qty",po_items.message[i][1])
+														if(i<(po_items.message.length-1)){
+															cur_frm.add_child("items")
+														}
 													}
 												}
-											}
-										})
+											})
+										}
+										else{
+											frappe.msgprint('NO Purchase Order is Selected')
+										}
 										d.hide()
 									}
 								})
