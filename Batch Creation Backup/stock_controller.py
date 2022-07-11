@@ -224,26 +224,40 @@ class StockController(AccountsController):
 
 	def make_batches(self, warehouse_field):
 		'''Create batches if required. Called before submit'''
-		for d in self.items:
-			if d.get(warehouse_field) and not d.batch_no:
-				has_batch_no, create_new_batch = frappe.db.get_value('Item', d.item_code, ['has_batch_no', 'create_new_batch'])
-				if has_batch_no and create_new_batch:
-					d.batch_no = frappe.get_doc(dict(
-						doctype='Batch',
-						item=d.item_code,
-						# Customize By Thirvusoft
-						# Start
-						purchase_qty=d.qty,
-						expiry_date=d.expiry_date,
-						posa_btach_price=d.rate,
-						barcode=d.barcode,
-						ts_mrp=d.ts_mrp,
-						ts_selling_price=d.ts_selling_rate,
-						ts_valuation_rate=d.ts_valuation_rate,
-						#end
-						supplier=getattr(self, 'supplier', None),
-						reference_doctype=self.doctype,
-						reference_name=self.name)).insert().name
+		# Customize By Thirvusoft
+		# Start
+		if self.doctype=="Purchase Receipt":
+			for d in self.items:
+				if d.get(warehouse_field) and not d.batch_no:
+					has_batch_no, create_new_batch = frappe.db.get_value('Item', d.item_code, ['has_batch_no', 'create_new_batch'])
+					if has_batch_no and create_new_batch:
+						d.batch_no = frappe.get_doc(dict(
+							doctype='Batch',
+							item=d.item_code,
+							#Start
+							expiry_date=d.expiry_date,
+							posa_btach_price=d.rate,
+							barcode=d.barcode,
+							ts_mrp=d.ts_mrp,
+							ts_selling_price=d.ts_selling_rate,
+							ts_valuation_rate=d.ts_valuation_rate,
+							purchase_qty=d.qty
+							#End
+							supplier=getattr(self, 'supplier', None),
+							reference_doctype=self.doctype,
+							reference_name=self.name)).insert().name
+	    else:
+			for d in self.items:
+				if d.get(warehouse_field) and not d.batch_no:
+					has_batch_no, create_new_batch = frappe.db.get_value('Item', d.item_code, ['has_batch_no', 'create_new_batch'])
+					if has_batch_no and create_new_batch:
+						d.batch_no = frappe.get_doc(dict(
+							doctype='Batch',
+							item=d.item_code,
+							supplier=getattr(self, 'supplier', None),
+							reference_doctype=self.doctype,
+							reference_name=self.name)).insert().name
+		#End
 
 	def check_expense_account(self, item):
 		if not item.get("expense_account"):
