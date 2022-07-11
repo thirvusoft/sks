@@ -3,7 +3,7 @@
     <v-dialog v-model="closingDialog" max-width="900px">
       <v-card>
         <v-card-title>
-          <span class="headline indigo--text">{{__('Closing POS Shift')}}</span>
+          <span class="headline indigo--text">{{__('THIRVU RETAIL')}}</span>
         </v-card-title>
         <v-card-text class="pa-0">
           <v-container>
@@ -221,34 +221,6 @@ export default {
 			filters: { company: dialog.fields_dict.company.get_value() }
 		}
 
-                        
-
-
-      // evntBus.$emit('set_customer', 'aaaa');
-
-
-       
-            // frappe.call({
-            //   method:"posawesome.posawesome.api.posapp.get_fields_for_denomination",
-            //   callback(r){
-            //       console.log(r.message)
-            //  var d = new frappe.ui.Dialog({
-            //     title: "Denomination",
-            //     fields:[
-            //       {'fieldname':'table','fieldtype':'Data','label':"kkk",'default':"lkkkkk",'in_place_edit':1},
-            //       {'fieldname':'table','fieldtype':'Data','options':"r.message"}
-            //     ],
-            //     primary_action_label:"Close",
-            //     primary_action: function(data){
-            //       console.log(data)
-            //       d.hide()
-            //     }
-            //   });
-
-            //   d.show()
-            
-            //    }
-            // })
     }
     
   },

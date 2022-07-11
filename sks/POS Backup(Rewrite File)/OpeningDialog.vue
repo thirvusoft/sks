@@ -7,7 +7,7 @@
       <v-card>
         <v-card-title>
           <span class="headline indigo--text">{{
-            __('Create POS Opening Shift')
+            __('THIRVU RETAIL')
           }}</span>
         </v-card-title>
         <v-card-text>
