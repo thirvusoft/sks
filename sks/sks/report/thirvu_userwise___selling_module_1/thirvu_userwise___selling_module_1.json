@@ -1,5 +1,5 @@
 {
- "add_total_row": 0,
+ "add_total_row": 1,
  "columns": [],
  "creation": "2022-07-11 09:19:48.582399",
  "disable_prepared_report": 0,
@@ -9,7 +9,7 @@
  "filters": [],
  "idx": 0,
  "is_standard": "Yes",
- "modified": "2022-07-11 09:19:48.582399",
+ "modified": "2022-07-11 12:52:23.448905",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Thirvu Userwise - Selling Module_1",
