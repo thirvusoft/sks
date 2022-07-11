@@ -75,7 +75,7 @@ frappe.ui.form.on("TS Invoice Delivery Trip",{
 				{fieldname: 'reason',label: 'Reason',fieldtype: 'Link', default:reason, options : 'Reason'},
 				{fieldtype:'Column Break'},
 				{fieldname: 'file_attachment',label: 'File Attach',fieldtype: 'Attach Image', default:p.file_attachment},
-				{fieldtype:'Section Break'},
+				{fieldtype:'Section Break', depends_on: "eval:doc.delivery_status == 'Delivered' "},
 				{fieldname: 'mode_of_payment',label: 'Mode of Payment',fieldtype: 'Link',options: 'Mode of Payment',default: 'Cash'},
 				{fieldtype:'Column Break'},
 				{fieldname: 'amount',label: 'Paid Amount',fieldtype: 'Currency'},
@@ -85,7 +85,18 @@ frappe.ui.form.on("TS Invoice Delivery Trip",{
 	
 			],
 			primary_action_label: "Update Invoice",
-			primary_action: function(data){
+			primary_action:async function(data){
+
+			await frappe.db.get_doc('Customer',data.customer,'is_credit_customer' ).then( (is_credit) => {
+				if (is_credit.is_credit_customer == 0){
+					if(data.amount > data.dis_amount){
+						frappe.throw("Paid Amount is more than Amount")
+					}
+					else if (data.amount != data.dis_amount){
+						frappe.throw("The Customer is not credit customer")
+					}
+				} 
+			} )
 		
 			if(data.mode_of_payment && data.amount && data.sales_invoice && data.delivery_status == "Delivered"){
 				frappe.call({
