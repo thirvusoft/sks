@@ -71,7 +71,7 @@ def purchase_receipt_custom_field():
                                         depends_on="eval:doc.total_rejected_qty>0 ||doc.workflow_state=='Approval Pending'",
                               ),
                               dict(
-                                        fieldname="check1",
+                                        fieldname="check_qty",
                                         fieldtype='Check',
                                         label="Checking Qty",
                                         insert_after="is_approved",

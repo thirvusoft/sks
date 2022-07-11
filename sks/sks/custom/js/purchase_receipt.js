@@ -236,10 +236,10 @@ frappe.ui.form.on("Purchase Receipt",{
 		}
 	},
 	validate:function(frm){
-		var c=1
-		cur_frm.set_value("check1",0)
+		var check=1
+		cur_frm.set_value("check_qty",0)
 		for(var i=0;i<cur_frm.doc.items.length;i++){
-			if(c == 1){
+			if(check == 1){
 				frappe.call({
 					method:"sks.sks.custom.py.purchase_receipt.validate",
 					args:{
@@ -249,11 +249,11 @@ frappe.ui.form.on("Purchase Receipt",{
 					},
 					callback(res){
 						if(res.message == false){
-							cur_frm.set_value("check1",1)
-							c=0	
+							cur_frm.set_value("check_qty",1)
+							check=0	
 						}
 						else if(res.message == true){
-							cur_frm.set_value("check1",0)
+							cur_frm.set_value("check_qty",0)
 						}
 					}
 				})
