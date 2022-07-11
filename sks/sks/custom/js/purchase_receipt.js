@@ -270,23 +270,25 @@ frappe.ui.form.on("Purchase Receipt",{
 		cur_frm.set_value("check_qty",0)
 		for(var i=0;i<cur_frm.doc.items.length;i++){
 			if(check == 1){
-				frappe.call({
-					method:"sks.sks.custom.py.purchase_receipt.validate",
-					args:{
-						qty:cur_frm.doc.items[i].qty,
-						purchase_order:cur_frm.doc.items[i].purchase_order,
-						item:cur_frm.doc.items[i].item_code
-					},
-					callback(res){
-						if(res.message == false){
-							cur_frm.set_value("check_qty",1)
-							check=0	
+				if(cur_frm.doc.items[0].purchase_order){
+					frappe.call({
+						method:"sks.sks.custom.py.purchase_receipt.validate",
+						args:{
+							qty:cur_frm.doc.items[i].qty,
+							purchase_order:cur_frm.doc.items[i].purchase_order,
+							item:cur_frm.doc.items[i].item_code
+						},
+						callback(res){
+							if(res.message == false){
+								cur_frm.set_value("check_qty",1)
+								check=0	
+							}
+							else if(res.message == true){
+								cur_frm.set_value("check_qty",0)
+							}
 						}
-						else if(res.message == true){
-							cur_frm.set_value("check_qty",0)
-						}
-					}
-				})
+					})
+				}
 			}
 		}
 	}
