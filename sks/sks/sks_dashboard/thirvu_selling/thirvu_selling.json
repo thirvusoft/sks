@@ -1,9 +1,6 @@
 {
  "cards": [
   {
-   "card": "Total Outgoing Bills Today - Userwise"
-  },
-  {
    "card": "Cash in Hand - Userwise"
   },
   {
@@ -11,6 +8,9 @@
   },
   {
    "card": "Sales Amount Today -Userwise"
+  },
+  {
+   "card": "Total Outgoing Bills Today - Userwise"
   }
  ],
  "charts": [
@@ -26,7 +26,7 @@
  "idx": 0,
  "is_default": 0,
  "is_standard": 1,
- "modified": "2022-07-11 13:08:26.258329",
+ "modified": "2022-07-11 16:00:02.189845",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Thirvu Selling",

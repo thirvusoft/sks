@@ -25,7 +25,6 @@ frappe.query_reports["Thirvu Userwise - Selling Module_1"] = {
 		}
 	],
 	onload: function(report){
-		console.log(frappe.session.user)
 		frappe.query_report.set_filter_value("employee",frappe.session.user);
 	}
 };
