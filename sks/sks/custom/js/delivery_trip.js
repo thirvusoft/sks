@@ -15,7 +15,7 @@ frappe.ui.form.on('Delivery Trip',{
                         title: "Choose Invoices For Delivery 🛻🛻🛻🛻..",
                         fields: [
                             {label:'Delivery Day',fieldname:'sec',fieldtype:'Section Break'},
-                            {label:'Day',fieldname:'day',fieldtype:'Select', options:'\nSunday\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday'},
+                            {label:'Day',fieldname:'day',fieldtype:'Select', options:'\nSunday\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday', reqd: 1},
                             {label:'Select territory',fieldname:'sec1',fieldtype:'Section Break'},
                             {label:'Territory',fieldname:'territory',fieldtype: 'MultiSelectPills',
                             get_data: function() {
@@ -70,7 +70,7 @@ frappe.ui.form.on('Delivery Trip',{
                 }
             })
             
-        }).addClass('btn-danger')
+        }).addClass('btn-danger').css({'color':'white','background-color':'orange', 'font-weight': 'bold'});
     }
     },
     update_invoice: function(frm,cdt,cdn){
