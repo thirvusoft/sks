@@ -76,7 +76,7 @@ frappe.ui.form.on("Purchase Receipt",{
 									else{
 										for(var i=0;i<data.items.length;i++){
 											if(r["message"]==data.items[i].item_code){
-												frappe.model.set_value(data.items[i].doctype,data.items[i].child_docname,"item_verified",1)
+												frappe.model.set_value(data.items[i].doctype,data.items[i].name,"item_verified",1)
 											}
 										}
 										frappe.show_alert({ message: __('Item Matched'), indicator: 'green' });
