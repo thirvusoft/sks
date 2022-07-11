@@ -1,0 +1,31 @@
+{
+ "chart_name": "Sales Person Ranking",
+ "chart_type": "Report",
+ "creation": "2022-07-11 10:33:10.066656",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "dynamic_filters_json": "{}",
+ "filters_json": "{\"from_date\":\"2022-07-11\",\"to_date\":\"2022-07-11\"}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "modified": "2022-07-11 16:53:14.648357",
+ "modified_by": "navin@gmail.com",
+ "module": "sks",
+ "name": "Sales Person Ranking",
+ "number_of_groups": 0,
+ "owner": "navin@gmail.com",
+ "report_name": "Thirvu Userwise - Selling Module_2",
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Line",
+ "use_report_chart": 0,
+ "x_field": "sales_user",
+ "y_axis": [
+  {
+   "y_field": "count"
+  }
+ ]
+}
