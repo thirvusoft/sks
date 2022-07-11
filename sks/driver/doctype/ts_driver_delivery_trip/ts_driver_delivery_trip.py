@@ -8,15 +8,16 @@ from datetime import date
 class TSDriverDeliveryTrip(Document):
     pass 
 @frappe.whitelist()
-def get_buttons_data(delivery_trip):
-    delivery_stops=[]
-    doc = frappe.get_doc("Delivery Trip",delivery_trip)
-    for i in doc.delivery_stops:
-        s=frappe.get_all("Sales Invoice",fields=['outstanding_amount'],filters ={'name':i.sales_invoice})
-        i.amount=s[0].outstanding_amount
-        if(i.delivery_status != "Delivered" and i.delivery_status != "Returned"):
-            delivery_stops.append(i)
-    return doc.delivery_stops
+def get_buttons_data(delivery_trip=None):
+    if delivery_trip:
+        delivery_stops=[]
+        doc = frappe.get_doc("Delivery Trip",delivery_trip)
+        for i in doc.delivery_stops:
+            s=frappe.get_all("Sales Invoice",fields=['outstanding_amount'],filters ={'name':i.sales_invoice})
+            i.amount=s[0].outstanding_amount
+            if(i.delivery_status != "Delivered" and i.delivery_status != "Returned"):
+                delivery_stops.append(i)
+        return doc.delivery_stops
 @frappe.whitelist()
 def update_values(invoice,fields,value):
     fields = json.loads(fields)
