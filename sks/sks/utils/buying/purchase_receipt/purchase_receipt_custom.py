@@ -11,17 +11,32 @@ def purchase_receipt_custom_field():
                     "Purchase Receipt": [
                               dict(
                                         fieldname='thirvu_items_to_verify', 
-                                        label='Items To Verify',
+                                        label='Items To Verify for Markup / Markdown',
                                         fieldtype='Table', 
                                         insert_after='items',
                                         options="Thirvu Items To Verify",
                                         no_copy=1
                               ),
                               dict(
+                                        fieldname='thirvu_altered_quantity', 
+                                        label='Items To Verify for Altered Quantity',
+                                        fieldtype='Table', 
+                                        insert_after='thirvu_items_to_verify',
+                                        options="TS Item Verification for Altered Quantity",
+                                        no_copy=1
+                              ),
+                              dict(
+                                        fieldname='check_qty', 
+                                        label='Altered Item Quantity Verified',
+                                        fieldtype='Check',
+                                        insert_after='thirvu_altered_quantity',
+                                        hidden=1
+                              ),
+                              dict(
                                         fieldname='ts_item_price_changed', 
                                         label='Item Price Changed',
                                         fieldtype='Check', 
-                                        insert_after='thirvu_items_to_verify',
+                                        insert_after='check_qty',
                                         permlevel=2,hidden=1,
                                         read_only=1
                               ),
@@ -69,14 +84,7 @@ def purchase_receipt_custom_field():
                                         label="Approved All Rejected Items",
                                         insert_after="total_rejected_qty",
                                         depends_on="eval:doc.total_rejected_qty>0 ||doc.workflow_state=='Approval Pending'",
-                              ),
-                              dict(
-                                        fieldname="check_qty",
-                                        fieldtype='Check',
-                                        label="Checking Qty",
-                                        insert_after="is_approved",
-                                        hidden=1
-                              ),
+                              )
                     ],
           }
           create_custom_fields(custom_fields)

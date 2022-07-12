@@ -258,10 +258,15 @@ def msg(self,action):
         frappe.msgprint(f"Markdown items Percentage {self.ts_markdown_items}")
 
 @frappe.whitelist()
-def validate(purchase_order,item,qty):
-    doc = frappe.get_doc("Purchase Order", purchase_order)
-    for i in doc.items:
-        if i.item_code == item:
-            if int(i.qty) < int(qty):
-                return False
-    return True
+def validate(doc,event):
+    list = []
+    doc.set('thirvu_altered_quantity',[])
+    for item in doc.items:
+        po_doc = frappe.get_doc('Purchase Order',item.purchase_order)
+        for po_items in po_doc.items:
+            item_row=frappe._dict()
+            if po_items.item_code == item.item_code:
+                if int(po_items.qty) < int(item.qty):
+                    item_row.update({'ts_item':item.item_code,"ts_qty":int(po_items.qty),'ts_aqty':item.qty,'difference':int(item.qty) - int(po_items.qty)})
+                    list.append(item_row)
+    doc.update({'thirvu_altered_quantity':list})
