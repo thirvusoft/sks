@@ -269,4 +269,4 @@ def validate(doc,event):
                 if int(po_items.qty) < int(item.qty):
                     item_row.update({'ts_item':item.item_code,"ts_qty":int(po_items.qty),'ts_aqty':item.qty,'difference':int(item.qty) - int(po_items.qty)})
                     list.append(item_row)
-    doc.update({'thirvu_altered_quantity':list,'thirvu_altered_quantity_approval':0})
+    doc.update({'thirvu_altered_quantity':list})
