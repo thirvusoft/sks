@@ -7,7 +7,7 @@
       <v-card>
         <v-card-title>
           <span class="headline indigo--text">{{
-            __('THIRVU RETAIL')
+            __('THIRVU RETAIL Opening Shift')
           }}</span>
         </v-card-title>
         <v-card-text>
@@ -51,7 +51,7 @@
                             counter
                             type="number"
                           ></v-text-field>
-                        </template>core_business_cycle
+                        </template>
                       </v-edit-dialog>
                     </template>
                   </v-data-table>
@@ -62,8 +62,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" dark @click="home_page">Go to Home</v-btn>
-          <v-btn color="primary" dark @click="submit_dialog">Submit</v-btn>
+          <v-btn :color="isDisabled ? 'green' : 'red' " @click="home_page">Go to Home</v-btn>
+          <v-btn :color="isDisabled ? 'red' : 'green' " @click="submit_dialog">Submit</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

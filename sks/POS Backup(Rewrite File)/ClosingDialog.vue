@@ -3,7 +3,7 @@
     <v-dialog v-model="closingDialog" max-width="900px">
       <v-card>
         <v-card-title>
-          <span class="headline indigo--text">{{__('THIRVU RETAIL')}}</span>
+          <span class="headline indigo--text">{{__('THIRVU RETAIL Closing Shift')}}</span>
         </v-card-title>
         <v-card-text class="pa-0">
           <v-container>
@@ -37,12 +37,12 @@
                     </template>
                     <template v-slot:item.difference="{ item }">{{
                       (item.difference = formtCurrency(
-                         item.expected_amount - item.closing_amount
+                         -(item.expected_amount - item.closing_amount)
                       ))
                     }}</template>
                     <template v-slot:item.billed_amount="{ item }">{{
                       (item.billed_amount = formtCurrency(
-                        item.closing_amount-item.expected_amount
+                        -(item.closing_amount-item.expected_amount)
                       ))
                     }}</template>
                     
@@ -221,6 +221,7 @@ export default {
 			filters: { company: dialog.fields_dict.company.get_value() }
 		}
 
+                        
     }
     
   },
