@@ -264,6 +264,7 @@ frappe.ui.form.on("Purchase Receipt",{
 		if(cur_frm.doc.ts_markup_and_markdown_variations == 1){
 			show_alert("Some items price has to be changed. Kindly please verify it !!! ")
 		}
+
 		if(in_list(frappe.user_roles, "Purchase Manager")) {
 			frm.set_df_property('check_qty','hidden',0)
 		}

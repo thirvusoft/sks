@@ -234,7 +234,8 @@ frappe.ui.form.on("Sales Invoice",{
 											'label':'Mode of Payment',
 											'fieldname':'mode',
 											'fieldtype':'Link',
-											'options':"Mode of Payment"
+											'options':"Mode of Payment",
+											'reqd':1
 											},
 											{'label':'Reference Date','fieldname':'ref_date','fieldtype':'Date'},
 											{'label':'Reference Number','fieldname':'ref_no','fieldtype':'Data'}
@@ -273,4 +274,11 @@ frappe.ui.form.on("Sales Invoice",{
 		})
 	}
 })
+frappe.ui.form.on("Sales Invoice",{
+	onload:function(frm,cdt,cdn){
+		if(cur_frm.doc.items[0].delivery_note){
+			frm.set_df_property('update_stock', 'hidden', 1);
+		
+	}},
 	
+ })
