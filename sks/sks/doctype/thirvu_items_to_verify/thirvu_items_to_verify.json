@@ -17,7 +17,7 @@
    "fieldname": "items",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "items",
+   "label": "Items",
    "no_copy": 1,
    "options": "Item"
   },
@@ -47,14 +47,14 @@
    "fieldname": "verified",
    "fieldtype": "Check",
    "in_list_view": 1,
-   "label": "verified",
+   "label": "Verified",
    "no_copy": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-06-22 13:00:24.011207",
+ "modified": "2022-07-12 15:38:44.330974",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Thirvu Items To Verify",
