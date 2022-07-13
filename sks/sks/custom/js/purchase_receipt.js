@@ -138,7 +138,7 @@ frappe.db.get_single_value("Thirvu Retail Settings","automatic_batch_creation").
 				for(var i=0;i<data.items.length;i++){
 					var against_purchase_order_name=data.items[i].purchase_order
 					expiry_date.push(data.items[i].expiry_date)
-					item_rate.push(data.items[i].rate)
+					item_rate.push(data.items[i].ts_valuation_rate)
 					item_code.push(data.items[i].item_code)
 					item_mrp.push(data.items[i].ts_mrp)
 				}

@@ -39,7 +39,7 @@ def auto_batch_creation(expiry_date=None,item_rate=None,item_code=None,item_mrp=
     item_changes_details=[]
     correct_batch_name=0
     changed_barcode=0
-    batch_expiry=frappe.get_all("Batch",fields=["name","posa_btach_price","item","expiry_date","creation","ts_mrp"])
+    batch_expiry=frappe.get_all("Batch",fields=["name","ts_valuation_rate","item","expiry_date","creation","ts_mrp"])
     for i in range(0,len(item_code),1):
         for j in range(0,(len(batch_expiry)),1):
                 if(item_code[i]==batch_expiry[j]["item"]):
@@ -59,9 +59,9 @@ def auto_batch_creation(expiry_date=None,item_rate=None,item_code=None,item_mrp=
                     if(batch_expiry[c]["ts_mrp"]!=item_mrp[i]):
                         item_changes_count=item_changes_count+1
                         item_changes_details.append("MRP")
-                    if(batch_expiry[c]["posa_btach_price"]!=item_rate[i]):
+                    if(batch_expiry[c]["ts_valuation_rate"]!=item_rate[i]):
                         item_changes_count=item_changes_count+1
-                        item_changes_details.append("Price")
+                        item_changes_details.append("Valuation Rate")
         for b in range(0,len(total_barcode_item_code),1):
             if(item_code[i]==total_barcode_item_code[b]):
                 item_changes_count=item_changes_count+1
