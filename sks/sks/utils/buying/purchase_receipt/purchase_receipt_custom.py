@@ -1,3 +1,4 @@
+import frappe
 from sks.sks.utils.buying.purchase_receipt.purchase_receipt_item.purchase_receipt_item_custom_fields import purchase_receipt_item_custom_fields, purchase_receipt_item_property_setter
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 from frappe.custom.doctype.property_setter.property_setter import make_property_setter
@@ -89,12 +90,24 @@ def purchase_receipt_custom_field():
           }
           create_custom_fields(custom_fields)
 def purchase_receipt_property_setter(): 
-    make_property_setter("Purchase Receipt", "scan_barcode", "hidden", 1, "Check")
-    make_property_setter("Purchase Receipt", "supplier_delivery_note", "hidden", 1, "Data")
-    make_property_setter("Purchase Receipt", "raw_material_details", "hidden", 1, "Section Break")
-    make_property_setter("Purchase Receipt", "transporter_info", "hidden", 1, "Section Break")
-    make_property_setter("Purchase Receipt", "printing_settings", "hidden", 1, "Section Break")
-    make_property_setter("Purchase Receipt", "subscription_detail", "hidden", 1, "Section Break")
-    make_property_setter("Purchase Receipt", "more_info", "hidden", 1, "Section Break")
-    make_property_setter("Purchase Receipt", "accounting_details_section", "hidden", 0, "Section Break")
-    
+  make_property_setter("Purchase Receipt", "scan_barcode", "hidden", 1, "Check")
+  make_property_setter("Purchase Receipt", "supplier_delivery_note", "hidden", 1, "Check")
+  make_property_setter("Purchase Receipt", "raw_material_details", "hidden", 1, "Check")
+  make_property_setter("Purchase Receipt", "transporter_info", "hidden", 1, "Check")
+  make_property_setter("Purchase Receipt", "printing_settings", "hidden", 1, "Check")
+  make_property_setter("Purchase Receipt", "subscription_detail", "hidden", 1, "Check")
+  make_property_setter("Purchase Receipt", "more_info", "hidden", 1, "Check")
+  make_property_setter("Purchase Receipt", "accounting_details_section", "hidden", 0, "Check")
+  make_property_setter("Purchase Receipt", "currency_and_price_list", "hidden", 1, "Check")
+  make_property_setter("Purchase Receipt", "sec_warehouse", "hidden", 1, "Check")
+  make_property_setter("Purchase Receipt", "taxes_charges_section", "hidden", 1, "Check")
+  make_property_setter("Purchase Receipt", "taxes_section", "hidden", 1, "Check")
+  make_property_setter("Purchase Receipt", "section_break_42", "hidden", 1, "Check")
+  make_property_setter("Purchase Receipt", "totals", "hidden", 1, "Check")
+  make_property_setter("Purchase Receipt", "terms_section_break", "hidden", 1, "Check")
+  make_property_setter("Purchase Receipt", "rounding_adjustment", "hidden", 1, "Check")
+  make_property_setter("Purchase Receipt", "disable_rounded_total", "hidden", 1, "Check")
+  make_property_setter("Purchase Receipt", "column_break3", "hidden", 1, "Check")
+  make_property_setter("Purchase Receipt", "apply_putaway_rule", "hidden", 1, "Check")
+  make_property_setter("Purchase Receipt", "total_net_weight", "hidden", 1, "Check")
+  make_property_setter("Purchase Receipt", "project", "hidden", 1, "Check")
