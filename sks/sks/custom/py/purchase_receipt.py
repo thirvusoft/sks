@@ -249,14 +249,6 @@ def calculating_landed_cost_voucher_amount(self):
             ts_separate_amount.append(ts_total_value)
     return ts_item_code,ts_separate_amount
 
-def msg(self,action):
-    if(self.ts_markup_items and self.ts_markdown_items):
-        frappe.msgprint(f"Markdown items Percentage {self.ts_markdown_items}<br>  Markup items Percentage {self.ts_markup_items}")
-    elif(self.ts_markup_items):
-        frappe.msgprint(f"Markup items Percentage {self.ts_markup_items}")
-    elif(self.ts_markdown_items):
-        frappe.msgprint(f"Markdown items Percentage {self.ts_markdown_items}")
-
 @frappe.whitelist()
 def validate(doc,event):
     list = []
