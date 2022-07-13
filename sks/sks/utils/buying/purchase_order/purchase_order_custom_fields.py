@@ -30,304 +30,299 @@ def purchase_order_custom_field():
           }
           create_custom_fields(custom_fields)
 def purchase_order_property_setter():                
-          make_property_setter("Purchase Order", "item_price_changed", "Hidden", 1, "Check")
-          make_property_setter("Purchase Order", "party_account_currency", "Hidden", 1, "Check")
-          make_property_setter("Purchase Order", "apply_tds", "hidden", 1, "Check")
-          make_property_setter("Purchase Order", "order_confirmation_no", "hidden", 1, "Data")
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"hidden",
-          'property_type':"Check",
-          'field_name':"currency_and_price_list",
-          "value":1
-          })
-          purchase_order.save(ignore_permissions=True)
+    make_property_setter("Purchase Order", "item_price_changed", "hidden", 1,"Check")
+    make_property_setter("Purchase Order", "party_account_currency", "hidden", 1,"Check")
+    make_property_setter("Purchase Order", "apply_tds", "hidden", 1, "Check")
+    make_property_setter("Purchase Order", "order_confirmation_no", "hidden", 1,"Check")
+    make_property_setter("Purchase Order", "accounting_dimensions_section", "hidden", 1,"Check")
+    make_property_setter("Purchase Order", "advance_paid", "hidden", 1,"Check")
+    make_property_setter("Purchase Order", "disable_rounded_total", "hidden", 1,"Check")
+    make_property_setter("Purchase Order", "disable_rounded_total", "default", 1,"Text")
+    make_property_setter("Purchase Order", "rounding_adjustment", "hidden", 1,"Check")
+    
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"hidden",
+    'property_type':"Check",
+    'field_name':"currency_and_price_list",
+    "value":1
+    })
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"hidden",
-          'property_type':"Check",
-          'field_name':"sec_warehouse",
-          "value":1
-          })
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"hidden",
+    'property_type':"Check",
+    'field_name':"sec_warehouse",
+    "value":1
+    })
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"hidden",
-          'property_type':"Check",
-          'field_name':"column_break5",
-          "value":1
-          })
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"hidden",
+    'property_type':"Check",
+    'field_name':"column_break5",
+    "value":1
+    })
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"hidden",
-          'property_type':"Check",
-          'field_name':"more_info",
-          "value":1
-          })
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"hidden",
+    'property_type':"Check",
+    'field_name':"more_info",
+    "value":1
+    })
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"hidden",
-          'property_type':"Check",
-          'field_name':"subscription_section",
-          "value":1
-          })
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"hidden",
+    'property_type':"Check",
+    'field_name':"subscription_section",
+    "value":1
+    })
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"hidden",
-          'property_type':"Check",
-          'field_name':"terms_section_break",
-          "value":1
-          })
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"hidden",
+    'property_type':"Check",
+    'field_name':"terms_section_break",
+    "value":1
+    })
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"hidden",
-          'property_type':"Check",
-          'field_name':"tracking_section",
-          "value":1
-          })
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"hidden",
+    'property_type':"Check",
+    'field_name':"tracking_section",
+    "value":1
+    })
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"hidden",
-          'property_type':"Check",
-          'field_name':"scan_barcode",
-          "value":0
-          })
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"hidden",
+    'property_type':"Check",
+    'field_name':"scan_barcode",
+    "value":0
+    })
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"print_hide",
-          'property_type':"Check",
-          'field_name':"in_words",
-          "value":0
-          })
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"print_hide",
+    'property_type':"Check",
+    'field_name':"in_words",
+    "value":0
+    })
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"default",
-          'property_type':"Text",
-          'field_name':"disable_rounded_total",
-          "value":1
-          })
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"default",
+    'property_type':"Check",
+    'field_name':"disable_rounded_total",
+    "value":1
+    })
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"print_hide",
-          'property_type':"Check",
-          'field_name':"base_rounded_total",
-          "value":1
-          })
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"print_hide",
+    'property_type':"Check",
+    'field_name':"base_rounded_total",
+    "value":1
+    })
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"print_hide",
-          'property_type':"Check",
-          'field_name':"rounded_total",
-          "value":0
-          })
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"print_hide",
+    'property_type':"Check",
+    'field_name':"rounded_total",
+    "value":0
+    })
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"print_hide",
-          'property_type':"Check",
-          'field_name':"payment_schedule",
-          "value":1
-          })
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"print_hide",
+    'property_type':"Check",
+    'field_name':"payment_schedule",
+    "value":1
+    })
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"print_hide",
-          'property_type':"Check",
-          'field_name':"due_date",
-          "value":0
-          })
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"print_hide",
+    'property_type':"Check",
+    'field_name':"due_date",
+    "value":0
+    })
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"hidden",
-          'property_type':"Check",
-          'field_name':"in_words",
-          "value":0
-          })
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"hidden",
+    'property_type':"Check",
+    'field_name':"in_words",
+    "value":0
+    })
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"hidden",
-          'property_type':"Check",
-          'field_name':"rounded_total",
-          "value":0
-          })
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"hidden",
+    'property_type':"Check",
+    'field_name':"rounded_total",
+    "value":0
+    })
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"hidden",
-          'property_type':"Check",
-          'field_name':"base_rounded_total",
-          "value":0
-          })
-          
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"hidden",
+    'property_type':"Check",
+    'field_name':"base_rounded_total",
+    "value":0
+    })
+    
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"reqd",
-          'field_name':"schedule_date",
-          "value":1
-          })
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"reqd",
+    'field_name':"schedule_date",
+    "value":1
+    })
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"default",
-          'field_name':"naming_series",
-          "value":"PUR-ORD-.YYYY.-"
-          })
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"default",
+    'field_name':"naming_series",
+    "value":"PUR-ORD-.YYYY.-"
+    })
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"hidden",
-          'field_name':"naming_series",
-          "value":1
-          })
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"hidden",
+    'field_name':"naming_series",
+    "value":1
+    })
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"hidden",
-          'property_type':"Check",
-          'field_name':"before_items_section",
-          "value":1
-          })
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"hidden",
+    'property_type':"Check",
+    'field_name':"before_items_section",
+    "value":1
+    })
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"hidden",
-          'property_type':"Section Break",
-          'field_name':"taxes_section",
-          "value":1
-          })
-          
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"hidden",
+    'property_type':"Section Break",
+    'field_name':"taxes_section",
+    "value":1
+    })
+    
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"hidden",
-          'property_type':"Check",
-          'field_name':"section_break_52",
-          "value":1
-          })
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"hidden",
+    'property_type':"Check",
+    'field_name':"section_break_52",
+    "value":1
+    })
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"hidden",
-          'property_type':"Check",
-          'field_name':"total",
-          "value":1
-          })
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"hidden",
+    'property_type':"Check",
+    'field_name':"total",
+    "value":1
+    })
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"hidden",
-          'property_type':"Check",
-          'field_name':"discount_section",
-          "value":1
-          })
-          
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"hidden",
+    'property_type':"Check",
+    'field_name':"discount_section",
+    "value":1
+    })
+    
+    purchase_order.save(ignore_permissions=True)
 
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"hidden",
-          'property_type':"Check",
-          'field_name':"payment_schedule_section",
-          "value":1
-          })
-          
-          purchase_order.save(ignore_permissions=True)
-          purchase_order=frappe.get_doc({
-          'doctype':'Property Setter',
-          'doctype_or_field': "DocField",
-          'doc_type': "Purchase Order",
-          'property':"hidden",
-          'property_type':"Check",
-          'field_name':"grand_total",
-          "value":1
-          })
-          
-          purchase_order.save(ignore_permissions=True)
+    purchase_order=frappe.get_doc({
+    'doctype':'Property Setter',
+    'doctype_or_field': "DocField",
+    'doc_type': "Purchase Order",
+    'property':"hidden",
+    'property_type':"Check",
+    'field_name':"payment_schedule_section",
+    "value":1
+    })
+    
+    purchase_order.save(ignore_permissions=True)

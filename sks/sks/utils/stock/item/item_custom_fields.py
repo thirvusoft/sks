@@ -7,24 +7,6 @@ def item_custom_fields():
     custom_fields = {
         "Item": [
             dict(
-                fieldname="rack",
-                fieldtype="Data",
-                label="Rack",
-                insert_after="section_break_27"
-            ),
-            dict(
-                fieldname="row",
-                fieldtype="Data",
-                label="Row",
-                insert_after="column_break_29"
-            ),
-            dict(
-                fieldname="bin",
-                fieldtype="Data",
-                label="Bin",
-                insert_after="column_break_31",
-            ),
-            dict(
                 fieldname="section_break_27",
                 fieldtype="Section Break",
                 label="Warehouse",
@@ -109,6 +91,7 @@ def item_custom_fields():
                 allow_in_quick_entry=1,
             ),
             dict(
+                label="Buying Margin",
                 fieldname="buying_margin_sec_break",
                 fieldtype="Section Break",
                 insert_after="ts_markdown_price",
@@ -116,10 +99,16 @@ def item_custom_fields():
             dict(
                 fieldname="ts_buying_margin",
                 fieldtype="Select",
-                label="Buying Margin",
+                label=" ",
                 options="\nCustom",
                 insert_after="buying_margin_sec_break",
                 allow_in_quick_entry=1,
+            ),
+            dict(
+                fieldname="ts_column_break_purchase_margin",
+                fieldtype="Column Break",
+                label="",
+                insert_after="ts_buying_margin",
             ),
             dict(
                 fieldname="buying_margin_percentage",
@@ -127,10 +116,10 @@ def item_custom_fields():
                 label="Buying Margin Percentage",
                 depends_on="eval:doc.ts_buying_margin==\"Custom\"",
                 mandatory_depends_on="eval:doc.ts_buying_margin==\"Custom\"",
-                insert_after="ts_buying_margin",
+                insert_after="ts_column_break_purchase_margin",
                 allow_in_quick_entry=1,
             ),
-             ],
+        ],
             
     }
     create_custom_fields(custom_fields)
@@ -140,6 +129,17 @@ def item_property_setter():
     make_property_setter("Item", "column_break2", "hidden", 1, "Check")
     make_property_setter("Item", "delivered_by_supplier", "hidden", 1, "Check")
     make_property_setter("Item", "is_item_from_hub", "hidden", 1, "Check")
+    make_property_setter("Item", "is_nil_exempt", "hidden", 1, "Check")
+    make_property_setter("Item", "is_non_gst", "hidden", 1, "Check")
+    make_property_setter("Item", "standard_rate", "hidden", 1, "Check")
+    make_property_setter("Item", "is_fixed_asset", "hidden", 1, "Check")
+    make_property_setter("Item", "valuation_rate", "hidden", 1, "Check")
+    make_property_setter("Item", "barcodes", "hidden", 0, "Check")
+    make_property_setter("Item", "inventory_section", "hidden", 1, "Check")
+    make_property_setter("Item", "reorder_section", "hidden", 1, "Check")
+    make_property_setter("Item", "serial_nos_and_batches", "hidden", 1, "Check")
+    make_property_setter("Item", "variants_section", "hidden", 1, "Check")
+    make_property_setter("Item", "defaults", "hidden", 1, "Check")
     make_property_setter("Item", "include_item_in_manufacturing", "hidden", 1, "Check")
     make_property_setter("Item", "item_name", "reqd", 1, "Check")
     make_property_setter("Item", "image", "in_preview", 0, "Check")
