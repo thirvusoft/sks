@@ -251,6 +251,7 @@ def calculating_landed_cost_voucher_amount(self):
 
 @frappe.whitelist()
 def validate(doc,event):
+    #Altered Qty
     list = []
     doc.set('thirvu_altered_quantity',[])
     for item in doc.items:
@@ -263,3 +264,23 @@ def validate(doc,event):
                         item_row.update({'ts_item':item.item_code,"ts_qty":int(po_items.qty),'ts_aqty':item.qty,'difference':int(item.qty) - int(po_items.qty)})
                         list.append(item_row)
     doc.update({'thirvu_altered_quantity':list})
+    
+    #Price Changed Items
+    price_changed = []
+    doc.set('thirvu_price_changed_items',[])
+    for item in doc.items:
+        if item.purchase_order:
+            po_docs = frappe.get_doc('Purchase Order',item.purchase_order)
+            for po_item in po_docs.items:
+                item_row=frappe._dict()
+                if po_item.item_code == item.item_code:
+                    if po_item.rate > item.rate:
+                        item_row.update({'ts_item':item.item_code,"ts_original_price":po_item.rate,'ts_altered_price':item.rate,'difference':item.rate - po_item.rate})
+                        price_changed.append(item_row)
+                    elif po_item.rate < item.rate:
+                        item_row.update({'ts_item':item.item_code,"ts_original_price":po_item.rate,'ts_altered_price':item.rate,'difference':item.rate - po_item.rate})
+                        price_changed.append(item_row)
+    doc.update({'thirvu_price_changed_items':price_changed})
+    if(len(doc.thirvu_price_changed_items)>0):doc.ts_item_price_changed=1
+    else:doc.ts_item_price_changed=0
+    

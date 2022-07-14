@@ -26,6 +26,14 @@ def purchase_receipt_custom_field():
                                         no_copy=1
                               ),
                               dict(
+                                        fieldname='thirvu_price_changed_items', 
+                                        label='Price Changed Items',
+                                        fieldtype='Table', 
+                                        insert_after='check_qty',
+                                        options="Thirvu Price Changed Items",
+                                        no_copy=1
+                              ),
+                              dict(
                                         fieldname='check_qty', 
                                         label='Altered Item Quantity Verified',
                                         fieldtype='Check',
