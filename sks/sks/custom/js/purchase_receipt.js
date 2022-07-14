@@ -200,10 +200,6 @@ frappe.ui.form.on("Purchase Receipt",{
 									item_changed=item_changed.bold()
 									frappe.show_alert("Some Item Price Is Differ from Purchase Order For This Items : "+item_changed+" To submit this Purchase Invoice Please Get Approvel From Authority People")
 									count=count+1
-									frm.set_value("ts_item_price_changed",1)
-								}
-								else{
-									frm.set_value("ts_item_price_changed",0)
 								}
 							}
 						}
