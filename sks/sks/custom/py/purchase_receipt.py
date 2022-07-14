@@ -134,7 +134,7 @@ def markup_and_markdown_calculator(document,event):
                 for vi in range(0,len(ts_val_item),1):
                     if ts_val_item[vi]==item.item_code:
                         ts_rate=ts_val_rate[vi]+item.rate
-                        item.ts_valuation_rate=ts_rate
+                        item.ts_valuation_rate=ts_rate/item.qty
         else:
             for item in document.get('items'):
                 item.ts_valuation_rate=item.rate
