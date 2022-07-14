@@ -170,4 +170,16 @@ def sales_invoice_property_setter():
     })
     ts_new.save(ignore_permissions=True)
     make_property_setter("Sales Invoice", "column_break4", "hidden", "1", "Section Break")
+    make_property_setter("Sales Invoice", "accounting_dimensions_section", "hidden", "1", "Section Break")
+    make_property_setter("Sales Invoice", "taxes_section", "hidden", "1", "Section Break")
+    make_property_setter("Sales Invoice", "section_break_40", "hidden", "1", "Section Break")
+    make_property_setter("Sales Invoice", "section_break_43", "hidden", "1", "Section Break")
+    make_property_setter("Sales Invoice", "section_break_49", "hidden", "1", "Section Break")
+    make_property_setter("Sales Invoice", "totals", "hidden", "1", "Section Break")
+    make_property_setter("Sales Invoice", "more_info", "hidden", "1", "Section Break")
+    make_property_setter("Sales Invoice", "posa_additional_notes_section", "hidden", "1", "Section Break")
+    make_property_setter("Sales Invoice", "more_info", "hidden", "1", "Section Break")
+
+
+
 
