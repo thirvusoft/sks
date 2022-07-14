@@ -38,7 +38,7 @@ def create_rate_changer_from_purchase_order():
     ))
     workflow.append('transitions', dict(
         state = 'Approval Pending', action='Approve', next_state = 'Approved',
-        allowed='Purchase Manager', allow_self_approval= 1,condition="doc.ts_markup_and_markdown_variations == 0 and (doc.check_qty == 1 or not doc.thirvu_altered_quantity)"
+        allowed='Purchase Manager', allow_self_approval= 1,condition="(doc.is_approved == 1 or doc.total_rejected_qty == 0) and (doc.thirvu_item_price_changed == 1 or not doc.thirvu_price_changed_items) and doc.ts_markup_and_markdown_variations == 0 and (doc.check_qty == 1 or not doc.thirvu_altered_quantity)"
     ))
     workflow.append('transitions', dict(
         state = 'Approval Pending', action='Reject', next_state = 'Rejected',
@@ -46,7 +46,7 @@ def create_rate_changer_from_purchase_order():
     ))
     workflow.append('transitions', dict(
         state = 'Approved', action='Submit', next_state = 'To Bill',
-        allowed='Purchase User', allow_self_approval= 1,condition="doc.ts_markup_and_markdown_variations == 0 and (doc.check_qty == 1 or not doc.thirvu_altered_quantity)"
+        allowed='Purchase User', allow_self_approval= 1,condition="(doc.is_approved == 1 or doc.total_rejected_qty == 0) and (doc.thirvu_item_price_changed == 1 or not doc.thirvu_price_changed_items) and doc.ts_markup_and_markdown_variations == 0 and (doc.check_qty == 1 or not doc.thirvu_altered_quantity)"
     ))
     workflow.append('transitions', dict(
         state = 'Draft', action='Submit', next_state = 'To Bill',
