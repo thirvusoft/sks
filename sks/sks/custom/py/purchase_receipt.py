@@ -284,3 +284,10 @@ def validate(doc,event):
     if(len(doc.thirvu_price_changed_items)>0):doc.ts_item_price_changed=1
     else:doc.ts_item_price_changed=0
     
+def purchased_qty_validation(doc,event):
+    for items in doc.items:
+        batch=items.batch_no
+        purchased_qty=frappe.db.sql("""select sum(qty)
+                             from `tabPurchase Receipt Item`
+                             where batch_no ='{0}' """.format(batch),as_list=1)[0][0]
+        frappe.db.set_value("Batch",batch,"purchase_qty",purchased_qty)
