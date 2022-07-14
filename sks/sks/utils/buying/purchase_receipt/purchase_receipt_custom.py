@@ -49,6 +49,12 @@ def purchase_receipt_custom_field():
                                         read_only=1
                               ),
                               dict(
+                                        fieldname='thirvu_item_price_changed', 
+                                        label='Item Price Changes Verified',
+                                        fieldtype='Check', 
+                                        insert_after='thirvu_price_changed_items',
+                              ),
+                              dict(
                                         fieldname='ts_markup_and_markdown_variations', 
                                         label='TS Markup And Markdown Variations',
                                         fieldtype='Check', 
