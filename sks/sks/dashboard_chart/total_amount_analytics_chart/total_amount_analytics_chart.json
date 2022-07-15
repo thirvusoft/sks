@@ -1,0 +1,36 @@
+{
+ "based_on": "",
+ "chart_name": "Total Amount Analytics Chart",
+ "chart_type": "Report",
+ "creation": "2022-07-14 15:56:18.665068",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "document_type": "",
+ "dynamic_filters_json": "{}",
+ "filters_json": "{\"from_date\":\"2022-07-14\",\"to_date\":\"2022-07-14\"}",
+ "group_by_type": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "modified": "2022-07-14 15:57:19.435803",
+ "modified_by": "testing@gmail.com",
+ "module": "sks",
+ "name": "Total Amount Analytics Chart",
+ "number_of_groups": 0,
+ "owner": "testing@gmail.com",
+ "parent_document_type": "",
+ "report_name": "Thirvu Purchase Order Report",
+ "source": "",
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Line",
+ "use_report_chart": 0,
+ "value_based_on": "",
+ "x_field": "date",
+ "y_axis": [
+  {
+   "y_field": "total_amount"
+  }
+ ]
+}
