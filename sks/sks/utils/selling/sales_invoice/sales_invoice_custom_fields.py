@@ -169,5 +169,10 @@ def sales_invoice_property_setter():
         "value":'1'
     })
     ts_new.save(ignore_permissions=True)
-    make_property_setter("Sales Invoice", "column_break4", "hidden", "1", "Section Break")
-
+    make_property_setter("Sales Invoice", "column_break4", "hidden", 1, "Check")
+    make_property_setter("Sales Invoice", "posa_additional_notes_section", "hidden", 1, "Check")
+    make_property_setter("Sales Invoice", "more_info", "hidden", 1, "Check")
+    make_property_setter("Sales Invoice", "rounding_adjustment", "hidden", 1, "Check")
+    make_property_setter("Sales Invoice", "total_advance", "hidden", 1, "Check")
+    make_property_setter("Sales Invoice", "project", "hidden", 1, "Check")
+    make_property_setter("Sales Invoice", "shipping_rule", "hidden", 1, "Check")
