@@ -1,0 +1,23 @@
+{
+ "creation": "2022-07-15 10:01:52.265812",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "dynamic_filters_json": "{\"from_date\":\"frappe.datetime.nowdate()\",\"to_date\":\"frappe.datetime.nowdate()\"}",
+ "filters_json": "{\"from_date\":\"2022-07-15\",\"to_date\":\"2022-07-15\"}",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "label": "TS Sales Order Userwise Count",
+ "modified": "2022-07-15 10:06:31.048584",
+ "modified_by": "Administrator",
+ "module": "sks",
+ "name": "TS Sales Order Analysis",
+ "owner": "Administrator",
+ "report_field": "count",
+ "report_function": "Maximum",
+ "report_name": "Thirvu Sales Order Userwise Count",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Daily",
+ "type": "Report"
+}

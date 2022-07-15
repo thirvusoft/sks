@@ -1,0 +1,25 @@
+{
+ "cards": [
+  {
+   "card": "purchase"
+  }
+ ],
+ "charts": [
+  {
+   "chart": "Total Amount Analytics Chart",
+   "width": "Half"
+  }
+ ],
+ "creation": "2022-07-14 15:48:38.937316",
+ "dashboard_name": "Purchse Oredr Dashboard",
+ "docstatus": 0,
+ "doctype": "Dashboard",
+ "idx": 0,
+ "is_default": 0,
+ "is_standard": 1,
+ "modified": "2022-07-14 15:57:36.997668",
+ "modified_by": "testing@gmail.com",
+ "module": "sks",
+ "name": "Purchse Oredr Dashboard",
+ "owner": "testing@gmail.com"
+}
