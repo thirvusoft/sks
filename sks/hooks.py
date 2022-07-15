@@ -42,7 +42,8 @@ doctype_js = {"Delivery Note" : "sks/custom/js/delivery_note.js",
 "Purchase Invoice":"sks/custom/js/purchase_invoice.js",
 "Item":"sks/custom/js/item.js",
 "POS Profile":"sks/custom/js/pos_profile.js",
-"Customer":"sks/custom/js/customer.js"}
+"Customer":"sks/custom/js/customer.js",
+"Job Offer":"sks/custom/js/job_offer.js"}
 # doctype_js = {"Delivery Note" : "sks/sks/custom/js/outstanding_amount.js"}
 
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
