@@ -2386,7 +2386,7 @@ export default {
             if(ts_r.message.length>1){
               const ls=[]
             for (var i = 0; i < ts_r.message.length; i++) {
-                ls.push("Batch No:- "+ts_r.message[i]["name"] + " |Expiry Date:- " + ts_r.message[i]["expiry_date"] + " |Batch Qty:- " + ts_r.message[i]["batch_qty"] + " |Selling Price:- " + ts_r.message[i]["ts_selling_price"])
+                ls.push("Batch No:- "+ts_r.message[i]["name"] +  " |MRP:- " + ts_r.message[i]["ts_mrp"])
             }
               let d = new frappe.ui.Dialog({
               title: 'Batch Selection',
