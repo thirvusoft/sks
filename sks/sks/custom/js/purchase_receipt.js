@@ -222,24 +222,28 @@ frappe.ui.form.on("Purchase Receipt Item",{
 					frappe.model.set_value(cdt,cdn,"ts_mrp",ts_r.message)
 				}
 			}),
-			frappe.call({
-				
-				method:"sks.sks.custom.py.buying_module.last_purchased_and_sold_qty",
-				args:{ts_item_code},
-				callback(returned){
-					if(returned.message[0] > 0 && returned.message[1] > 0){
-						frappe.show_alert({ message: __("Last purchased Qty : "+returned.message[0] +"  Total Sold Qty : "+returned.message[1]), indicator: 'red' });
-					}
-					else if(returned.message[0] > 0){
-						frappe.show_alert({ message: __("Last purchased Qty : "+returned.message[0] +"  Total Sold Qty : 0"), indicator: 'red' });
+			frappe.db.get_single_value("Thirvu Retail Settings","automatic_batch_creation").then(value =>{
+				if(value==1){
+					frappe.call({
+						method:"sks.sks.custom.py.buying_module.last_purchased_and_sold_qty",
+						args:{ts_item_code},
+						callback(returned){
+							if(returned.message[0] > 0 && returned.message[1] > 0){
+								frappe.show_alert({ message: __("Last purchased Qty : "+returned.message[0] +"  Total Sold Qty : "+returned.message[1]), indicator: 'red' });
+							}
+							else if(returned.message[0] > 0){
+								frappe.show_alert({ message: __("Last purchased Qty : "+returned.message[0] +"  Total Sold Qty : 0"), indicator: 'red' });
 
-					}
-					else if(returned.message[1] > 0){
-						frappe.show_alert({ message: __("Last purchased Qty : 0" +"  Total Sold Qty : "+returned.message[1]), indicator: 'red' });
+							}
+							else if(returned.message[1] > 0){
+								frappe.show_alert({ message: __("Last purchased Qty : 0" +"  Total Sold Qty : "+returned.message[1]), indicator: 'red' });
 
-					}
+							}
+						}
+					})
 				}
-			}),frappe.db.get_single_value("Thirvu Retail Settings","buying_rate_calculation").then(value =>{
+			}),
+			frappe.db.get_single_value("Thirvu Retail Settings","buying_rate_calculation").then(value =>{
 				if(value==1){
 					frappe.call({
 						method:"sks.sks.custom.py.buying_module.buying_rate_finder",

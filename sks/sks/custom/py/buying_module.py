@@ -12,17 +12,17 @@ def validate_buying_rate_with_mrp(doc,event):
 
 @frappe.whitelist()
 def last_purchased_and_sold_qty(ts_item_code):
-    last_purchase_qty = (frappe.db.sql("""select purchase_qty 
+    last_purchase_qty = (frappe.db.sql("""select purchase_qty
                                         from `tabBatch`
                                         where item = '{0}'
-                                        order by MAX(manufacturing_date)
-                                        limit 1; 
+                                        Order by modified DESC
+                                        limit 1
                                         """.format(ts_item_code),as_list=1))[0][0]
     Available_qty = (frappe.db.sql("""select batch_qty 
                                         from `tabBatch`
                                         where item = '{0}'
-                                        order by MAX(manufacturing_date)
-                                        limit 1; 
+                                        order by modified DESC
+                                        limit 1
                                         """.format(ts_item_code),as_list=1))[0][0]
     sold_qty=0
     if(last_purchase_qty and Available_qty):
