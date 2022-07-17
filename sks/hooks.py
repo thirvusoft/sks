@@ -127,7 +127,8 @@ doc_events = {
 		"validate":"sks.sks.custom.py.user.validate_phone"
 	},
 	"Batch":{
-		"after_insert":"sks.sks.custom.py.batch.item_price_creator"
+		"after_insert":"sks.sks.custom.py.batch.item_price_creator",
+		"validate":"sks.sks.custom.py.batch.item_price_creator"
 	},
 	"Delivery Trip": {
         "on_submit" :"sks.sks.custom.py.delivery_trip.assign_to_driver"

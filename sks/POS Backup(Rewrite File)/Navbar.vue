@@ -166,7 +166,10 @@ export default {
     },
     go_about() {
       const win = window.open(
-        'https://github.com/yrestom/POS-Awesome',
+        // Customized By Thirvusoft
+        // Start
+        'https://thirvusoft.com/',
+        // End
         '_blank'
       );
       win.focus();
