@@ -16,6 +16,11 @@ frappe.ui.form.on("Purchase Receipt",{
 			item_codes.push(data.items[i].item_code)
 		}
 	},
+	setup:function(frm){
+		frm.add_fetch("supplier", "select_selling_price_type", "select_selling_price_type");
+		frm.add_fetch("supplier", "ts_markup_price", "ts_markup_price");
+		frm.add_fetch("supplier", "ts_markdown_price", "ts_markdown_price");
+	},
 	scan_barcode_to_verify_the_items: function(frm,cdt,cdn){
 		let data=locals[cdt][cdn]
 		var search_value = data.scan_barcode_to_verify_the_items

@@ -56,6 +56,7 @@ def item_custom_fields():
                 fieldtype="Section Break",
                 label="Markup and Markdown",
                 insert_after="image",
+                hidden=1
             ),
             dict(
                 fieldname="ts_column_break",

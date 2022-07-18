@@ -17,16 +17,23 @@ def last_purchased_and_sold_qty(ts_item_code):
                                         where item = '{0}'
                                         Order by modified DESC
                                         limit 1
-                                        """.format(ts_item_code),as_list=1))[0][0]
+                                        """.format(ts_item_code),as_list=1))
+    if last_purchase_qty:
+        last_purchase_qty = last_purchase_qty[0][0]
+        
+         
     Available_qty = (frappe.db.sql("""select batch_qty 
                                         from `tabBatch`
                                         where item = '{0}'
                                         order by modified DESC
                                         limit 1
-                                        """.format(ts_item_code),as_list=1))[0][0]
+                                        """.format(ts_item_code),as_list=1))
+    if Available_qty:
+        Available_qty = Available_qty[0][0]
+    
     sold_qty=0
     if(last_purchase_qty and Available_qty):
-        sold_qty = last_purchase_qty - Available_qty
+        sold_qty = last_purchase_qty - Available_qty       
     return last_purchase_qty,sold_qty
 
 @frappe.whitelist()    
