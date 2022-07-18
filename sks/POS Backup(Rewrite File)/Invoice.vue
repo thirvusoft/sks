@@ -1090,9 +1090,10 @@ export default {
           });
           return;
         }
-        
-         // //code start
-
+         // Customized By Thirvusoft
+         //Start
+         frappe.db.get_single_value("Thirvu Retail Settings","allow_display_customer_transaction_history").then(value =>{
+          if(value==1){
              frappe.call({
                  method:"posawesome.posawesome.api.posapp.customer_transaction_history",
                  args:{
@@ -1119,7 +1120,9 @@ export default {
               }
                    }
            });
-         // //code end
+          }
+         })
+         //End
         
         if (!this.validate()) {
           return;
@@ -2386,7 +2389,7 @@ export default {
             if(ts_r.message.length>1){
               const ls=[]
             for (var i = 0; i < ts_r.message.length; i++) {
-                ls.push("Batch No:- "+ts_r.message[i]["name"] +  " | MRP:- " + ts_r.message[i]["ts_mrp"])
+                ls.push("Batch No:- "+ts_r.message[i]["name"] +  " |MRP:- " + ts_r.message[i]["ts_mrp"])
             }
               let d = new frappe.ui.Dialog({
               title: 'Batch Selection',

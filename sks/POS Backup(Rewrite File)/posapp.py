@@ -1558,100 +1558,92 @@ def customer_credit_sale(customer):
             'Overdue and Discounted', 'Partly Paid and Discounted')),'docstatus':1},
         fields=['base_paid_amount','name','base_rounded_total','outstanding_amount'])
     
-    pending_invoice={}
+    pending_inv=[]
     recievable=0
     for i in doc[::-1]:
         if(i['base_paid_amount'] != i['base_rounded_total']):
-            pending_invoice[i['name']] = i['outstanding_amount']
-    alert_data=""
-    html=str("<tr class=clstr><td class=clstd><b><right>" + "Sales Invoice No"  + "</right></b></td><td class=clstd><b><center>" + "&#12288 Outstanding" + "</center></b></td></tr>")
-    for i in pending_invoice:
-        html+= "<tr class=clstr><td class=clstd><left><a href=/app/sales-invoice/"+str(i)+'>' + str(i) + "</a></left></td><td class=clstd><center> &#12288 &#12288 " + str(pending_invoice[i]) + "</center></td></tr>"
-        recievable+=pending_invoice[i]
-        alert_data+=str(i)+" with amount "+str(pending_invoice[i])+", "
-    alert_data=("Customer: "+str(customer)+" has Unpaid amount of RS."+str(recievable))+" with the credit bills of "+alert_data 
-    html = "<html><style> .clstab, .clsth, .clstd { border: 1px solid black; border-collapse: collapse;}   .clsth, .clstd {padding: 15px;} .clstab {width:100%;} </style>" + "<table class=clstab>" + html +"</table>"
-
-    
-    alert_data = alert_data[:len(alert_data)-2]+"."
-    
-    return alert_data,pending_invoice,recievable, html
+            pending_inv.append({
+                'sales_invoice':i['name'],
+                'amount':i['outstanding_amount'], 
+                'paid':0, 
+                })
+    for i in pending_inv:
+        recievable+=i['amount']
+    return recievable, pending_inv
 
 @frappe.whitelist(allow_guest=True)
-def payment_entry(amount,mode,customer,pending_invoice,company,opening,ref_no=None,ref_date=None):
-    mode_of_payment = frappe.get_doc("Mode of Payment",mode).accounts
-    for i in mode_of_payment:
-        if(i.company==company):
-            acc_paid_to=i.default_account
-            break
-    try:
-        if(acc_paid_to):pass
-    except:
-        frappe.throw(("Please set Company and Default account for ({0}) mode of payment").format(mode))
-    bank_account_type = frappe.db.get_value("Account", acc_paid_to, "account_type")
-    if bank_account_type == "Bank":
-        if(ref_no == None):
-            ref_no = "1234567"
-        if(ref_date == None):
-            ref_date = frappe.utils.datetime.datetime.now()
-    acc_currency = frappe.db.get_value('Account',acc_paid_to,'account_currency')
-    pending_invoice = eval(pending_invoice)
-    doc = frappe.new_doc('Payment Entry')
-    references=[]
-    amount1 = float(amount)
-    for i in pending_invoice:
-        amount_allocated = 0
-        if(amount1 >= pending_invoice[i]):
-            amount_allocated = pending_invoice[i]
-            amount1 -= pending_invoice[i]
-        else:
-            amount_allocated=amount1
-            amount1 -= amount_allocated
-        if(amount_allocated>0):
+def payment_entry(customer,pending_invoice,company,opening,ref_no=None,ref_date=None):
+    created=0
+    pending_invoice=json.loads(pending_invoice)
+    for docs in pending_invoice:
+        mode=docs.get('mode_of_payment')
+        amount=float(docs.get('amount') or 0)
+        paid=float(docs.get('paid') or 0)
+        if(mode and amount and paid):
+            mode_of_payment = frappe.get_doc("Mode of Payment",mode).accounts
+            for i in mode_of_payment:
+                if(i.company==company):
+                    acc_paid_to=i.default_account
+                    break
+            try:
+                if(acc_paid_to):pass
+            except:
+                frappe.throw(("Please set Company and Default account for ({0}) mode of payment").format(mode))
+            bank_account_type = frappe.db.get_value("Account", acc_paid_to, "account_type")
+            if bank_account_type == "Bank":
+                if(ref_no == None):
+                    ref_no = "Nothing"
+                if(ref_date == None):
+                    ref_date = frappe.utils.datetime.datetime.now()
+            acc_currency = frappe.db.get_value('Account',acc_paid_to,'account_currency')
+            doc = frappe.new_doc('Payment Entry')
+            references=[]
+
             references.append({
                 'reference_doctype':'Sales Invoice',
-                'reference_name': i,
-                'total_amount':pending_invoice[i],
+                'reference_name': docs.get('sales_invoice'),
+                'total_amount':amount,
                 'exchange_rate': 1,
-                'allocated_amount': amount_allocated
+                'allocated_amount': paid
             })
-    doc.update({
-        'company':company,
-        'payment_type':"Receive",
-        'docstatus': 1,
-        'mode_of_payment':mode,
-        'party_type': 'Customer',
-        'party': customer,
-        'paid_amount':float(amount),
-        'source_exchange_rate':1,
-        'references':references,
-        'received_amount':float(amount),
-        'target_exchange_rate':1,
-        'paid_to': acc_paid_to,
-        'paid_to_account_currency': acc_currency,
-        'pos_opening_shift_id': opening
-    })
-    if(bank_account_type == 'Bank'):
-        doc.update({
-            'reference_no':ref_no,
-            'reference_date':ref_date
-        })
-    doc.insert()
-    doc.submit()
-    frappe.db.commit()
-    if(doc.docstatus == 1):
-        pos = frappe.get_doc("POS Awesome Outstanding Amount",opening)
-        outstanding={
-            'customer': customer,
-            'payment_entry': doc.name,
-            'mode_of_payment' : mode,
-            'date': doc.posting_date,
-            'amount': doc.paid_amount
-        }
-        pos.append('outstanding_amount' ,outstanding )
-        pos.save()
-        frappe.db.commit()
-    return doc.paid_amount, mode
+            doc.update({
+                'company':company,
+                'payment_type':"Receive",
+                'docstatus': 1,
+                'mode_of_payment':mode,
+                'party_type': 'Customer',
+                'party': customer,
+                'paid_amount':float(amount),
+                'source_exchange_rate':1,
+                'references':references,
+                'received_amount':float(amount),
+                'target_exchange_rate':1,
+                'paid_to': acc_paid_to,
+                'paid_to_account_currency': acc_currency,
+                'pos_opening_shift_id': opening
+            })
+            if(bank_account_type == 'Bank'):
+                doc.update({
+                    'reference_no':ref_no,
+                    'reference_date':ref_date
+                })
+            doc.insert()
+            doc.submit()
+            frappe.db.commit()
+            if(doc.docstatus == 1):
+                pos = frappe.get_doc("POS Awesome Outstanding Amount",opening)
+                outstanding={
+                    'customer': customer,
+                    'payment_entry': doc.name,
+                    'mode_of_payment' : mode,
+                    'date': doc.posting_date,
+                    'amount': doc.paid_amount
+                }
+                pos.append('outstanding_amount' ,outstanding )
+                pos.save()
+                frappe.db.commit()
+            created+=1
+    return created
 
 
 
