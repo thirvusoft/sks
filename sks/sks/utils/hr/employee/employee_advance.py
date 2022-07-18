@@ -10,7 +10,7 @@ def employee_advance_custom_fields():
                 label="Outstanding Amount",
                 insert_after="pending_amount",
                 reqd=1,
-                readonly=0
+                read_only=0
               
             ),
              dict(
