@@ -3,6 +3,7 @@ def workflow_document_creation():
     create_state()
     create_action()
     create_rate_changer_from_purchase_order()
+    employee_advance()
 
 def create_rate_changer_from_purchase_order():
     if frappe.db.exists('Workflow', 'Rate Changer From Purchase Order'):
@@ -85,7 +86,7 @@ def create_action():
 
 
 
-def Employee_advance():
+def employee_advance():
     if frappe.db.exists('Workflow', 'Eployee Advance'):
         frappe.delete_doc('Workflow', 'Employee Advance')
     workflow = frappe.new_doc('Workflow')
@@ -113,7 +114,7 @@ def Employee_advance():
     
     workflow.append('transitions', dict(
         state = 'Draft', action='Request Approve Permission', next_state = 'Approval Pending',
-        allowed='HR User',condition="doc.advance_amount != doc.outstanding_amount"
+        allowed='HR User',condition="doc.advance_amount > doc.outstanding_amount"
     ))
     workflow.append('transitions', dict(
         state = 'Approval Pending', action='Approve', next_state = 'Approved',
@@ -124,12 +125,11 @@ def Employee_advance():
         allowed='HR Manager'
     ))
     workflow.append('transitions', dict(
-        state = 'Approved', action='Submit', next_state = 'To Bill',
-        allowed='HR User')
+        state = 'Approved', action='Submit', next_state = 'Submitted',
+        allowed='HR User'))
     workflow.append('transitions', dict(
         state = 'Draft', action='Submit', next_state = 'Submitted',
-        allowed='HR User'
+        allowed='HR User',condition="doc.advance_amount <= doc.outstanding_amount"
     ))
-  
     workflow.insert(ignore_permissions=True)
     return workflow
