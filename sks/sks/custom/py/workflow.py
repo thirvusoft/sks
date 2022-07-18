@@ -114,7 +114,7 @@ def employee_advance():
     
     workflow.append('transitions', dict(
         state = 'Draft', action='Request Approve Permission', next_state = 'Approval Pending',
-        allowed='HR User',condition="doc.advance_amount != doc.outstanding_amount"
+        allowed='HR User',condition="doc.advance_amount > doc.outstanding_amount"
     ))
     workflow.append('transitions', dict(
         state = 'Approval Pending', action='Approve', next_state = 'Approved',
@@ -129,7 +129,7 @@ def employee_advance():
         allowed='HR User'))
     workflow.append('transitions', dict(
         state = 'Draft', action='Submit', next_state = 'Submitted',
-        allowed='HR User'
+        allowed='HR User',condition="doc.advance_amount <= doc.outstanding_amount"
     ))
     workflow.insert(ignore_permissions=True)
     return workflow
