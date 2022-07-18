@@ -187,7 +187,8 @@ def submit_closing_shift(closing_shift):
     closing_shift_doc.save()
     for i in range(0,len(ts_payment_reconciliation),1):
         ts_mode_of_payment=ts_payment_reconciliation[i].__dict__
-        if ts_mode_of_payment["mode_of_payment"] == "Cash - Fruits & ice":
+        ts_mode_of_payment_type=frappe.get_doc("Mode of Payment",ts_mode_of_payment["mode_of_payment"])
+        if ts_mode_of_payment_type.type == "Cash":
             closing_shift_doc.payment_reconciliation[i].closing_amount = closing_shift_doc.ts_denomination_total
             closing_shift_doc.payment_reconciliation[i].difference = closing_shift_doc.payment_reconciliation[i].closing_amount-closing_shift_doc.payment_reconciliation[i].expected_amount
     closing_shift_doc.save()

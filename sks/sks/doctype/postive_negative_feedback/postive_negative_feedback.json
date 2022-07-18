@@ -1,0 +1,44 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-07-18 09:26:03.918099",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "date",
+  "postive_feedback",
+  "negative_feedback"
+ ],
+ "fields": [
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date"
+  },
+  {
+   "fieldname": "postive_feedback",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Positive Feedback"
+  },
+  {
+   "fieldname": "negative_feedback",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Negative Feedback"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-07-18 09:48:36.477140",
+ "modified_by": "Administrator",
+ "module": "sks",
+ "name": "Postive Negative Feedback",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
