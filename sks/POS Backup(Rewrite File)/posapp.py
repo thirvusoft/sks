@@ -1529,7 +1529,8 @@ def get_fields_for_denomination(pos_opening_shift):
     pos_opening_shift=frappe.get_doc("POS Opening Shift",pos_opening_shift)
     
     for i in pos_opening_shift.balance_details:
-        if i.mode_of_payment != "Cash - Fruits & ice":
+        ts_mode_of_payment_type=frappe.get_doc("Mode of Payment",i.mode_of_payment)
+        if ts_mode_of_payment_type.type != "Cash":
             fields+=(
                 {'fieldname':f'amt{i.mode_of_payment}','label':f"<b>Mode of Payment</b>","hidden":1,'default':i.mode_of_payment,'read_only':1,'fieldtype':'Data'},
                 {'fieldname':f'sales{i.mode_of_payment}','label':f"<b>Enter Amount here (For ₹{i.mode_of_payment})</b>", 'fieldtype':"Currency"},
