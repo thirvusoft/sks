@@ -16,6 +16,7 @@ def employee_custom_fields():
                 fieldtype="Data",
                 label="Age",
                 insert_after="date_of_birth",
+                read_only=1
               
             ),
             dict(
