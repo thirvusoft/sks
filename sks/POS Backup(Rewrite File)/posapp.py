@@ -1540,7 +1540,7 @@ def get_fields_for_denomination(pos_opening_shift):
 @frappe.whitelist()
 def batch_finder(ts_barcode=None,ts_item=None):
     if ts_barcode:
-        ts_batchs=frappe.db.get_all('Batch', fields=['name','expiry_date','batch_qty','ts_selling_price'], filters={'barcode':ts_barcode, 'disabled':0})
+        ts_batchs=frappe.db.get_all('Batch', fields=['name','expiry_date','batch_qty','ts_mrp'], filters={'barcode':ts_barcode, 'disabled':0})
         return(ts_batchs)
     else:
         ts_batchs=frappe.db.get_all('Batch', fields=['name'], filters={'item':ts_item})
