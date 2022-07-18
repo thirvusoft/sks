@@ -7,7 +7,7 @@
       <v-card>
         <v-card-title>
           <span class="headline indigo--text">{{
-            __('THIRVU RETAIL Opening Shift')
+            __('Tirvu Retail Opening Shift')
           }}</span>
         </v-card-title>
         <v-card-text>
@@ -62,8 +62,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn :color="isDisabled ? 'green' : 'red' " @click="home_page">Go to Home</v-btn>
-          <v-btn :color="isDisabled ? 'red' : 'green' " @click="submit_dialog">Submit</v-btn>
+          <v-btn :color="isDisabled ? 'rose' : 'orange' " @click="home_page">Go to Home Page</v-btn>
+          <v-btn :color="isDisabled ? 'blue' : 'blue' " @click="submit_dialog">Submit</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

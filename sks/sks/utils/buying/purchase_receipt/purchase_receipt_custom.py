@@ -19,6 +19,28 @@ def purchase_receipt_custom_field():
                                         no_copy=1
                               ),
                               dict(
+                                        fieldname="select_selling_price_type",
+                                        fieldtype="Select",
+                                        label="Select Selling Price Type",
+                                        options="\nMarkup\nMarkdown",
+                                        insert_after="supplier",
+                                        hidden=1
+                              ),
+                              dict(
+                                        fieldname="ts_markup_price",
+                                        fieldtype="Percent",
+                                        label="Markup Percentage",
+                                        depends_on="eval:doc.select_selling_price_type==\"Markup\"",
+                                        insert_after="select_selling_price_type",
+                              ),
+                              dict(
+                                        fieldname="ts_markdown_price",
+                                        fieldtype="Percent",
+                                        label="Markdown Percentage",
+                                        depends_on="eval:doc.select_selling_price_type==\"Markdown\"",
+                                        insert_after="ts_markup_price",
+                              ),
+                              dict(
                                         fieldname='thirvu_altered_quantity', 
                                         label='Items To Verify for Altered Quantity',
                                         fieldtype='Table', 

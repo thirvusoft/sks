@@ -14,23 +14,26 @@
   {
    "fieldname": "currency",
    "fieldtype": "Currency",
+   "in_list_view": 1,
    "label": "Currency"
   },
   {
    "fieldname": "count",
    "fieldtype": "Int",
+   "in_list_view": 1,
    "label": "Count"
   },
   {
    "fieldname": "total",
    "fieldtype": "Currency",
+   "in_list_view": 1,
    "label": "Total"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2022-04-21 07:50:11.783925",
+ "modified": "2022-07-18 09:31:42.010725",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Denomination",

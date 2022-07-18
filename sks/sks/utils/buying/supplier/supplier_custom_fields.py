@@ -12,7 +12,46 @@ def supplier_custom_fields():
                 label="GSTIN",
                 insert_after="default_bank_account",
                 fetch_from="supplier_primary_address.gstin"
-            )
+            ),
+            dict(
+                fieldname="ts_markup_and_markdown",
+                fieldtype="Section Break",
+                label="Markup and Markdown",
+                insert_after="prevent_pos",
+            ),
+            dict(
+                fieldname="ts_column_break",
+                fieldtype="Column Break",
+                label="",
+                insert_after="select_selling_price_type",
+            ),
+            dict(
+                fieldname="ts_markup_price",
+                fieldtype="Percent",
+                label="Markup Percentage",
+                depends_on="eval:doc.select_selling_price_type==\"Markup\"",
+                mandatory_depends_on="eval:doc.select_selling_price_type==\"Markup\"",
+                insert_after="ts_column_break",
+                allow_in_quick_entry=1,
+            ),
+            dict(
+                fieldname="ts_markdown_price",
+                fieldtype="Percent",
+                label="Markdown Percentage",
+                depends_on="eval:doc.select_selling_price_type==\"Markdown\"",
+                mandatory_depends_on="eval:doc.select_selling_price_type==\"Markdown\"",
+                insert_after="ts_markup_price",
+                allow_in_quick_entry=1,
+            ),
+            dict(
+                fieldname="select_selling_price_type",
+                fieldtype="Select",
+                label="Select Selling Price Type",
+                options="\nMarkup\nMarkdown",
+                reqd=1,
+                insert_after="ts_markup_and_markdown",
+                allow_in_quick_entry=1,
+            ),
             ]    
     }
     create_custom_fields(custom_fields)
