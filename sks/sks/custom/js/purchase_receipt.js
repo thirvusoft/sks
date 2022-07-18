@@ -15,6 +15,22 @@ frappe.ui.form.on("Purchase Receipt",{
 		for(var i=0;i<data.items.length;i++){
 			item_codes.push(data.items[i].item_code)
 		}
+		if(frm.doc.supplier){
+			frappe.db.get_doc("Supplier", frm.doc.supplier).then((doc) => {
+				cur_frm.set_value('select_selling_price_type',doc.select_selling_price_type)
+				if(frm.doc.select_selling_price_type == 'Markup'){
+					cur_frm.set_value('ts_markup_price',doc.ts_markup_price)
+				}
+				else{
+					cur_frm.set_value('ts_markdown_price',doc.ts_markdown_price)
+				}
+			});
+		}
+	},
+	setup:function(frm){
+		frm.add_fetch("supplier", "select_selling_price_type", "select_selling_price_type");
+		frm.add_fetch("supplier", "ts_markup_price", "ts_markup_price");
+		frm.add_fetch("supplier", "ts_markdown_price", "ts_markdown_price");
 	},
 	setup:function(frm){
 		frm.add_fetch("supplier", "select_selling_price_type", "select_selling_price_type");
