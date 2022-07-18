@@ -82,3 +82,54 @@ def create_action():
             new_doc = frappe.new_doc('Workflow Action Master')
             new_doc.workflow_action_name = row
             new_doc.save()
+
+
+
+def Employee_advance():
+    if frappe.db.exists('Workflow', 'Eployee Advance'):
+        frappe.delete_doc('Workflow', 'Employee Advance')
+    workflow = frappe.new_doc('Workflow')
+    workflow.workflow_name = 'Employee Advance'
+    workflow.document_type = 'Employee Advance'
+    workflow.workflow_state_field = 'workflow_state'
+    workflow.is_active = 1
+    workflow.send_email_alert = 1
+    workflow.append('states', dict(
+        state = 'Draft', allow_edit = 'HR User',update_field = 'status', update_value = 'open'
+    ))
+    workflow.append('states', dict(
+        state = 'Approval Pending', allow_edit = 'HR Manager',update_field = 'status', update_value = 'Approval Pending'
+    ))
+    workflow.append('states', dict(
+        state = 'Approved', allow_edit = 'HR User',update_field = 'status', update_value = 'Approved'
+    ))
+    workflow.append('states', dict(
+        state = 'Rejected', allow_edit = 'HR Manager',update_field = 'status', update_value = 'Rejected'
+    ))
+    workflow.append('states', dict(
+        state = 'Submitted',doc_status=1, allow_edit = 'HR User',update_field = 'status', update_value = 'Submitted'
+    ))
+   
+    
+    workflow.append('transitions', dict(
+        state = 'Draft', action='Request Approve Permission', next_state = 'Approval Pending',
+        allowed='HR User',condition="doc.advance_amount != doc.outstanding_amount"
+    ))
+    workflow.append('transitions', dict(
+        state = 'Approval Pending', action='Approve', next_state = 'Approved',
+        allowed='HR Manager')
+    )
+    workflow.append('transitions', dict(
+        state = 'Approval Pending', action='Reject', next_state = 'Rejected',
+        allowed='HR Manager'
+    ))
+    workflow.append('transitions', dict(
+        state = 'Approved', action='Submit', next_state = 'To Bill',
+        allowed='HR User')
+    workflow.append('transitions', dict(
+        state = 'Draft', action='Submit', next_state = 'Submitted',
+        allowed='HR User'
+    ))
+  
+    workflow.insert(ignore_permissions=True)
+    return workflow
