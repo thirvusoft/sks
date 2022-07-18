@@ -1094,7 +1094,7 @@ export default {
          // //code start
 
              frappe.call({
-                 method:"posawesome.posawesome.api.credit_sales.customer_transaction_history",
+                 method:"posawesome.posawesome.api.posapp.customer_transaction_history",
                  args:{
                      customer:this.customer
                      },
