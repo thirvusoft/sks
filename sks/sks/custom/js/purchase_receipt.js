@@ -5,7 +5,17 @@ frappe.ui.form.on("Purchase Receipt",{
 	onload:function(frm,cdt,cdn){
 		frappe.db.get_single_value("Thirvu Retail Settings","item_verifed_in_purchase_receipt").then(value =>{
 			if(value==1){
-				cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",0)
+				if(frm.doc.items.length){
+					if(frm.doc.items[0].purchase_order){
+						cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",0)
+					}
+					else{
+						cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",1)
+					}
+				}
+				else{
+					cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",1)
+				}
 			}
 			else{
 				cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",1)
