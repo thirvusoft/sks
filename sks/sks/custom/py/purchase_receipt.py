@@ -165,8 +165,8 @@ def markup_and_markdown_calculator(document,event):
             if ts_item_detais:
                 ts_item_detais.mrp=ts_mrp[i]
                 ts_item_detais.save()
-                if(ts_item_detais.__dict__["select_selling_price_type"]=="Markdown"):
-                    ts_markdown=(ts_mrp[i]/100)*ts_item_detais.__dict__["ts_markdown_price"]
+                if(document.select_selling_price_type == "Markdown"):
+                    ts_markdown=(ts_mrp[i]/100)* document.ts_markdown_price
                     ts_markdown=ts_mrp[i]-ts_markdown
                     if(ts_markdown<ts_mrp[i] and ts_markdown>ts_valuation_rate[i]):
                         ts_matched_item.append(ts_item_code[i])
@@ -180,8 +180,8 @@ def markup_and_markdown_calculator(document,event):
                         ts_markdown_items += f"{ts_item_name[i]}:{round(abs(ts_mrp[i]-ts_markdown),2)}\n"
                             
                         
-                elif(ts_item_detais.__dict__["select_selling_price_type"]=="Markup"):
-                    ts_markup=(ts_mrp[i]/100)*ts_item_detais.__dict__["ts_markup_price"]
+                elif(document.select_selling_price_type=="Markup"):
+                    ts_markup=(ts_mrp[i]/100)*document.ts_markup_price
                     ts_markup=ts_valuation_rate[i]+ts_markup
                     if(ts_markup<ts_mrp[i] and ts_markup>ts_valuation_rate[i]):
                         ts_matched_item.append(ts_item_code[i])
