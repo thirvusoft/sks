@@ -70,7 +70,7 @@ doctype_js = {
 
 # Customized By Thirvusoft
 # Start
-after_install = "posawesome.api.after_install.customization"
+after_install = "posawesome.posawesome.api.after_install.customization"
 # End
 
 # Desk Notifications
