@@ -153,7 +153,7 @@ export default {
           })
 
         frappe.call({
-          method : "posawesome.posawesome.api.credit_sales.customer_credit_sale",
+          method : "posawesome.posawesome.api.posapp.customer_credit_sale",
           args:{
             customer: customer
           },
@@ -210,7 +210,7 @@ export default {
                   {user: frappe.session.user,}).then(function (id) {
                     if (r.message && data.items) {
                       frappe.call({
-                        method:"posawesome.posawesome.api.credit_sales.payment_entry",
+                        method:"posawesome.posawesome.api.posapp.payment_entry",
                         args:{
                           customer:customer,
                           pending_invoice:data.items,

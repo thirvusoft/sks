@@ -1,0 +1,32 @@
+{
+ "cards": [
+  {
+   "card": "Total Buying Amount"
+  },
+  {
+   "card": "Maximum Purchase Invoices"
+  }
+ ],
+ "charts": [
+  {
+   "chart": "PI Paid Amount Analysis",
+   "width": "Half"
+  },
+  {
+   "chart": "PI Outstanding Amount Analysis",
+   "width": "Half"
+  }
+ ],
+ "creation": "2022-07-14 16:53:14.802407",
+ "dashboard_name": "Thirvu Purchase Invoice",
+ "docstatus": 0,
+ "doctype": "Dashboard",
+ "idx": 0,
+ "is_default": 0,
+ "is_standard": 1,
+ "modified": "2022-07-14 17:07:01.604483",
+ "modified_by": "Administrator",
+ "module": "sks",
+ "name": "Thirvu Purchase Invoice",
+ "owner": "Administrator"
+}
