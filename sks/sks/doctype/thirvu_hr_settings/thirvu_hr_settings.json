@@ -1,0 +1,81 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-07-18 12:24:38.388764",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "company_property_section",
+  "property_reduction_component",
+  "company_property",
+  "section_break_3",
+  "leave_penalty_amount",
+  "column_break_4",
+  "leave_penalty_component"
+ ],
+ "fields": [
+  {
+   "columns": 2,
+   "fieldname": "company_property",
+   "fieldtype": "Table",
+   "options": "Thirvu Property Details"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "company_property_section",
+   "fieldtype": "Section Break",
+   "label": "Company Property "
+  },
+  {
+   "fieldname": "leave_penalty_amount",
+   "fieldtype": "Currency",
+   "label": "Leave Penalty Amount"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "leave_penalty_component",
+   "fieldtype": "Link",
+   "label": "Leave Penalty Component",
+   "mandatory_depends_on": "eval:doc.leave_penalty_amount>0",
+   "options": "Salary Component"
+  },
+  {
+   "fieldname": "section_break_3",
+   "fieldtype": "Section Break",
+   "label": "Leave Penalty"
+  },
+  {
+   "fieldname": "property_reduction_component",
+   "fieldtype": "Link",
+   "label": "Property Reduction Component",
+   "mandatory_depends_on": "eval:doc.company_property.length>0",
+   "options": "Salary Component"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2022-07-19 13:49:30.220909",
+ "modified_by": "Administrator",
+ "module": "sks",
+ "name": "Thirvu HR Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
