@@ -56,6 +56,7 @@ def item_custom_fields():
                 fieldtype="Section Break",
                 label="Markup and Markdown",
                 insert_after="image",
+                hidden=1
             ),
             dict(
                 fieldname="ts_column_break",
@@ -86,7 +87,7 @@ def item_custom_fields():
                 fieldtype="Select",
                 label="Select Selling Price Type",
                 options="\nMarkup\nMarkdown",
-                reqd=1,
+                reqd=0,
                 insert_after="ts_markup_and_markdown",
                 allow_in_quick_entry=1,
             ),

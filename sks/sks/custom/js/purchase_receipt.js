@@ -5,7 +5,17 @@ frappe.ui.form.on("Purchase Receipt",{
 	onload:function(frm,cdt,cdn){
 		frappe.db.get_single_value("Thirvu Retail Settings","item_verifed_in_purchase_receipt").then(value =>{
 			if(value==1){
-				cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",0)
+				if(frm.doc.items.length){
+					if(frm.doc.items[0].purchase_order){
+						cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",0)
+					}
+					else{
+						cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",1)
+					}
+				}
+				else{
+					cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",1)
+				}
 			}
 			else{
 				cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",1)
@@ -15,6 +25,27 @@ frappe.ui.form.on("Purchase Receipt",{
 		for(var i=0;i<data.items.length;i++){
 			item_codes.push(data.items[i].item_code)
 		}
+		if(frm.doc.supplier){
+			frappe.db.get_doc("Supplier", frm.doc.supplier).then((doc) => {
+				cur_frm.set_value('select_selling_price_type',doc.select_selling_price_type)
+				if(frm.doc.select_selling_price_type == 'Markup'){
+					cur_frm.set_value('ts_markup_price',doc.ts_markup_price)
+				}
+				else{
+					cur_frm.set_value('ts_markdown_price',doc.ts_markdown_price)
+				}
+			});
+		}
+	},
+	setup:function(frm){
+		frm.add_fetch("supplier", "select_selling_price_type", "select_selling_price_type");
+		frm.add_fetch("supplier", "ts_markup_price", "ts_markup_price");
+		frm.add_fetch("supplier", "ts_markdown_price", "ts_markdown_price");
+	},
+	setup:function(frm){
+		frm.add_fetch("supplier", "select_selling_price_type", "select_selling_price_type");
+		frm.add_fetch("supplier", "ts_markup_price", "ts_markup_price");
+		frm.add_fetch("supplier", "ts_markdown_price", "ts_markdown_price");
 	},
 	scan_barcode_to_verify_the_items: function(frm,cdt,cdn){
 		let data=locals[cdt][cdn]
@@ -222,24 +253,28 @@ frappe.ui.form.on("Purchase Receipt Item",{
 					frappe.model.set_value(cdt,cdn,"ts_mrp",ts_r.message)
 				}
 			}),
-			frappe.call({
-				
-				method:"sks.sks.custom.py.buying_module.last_purchased_and_sold_qty",
-				args:{ts_item_code},
-				callback(returned){
-					if(returned.message[0] > 0 && returned.message[1] > 0){
-						frappe.show_alert({ message: __("Last purchased Qty : "+returned.message[0] +"  Total Sold Qty : "+returned.message[1]), indicator: 'red' });
-					}
-					else if(returned.message[0] > 0){
-						frappe.show_alert({ message: __("Last purchased Qty : "+returned.message[0] +"  Total Sold Qty : 0"), indicator: 'red' });
+			frappe.db.get_single_value("Thirvu Retail Settings","automatic_batch_creation").then(value =>{
+				if(value==1){
+					frappe.call({
+						method:"sks.sks.custom.py.buying_module.last_purchased_and_sold_qty",
+						args:{ts_item_code},
+						callback(returned){
+							if(returned.message[0] > 0 && returned.message[1] > 0){
+								frappe.show_alert({ message: __("Last purchased Qty : "+returned.message[0] +"  Total Sold Qty : "+returned.message[1]), indicator: 'red' });
+							}
+							else if(returned.message[0] > 0){
+								frappe.show_alert({ message: __("Last purchased Qty : "+returned.message[0] +"  Total Sold Qty : 0"), indicator: 'red' });
 
-					}
-					else if(returned.message[1] > 0){
-						frappe.show_alert({ message: __("Last purchased Qty : 0" +"  Total Sold Qty : "+returned.message[1]), indicator: 'red' });
+							}
+							else if(returned.message[1] > 0){
+								frappe.show_alert({ message: __("Last purchased Qty : 0" +"  Total Sold Qty : "+returned.message[1]), indicator: 'red' });
 
-					}
+							}
+						}
+					})
 				}
-			}),frappe.db.get_single_value("Thirvu Retail Settings","buying_rate_calculation").then(value =>{
+			}),
+			frappe.db.get_single_value("Thirvu Retail Settings","buying_rate_calculation").then(value =>{
 				if(value==1){
 					frappe.call({
 						method:"sks.sks.custom.py.buying_module.buying_rate_finder",

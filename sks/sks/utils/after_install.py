@@ -22,6 +22,11 @@ from sks.sks.utils.hr.payroll_and_salary.payroll_and_salary_customisation import
 from sks.sks.utils.buying.supplier_quotation.supplier_quotation_custom_fields import supplier_quotation_customization
 from sks.sks.utils.stock.item.item_supplier_custom_fields import item_supplier_customization
 from sks.sks.utils.stock.item_price.item_price_custom_fields import item_price_customization
+from sks.sks.utils.hr.employee.employee_advance import  employee_advance_custom_fields
+from sks.sks.utils.hr.employee.employee import  employee_custom_fields
+
+
+
 def after_install(): 
     purchase_order_customization()
     delivery_note_customization()
@@ -47,3 +52,5 @@ def after_install():
     supplier_quotation_customization()
     item_supplier_customization()
     item_price_customization()
+    employee_advance_custom_fields()
+    employee_custom_fields()

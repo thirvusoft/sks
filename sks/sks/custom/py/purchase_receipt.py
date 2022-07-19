@@ -52,16 +52,16 @@ def auto_batch_creation(expiry_date=None,item_rate=None,item_code=None,item_mrp=
             if(matched_creation_date!=[]):
                 if(max(matched_creation_date)==batch_expiry[c]["creation"]):
                     correct_batch_name=batch_expiry[c]["name"]
-                    formatted_expiry_date=getdate(expiry_date[i])
-                    if(batch_expiry[c]["expiry_date"]!=formatted_expiry_date):
-                        item_changes_count=item_changes_count+1
-                        item_changes_details.append("Expiry date")
+                    # formatted_expiry_date=getdate(expiry_date[i])
+                    # if(batch_expiry[c]["expiry_date"]!=formatted_expiry_date):
+                    #     item_changes_count=item_changes_count+1
+                    #     item_changes_details.append("Expiry date")
                     if(batch_expiry[c]["ts_mrp"]!=item_mrp[i]):
                         item_changes_count=item_changes_count+1
                         item_changes_details.append("MRP")
-                    if(batch_expiry[c]["ts_valuation_rate"]!=item_rate[i]):
-                        item_changes_count=item_changes_count+1
-                        item_changes_details.append("Valuation Rate")
+                    # if(batch_expiry[c]["ts_valuation_rate"]!=item_rate[i]):
+                    #     item_changes_count=item_changes_count+1
+                    #     item_changes_details.append("Valuation Rate")
         for b in range(0,len(total_barcode_item_code),1):
             if(item_code[i]==total_barcode_item_code[b]):
                 item_changes_count=item_changes_count+1
@@ -165,8 +165,8 @@ def markup_and_markdown_calculator(document,event):
             if ts_item_detais:
                 ts_item_detais.mrp=ts_mrp[i]
                 ts_item_detais.save()
-                if(ts_item_detais.__dict__["select_selling_price_type"]=="Markdown"):
-                    ts_markdown=(ts_mrp[i]/100)*ts_item_detais.__dict__["ts_markdown_price"]
+                if(document.select_selling_price_type == "Markdown"):
+                    ts_markdown=(ts_mrp[i]/100)* document.ts_markdown_price
                     ts_markdown=ts_mrp[i]-ts_markdown
                     if(ts_markdown<ts_mrp[i] and ts_markdown>ts_valuation_rate[i]):
                         ts_matched_item.append(ts_item_code[i])
@@ -180,8 +180,8 @@ def markup_and_markdown_calculator(document,event):
                         ts_markdown_items += f"{ts_item_name[i]}:{round(abs(ts_mrp[i]-ts_markdown),2)}\n"
                             
                         
-                elif(ts_item_detais.__dict__["select_selling_price_type"]=="Markup"):
-                    ts_markup=(ts_mrp[i]/100)*ts_item_detais.__dict__["ts_markup_price"]
+                elif(document.select_selling_price_type=="Markup"):
+                    ts_markup=(ts_mrp[i]/100)*document.ts_markup_price
                     ts_markup=ts_valuation_rate[i]+ts_markup
                     if(ts_markup<ts_mrp[i] and ts_markup>ts_valuation_rate[i]):
                         ts_matched_item.append(ts_item_code[i])
@@ -284,3 +284,12 @@ def validate(doc,event):
     if(len(doc.thirvu_price_changed_items)>0):doc.ts_item_price_changed=1
     else:doc.ts_item_price_changed=0
     
+def purchased_qty_validation(doc,event):
+    thirvu_settings = frappe.db.get_single_value("Thirvu Retail Settings","automatic_batch_creation")
+    if(thirvu_settings == 1):
+        for items in doc.items:
+            batch=items.batch_no
+            purchased_qty=frappe.db.sql("""select sum(qty)
+                                from `tabPurchase Receipt Item`
+                                where batch_no ='{0}' """.format(batch),as_list=1)[0][0]
+            frappe.db.set_value("Batch",batch,"purchase_qty",purchased_qty)
