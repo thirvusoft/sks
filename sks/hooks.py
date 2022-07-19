@@ -43,8 +43,9 @@ doctype_js = {"Delivery Note" : "sks/custom/js/delivery_note.js",
 "Item":"sks/custom/js/item.js",
 "POS Profile":"sks/custom/js/pos_profile.js",
 "Customer":"sks/custom/js/customer.js",
-"Job Offer":"sks/custom/js/job_offer.js",
-"Employee":"sks/custom/js/employee.js",}
+"Employee Advance":"sks/custom/js/employee_advance.js",
+"Employee":"sks/custom/js/employee.js",
+"Job Offer":"sks/custom/js/job_offer.js"}
 # doctype_js = {"Delivery Note" : "sks/sks/custom/js/outstanding_amount.js"}
 
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
@@ -133,7 +134,8 @@ doc_events = {
 		"validate":"sks.sks.custom.py.user.validate_phone"
 	},
 	"Batch":{
-		"after_insert":"sks.sks.custom.py.batch.item_price_creator"
+		"after_insert":"sks.sks.custom.py.batch.item_price_creator",
+		# "validate":"sks.sks.custom.py.batch.item_price_creator"
 	},
 	"Delivery Trip": {
         "on_submit" :"sks.sks.custom.py.delivery_trip.assign_to_driver"
@@ -143,8 +145,9 @@ doc_events = {
 	},
 	"Purchase Receipt":{
 		"validate":["sks.sks.custom.py.purchase_receipt.markup_and_markdown_calculator",
-					"sks.sks.custom.py.purchase_receipt.validate"
-		]
+					"sks.sks.custom.py.purchase_receipt.validate",
+		],
+		"on_submit":"sks.sks.custom.py.purchase_receipt.purchased_qty_validation"
 	},
 	"Purchase Order":{
 		"validate":[
