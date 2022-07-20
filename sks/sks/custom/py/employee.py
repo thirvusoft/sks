@@ -52,6 +52,8 @@ def property_deduction(doc):
         additional_salary.save()
         additional_salary.submit()
         frappe.db.commit()
+        
+@frappe.whitelist()
 def age_calculation(date_of_birth):
 
     date = getdate(date_of_birth)
