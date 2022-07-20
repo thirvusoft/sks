@@ -1,8 +1,9 @@
 import frappe
+from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 
 def employee_customisations():
     create_employee_property_setter()
-    create_custom_fields()
+    create_employee_fields()
 
 
 def create_employee_property_setter():
@@ -83,16 +84,16 @@ def create_employee_property_setter():
     })
     employee.save(ignore_permissions=True)
 
-    employee=frappe.get_doc({
-        'doctype':'Property Setter',
-        'doctype_or_field': "DocField",
-        'doc_type': "Employee",
-        'property':"hidden",
-        'property_type':"Check",
-        'field_name':"default_shift",
-        "value":1
-    })
-    employee.save(ignore_permissions=True) 
+    # employee=frappe.get_doc({
+    #     'doctype':'Property Setter',
+    #     'doctype_or_field': "DocField",
+    #     'doc_type': "Employee",
+    #     'property':"hidden",
+    #     'property_type':"Check",
+    #     'field_name':"default_shift",
+    #     "value":1
+    # })
+    # employee.save(ignore_permissions=True) 
 
     employee=frappe.get_doc({
         'doctype':'Property Setter',
@@ -161,5 +162,16 @@ def create_employee_property_setter():
     employee.save(ignore_permissions=True)
 
 
-def create_custom_fields():
-    pass
+def create_employee_fields():
+    custom_fields = {
+        "Employee":[
+            dict(
+                fieldname="ts_property_details",
+                fieldtype="Table",
+                label="Property Verification",
+                insert_after="employee_name",
+                options ="Thirvu Employee Verification"
+            )
+        ]
+    }
+    create_custom_fields(custom_fields)

@@ -1,0 +1,45 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-07-18 09:54:49.863076",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "issue_date",
+  "type_of_certificate",
+  "certificate_link"
+ ],
+ "fields": [
+  {
+   "fieldname": "issue_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Issue Date"
+  },
+  {
+   "fieldname": "type_of_certificate",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Type Of Certificate",
+   "options": "Thirvu Type Of Certificate"
+  },
+  {
+   "fieldname": "certificate_link",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Certificate Link"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-07-18 10:08:26.405766",
+ "modified_by": "Administrator",
+ "module": "sks",
+ "name": "Certificate Details",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

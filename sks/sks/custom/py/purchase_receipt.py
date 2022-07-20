@@ -59,9 +59,9 @@ def auto_batch_creation(expiry_date=None,item_rate=None,item_code=None,item_mrp=
                     if(batch_expiry[c]["ts_mrp"]!=item_mrp[i]):
                         item_changes_count=item_changes_count+1
                         item_changes_details.append("MRP")
-                    # if(batch_expiry[c]["ts_valuation_rate"]!=item_rate[i]):
-                    #     item_changes_count=item_changes_count+1
-                    #     item_changes_details.append("Valuation Rate")
+                    if(batch_expiry[c]["ts_valuation_rate"]!=item_rate[i]):
+                        item_changes_count=item_changes_count+1
+                        item_changes_details.append("Valuation Rate")
         for b in range(0,len(total_barcode_item_code),1):
             if(item_code[i]==total_barcode_item_code[b]):
                 item_changes_count=item_changes_count+1

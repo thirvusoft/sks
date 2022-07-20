@@ -48,7 +48,7 @@
   },
   {
    "default": "0",
-   "description": "Customer Sales History Details Popup In Sales Order",
+   "description": "Customer Sales History Details Will Be Popup",
    "fieldname": "customer_transaction_history",
    "fieldtype": "Check",
    "label": "Customer Transaction History"
@@ -71,15 +71,17 @@
   },
   {
    "default": "0",
+   "description": "Unpaid Credit Bill Customer History Will Be Popup",
    "fieldname": "allow_display_customer_outstanding_amount",
    "fieldtype": "Check",
-   "label": "Allow display customer outstanding amount"
+   "label": "Credit Bill History"
   },
   {
    "default": "0",
+   "description": "Customer Sales History Details Will Be Popup",
    "fieldname": "allow_display_customer_transaction_history",
    "fieldtype": "Check",
-   "label": "Allow display customer transaction history"
+   "label": "Customer Transaction History"
   },
   {
    "default": "0",
@@ -135,7 +137,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-07-08 15:01:05.356469",
+ "modified": "2022-07-18 19:00:36.146009",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Thirvu Retail Settings",

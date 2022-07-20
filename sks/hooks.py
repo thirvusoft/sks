@@ -43,6 +43,8 @@ doctype_js = {"Delivery Note" : "sks/custom/js/delivery_note.js",
 "Item":"sks/custom/js/item.js",
 "POS Profile":"sks/custom/js/pos_profile.js",
 "Customer":"sks/custom/js/customer.js",
+"Employee Advance":"sks/custom/js/employee_advance.js",
+"Employee":"sks/custom/js/employee.js",
 "Job Offer":"sks/custom/js/job_offer.js"}
 # doctype_js = {"Delivery Note" : "sks/sks/custom/js/outstanding_amount.js"}
 
@@ -115,11 +117,14 @@ doc_events = {
 	"Address": {
 		"validate":"sks.sks.custom.py.address.validate_phone"
 	},
+	"Attendance": {
+		"on_submit":"sks.sks.custom.py.attendance.create_penalty"
+	},
 	"Contact": {
 		"validate":"sks.sks.custom.py.contact.validate_phone"
 	},
 	"Employee": {
-		"validate":"sks.sks.custom.py.employee.validate_phone",
+		"validate":"sks.sks.custom.py.employee.validate_phone"
 	},
 	"Lead": {
 		"validate":"sks.sks.custom.py.lead.validate_phone"
