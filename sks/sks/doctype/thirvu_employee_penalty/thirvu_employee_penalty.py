@@ -23,5 +23,23 @@ class ThirvuEmployeePenalty(Document):
 			additional_salary.save()
 			additional_salary.submit()
 			frappe.db.commit()
-		# else:
+		else:
+			old = frappe.get_doc('Additional Salary',{'ref_docname':doc['name']})
+			old.cancel()
+			additional_salary = frappe.copy_doc(old) 
+			additional_salary.amended_from = old.name 
+			additional_salary.status = "Draft" 
+			additional_salary.insert()
+			additional_salary.ref_docname = self.name
+			additional_salary.ref_doctype = self.doctype
+			additional_salary.payroll_date = self.posting_date
+			additional_salary.employee = self.employee
+			if frappe.db.get_single_value("Thirvu HR Settings", "leave_penalty_component"):
+				additional_salary.salary_component = frappe.db.get_single_value("Thirvu HR Settings", "leave_penalty_component")
+			additional_salary.amount = self.amount
+			additional_salary.overwrite_salary_structure_amount = 0
+			additional_salary.save()
+			additional_salary.submit()
+			frappe.db.commit()
+			frappe.db.commit()
 
