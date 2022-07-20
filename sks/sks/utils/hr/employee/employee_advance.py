@@ -5,9 +5,9 @@ def employee_advance_custom_fields():
     custom_fields = {
         "Employee Advance":[
             dict(
-                fieldname="outstanding_amount",
+                fieldname="eligible_amount",
                 fieldtype="Currency",
-                label="Outstanding Amount",
+                label="Eligible Advance Amount",
                 insert_after="pending_amount",
                 reqd=1,
                 read_only=1
@@ -17,14 +17,14 @@ def employee_advance_custom_fields():
                 fieldname="from_date",
                 fieldtype="Date",
                 label="From Date",
-                insert_after="outstanding_amount",
+                insert_after="employee_name",
                 reqd=1,
               
             ),
              dict(
                 fieldname="to_date",
                 fieldtype="Date",
-                label="To Dtae",
+                label="To Date",
                 insert_after="from_date",
                 reqd=1,
               
