@@ -11,7 +11,7 @@ frappe.ui.form.on("Employee Advance",{
 					callback(r){
 				
 					  
-						frm.set_value( "outstanding_amount" , r.message[0])
+						frm.set_value( "eligible_amount" , r.message[0])
 							
 					}
 					
