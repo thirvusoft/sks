@@ -7,12 +7,9 @@
  "engine": "InnoDB",
  "field_order": [
   "company_property_section",
-  "property_reduction_component",
   "company_property",
   "section_break_3",
-  "leave_penalty_amount",
-  "column_break_4",
-  "leave_penalty_component"
+  "leave_penalty_amount"
  ],
  "fields": [
   {
@@ -33,33 +30,15 @@
    "label": "Leave Penalty Amount"
   },
   {
-   "fieldname": "column_break_4",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "leave_penalty_component",
-   "fieldtype": "Link",
-   "label": "Leave Penalty Component",
-   "mandatory_depends_on": "eval:doc.leave_penalty_amount>0",
-   "options": "Salary Component"
-  },
-  {
    "fieldname": "section_break_3",
    "fieldtype": "Section Break",
    "label": "Leave Penalty"
-  },
-  {
-   "fieldname": "property_reduction_component",
-   "fieldtype": "Link",
-   "label": "Property Reduction Component",
-   "mandatory_depends_on": "eval:doc.company_property.length>0",
-   "options": "Salary Component"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-07-19 13:49:30.220909",
+ "modified": "2022-07-20 14:34:18.935555",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Thirvu HR Settings",

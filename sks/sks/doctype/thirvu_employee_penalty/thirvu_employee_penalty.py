@@ -16,8 +16,7 @@ class ThirvuEmployeePenalty(Document):
 			additional_salary.ref_doctype = self.doctype
 			additional_salary.payroll_date = self.posting_date
 			additional_salary.employee = self.employee
-			if frappe.db.get_single_value("Thirvu HR Settings", "leave_penalty_component"):
-				additional_salary.salary_component = frappe.db.get_single_value("Thirvu HR Settings", "leave_penalty_component")
+			additional_salary.salary_component = frappe.db.get_value("Thirvu Penalty Reason",self.reason,'salary_component')
 			additional_salary.amount = self.amount
 			additional_salary.overwrite_salary_structure_amount = 0
 			additional_salary.save()
@@ -34,8 +33,7 @@ class ThirvuEmployeePenalty(Document):
 			additional_salary.ref_doctype = self.doctype
 			additional_salary.payroll_date = self.posting_date
 			additional_salary.employee = self.employee
-			if frappe.db.get_single_value("Thirvu HR Settings", "leave_penalty_component"):
-				additional_salary.salary_component = frappe.db.get_single_value("Thirvu HR Settings", "leave_penalty_component")
+			additional_salary.salary_component = frappe.db.get_value("Thirvu Penalty Reason",self.reason,'salary_component')
 			additional_salary.amount = self.amount
 			additional_salary.overwrite_salary_structure_amount = 0
 			additional_salary.save()
