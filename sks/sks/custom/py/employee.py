@@ -22,8 +22,7 @@ def property_deduction(doc):
         additional_salary.ref_doctype = doc['doctype']
         additional_salary.payroll_date = datetime.strptime(doc['relieving_date'],date_format) - timedelta(1)
         additional_salary.employee = doc['name']
-        if frappe.db.get_single_value("Thirvu HR Settings", "property_reduction_component"):
-            additional_salary.salary_component = frappe.db.get_single_value("Thirvu HR Settings", "property_reduction_component")
+        additional_salary.salary_component = frappe.db.get_value("Thirvu Penalty Reason",self.reason,'salary_component')
         for data in doc['ts_property_details']:
             amount += data['amount'] * data['count']
         additional_salary.amount = amount
@@ -43,8 +42,7 @@ def property_deduction(doc):
         additional_salary.ref_doctype = doc['doctype']
         additional_salary.payroll_date = datetime.strptime(doc['relieving_date'],date_format) - timedelta(1)
         additional_salary.employee = doc['name']
-        if frappe.db.get_single_value("Thirvu HR Settings", "property_reduction_component"):
-            additional_salary.salary_component = frappe.db.get_single_value("Thirvu HR Settings", "property_reduction_component")
+        additional_salary.salary_component = frappe.db.get_value("Thirvu Penalty Reason",self.reason,'salary_component')
         for data in doc['ts_property_details']:
             amount += data['amount'] * data['count']
         additional_salary.amount = amount

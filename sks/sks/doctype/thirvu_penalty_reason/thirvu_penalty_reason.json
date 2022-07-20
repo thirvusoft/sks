@@ -8,6 +8,7 @@
  "engine": "InnoDB",
  "field_order": [
   "reason",
+  "salary_component",
   "description"
  ],
  "fields": [
@@ -24,11 +25,19 @@
    "fieldname": "description",
    "fieldtype": "Small Text",
    "label": "Description"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "salary_component",
+   "fieldtype": "Link",
+   "label": "Salary Component",
+   "options": "Salary Component",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-07-15 15:40:07.198613",
+ "modified": "2022-07-20 14:35:27.962601",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Thirvu Penalty Reason",

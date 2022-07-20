@@ -170,7 +170,8 @@ def create_employee_fields():
                 fieldtype="Table",
                 label="Property Verification",
                 insert_after="employee_name",
-                options ="Thirvu Employee Verification"
+                options ="Thirvu Employee Verification",
+                depends_on="eval:doc.gender"
             )
         ]
     }
