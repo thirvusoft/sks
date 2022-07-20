@@ -13,7 +13,7 @@ def attendance_property_setter():
         'property':"hidden",
         'property_type':"Check",
         'field_name':"details_section",
-        "value":1
+        "value":0
     })
     attendance.save(ignore_permissions=True) 
 

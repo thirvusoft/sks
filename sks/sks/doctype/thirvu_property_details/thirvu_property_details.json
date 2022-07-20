@@ -1,0 +1,38 @@
+{
+ "actions": [],
+ "creation": "2022-07-18 12:25:39.375492",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "property_name",
+  "amount"
+ ],
+ "fields": [
+  {
+   "fieldname": "property_name",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Property Name",
+   "options": "Thirvu Property",
+   "unique": 1
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Amount"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2022-07-19 11:33:24.447378",
+ "modified_by": "Administrator",
+ "module": "sks",
+ "name": "Thirvu Property Details",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

@@ -117,11 +117,14 @@ doc_events = {
 	"Address": {
 		"validate":"sks.sks.custom.py.address.validate_phone"
 	},
+	"Attendance": {
+		"on_submit":"sks.sks.custom.py.attendance.create_penalty"
+	},
 	"Contact": {
 		"validate":"sks.sks.custom.py.contact.validate_phone"
 	},
 	"Employee": {
-		"validate":"sks.sks.custom.py.employee.validate_phone",
+		"validate":"sks.sks.custom.py.employee.validate_phone"
 	},
 	"Lead": {
 		"validate":"sks.sks.custom.py.lead.validate_phone"
