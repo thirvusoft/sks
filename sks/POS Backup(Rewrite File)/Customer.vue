@@ -143,8 +143,10 @@ export default {
         this.customer = customer;
         
 
-      //.....................................................
-
+      // Customized By Thirvusoft
+      //Star
+      frappe.db.get_single_value("Thirvu Retail Settings","allow_display_customer_outstanding_amount").then(value =>{
+	      if(value==1){
         customer =vm.customer;
          if(customer){
 
@@ -196,13 +198,37 @@ export default {
                   fieldtype: 'Select',
                   options:modes,
                   in_list_view:1,
-                  columns:2
+                  columns:2,
+                  onchange: async function(){
+                    let items=d.get_value('items')
+                    let bank=false
+                    for(let mop=0; mop<items.length; mop++){
+                      let mode = items[mop].mode_of_payment
+                      if(mode){
+                        await frappe.db.get_value('Mode of Payment', mode, 'type').then((res) =>{
+                          if(res.message.type=='Bank'){
+                            bank=true
+                            d.set_df_property('ref_no', 'hidden', 0)
+                            d.set_df_property('ref_no', 'reqd', 1)
+                            d.set_df_property('ref_date', 'hidden', 0)
+                            d.set_df_property('ref_date', 'reqd', 1)
+                          }
+                          else{
+                            d.set_df_property('ref_no', 'hidden', 1)
+                            d.set_df_property('ref_no', 'reqd', 0)
+                            d.set_df_property('ref_date', 'hidden', 1)
+                            d.set_df_property('ref_date', 'reqd', 0)
+                          }
+                        })
+                      }
+                    }
+                  }
                 }
                 ],
                 data:r.message[1]},
                 {'label':'Outstanding Amount','fieldname':'outstanding','fieldtype':'Currency','default':r.message[0],'read_only':1},
-                {'label':'Reference Number','fieldname':'ref_no','fieldtype':'Data', 'depends_on':'eval:doc.mode=="Credit Card"'},
-                {'label':'Reference Date','fieldname':'ref_date','fieldtype':'Date', 'default':'Today','depends_on':'eval:doc.mode=="Credit Card"'}
+                {'label':'Reference Number','fieldname':'ref_no','fieldtype':'Data', 'hidden':1, default: 'Nothing'},
+                {'label':'Reference Date','fieldname':'ref_date','fieldtype':'Date', 'default':'Today', 'hidden':1}
               ],
               primary_action : function(data){
                 frappe.call(
@@ -232,8 +258,6 @@ export default {
                       });
                     }
                   });
-
-                
                 d.hide();
               }
             });
@@ -242,7 +266,10 @@ export default {
         }
         });
         }
+        }
+        })
       });
+      // End
       evntBus.$on('add_customer_to_list', (customer) => {
         this.customers.push(customer);
       });

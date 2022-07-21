@@ -182,8 +182,8 @@ frappe.ui.form.on("Sales Order",{
         })
     }
 })
-var subwarehouse_item_codes
-var subwarehouse_item_bins
+var subwarehouse_item_codes=[]
+var subwarehouse_item_bins=[]
 frappe.ui.form.on("Sales Order",{
     set_warehouse:function(frm,cdt,cdn){
         var data=locals[cdt][cdn]

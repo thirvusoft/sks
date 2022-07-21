@@ -1,0 +1,60 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2022-07-18 12:24:38.388764",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "company_property_section",
+  "company_property",
+  "section_break_3",
+  "leave_penalty_amount"
+ ],
+ "fields": [
+  {
+   "columns": 2,
+   "fieldname": "company_property",
+   "fieldtype": "Table",
+   "options": "Thirvu Property Details"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "company_property_section",
+   "fieldtype": "Section Break",
+   "label": "Company Property "
+  },
+  {
+   "fieldname": "leave_penalty_amount",
+   "fieldtype": "Currency",
+   "label": "Leave Penalty Amount"
+  },
+  {
+   "fieldname": "section_break_3",
+   "fieldtype": "Section Break",
+   "label": "Leave Penalty"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2022-07-20 14:34:18.935555",
+ "modified_by": "Administrator",
+ "module": "sks",
+ "name": "Thirvu HR Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
