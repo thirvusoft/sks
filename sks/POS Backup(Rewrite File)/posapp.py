@@ -409,6 +409,8 @@ def update_invoice(data):
             for tax in invoice_doc.taxes:
                 tax.included_in_print_rate = 1
     invoice_doc.save()
+    invoice_doc.grand_total = invoice_doc.rounded_total
+    invoice_doc.write_off_outstanding_amount_automatically=1
     ts_settings = frappe.get_value("Thirvu Retail Settings",'Thirvu Retail Settings','allow_display_feedback_required_option')
     feedback_required = frappe.get_value("Customer", invoice_doc.customer, 'feedback_required')
     return invoice_doc, ts_settings, feedback_required
@@ -859,13 +861,14 @@ def get_stock_availability(item_code, warehouse):
 
 @frappe.whitelist()
 def create_customer(
-          customer_name,
-          mobile1,
-          address1,
-          address2,
-          area,
-          city,
-          c_group,
+          customer_name=None,
+          mobile1=None,
+          address1=None,
+          address2=None,
+          area=None,
+          city=None,
+          c_group=None,
+
  ):
     if not frappe.db.exists("Customer", {"customer_name": customer_name}):
         customer = frappe.get_doc(
@@ -874,7 +877,7 @@ def create_customer(
                 "customer_name": customer_name,
                 "mobile_no": mobile1,
                 "territory": area,
-                "customer_group": c_group,    
+                "customer_group": c_group,  
             }
         )
 
