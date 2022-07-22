@@ -1522,24 +1522,22 @@ def get_company_domain(company):
 # Start
 @frappe.whitelist()
 def get_fields_for_denomination(pos_opening_shift):
-    amounts = frappe.get_all("Denomination Rupees", pluck = 'amount',order_by = '`amount` desc')
-    fields=[]
-    for i in amounts:
-        fields+=(
-            {'fieldname':f'amt{i}','label':f"<b>Amount</b>",'default':i,'read_only':1,'fieldtype':'Currency',"hidden":1},
-            {'fieldname':f'sales{i}','label':f"<b>Enter Count here (For ₹{i})</b>", 'fieldtype':"Currency"},
-        )
     pos_opening_shift=frappe.get_doc("POS Opening Shift",pos_opening_shift)
-    
+    ts_mode_of_payment=[]
     for i in pos_opening_shift.balance_details:
         ts_mode_of_payment_type=frappe.get_doc("Mode of Payment",i.mode_of_payment)
         if ts_mode_of_payment_type.type != "Cash":
-            fields+=(
-                {'fieldname':f'amt{i.mode_of_payment}','label':f"<b>Mode of Payment</b>","hidden":1,'default':i.mode_of_payment,'read_only':1,'fieldtype':'Data'},
-                {'fieldname':f'sales{i.mode_of_payment}','label':f"<b>Enter Amount here (For ₹{i.mode_of_payment})</b>", 'fieldtype':"Currency"},
-            )
-
-    return fields
+            row = frappe._dict()
+            row.update({'ts_type':i.mode_of_payment})
+            ts_mode_of_payment.append(row)
+        if ts_mode_of_payment_type.type == "Cash":
+            amounts = frappe.get_all("Denomination Rupees", pluck = 'amount',order_by = '`amount` desc')
+            ts_denomination=[]
+            for i in amounts:
+                row = frappe._dict()
+                row.update({'ts_amount':i})
+                ts_denomination.append(row)
+    return ts_denomination,ts_mode_of_payment
 
 @frappe.whitelist()
 def batch_finder(ts_barcode=None,ts_item=None):
