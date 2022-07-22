@@ -106,33 +106,6 @@ frappe.ui.form.on("Purchase Receipt",{
 		}
 	}
 })
-frappe.db.get_single_value("Thirvu Retail Settings","item_verifed_in_purchase_receipt").then(value =>{
-	if(value==1){
-		frappe.ui.form.on("Purchase Receipt",{
-			before_save: function(frm,cdt,cdn){
-						var total_matched_items=0
-						var not_verified_items=[]
-						let data=locals[cdt][cdn]
-						for(var i=0;i<data.items.length;i++){
-							if(data.items[i].item_verified==0){
-								not_verified_items=not_verified_items+data.items[i].item_name
-								if(data.items.length != i+1){
-									not_verified_items=not_verified_items+", "
-								}
-							}
-							else{
-								total_matched_items=total_matched_items+1
-							}
-						}
-						if(total_matched_items!=data.items.length){
-							frappe.throw(not_verified_items+" are not verified, please check it...")
-						}
-					}
-				})
-			}
-		})
-
-
 
 frappe.db.get_single_value("Thirvu Retail Settings","automatic_batch_creation").then(value =>{
 	if(value==1){
