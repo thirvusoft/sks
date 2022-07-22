@@ -1,0 +1,118 @@
+{
+ "actions": [],
+ "autoname": "format:{designation}-{date}",
+ "creation": "2022-07-21 16:24:19.802501",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "date",
+  "department",
+  "cb1",
+  "from_date",
+  "to_date",
+  "cb2",
+  "employee_bonus_details",
+  "total_bonus_amount",
+  "id",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "default": "Today",
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "employee_bonus_details",
+   "fieldtype": "Table",
+   "label": "Employee Bonus Details",
+   "options": "Employee Bonus Details"
+  },
+  {
+   "fieldname": "total_bonus_amount",
+   "fieldtype": "Currency",
+   "label": "Total Bonus Amount"
+  },
+  {
+   "fieldname": "id",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "ID",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Employee Bonus Tool",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Employee Bonus Tool",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Department",
+   "options": "Department",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cb2",
+   "fieldtype": "Section Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2022-07-21 18:31:37.795384",
+ "modified_by": "Administrator",
+ "module": "sks",
+ "name": "Employee Bonus Tool",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

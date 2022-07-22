@@ -137,6 +137,8 @@ def item_property_setter():
     make_property_setter("Item", "valuation_rate", "hidden", 1, "Check")
     make_property_setter("Item", "barcodes", "hidden", 0, "Check")
     make_property_setter("Item", "inventory_section", "hidden", 1, "Check")
+    make_property_setter("Item", "reorder_section", "hidden", 0, "Check")
+    make_property_setter("Item", "serial_nos_and_batches", "hidden", 1, "Check")
     make_property_setter("Item", "reorder_section", "hidden", 1, "Check")
     make_property_setter("Item", "serial_nos_and_batches", "hidden", 0, "Check")
     make_property_setter("Item", "variants_section", "hidden", 1, "Check")
@@ -161,10 +163,5 @@ def item_property_setter():
     make_property_setter("Item", "default_discount_account", "hidden", 1, "Check")
     make_property_setter("Item", "over_delivery_receipt_allowance", "hidden", 1, "Float")
     make_property_setter("Item", "over_billing_allowance", "hidden", 1, "Float")
-    make_property_setter("Item", "opening_stock", "hidden", 1, "Float")
-
-
-
-
-          
-
+    make_property_setter("Item", "opening_stock", "hidden", 1, "Float"),
+   

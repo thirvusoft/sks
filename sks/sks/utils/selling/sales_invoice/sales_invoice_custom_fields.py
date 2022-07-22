@@ -23,7 +23,8 @@ def sales_invoice_custom_field():
             dict(fieldname='mode_of_delivery', label='Mode of Delivery',
                 fieldtype='Data', insert_after='reason',fetch_from="Sales Order.mode_of_delivery",read_only=1,),
             dict(fieldname='due_day', label='Payment Due Day',
-                fieldtype='Data', insert_after='due_date',read_only=1)
+                fieldtype='Data', insert_after='due_date',read_only=1),
+            
         ],
     }
     create_custom_fields(custom_fields)
