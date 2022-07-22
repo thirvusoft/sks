@@ -23,7 +23,7 @@
                 <v-text-field
                   dense
                   color="indigo"
-                  :label="frappe._('Mobile No1')"
+                  :label="frappe._('Mobile No')"
                   background-color="white"
                   hide-details
                   v-model="customer_info.mobile_no"
@@ -34,14 +34,14 @@
                 <v-text-field
                   dense
                   color="indigo"
-                  :label="frappe._('Address Line1')"
+                  :label="frappe._('Address Line')"
                   background-color="white"
                   hide-details
                   v-model="customer_info.address_line1"
                   @change="set_customer_info('address_line1', $event)"
                 ></v-text-field>
               </v-col>
-               <v-col cols="6">
+               <!-- <v-col cols="6">
                 <v-text-field
                   dense
                   color="indigo"
@@ -51,7 +51,8 @@
                   v-model="customer_info.address_line2"
                   @change="set_customer_info('address_line2', $event)"
                 ></v-text-field>
-              </v-col> <v-col cols="6">
+              </v-col>  -->
+              <v-col cols="6">
                 <v-autocomplete
                   dense
                   color="indigo"
@@ -62,7 +63,8 @@
                   :items="territorys"
                   @change="set_customer_info('territory', $event)"
                 ></v-autocomplete>
-              </v-col> <v-col cols="6">
+              </v-col> 
+              <!-- <v-col cols="6">
                 <v-autocomplete
                   dense
                   color="indigo"
@@ -73,8 +75,8 @@
                   :items="citys"
                   @change="set_customer_info('city', $event)"
                 ></v-autocomplete>
-              </v-col>
-               <v-col cols="6">
+              </v-col> -->
+               <!-- <v-col cols="6">
                 <v-autocomplete
                   dense
                   color="indigo"
@@ -85,7 +87,7 @@
                   :items="groups"
                   @change="set_customer_info('customer_group', $event)"
                 ></v-autocomplete>
-              </v-col>
+              </v-col> -->
 
               
             </v-row>
