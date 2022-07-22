@@ -293,3 +293,16 @@ def purchased_qty_validation(doc,event):
                                 from `tabPurchase Receipt Item`
                                 where batch_no ='{0}' """.format(batch),as_list=1)[0][0]
             frappe.db.set_value("Batch",batch,"purchase_qty",purchased_qty)
+
+
+from frappe import _
+@frappe.whitelist()
+def expiry_date_validation(doc,event):
+    ts_item=[]
+    for item in doc.items:
+        ts_has_expiry=frappe.db.get_value("Item",{"name":item.item_code},["is_expiry_item"])
+        if ts_has_expiry==1:
+            if not item.expiry_date:
+                ts_item.append(item.item_code)
+    if ts_item:
+        frappe.throw(_("Please Select the Expiry Date For Items : {0}").format(ts_item))

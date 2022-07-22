@@ -7,6 +7,13 @@ def item_custom_fields():
     custom_fields = {
         "Item": [
             dict(
+                fieldname="is_expiry_item",
+                fieldtype="Check",
+                label="Is Expiry Item",
+                insert_after="is_stock_item",
+                hidden=0
+            ),
+            dict(
                 fieldname="section_break_27",
                 fieldtype="Section Break",
                 label="Warehouse",
