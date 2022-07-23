@@ -34,7 +34,7 @@ frappe.ui.form.on('POS Closing Shift', {
 					size: "large",
 					title:"Choose Account Head",
 					fields:[
-					{fieldname:'account_details', fieldtype:'Table', fields:[
+					{fieldname:'account_details', fieldtype:'Table',cannot_add_rows: 1,in_place_edit: true, fields:[
 					{
 						label: 'Mode of Payment',
 						fieldname: 'mode_of_payment',
