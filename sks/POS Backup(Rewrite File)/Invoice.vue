@@ -2388,8 +2388,10 @@ export default {
           }else{
             if(ts_r.message.length>1){
               const ls=[]
+              var ts_maping={}
             for (var i = 0; i < ts_r.message.length; i++) {
-                ls.push("Batch No:- "+ts_r.message[i]["name"] +  " |MRP:- " + ts_r.message[i]["ts_mrp"])
+              ls.push("Batch No:- "+ts_r.message[i]["name"] +  " |MRP:- " + ts_r.message[i]["ts_mrp"])
+              ts_maping["Batch No:- "+ts_r.message[i]["name"] +  " |MRP:- " + ts_r.message[i]["ts_mrp"]]=ts_r.message[i]["name"]
             }
               let d = new frappe.ui.Dialog({
               title: 'Batch Selection',
@@ -2403,9 +2405,7 @@ export default {
               ],
               primary_action_label: 'OK',
               primary_action(values) {
-                  var ts_current_batch = values["batch_no"].split(" ");
-                  ts_current_batch=ts_current_batch[2]
-                  item["ts_current_batch"]=ts_current_batch
+                  item["ts_current_batch"]=ts_maping[values["batch_no"]]
                   out.add_item(item);
                   d.hide();
                   evntBus.$emit('focus_on_search');

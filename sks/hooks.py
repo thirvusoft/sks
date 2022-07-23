@@ -153,6 +153,9 @@ doc_events = {
 		"validate":[
 			"sks.sks.custom.py.buying_module.validate_buying_rate_with_mrp"
 		]
+	},
+	"Delivery Note":{
+		"validate":["sks.sks.custom.py.delivery_note.mandatory_validation"]
 	}
  }
 
