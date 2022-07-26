@@ -331,6 +331,7 @@ frappe.ui.form.on("Purchase Receipt Item",{
 
 
 
+
 frappe.ui.form.on("Purchase Receipt Item",{
 	is_free_item_from_supplier:function(frm,cdt,cdn){
 			data=locals[cdt][cdn]
@@ -351,4 +352,4 @@ frappe.ui.form.on("Purchase Receipt Item",{
 	  
 	}
  )
- 
+

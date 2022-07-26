@@ -125,6 +125,7 @@ def item_custom_fields():
                 insert_after="barcodes",
             ),
             dict(
+
                 fieldname="warehouse",
                 fieldtype="Table",
                 label="Warehouse",
@@ -132,6 +133,7 @@ def item_custom_fields():
                 insert_after="warehouse_details",
             ),
             dict(
+
                 fieldname="buying_margin_percentage",
                 fieldtype="Percent",
                 label="Buying Margin Percentage",

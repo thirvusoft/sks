@@ -25,6 +25,7 @@ frappe.ui.form.on("Item Warehouse",{
         };
         });
    },
+
 })
 
 frappe.ui.form.on("Item Warehouse",{
@@ -39,4 +40,5 @@ frappe.ui.form.on("Item Warehouse",{
         };
         });
    },
+
 })

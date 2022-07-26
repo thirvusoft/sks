@@ -31,6 +31,7 @@ def item_check_with_sales_order(item_code_checking=None,checking_sales_order=Non
 		return 0
 
 
+
 @frappe.whitelist()
 def item_warehouse_fetching(item_code,company):
     itemname =  frappe.get_doc("Item",item_code)
@@ -57,4 +58,5 @@ def mandatory_validation(doc,event):
 						ts_item_barcodes += "•"+item.item_code+'<br>'
 		if ts_item_barcodes:
 			frappe.throw(_("Below Items Are Not Verified, Please Check It... <br>{0}").format(ts_item_barcodes))
+
 

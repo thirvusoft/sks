@@ -295,6 +295,7 @@ def purchased_qty_validation(doc,event):
             frappe.db.set_value("Batch",batch,"purchase_qty",purchased_qty)
 
 
+
     
 @frappe.whitelist()
 def item_warehouse_fetching(item_code,company):
@@ -322,6 +323,7 @@ def supplier_free_item(doc,event):
             row.update({'item':item.item_code,'quantity':item.qty,'selling_rate':item.ts_selling_rate})
             supplierfreeitem.append(row)
     doc.update({'to_verify_free_item_from_supplier':supplierfreeitem})
+
 
 from frappe import _
 @frappe.whitelist()
