@@ -1,10 +1,13 @@
 # Copyright (c) 2022, Thirvusoft and contributors
 # For license information, please see license.txt
 
+from datetime import datetime
 import frappe
+from frappe.utils import nowdate
 from frappe.model.document import Document
 import json
-from datetime import date
+from datetime import date, timedelta
+from erpnext.accounts.utils import now
 class TSDriverDeliveryTrip(Document):
     pass 
 @frappe.whitelist()
@@ -36,7 +39,7 @@ def update_values(invoice,fields,value):
     return ""
 
 @frappe.whitelist()
-def payment_entry(mode,amount,pending_invoice,company):
+def payment_entry(mode,amount,pending_invoice,company,driver_id):
     customer = frappe.get_value("Sales Invoice",pending_invoice,'customer')
     outstanding = frappe.get_value("Sales Invoice",pending_invoice, 'outstanding_amount')
     ref_date = date.today()
@@ -69,6 +72,8 @@ def payment_entry(mode,amount,pending_invoice,company):
         'allocated_amount': amount1
     })
     doc.update({
+        'driver' :driver_id,
+        'mode_of_payment_by_driver' :mode,
         'company':company,
         'payment_type':"Receive",
         'docstatus': 1,
@@ -93,3 +98,108 @@ def payment_entry(mode,amount,pending_invoice,company):
     doc.submit()
     frappe.db.commit()
     return "Payment Entry {0} created for {1}".format(doc.name,pending_invoice),'green'
+
+@frappe.whitelist()
+def driver_mode_of_payments(driver_id):
+    thirvu_mode_of_payments = frappe.get_list("Thirvu Driver Mode of Payments",{"parent":driver_id},pluck="mode_of_payment")
+    return thirvu_mode_of_payments
+
+@frappe.whitelist()
+def get_fields_for_denomination(driver_id):
+    driver_doc=frappe.get_doc("Driver",driver_id)
+    ts_mode_of_payment=[]
+    for i in driver_doc.thirvu_mode_of_payments:
+        ts_mode_of_payment_type=frappe.get_doc("Mode of Payment",i.mode_of_payment)
+        if ts_mode_of_payment_type.type != "Cash":
+            row = frappe._dict()
+            row.update({'ts_type':i.mode_of_payment})
+            ts_mode_of_payment.append(row)
+        if ts_mode_of_payment_type.type == "Cash":
+            amounts = frappe.get_all("Denomination Rupees", pluck = 'amount',order_by = '`amount` desc')
+            ts_denomination=[]
+            for i in amounts:
+                row = frappe._dict()
+                row.update({'currency':i})
+                ts_denomination.append(row)
+    return ts_denomination,ts_mode_of_payment
+
+@frappe.whitelist()
+def create_driver_closing_shift(ts_denomination,driver_name,creation_datetime,driver_id,):
+    denomination_validation=json.loads(ts_denomination)
+    denomination=denomination_validation["ts_denomination"]
+    ts_mode_of_payment=denomination_validation["ts_mode_of_payment"]
+    denomination_cash=0
+    other_cash=0
+    payment_reconcilation=[]
+    for count in denomination:
+        try:
+            if count["count"]:
+                denomination_cash+=(count['currency'] * count['count'])
+        except:
+            pass
+    thirvu_mode_of_payments=frappe.get_list("Thirvu Driver Mode of Payments",{"parent":driver_id},pluck="mode_of_payment")
+    for modes in thirvu_mode_of_payments:
+        amount_type=frappe.db.get_value("Mode of Payment",modes,"type")
+        if(amount_type=="Cash"):
+            expected_denomination_cash=frappe.db.sql("""select sum(paid_amount) from `tabPayment Entry`
+                                            where creation between '{0}' and '{1}' and
+                                            driver='{2}' and mode_of_payment_by_driver='{3}' """.format(creation_datetime,now(),driver_id,modes),as_list=1)
+            if expected_denomination_cash:
+                expected_denomination_cash=expected_denomination_cash[0][0]
+                if(denomination_cash>0):
+                    row = frappe._dict()
+                    row.update({'mode_of_payment':modes,
+                                "opening_amount":0,
+                                "closing_amount":denomination_cash,
+                                "expected_amount":expected_denomination_cash,
+                                "difference":expected_denomination_cash-denomination_cash})
+                    payment_reconcilation.append(row)
+    for type in ts_mode_of_payment:
+        try:
+            if type["currency"]:
+                other_cash+=(type['currency'])
+        except:
+            pass
+    thirvu_mode_of_payments=frappe.get_list("Thirvu Driver Mode of Payments",{"parent":driver_id},pluck="mode_of_payment")
+    for modes in thirvu_mode_of_payments:
+        amount_type=frappe.db.get_value("Mode of Payment",modes,"type")
+        if(amount_type=="Bank"):
+            expected_other_cash=frappe.db.sql("""select sum(paid_amount) from `tabPayment Entry`
+                                            where creation between '{0}' and '{1}' and
+                                            driver='{2}' and mode_of_payment_by_driver='{3}' """.format(creation_datetime,now(),driver_id,modes),as_list=1)
+            if expected_other_cash:
+                expected_other_cash=expected_other_cash[0][0]
+                if(other_cash>0):
+                    row = frappe._dict()
+                    row.update({'mode_of_payment':modes,
+                                "opening_amount":0,
+                                "closing_amount":other_cash,
+                                "expected_amount":expected_other_cash,
+                                "difference":expected_other_cash-other_cash})
+                    payment_reconcilation.append(row)
+    grand_total=denomination_cash+other_cash
+    driver_doc = frappe.new_doc('Thirvu Driver Closing Shift')
+    driver_doc.update({
+        'period_start_date':creation_datetime,
+        'period_end_date' :now(),
+        'posting_date':nowdate(),
+        'driver':driver_id,
+        'driver_name':driver_name,
+        'payment_reconciliation':payment_reconcilation,
+        'ts_denomination_counts': denomination,
+        'grand_total': grand_total,
+        'ts_denomination_total':denomination_cash,
+    })
+    driver_doc.insert()
+    for data in driver_doc.ts_denomination_counts:
+        try:
+            if data.count > 0:
+                data.total=data.currency * data.count
+        except:
+            data.total=data.currency * 0
+    driver_doc.save()
+    
+    
+    
+    
+    
