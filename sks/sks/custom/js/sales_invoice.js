@@ -1,3 +1,16 @@
+var company 
+var warehouse
+frappe.ui.form.on("Sales Invoice",{
+    company:function(frm,cdt,cdn){
+        company=cur_frm.doc.company
+        
+        
+    }
+})
+
+
+
+
 frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_sales_invoice_items_match_with_sales_order_items").then(value =>{
 	if(value==1){
 	cur_frm.set_df_property("scan_barcode","hidden",1)
@@ -282,3 +295,24 @@ frappe.ui.form.on("Sales Invoice",{
 	}},
 	
  })
+ frappe.ui.form.on("Sales Invoice Item",{
+    item_code:function(frm,cdt,cdn){
+            var data=locals[cdt][cdn]
+            var item_code=data.item_code
+                if(item_code){
+                    frappe.call({
+                        method:"sks.sks.custom.py.sales_invoice.item_warehouse_fetching",
+                        args:{item_code,company},
+                        callback(r){
+                                frappe.model.set_value(data.doctype, data.name, "warehouse", r.message)
+								frappe.model.set_value(data.doctype, data.name, "ts_warehouse", r.message)
+                                warehouse=cur_frm.doc.ts_warehouse
+                        }
+                    })
+                }
+                
+            
+        }
+
+    }
+)

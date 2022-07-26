@@ -2,8 +2,22 @@ import frappe
 from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 from frappe.custom.doctype.property_setter.property_setter import make_property_setter
 
+
+
+
+def sales_order_item_customization():
+    sales_order_item_custom_fields()
+    sales_order_item_property_setter()
+   
+
 def sales_order_item_custom_fields():
-    pass
+    custom_fields={
+        "Sales Order Item":[
+             dict(fieldname='ts_warehouse', label='TS Warehouse',
+                fieldtype='Data',hidden=1, insert_after='gros_profit'),
+           ]
+        }
+    create_custom_fields(custom_fields)
 
 def sales_order_item_property_setter():
     make_property_setter("Sales Order Item", "section_break_63", "hidden", "1", "Section Break")

@@ -1,3 +1,12 @@
+var company 
+frappe.ui.form.on("Purchase Order",{
+    company:function(frm,cdt,cdn){
+        company=cur_frm.doc.company
+        
+        
+    }
+})
+
 frappe.ui.form.on("Purchase Order",{
 	before_save:function(frm,cdt,cdn){
 		var data=locals[cdt][cdn]
@@ -147,3 +156,25 @@ frappe.ui.form.on("Purchase Order Item",{
 		}
 	}
 })
+frappe.ui.form.on("Purchase Order Item",{
+    item_code:function(frm,cdt,cdn){
+            var data=locals[cdt][cdn]
+            var item_code=data.item_code
+                if(item_code){
+                    frappe.call({
+                        method:"sks.sks.custom.py.purchase_order.item_warehouse_fetching",
+                        args:{item_code,company},
+                        callback(r){
+                                frappe.model.set_value(data.doctype, data.name, "warehouse", r.message)
+                                frappe.model.set_value(data.doctype, data.name, "ts_warehouse", r.message)
+                                warehouse=cur_frm.doc.ts_warehouse
+                        }
+                    })
+                    
+                }
+                
+               
+        },
+       
+    }
+)

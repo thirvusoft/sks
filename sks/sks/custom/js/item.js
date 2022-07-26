@@ -11,3 +11,18 @@ frappe.ui.form.on("Item",{
         }
     },
 })
+
+
+frappe.ui.form.on("Item Warehouse",{
+    company: function(frm,cdt,cdn) {
+        var row = locals[cdt][cdn]
+        frm.set_query('warehousebin', 'warehouse', function() {
+
+        return {
+        filters: {
+        'company':row.company
+        }
+        };
+        });
+   },
+})
