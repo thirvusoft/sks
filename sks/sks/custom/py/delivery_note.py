@@ -16,3 +16,16 @@ def item_check_with_sales_order(item_code_checking=None,checking_sales_order=Non
 		return item_code
 	else:
 		return 0
+
+
+@frappe.whitelist()
+def item_warehouse_fetching(item_code,company):
+    itemname =  frappe.get_doc("Item",item_code)
+
+    warehouse = frappe.db.get_value("Item Warehouse" ,{'company':company},'storebin')
+    return warehouse
+
+def warehouse_fetcing(doc,event):
+    item = doc.items
+    for i in item:
+        i.warehouse = i.ts_warehouse

@@ -113,3 +113,22 @@ def customer_credit_sale(customer):
     html = "<html><style> .clstab, .clsth, .clstd { border: 1px solid black; border-collapse: collapse;}   .clsth, .clstd {padding: 15px;} .clstab {width:100%;} </style>" + "<table class=clstab>" + html +"</table>"
     alert_data = alert_data[:len(alert_data)-2]+"."
     return alert_data,pending_invoice,recievable, html
+
+
+
+
+
+@frappe.whitelist()
+def item_warehouse_fetching(item_code,company):
+   
+    itemname =  frappe.get_doc("Item",item_code)
+    warehouse = frappe.db.get_value("Item Warehouse" ,{'company':company},'storebin')
+    
+    
+    return warehouse
+
+
+def warehouse_fetcing(doc,event):
+    item = doc.items
+    for i in item:
+        i.warehouse = i.ts_warehouse

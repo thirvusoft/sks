@@ -7,6 +7,8 @@ def sales_invoice_item_custom_fields():
         "Sales Invoice Item":[
                 dict(fieldname='item_verified', label='Item Verified',
                 fieldtype='Check', insert_after='amount',read_only=1,in_list_view=1,columns=2),
+                dict(fieldname='ts_warehouse', label='TS Warehouse',
+                fieldtype='Data', insert_after='warehouse',read_only=1)
         ],
     }
     create_custom_fields(custom_fields)

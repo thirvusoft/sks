@@ -1,9 +1,23 @@
 var loading
+var company 
+var warehouse
+var data
 frappe.ui.form.on("Sales Order",{
     onload:function(frm,cdt,cdn){
         loading=0
+        company=cur_frm.doc.company
+        
+        
     }
 })
+frappe.ui.form.on("Sales Order",{
+    company:function(frm,cdt,cdn){
+       company=cur_frm.doc.company
+        
+        
+    }
+})
+
 frappe.ui.form.on("Sales Order",{
     after_save:function(frm,cdt,cdn){
         if(loading==0){
@@ -132,6 +146,7 @@ var loop
 frappe.ui.form.on("Sales Order",{
     onload:function(){
         loop=0
+      
     }
 })
 frappe.ui.form.on("Sales Order",{
@@ -253,3 +268,26 @@ frappe.ui.form.on("Sales Order Item",{
         })
     }
 })
+frappe.ui.form.on("Sales Order Item",{
+    item_code:function(frm,cdt,cdn){
+            data=locals[cdt][cdn]
+            var item_code=data.item_code
+                if(item_code){
+                    frappe.call({
+                        method:"sks.sks.custom.py.sales_order.item_warehouse_fetching",
+                        args:{item_code,company},
+                        callback(r){
+                                frappe.model.set_value(data.doctype, data.name, "warehouse", r.message)
+                                frappe.model.set_value(data.doctype, data.name, "ts_warehouse", r.message)
+                                warehouse=cur_frm.doc.ts_warehouse
+                        }
+                    })
+                    
+                }
+                
+               
+        },
+       
+    }
+)
+

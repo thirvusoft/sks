@@ -41,6 +41,8 @@ def purchase_receipt_item_custom_fields():
                               insert_after='retain_sample', 
                               read_only=1
                     ),
+                       dict(fieldname='ts_warehouse', label='TS Warehouse',
+                fieldtype='Data', insert_after='warehouse')
           ],
           }
           create_custom_fields(custom_fields)

@@ -293,3 +293,20 @@ def purchased_qty_validation(doc,event):
                                 from `tabPurchase Receipt Item`
                                 where batch_no ='{0}' """.format(batch),as_list=1)[0][0]
             frappe.db.set_value("Batch",batch,"purchase_qty",purchased_qty)
+
+
+
+
+    
+@frappe.whitelist()
+def item_warehouse_fetching(item_code,company):
+    itemname =  frappe.get_doc("Item",item_code)
+    warehouse = frappe.db.get_value("Item Warehouse" ,{'company':company},'warehousebin')
+    
+    
+    return warehouse
+
+def warehouse_fetcing(doc,event):
+    item = doc.items
+    for i in item:
+        i.warehouse = i.ts_warehouse
