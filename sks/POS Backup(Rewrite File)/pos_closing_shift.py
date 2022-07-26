@@ -3,6 +3,7 @@
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
+from cmath import exp
 from re import L
 import frappe
 import json
@@ -167,24 +168,37 @@ def submit_closing_shift(closing_shift):
     closing_shift_doc.flags.ignore_permissions = True
     # Customized By Thirvusoft
     # Start
-    ts_denomination_details=closing_shift_doc.ts_denomination.values()
-    ts_denomination_details=list(ts_denomination_details)
-    ts_count=0
-    ts_payment_reconciliation=closing_shift_doc.payment_reconciliation
-    for i in range (0,len(ts_denomination_details),2):
-        if isinstance(ts_denomination_details[i], int)  and ts_count==0:
-            closing_shift_doc.append("ts_denomination_counts",{"currency":ts_denomination_details[i],
-            "count":ts_denomination_details[i+1],
-            "total":ts_denomination_details[i]*ts_denomination_details[i+1]})
-
-            closing_shift_doc.ts_denomination_total+=ts_denomination_details[i]*ts_denomination_details[i+1]
-        else:
+    ts_denomination=closing_shift_doc.ts_denomination
+    try:
+        for i in range (0,len(ts_denomination["ts_denomination"]),1):
+            ts_denomination_details=ts_denomination["ts_denomination"][i]
+            try:
+                if ts_denomination_details["ts_count"]:
+                    ts_denomination_count=ts_denomination_details["ts_count"]
+            except:
+                ts_denomination_count=0
+            closing_shift_doc.append("ts_denomination_counts",{"currency":ts_denomination_details["ts_amount"],
+                "count":ts_denomination_count,
+                "total":ts_denomination_details["ts_amount"]*ts_denomination_count})
+            closing_shift_doc.ts_denomination_total+=ts_denomination_details["ts_amount"]*ts_denomination_count
+    except:
+        pass
+    try:
+        for i in range (0,len(ts_denomination["ts_mode_of_payment"]),1):
+            ts_mode_of_payment=ts_denomination["ts_mode_of_payment"][i]
+            ts_payment_reconciliation=closing_shift_doc.payment_reconciliation
             for j in range(0,len(ts_payment_reconciliation),1):
-                ts_mode_of_payment=ts_payment_reconciliation[j].__dict__
-                if ts_mode_of_payment["mode_of_payment"] == closing_shift_doc.payment_reconciliation[j].mode_of_payment:
-                    closing_shift_doc.payment_reconciliation[j].closing_amount = ts_denomination_details[i+1]
-                    closing_shift_doc.payment_reconciliation[j].difference = closing_shift_doc.payment_reconciliation[j].closing_amount-closing_shift_doc.payment_reconciliation[j].expected_amount
-    closing_shift_doc.save()
+                if ts_mode_of_payment["ts_type"] == closing_shift_doc.payment_reconciliation[j].mode_of_payment:
+                    try:
+                        if ts_mode_of_payment["ts_amount"]:
+                            ts_mop_type_amt=ts_mode_of_payment["ts_amount"]
+                    except:
+                        ts_mop_type_amt=0
+                    closing_shift_doc.payment_reconciliation[j].closing_amount = ts_mop_type_amt
+                    closing_shift_doc.payment_reconciliation[j].difference = closing_shift_doc.payment_reconciliation[j].closing_amount-closing_shift_doc.payment_reconciliation[j].expected_amount   
+    except:
+        pass
+
     for i in range(0,len(ts_payment_reconciliation),1):
         ts_mode_of_payment=ts_payment_reconciliation[i].__dict__
         ts_mode_of_payment_type=frappe.get_doc("Mode of Payment",ts_mode_of_payment["mode_of_payment"])

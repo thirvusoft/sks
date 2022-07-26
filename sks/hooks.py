@@ -151,7 +151,9 @@ doc_events = {
 	"Purchase Receipt":{
 		"validate":["sks.sks.custom.py.purchase_receipt.markup_and_markdown_calculator",
 					"sks.sks.custom.py.purchase_receipt.validate",
-					"sks.sks.custom.py.purchase_receipt.warehouse_fetcing"
+					"sks.sks.custom.py.purchase_receipt.warehouse_fetcing",
+					"sks.sks.custom.py.purchase_receipt.mandatory_validation"
+
 		],
 		"on_submit":"sks.sks.custom.py.purchase_receipt.purchased_qty_validation"
 	},
@@ -165,6 +167,9 @@ doc_events = {
 		"validate":[
 			"sks.sks.custom.py.sales_order.warehouse_fetcing"
 		]
+	},
+	"Delivery Note":{
+		"validate":["sks.sks.custom.py.delivery_note.mandatory_validation"]
 	}
  }
 
