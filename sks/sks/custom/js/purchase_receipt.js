@@ -328,3 +328,28 @@ frappe.ui.form.on("Purchase Receipt Item",{
        
     }
 )
+
+
+
+
+frappe.ui.form.on("Purchase Receipt Item",{
+	is_free_item_from_supplier:function(frm,cdt,cdn){
+			data=locals[cdt][cdn]
+			if(data.is_free_item_from_supplier == 1){
+				 var df=frappe.meta.get_docfield(cdt,"ts_selling_rate",cdn);
+				 df.read_only=0;
+				 frm.refresh_fields();
+				 
+			}else {
+				var df=frappe.meta.get_docfield(cdt,"ts_selling_rate",cdn);
+				df.read_only=1;
+				frm.refresh_fields();
+			}
+		   
+		   
+		   
+		},
+	  
+	}
+ )
+

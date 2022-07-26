@@ -138,7 +138,10 @@ doc_events = {
 	},
 	"Delivery Trip": {
         "on_submit" :"sks.sks.custom.py.delivery_trip.assign_to_driver"
-         },
+
+    },
+
+
 	"Sales Invoice":{
 		"validate":["sks.sks.custom.py.sales_invoice.feed_back_form",
 		            "sks.sks.custom.py.sales_invoice.warehouse_fetcing"
@@ -147,7 +150,9 @@ doc_events = {
 	"Purchase Receipt":{
 		"validate":["sks.sks.custom.py.purchase_receipt.markup_and_markdown_calculator",
 					"sks.sks.custom.py.purchase_receipt.validate",
+
 					"sks.sks.custom.py.purchase_receipt.warehouse_fetcing",
+					"sks.sks.custom.py.purchase_receipt.supplier_free_item"
 					"sks.sks.custom.py.purchase_receipt.mandatory_validation"
 
 		],
