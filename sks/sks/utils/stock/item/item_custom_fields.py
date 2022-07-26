@@ -7,6 +7,13 @@ def item_custom_fields():
     custom_fields = {
         "Item": [
             dict(
+                fieldname="is_expiry_item",
+                fieldtype="Check",
+                label="Is Expiry Item",
+                insert_after="is_stock_item",
+                hidden=0
+            ),
+            dict(
                 fieldname="section_break_27",
                 fieldtype="Section Break",
                 label="Warehouse",
@@ -152,6 +159,8 @@ def item_property_setter():
     make_property_setter("Item", "inventory_section", "hidden", 1, "Check")
     make_property_setter("Item", "reorder_section", "hidden", 0, "Check")
     make_property_setter("Item", "serial_nos_and_batches", "hidden", 1, "Check")
+    make_property_setter("Item", "reorder_section", "hidden", 1, "Check")
+    make_property_setter("Item", "serial_nos_and_batches", "hidden", 0, "Check")
     make_property_setter("Item", "variants_section", "hidden", 1, "Check")
     make_property_setter("Item", "defaults", "hidden", 1, "Check")
     make_property_setter("Item", "include_item_in_manufacturing", "hidden", 1, "Check")

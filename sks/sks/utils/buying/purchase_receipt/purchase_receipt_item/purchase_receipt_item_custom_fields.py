@@ -9,7 +9,7 @@ def purchase_receipt_item_custom_fields():
                               label='Expiry Date',
                               fieldtype='Date', 
                               insert_after='rejected_qty',
-                              in_list_view=1,reqd=1
+                              in_list_view=1,reqd=0
                     ),
                     dict(
                               fieldname='item_verified', 

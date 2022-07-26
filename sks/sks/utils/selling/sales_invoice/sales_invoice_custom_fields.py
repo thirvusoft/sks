@@ -178,6 +178,8 @@ def sales_invoice_property_setter():
     make_property_setter("Sales Invoice", "total_advance", "hidden", 1, "Check")
     make_property_setter("Sales Invoice", "project", "hidden", 1, "Check")
     make_property_setter("Sales Invoice", "shipping_rule", "hidden", 1, "Check")
+    make_property_setter("Sales Invoice", "scan_barcode", "hidden", 1, "Check")
+    make_property_setter("Sales Invoice", "update_stock", "hidden", 1, "Check")
 
 
 
