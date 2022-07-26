@@ -293,6 +293,29 @@ def purchased_qty_validation(doc,event):
                                 from `tabPurchase Receipt Item`
                                 where batch_no ='{0}' """.format(batch),as_list=1)[0][0]
             frappe.db.set_value("Batch",batch,"purchase_qty",purchased_qty)
+from frappe import _
+@frappe.whitelist()
+def mandatory_validation(doc,event):
+    ts_item_expiry_date=""
+    for item in doc.items:
+        ts_has_expiry=frappe.db.get_value("Item",{"name":item.item_code},["is_expiry_item"])
+        if ts_has_expiry==1:
+            if not item.expiry_date:
+                ts_item_expiry_date += "•"+item.item_code+'<br>'
+    if ts_item_expiry_date:
+        frappe.throw(_("Please Select the Expiry Date For The Below Items... <br>{0}").format(ts_item_expiry_date))
+
+    ts_value=frappe.db.get_single_value("Thirvu Retail Settings","item_verifed_in_purchase_receipt")
+    if ts_value==1:
+        ts_item_barcodes=""
+        for item in doc.items:
+            if item.purchase_order:
+                if item.item_verified == 0:
+                    ts_item_details=frappe.get_doc("Item",item.item_code)
+                    if ts_item_details.barcodes:
+                        ts_item_barcodes += "•"+item.item_code+'<br>'
+        if ts_item_barcodes:
+            frappe.throw(_("Below Items Are Not Verified, Please Check It... <br>{0}").format(ts_item_barcodes))
     
 @frappe.whitelist()
 def item_warehouse_fetching(item_code,company):
