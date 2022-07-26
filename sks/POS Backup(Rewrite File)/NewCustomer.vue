@@ -12,7 +12,7 @@
                 <v-text-field
                   dense
                   color="indigo"
-                  :label="frappe._('Customer Name*')"
+                  :label="frappe._('Customer Name')"
                   background-color="white"
                   hide-details
                   v-model="customer_name"
@@ -22,7 +22,7 @@
                 <v-text-field
                   dense
                   color="indigo"
-                  :label="frappe._('Mobile1*')"
+                  :label="frappe._('Mobile')"
                   background-color="white"
                   hide-details
                   v-model="mobile1"
@@ -32,13 +32,13 @@
                 <v-text-field
                   dense
                   color="indigo"
-                  :label="frappe._('Address Line1*')"
+                  :label="frappe._('Address Line')"
                   background-color="white"
                   hide-details
                   v-model="address1"
                 ></v-text-field>
               </v-col>
-              <v-col cols="6">
+              <!-- <v-col cols="6">
                 <v-text-field
                   dense
                   color="indigo"
@@ -47,14 +47,14 @@
                   hide-details
                   v-model="address2"
                 ></v-text-field>
-              </v-col>
+              </v-col> -->
                <v-col cols="6">
                 <v-autocomplete
                   clearable
                   dense
                   auto-select-first
                   color="indigo"
-                  :label="frappe._('Area*')"
+                  :label="frappe._('Area')"
                   v-model="territory"
                   :items="territorys"
                   background-color="white"
@@ -63,7 +63,7 @@
                 >
                 </v-autocomplete>
               </v-col>
-              <v-col cols="6">
+              <!-- <v-col cols="6">
                 <v-autocomplete
                  clearable
                   dense
@@ -76,9 +76,9 @@
                   :no-data-text="__('City not found')"
                   hide-details
                 ></v-autocomplete>
-              </v-col>
+              </v-col> -->
            
-              <v-col cols="6">
+              <!-- <v-col cols="6">
                 <v-autocomplete
                   clearable
                   dense
@@ -92,7 +92,7 @@
                   hide-details
                 >
                 </v-autocomplete>
-              </v-col>
+              </v-col> -->
              
             </v-row>
           </v-container>

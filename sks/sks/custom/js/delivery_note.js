@@ -27,45 +27,61 @@ frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note
 					var item_code_checking = r["message"]["item_code"]
 					frappe.call({
 						 method:"sks.sks.custom.py.delivery_note.item_check_with_sales_order",
-						 args:{item_code_checking,checking_sales_order},
+						 args:{item_code_checking,checking_sales_order,search_value},
 						 callback(r){
 							if(r["message"]==0){
 								frappe.msgprint("Scanned Barcode Is Not Matching With The Sales Order Items")  
 							}
 							else{
 								for(var i=0;i<data.items.length;i++){
-									if(r["message"]==data.items[i].item_code){
-										frappe.model.set_value(data.items[i].doctype,data.items[i].name,"item_verified",1)
+									if(r["message"][0]==data.items[i].item_code){	
+										var ts_main=data.items[i]
+										if(r.message[1]){
+											if((r.message[1]).length==1){
+												frappe.model.set_value(data.items[i].doctype,data.items[i].name,"batch_no",r.message[1][0])
+												frappe.model.set_value(data.items[i].doctype,data.items[i].name,"item_verified",1)
+												frappe.show_alert({ message: __('Item Matched'), indicator: 'green' });
+											}
+											else if((r.message[1]).length>1){
+												var ts_batch_details=[]
+												var ts_maping={}
+												for (var j = 0; j < r.message[1].length; j++) {
+													ts_batch_details.push("Batch No:- "+r.message[1][j]+  " |MRP:- " + r.message[2][j])
+													ts_maping["Batch No:- "+r.message[1][j]+  " |MRP:- " + r.message[2][j]]=r.message[1][j]
+												}
+												let d = new frappe.ui.Dialog({
+													title: 'Batch Selection',
+													fields: [               
+														{
+															label: 'Batch No',
+															fieldname: 'batch_no',
+															fieldtype: "Select",
+															options: ts_batch_details
+														},
+													],
+													primary_action_label: 'OK',
+													primary_action(values) {
+														frappe.model.set_value(ts_main.doctype,ts_main.name,"batch_no",ts_maping[values["batch_no"]])
+														frappe.model.set_value(ts_main.doctype,ts_main.name,"item_verified",1)
+														frappe.show_alert({ message: __('Item Matched'), indicator: 'green' });
+														d.hide();
+													}
+												});
+												d.show();
+											}
+											else{
+												frappe.model.set_value(data.items[i].doctype,data.items[i].name,"item_verified",1)
+												frappe.show_alert({ message: __('Item Matched'), indicator: 'green' });
+											}
+										}
 									}
 								}
-								frappe.show_alert({ message: __('Item Matched'), indicator: 'green' });
 								frappe.model.set_value(cdt,cdn,"scan_barcode_to_verify_the_items","")
 							}
 						}
 					})
 				}
 			})
-			}
-		}
-	})
-	frappe.ui.form.on("Delivery Note",{
-		before_save: function(frm,cdt,cdn){
-			var total_matched_items=0
-			var not_verified_items=[]
-			let data=locals[cdt][cdn]
-			for(var i=0;i<data.items.length;i++){
-				if(data.items[i].item_verified==0){
-					not_verified_items=not_verified_items+data.items[i].item_name
-					if(data.items.length != i+1){
-						not_verified_items=not_verified_items+", "
-					}
-				}
-				else{
-					total_matched_items=total_matched_items+1
-				}
-			}
-			if(total_matched_items!=data.items.length){
-				frappe.throw(not_verified_items+" are not verified, please check it...")
 			}
 		}
 	})

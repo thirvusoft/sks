@@ -151,8 +151,44 @@ export default {
         args:{pos_opening_shift},
         callback(r){
           var d = new frappe.ui.Dialog({
-            title: "Denomination",
-            fields:r.message,
+            title: "Thirvu Closing Shift",
+            fields:[{
+              
+              label:"Denomination",fieldname:"ts_denomination",fieldtype:"Table",cannot_add_rows: 1,in_place_edit: true,ts_block:"Yes",fields:[
+                {
+                  label: 'Amount',
+                  fieldname: 'ts_amount',
+                  fieldtype: 'Read Only',
+                  in_list_view:1,
+                  columns:1,
+					      },
+                {
+                  label: 'Count',
+                  fieldname: 'ts_count',
+                  fieldtype: 'Int',
+                  default:0,
+                  in_list_view:1,
+                  columns:1,
+					      },
+              ],data:r.message[0],
+            },
+              {label:"Mode of Payments",fieldname:"ts_mode_of_payment",fieldtype:"Table",cannot_add_rows:1,in_place_edit: true,ts_block:"Yes",fields:[
+                {
+                  label: 'Type',
+                  fieldname: 'ts_type',
+                  fieldtype: 'Read Only',
+                  in_list_view:1,
+                  columns:1,
+					      },
+                {
+                  label: 'Amount',
+                  fieldname: 'ts_amount',
+                  fieldtype: 'Currency',
+                  in_list_view:1,
+                  columns:1,
+					      },
+              ],data:r.message[1]
+              }],
             primary_action_label:"Submit",
             primary_action: function(ts_denomination){
               data["ts_denomination"]=ts_denomination

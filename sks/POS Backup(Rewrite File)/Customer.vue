@@ -169,7 +169,7 @@ export default {
               size: "large",
               title:"Customer: "+ customer +"'s Outstanding Amount",
               fields:[
-                {fieldname:'items', fieldtype:'Table', fields:[
+                {fieldname:'items', fieldtype:'Table', cannot_add_rows: 1,in_place_edit: true,ts_block:"Yes",fields:[
                 {
                   label: 'Sales Invoice No',
                   fieldname: 'sales_invoice',
