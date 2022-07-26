@@ -29,7 +29,8 @@ def item_check_with_sales_order(item_code_checking=None,checking_sales_order=Non
 		return item_code,item_batch_name,item_batch_mrp
 	else:
 		return 0
-
+		
+from frappe import _
 @frappe.whitelist()
 def mandatory_validation(doc,event):
 	ts_value=frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note_items_match_with_sales_order_items")
