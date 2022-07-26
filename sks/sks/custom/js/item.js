@@ -26,3 +26,17 @@ frappe.ui.form.on("Item Warehouse",{
         });
    },
 })
+
+frappe.ui.form.on("Item Warehouse",{
+    company: function(frm,cdt,cdn) {
+        var row = locals[cdt][cdn]
+        frm.set_query('storebin', 'warehouse', function() {
+
+        return {
+        filters: {
+        'company':row.company
+        }
+        };
+        });
+   },
+})

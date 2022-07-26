@@ -310,3 +310,17 @@ def warehouse_fetcing(doc,event):
     item = doc.items
     for i in item:
         i.warehouse = i.ts_warehouse
+
+
+
+def supplier_free_item(doc,event):
+    supplierfreeitem=[]
+    doc.set('to_verify_free_item_from_supplier',[])
+   
+            
+    for item in doc.items:
+        if(item.is_free_item_from_supplier==1):
+            row=frappe._dict()
+            row.update({'item':item.item_code,'quantity':item.qty,'selling_rate':item.ts_selling_rate})
+            supplierfreeitem.append(row)
+    doc.update({'to_verify_free_item_from_supplier':supplierfreeitem})
