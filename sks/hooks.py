@@ -138,11 +138,7 @@ doc_events = {
 	},
 	"Delivery Trip": {
         "on_submit" :"sks.sks.custom.py.delivery_trip.assign_to_driver"
-    },
-	"Delivery Note": {
-        "on_submit" :"sks.sks.custom.py.delivery_trip.assign_to_driver",
-		"validate" :"sks.sks.custom.py.delivery_note.warehouse_fetcing"
-    },
+         },
 	"Sales Invoice":{
 		"validate":["sks.sks.custom.py.sales_invoice.feed_back_form",
 		            "sks.sks.custom.py.sales_invoice.warehouse_fetcing"
@@ -169,7 +165,8 @@ doc_events = {
 		]
 	},
 	"Delivery Note":{
-		"validate":["sks.sks.custom.py.delivery_note.mandatory_validation"]
+		"validate":["sks.sks.custom.py.delivery_note.mandatory_validation",
+		             "sks.sks.custom.py.delivery_note.warehouse_fetcing"]
 	}
  }
 
