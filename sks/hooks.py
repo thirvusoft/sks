@@ -138,21 +138,40 @@ doc_events = {
 	},
 	"Delivery Trip": {
         "on_submit" :"sks.sks.custom.py.delivery_trip.assign_to_driver"
+
     },
+
+
 	"Sales Invoice":{
-		"validate":"sks.sks.custom.py.sales_invoice.feed_back_form"
+		"validate":["sks.sks.custom.py.sales_invoice.feed_back_form",
+		            "sks.sks.custom.py.sales_invoice.warehouse_fetcing"
+		]
 	},
 	"Purchase Receipt":{
 		"validate":["sks.sks.custom.py.purchase_receipt.markup_and_markdown_calculator",
 					"sks.sks.custom.py.purchase_receipt.validate",
+
+					"sks.sks.custom.py.purchase_receipt.warehouse_fetcing",
+					"sks.sks.custom.py.purchase_receipt.supplier_free_item",
 					"sks.sks.custom.py.purchase_receipt.mandatory_validation"
+
 		],
 		"on_submit":"sks.sks.custom.py.purchase_receipt.purchased_qty_validation"
 	},
 	"Purchase Order":{
 		"validate":[
-			"sks.sks.custom.py.buying_module.validate_buying_rate_with_mrp"
+			"sks.sks.custom.py.buying_module.validate_buying_rate_with_mrp",
+			"sks.sks.custom.py.purchase_order.warehouse_fetcing"
 		]
+	},
+	"Sales Order":{
+		"validate":[
+			"sks.sks.custom.py.sales_order.warehouse_fetcing"
+		]
+	},
+	"Delivery Note":{
+		"validate":["sks.sks.custom.py.delivery_note.mandatory_validation",
+		             "sks.sks.custom.py.delivery_note.warehouse_fetcing"]
 	}
  }
 

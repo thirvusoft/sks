@@ -125,7 +125,7 @@ def purchase_order_property_setter():
     'property':"hidden",
     'property_type':"Check",
     'field_name':"scan_barcode",
-    "value":0
+    "value":1
     })
     purchase_order.save(ignore_permissions=True)
 

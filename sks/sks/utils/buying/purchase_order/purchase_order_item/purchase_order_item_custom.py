@@ -41,7 +41,10 @@ def purchase_order_item_custom_fields():
                               insert_after= "sec_break2",
                               label= "MRP",
                     ),
-                    
+                      dict(fieldname='ts_warehouse', label='TS Warehouse',
+
+                fieldtype='Data', hidden=1,insert_after='warehouse')
+
           ],
           }
           create_custom_fields(custom_fields)
