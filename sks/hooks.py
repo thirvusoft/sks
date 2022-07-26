@@ -152,7 +152,7 @@ doc_events = {
 					"sks.sks.custom.py.purchase_receipt.validate",
 
 					"sks.sks.custom.py.purchase_receipt.warehouse_fetcing",
-					"sks.sks.custom.py.purchase_receipt.supplier_free_item"
+					"sks.sks.custom.py.purchase_receipt.supplier_free_item",
 					"sks.sks.custom.py.purchase_receipt.mandatory_validation"
 
 		],
