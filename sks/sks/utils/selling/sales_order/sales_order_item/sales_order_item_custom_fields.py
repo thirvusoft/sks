@@ -14,7 +14,7 @@ def sales_order_item_custom_fields():
     custom_fields={
         "Sales Order Item":[
              dict(fieldname='ts_warehouse', label='TS Warehouse',
-                fieldtype='Data', insert_after='gros_profit'),
+                fieldtype='Data',hidden=0, insert_after='gros_profit'),
            ]
         }
     create_custom_fields(custom_fields)
