@@ -31,7 +31,6 @@ def markup_and_markdown_calculator(document,event):
                             j.selling_rates = ts_matched_selling_rate[0]
                         else:
                             frappe.throw("In Markdown, the valuation rate is greater than the selling rate")
-                            
                         # else:
                         #     ts_unmatched_item.append(item)
                         #     ts_unmatched_selling_rate.append(ts_markdown)
@@ -39,7 +38,6 @@ def markup_and_markdown_calculator(document,event):
                         #     item_row.update({'items':item,'selling_rate':ts_markdown,'difference':round(abs(j.valuation_rate-ts_markdown),2)})
                         #     ts_markdown_items_to_verify.append(item_row)
                         #     ts_markdown_items += f"{ts_item_name}:{round(abs(item_mrp-ts_markdown),2)}\n"
-                    
                     if(ts_item_detais.__dict__["select_selling_price_type"]=="Markup"):
                         ts_markup=(item_mrp/100)*ts_item_detais.__dict__["ts_markup_price"]
                         ts_markup=v_rate+ts_markup
@@ -49,7 +47,6 @@ def markup_and_markdown_calculator(document,event):
                             j.selling_rates = ts_matched_selling_rate[0]    
                         else:
                             frappe.throw("In Markup, the selling rate is greater than the  valuation rate")
-                
             #                 ts_unmatched_item.append(item)
             #                 ts_unmatched_selling_rate.append(ts_markup)
             #                 item_row = frappe._dict({})                                              

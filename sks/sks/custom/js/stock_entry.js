@@ -17,16 +17,12 @@ frappe.db.get_single_value("Thirvu Retail Settings","automatic_batch_creation").
                         item_mrp.push(data.items[i].mrp_rates)
                     }
                 }
-				console.log(expiry_date)
-				console.log(item_rate)
-				console.log(item_code,item_mrp)
 				frappe.call({
 					method:"sks.sks.custom.py.stock_entry.auto_batch_creations",
 					args:{expiry_date,item_rate,item_code,item_mrp,doctype_name,document_name},
 					callback(r){
 						if(r["message"]==0){
 							frm.refresh();
-                            console.log("Testing")
 						}
 					}
 				})
