@@ -315,9 +315,14 @@ frappe.ui.form.on("Purchase Receipt Item",{
                         method:"sks.sks.custom.py.purchase_receipt.item_warehouse_fetching",
                         args:{item_code,company},
                         callback(r){
-                                frappe.model.set_value(data.doctype, data.name, "warehouse", r.message)
-                                frappe.model.set_value(data.doctype, data.name, "ts_warehouse", r.message)
-                                warehouse=cur_frm.doc.ts_warehouse
+							if(r.message){
+								frappe.model.set_value(data.doctype, data.name, "warehouse", r.message)
+								frappe.model.set_value(data.doctype, data.name, "ts_warehouse", r.message)
+								warehouse=cur_frm.doc.ts_warehouse
+							}
+							else{
+								frappe.show_alert({ message: __('Please Select Warehouse for Item'+item_code), indicator: 'red' });
+							}
                         }
                     })
                     
