@@ -175,7 +175,7 @@ frappe.ui.form.on("Delivery Note Item",{
 							if(r.message){
 								frappe.model.set_value(data.doctype, data.name, "warehouse", r.message)
 								frappe.model.set_value(data.doctype, data.name, "ts_warehouse", r.message)
-								warehouse=cur_frm.doc.ts_warehouse
+								
 							}
 							else{
 								frappe.show_alert({ message: __('Please Select Warehouse for Item '+item_code), indicator: 'red' });
