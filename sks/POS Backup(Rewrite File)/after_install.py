@@ -40,6 +40,28 @@ def custom_field():
         ]
     }
     create_custom_fields(custom_fields)
+    custom_fields={
+        "POS Profile":[
+            dict(fieldname='ts_is_closing_stock_detail',
+                label='Is Closing Stock Detail',
+                fieldtype='Check', 
+                insert_after='company_address'
+            ),
+            dict(fieldname='ts_closing_stock_details',
+                label='Closing Stock Details',
+                fieldtype='Section Break', 
+                insert_after='ts_is_closing_stock_detail',
+                depends_on="eval:doc.ts_is_closing_stock_detail==1",
+                collapsible=1
+            ),
+            dict(fieldname='ts_closing_stock_details_table',
+                fieldtype='Table',
+                options="Thirvu Closing Shift Stock Details",
+                insert_after='ts_closing_stock_details'
+            )
+        ]
+    }
+    create_custom_fields(custom_fields)
 
 def property_setter():
     pass
