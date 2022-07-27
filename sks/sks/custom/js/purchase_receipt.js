@@ -321,7 +321,7 @@ frappe.ui.form.on("Purchase Receipt Item",{
 								warehouse=cur_frm.doc.ts_warehouse
 							}
 							else{
-								frappe.show_alert({ message: __('Please Select Warehouse for Item'+item_code), indicator: 'red' });
+								frappe.show_alert({ message: __('Please Select Warehouse for Item '+item_code), indicator: 'red' });
 							}
                         }
                     })
