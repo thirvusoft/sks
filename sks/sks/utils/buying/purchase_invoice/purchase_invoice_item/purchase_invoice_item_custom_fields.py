@@ -12,6 +12,8 @@ def purchase_invoice_item_custom_fields():
                               read_only=1,
                               in_list_view=1,columns=2,
                               fetch_from="Purchase Receipt.ts_mrp and Purchase Order.ts_mrp"),
+                            dict(fieldname='ts_warehouse', label='TS Warehouse',
+                fieldtype='Data', insert_after='warehouse',read_only=1)
           ],
           }
           create_custom_fields(custom_fields)

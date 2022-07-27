@@ -1,0 +1,130 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "THIRVU-DCS-.MM.-.YY.-.#######",
+ "creation": "2022-07-25 17:13:04.243966",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "period_start_date",
+  "period_end_date",
+  "column_break_3",
+  "driver",
+  "driver_name",
+  "posting_date",
+  "modes_of_payment_section",
+  "payment_reconciliation",
+  "denomination_details_section",
+  "ts_denomination_counts",
+  "ts_denomination_total",
+  "details_section",
+  "grand_total",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "period_start_date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Period Start Date"
+  },
+  {
+   "fieldname": "period_end_date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Period End Date"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Posting Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "modes_of_payment_section",
+   "fieldtype": "Section Break",
+   "label": "Modes of Payment"
+  },
+  {
+   "fieldname": "payment_reconciliation",
+   "fieldtype": "Table",
+   "label": "Payment Reconciliation",
+   "options": "Thirvu Driver Closing Shift Detail"
+  },
+  {
+   "fieldname": "denomination_details_section",
+   "fieldtype": "Section Break",
+   "label": "Denomination Details"
+  },
+  {
+   "fieldname": "ts_denomination_counts",
+   "fieldtype": "Table",
+   "options": "Denomination"
+  },
+  {
+   "fieldname": "ts_denomination_total",
+   "fieldtype": "Currency",
+   "label": "Denomination Total"
+  },
+  {
+   "fieldname": "details_section",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "fieldname": "grand_total",
+   "fieldtype": "Currency",
+   "label": "Grand Total"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Thirvu Driver Closing Shift",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "driver",
+   "fieldtype": "Link",
+   "label": "Driver",
+   "options": "Driver"
+  },
+  {
+   "fieldname": "driver_name",
+   "fieldtype": "Data",
+   "label": "Driver Name"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2022-07-26 18:23:47.440802",
+ "modified_by": "Administrator",
+ "module": "sks",
+ "name": "Thirvu Driver Closing Shift",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

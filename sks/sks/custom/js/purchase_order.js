@@ -1,3 +1,12 @@
+var company 
+frappe.ui.form.on("Purchase Order",{
+    company:function(frm,cdt,cdn){
+        company=cur_frm.doc.company
+        
+        
+    }
+})
+
 frappe.ui.form.on("Purchase Order",{
 	before_save:function(frm,cdt,cdn){
 		var data=locals[cdt][cdn]
@@ -40,39 +49,44 @@ frappe.ui.form.on("Purchase Order",{
 					frappe.call({
 						method:"sks.sks.custom.py.buying_module.not_processed_po",
 						args:{ts_supplier},
-						callback(ts_po_details){
-							if(ts_po_details.message[1].length){
+						callback(ts_not_processed_po){
+							if(ts_not_processed_po.message.length){
 								const d = new frappe.ui.Dialog({
-									title: "Pending purchase orders with the supplier",
-									static: true,
+									size: "large",
+									title:"Not Processed Purchase Orders",
 									fields:[
+									{fieldname:'thirvu_not_processed_po', fieldtype:'Table',cannot_add_rows: 1,in_place_edit: true, fields:[
 									{
-										fieldname:'table',
-										fieldtype:'HTML',
-										label:'Table'
+										label: 'Purchase Order',
+										fieldname: 'purchase_order',
+										fieldtype: 'Read Only',
+										in_list_view:1,
+										read_only:1,
+										columns:2
 									},
-									{
-										fieldname:'po_add',
-										fieldtype:'MultiSelectPills',
-										label:'Select items to be added',
-										get_data: function() {
-											return ts_po_details.message[1]
-										}
-									}
+									],
+									data:ts_not_processed_po.message},
 									],
 									primary_action_label: "Cancel and add items",
 									primary_action : function(data){
-										if(data.po_add){
+										var purchase_order=[]
+										var value = d.fields_dict.thirvu_not_processed_po.grid.get_selected_children()
+										for (let i = 0; i<value.length;i++){
+											if(value[i].__checked){
+												purchase_order.push(value[i].purchase_order)
+											}
+										}
+										if(purchase_order){
 											frappe.call({
 												method:"sks.sks.custom.py.buying_module.fetching_items_from_not_processed_po",
-												args:{reqd_po:data.po_add},
+												args:{reqd_po:purchase_order},
 												callback(po_items){
+													console.log(po_items)
+													cur_frm.set_value('items',[])
 													for(let i = 0; i<po_items.message.length;i++){
-														frappe.model.set_value(ts_data.items[i].doctype,ts_data.items[i].name,"item_code",po_items.message[i][0])
-														frappe.model.set_value(ts_data.items[i].doctype,ts_data.items[i].name,"qty",po_items.message[i][1])
-														if(i<(po_items.message.length-1)){
-															cur_frm.add_child("items")
-														}
+														cur_frm.add_child("items")
+														frappe.model.set_value(ts_data.items[i].doctype,ts_data.items[i].name,"item_code",po_items.message[i]['item_code'])
+														frappe.model.set_value(ts_data.items[i].doctype,ts_data.items[i].name,"qty",po_items.message[i]['qty'])
 													}
 												}
 											})
@@ -83,9 +97,7 @@ frappe.ui.form.on("Purchase Order",{
 										d.hide()
 									}
 								})
-								if(ts_po_details.message[0]){
-									var template = ts_po_details.message[0]
-									d.set_df_property('table', 'options', frappe.render(template,{}))
+								if(ts_not_processed_po.message){
 									d.show();
 								}
 								
@@ -147,3 +159,30 @@ frappe.ui.form.on("Purchase Order Item",{
 		}
 	}
 })
+frappe.ui.form.on("Purchase Order Item",{
+    item_code:function(frm,cdt,cdn){
+            var data=locals[cdt][cdn]
+            var item_code=data.item_code
+                if(item_code){
+                    frappe.call({
+                        method:"sks.sks.custom.py.purchase_order.item_warehouse_fetching",
+                        args:{item_code,company},
+                        callback(r){
+							if(r.message){
+								frappe.model.set_value(data.doctype, data.name, "warehouse", r.message)
+								frappe.model.set_value(data.doctype, data.name, "ts_warehouse", r.message)
+								
+							}
+							else{
+								frappe.show_alert({ message: __('Please Select Warehouse for Item '+item_code), indicator: 'red' });
+							}
+                        }
+                    })
+                    
+                }
+                
+               
+        },
+       
+    }
+)

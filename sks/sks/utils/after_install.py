@@ -25,6 +25,9 @@ from sks.sks.utils.stock.item_price.item_price_custom_fields import item_price_c
 from sks.sks.utils.hr.employee.employee_advance import  employee_advance_custom_fields
 from sks.sks.utils.hr.employee.employee import employee_custom_fields
 from sks.sks.utils.stock.stock_entry.stock_entry import stock_entry_details
+from sks.sks.utils.accounting.payment_entry.payment_entry_custom_fields import payment_entry_customization
+from sks.sks.utils.selling.sales_order.sales_order_item.sales_order_item_custom_fields import sales_order_item_customization
+
 
 
 def after_install(): 
@@ -55,3 +58,5 @@ def after_install():
     employee_advance_custom_fields()
     employee_custom_fields()
     stock_entry_details()
+    payment_entry_customization()
+    sales_order_item_customization()

@@ -1,4 +1,6 @@
 import frappe
+from frappe import _
+
 @frappe.whitelist(allow_guest=True)
 def customer_transaction_history(customer,item_codes): 
     from datetime import datetime
@@ -113,3 +115,29 @@ def customer_credit_sale(customer):
     html = "<html><style> .clstab, .clsth, .clstd { border: 1px solid black; border-collapse: collapse;}   .clsth, .clstd {padding: 15px;} .clstab {width:100%;} </style>" + "<table class=clstab>" + html +"</table>"
     alert_data = alert_data[:len(alert_data)-2]+"."
     return alert_data,pending_invoice,recievable, html
+
+
+
+
+
+@frappe.whitelist()
+def item_warehouse_fetching(item_code,company):
+    check = 1
+    item_name =  frappe.get_doc("Item",item_code)
+    for warehouse in item_name.warehouse:
+        if warehouse.company == company:
+            check = 0
+            return warehouse.storebin
+        else:
+            check = 1
+    
+    if check==1:
+        return 0
+
+
+
+
+def warehouse_fetcing(doc,event):
+    item = doc.items
+    for i in item:
+        i.warehouse = i.ts_warehouse

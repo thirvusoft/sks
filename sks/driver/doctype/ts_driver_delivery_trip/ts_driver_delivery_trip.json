@@ -7,6 +7,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "driver_id",
   "driver",
   "vehicle",
   "column_break_3",
@@ -62,11 +63,17 @@
    "fieldname": "invoice_details_section",
    "fieldtype": "Section Break",
    "label": "Invoice Details"
+  },
+  {
+   "fieldname": "driver_id",
+   "fieldtype": "Link",
+   "label": "Driver ID",
+   "options": "Driver"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-06-14 16:53:59.609515",
+ "modified": "2022-07-26 08:16:57.238065",
  "modified_by": "Administrator",
  "module": "Driver",
  "name": "TS Driver Delivery Trip",

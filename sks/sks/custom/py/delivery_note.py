@@ -31,6 +31,26 @@ def item_check_with_sales_order(item_code_checking=None,checking_sales_order=Non
 		return 0
 
 
+
+@frappe.whitelist()
+def item_warehouse_fetching(item_code,company):
+    check = 1
+    item_name =  frappe.get_doc("Item",item_code)
+    for warehouse in item_name.warehouse:
+        if warehouse.company == company:
+            check = 0
+            return warehouse.storebin
+        else:
+            check = 1
+    
+    if check==1:
+        return 0
+
+def warehouse_fetcing(doc,event):
+    item = doc.items
+    for i in item:
+        i.warehouse = i.ts_warehouse
+
 from frappe import _
 @frappe.whitelist()
 def mandatory_validation(doc,event):
@@ -45,3 +65,5 @@ def mandatory_validation(doc,event):
 						ts_item_barcodes += "•"+item.item_code+'<br>'
 		if ts_item_barcodes:
 			frappe.throw(_("Below Items Are Not Verified, Please Check It... <br>{0}").format(ts_item_barcodes))
+
+

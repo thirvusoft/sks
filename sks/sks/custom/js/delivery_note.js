@@ -1,3 +1,14 @@
+var company 
+var data
+var warehouse
+frappe.ui.form.on("Delivery Note",{
+    company:function(frm,cdt,cdn){
+        company=cur_frm.doc.company
+        
+        
+    }
+})
+
 frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note_items_match_with_sales_order_items").then(value =>{
 	if(value==1){
 	cur_frm.set_df_property("scan_barcode","hidden",1)
@@ -149,7 +160,33 @@ frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note
     frappe.model.set_value(cdt,cdn,'outstanding_amount_and_total_amount',f.message.outstanding_amount_and_total_amount)
    
     })
-    },
-    });
-    
+}
+})
 
+frappe.ui.form.on("Delivery Note Item",{
+	item_code:function(frm,cdt,cdn){
+			data=locals[cdt][cdn]
+			var item_code=data.item_code
+				if(item_code){
+					frappe.call({
+						method:"sks.sks.custom.py.delivery_note.item_warehouse_fetching",
+						args:{item_code,company},
+						callback(r){
+							if(r.message){
+								frappe.model.set_value(data.doctype, data.name, "warehouse", r.message)
+								frappe.model.set_value(data.doctype, data.name, "ts_warehouse", r.message)
+								
+							}
+							else{
+								frappe.show_alert({ message: __('Please Select Warehouse for Item '+item_code), indicator: 'red' });
+							}
+						}
+					})
+					
+				}
+				
+				
+		},
+		
+	
+		})	

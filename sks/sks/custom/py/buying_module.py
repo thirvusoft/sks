@@ -48,13 +48,12 @@ def buying_rate_finder(ts_item_code):
 @frappe.whitelist()
 def not_processed_po(ts_supplier):
     supplier_doc = frappe.get_list("Purchase Order",{"supplier":ts_supplier,"status":"To Receive and Bill"},pluck="name")
-    html=""
-    index = 1
+    ts_not_processed_po=[]
     for s_doc in supplier_doc:
-        html+=f'<tr class=clstr><td class=clstd><center>{index}<center></td><td class=clstd><aappend href=/app/purchase-order/{s_doc}>{s_doc}</a></td></tr>'
-        index+=1
-    html = "<html><style> .clstab, .clsth, .clstd { border: 1px solid black; border-collapse: collapse;}   .clsth, .clstd {padding: 10px;} .clstab {width:100%;} </style>" + "<table class=clstab><tr><td><b><center>SI</center></b></td><td class=clstd><b>Purchase Order NO</b></td><tr>" + html +"</table>"
-    return html,supplier_doc
+        row = frappe._dict()
+        row.update({'purchase_order':s_doc})
+        ts_not_processed_po.append(row)
+    return ts_not_processed_po
 
 @frappe.whitelist()   
 def fetching_items_from_not_processed_po(reqd_po):
@@ -65,19 +64,15 @@ def fetching_items_from_not_processed_po(reqd_po):
         items = frappe.db.sql(''' select item_code,qty
                                 from `tabPurchase Order Item` as po
                                 where parent='{0}';
-                              '''.format(po_doc),as_list=1)
+                              '''.format(po_doc),as_dict=1)
         if items_list:
-            for data in items:
-                for value in items_list:
-                    if data[0] == value[0]:
-                        qty=value[1]+data[1]
-                        value[1]=qty
-                    else:
-                        if lists:
-                            pass
-                        else:
-                            lists.append(data)
-            lists=[]
+            item_code = [i['item_code'] for i in items_list]
+            for i in items:
+                if(i['item_code'] in item_code):
+                    for j in items_list:
+                        if(j['item_code'] == i['item_code']):j['qty'] += i['qty']
+                else:
+                    items_list.append(i)
         else:
             items_list=items
         frappe.msgprint(f"Cancelling Purchase Order : {po_doc}")
@@ -85,6 +80,4 @@ def fetching_items_from_not_processed_po(reqd_po):
         cancel_doc.docstatus=2
         cancel_doc.save()
         frappe.db.commit()
-        
-    
     return items_list

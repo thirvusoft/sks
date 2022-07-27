@@ -124,6 +124,7 @@ def assign_to_driver(del_trip,a):
         doc = frappe.new_doc('TS Driver Delivery Trip')
         del_trip_doc = frappe.get_doc('Delivery Trip', del_trip.name)
         doc.update({
+            'driver_id':del_trip_doc.driver,
             'driver': del_trip_doc.driver_name,
             'vehicle': del_trip_doc.vehicle,
             'delivery_trip': del_trip_doc.name,

@@ -295,6 +295,42 @@ def purchased_qty_validation(doc,event):
             frappe.db.set_value("Batch",batch,"purchase_qty",purchased_qty)
 
 
+
+    
+@frappe.whitelist()
+def item_warehouse_fetching(item_code,company):
+    check = 1
+    item_name =  frappe.get_doc("Item",item_code)
+    for warehouse in item_name.warehouse:
+        if warehouse.company == company:
+            check = 0
+            return warehouse.storebin
+        else:
+            check = 1
+    
+    if check==1:
+        return 0
+
+def warehouse_fetcing(doc,event):
+    item = doc.items
+    for i in item:
+        i.warehouse = i.ts_warehouse
+
+
+
+def supplier_free_item(doc,event):
+    supplierfreeitem=[]
+    doc.set('to_verify_free_item_from_supplier',[])
+   
+            
+    for item in doc.items:
+        if(item.is_free_item_from_supplier==1):
+            row=frappe._dict()
+            row.update({'item':item.item_code,'quantity':item.qty,'selling_rate':item.ts_selling_rate})
+            supplierfreeitem.append(row)
+    doc.update({'to_verify_free_item_from_supplier':supplierfreeitem})
+
+
 from frappe import _
 @frappe.whitelist()
 def mandatory_validation(doc,event):
@@ -318,3 +354,4 @@ def mandatory_validation(doc,event):
                         ts_item_barcodes += "•"+item.item_code+'<br>'
         if ts_item_barcodes:
             frappe.throw(_("Below Items Are Not Verified, Please Check It... <br>{0}").format(ts_item_barcodes))
+
