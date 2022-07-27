@@ -82,5 +82,4 @@ def fetching_items_from_not_processed_po(reqd_po):
         cancel_doc.docstatus=2
         cancel_doc.save()
         frappe.db.commit()
-    print(items_list)
     return items_list
