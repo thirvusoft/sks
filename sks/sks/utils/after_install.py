@@ -57,4 +57,4 @@ def after_install():
     employee_advance_custom_fields()
     employee_custom_fields()
     payment_entry_customization()
-    sales_order_item_customization
+    sales_order_item_customization()
