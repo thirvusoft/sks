@@ -276,7 +276,6 @@ frappe.ui.form.on("Sales Order Item",{
                         method:"sks.sks.custom.py.sales_order.item_warehouse_fetching",
                         args:{item_code,company},
                         callback(r){
-                            console.log(r.message)
                             if(r.message){
 								frappe.model.set_value(data.doctype, data.name, "warehouse", r.message)
 								frappe.model.set_value(data.doctype, data.name, "ts_warehouse", r.message)
