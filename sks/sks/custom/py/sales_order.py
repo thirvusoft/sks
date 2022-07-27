@@ -1,4 +1,6 @@
 import frappe
+from frappe import _
+
 @frappe.whitelist(allow_guest=True)
 def customer_transaction_history(customer,item_codes): 
     from datetime import datetime
@@ -120,12 +122,19 @@ def customer_credit_sale(customer):
 
 @frappe.whitelist()
 def item_warehouse_fetching(item_code,company):
-   
-    itemname =  frappe.get_doc("Item",item_code)
-    warehouse = frappe.db.get_value("Item Warehouse" ,{'company':company},'storebin')
+    check = 1
+    item_name =  frappe.get_doc("Item",item_code)
+    for warehouse in item_name.warehouse:
+        if warehouse.company == company:
+            check = 0
+            return warehouse.storebin
+        else:
+            check = 1
     
-    
-    return warehouse
+    if check==1:
+        return 0
+
+
 
 
 def warehouse_fetcing(doc,event):
