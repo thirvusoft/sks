@@ -175,6 +175,12 @@ doc_events = {
 		"validate":["sks.sks.custom.py.delivery_note.mandatory_validation",
 		             "sks.sks.custom.py.delivery_note.warehouse_fetcing"]
 	},
+	"POS Profile":{
+		"validate":"sks.sks.custom.py.pos_profile.stock_details_validation"
+	},
+	"Item":{
+		"validate":"sks.sks.custom.py.item.batch_needed"
+	},
 	"Stock Entry":{
 		"validate":["sks.sks.custom.py.stock_entry.stock_entry",
 					"sks.sks.custom.py.stock_entry.markup_and_markdown_calculator"]

@@ -145,65 +145,184 @@ export default {
     // Customized By Thirvusoft
     // Start
     evntBus.$on('open_ClosingDialog', (data) => {
+      var ts_company=data.company
+      var ts_stock_details=0
+      var ts_pos_profile=data.pos_profile
       var pos_opening_shift=data.pos_opening_shift
-      frappe.call({
-        method:"posawesome.posawesome.api.posapp.get_fields_for_denomination",
-        args:{pos_opening_shift},
-        callback(r){
-          var d = new frappe.ui.Dialog({
-            title: "Thirvu Closing Shift",
-            fields:[{
-              
-              label:"Denomination",fieldname:"ts_denomination",fieldtype:"Table",cannot_add_rows: 1,in_place_edit: true,ts_block:"Yes",fields:[
-                {
-                  label: 'Amount',
-                  fieldname: 'ts_amount',
-                  fieldtype: 'Read Only',
-                  in_list_view:1,
-                  columns:1,
-					      },
-                {
-                  label: 'Count',
-                  fieldname: 'ts_count',
-                  fieldtype: 'Int',
-                  default:0,
-                  in_list_view:1,
-                  columns:1,
-					      },
-              ],data:r.message[0],
-            },
-              {label:"Mode of Payments",fieldname:"ts_mode_of_payment",fieldtype:"Table",cannot_add_rows:1,in_place_edit: true,ts_block:"Yes",fields:[
-                {
-                  label: 'Type',
-                  fieldname: 'ts_type',
-                  fieldtype: 'Read Only',
-                  in_list_view:1,
-                  columns:1,
-					      },
-                {
-                  label: 'Amount',
-                  fieldname: 'ts_amount',
-                  fieldtype: 'Currency',
-                  in_list_view:1,
-                  columns:1,
-					      },
-              ],data:r.message[1]
-              }],
-            primary_action_label:"Submit",
-            primary_action: function(ts_denomination){
-              data["ts_denomination"]=ts_denomination
-              this.closingDialog = true;
-              this.dialog_data = data;
-              evntBus.$emit('submit_closing_pos', this.dialog_data);
-              this.closingDialog = false;
-              d.hide()
-              frappe.show_alert({ message: __("Thirvu Closing Shift Created Successfully"), indicator: 'green' });
-              location.href='/app/home';  
+      frappe.db.get_value("POS Profile", {"name": ts_pos_profile}, ["ts_is_closing_stock_detail"], (r) => {
+          ts_stock_details=r["ts_is_closing_stock_detail"]
+          if(ts_stock_details==0){
+          frappe.call({
+            method:"posawesome.posawesome.api.posapp.get_fields_for_denomination",
+            args:{pos_opening_shift},
+            callback(r){
+              var d = new frappe.ui.Dialog({
+                title: "Thirvu Closing Shift",
+                fields:[{
+                  
+                  label:"Denomination",fieldname:"ts_denomination",fieldtype:"Table",cannot_add_rows: 1,in_place_edit: true,ts_block:"Yes",fields:[
+                    {
+                      label: 'Amount',
+                      fieldname: 'ts_amount',
+                      fieldtype: 'Read Only',
+                      in_list_view:1,
+                      columns:1,
+                    },
+                    {
+                      label: 'Count',
+                      fieldname: 'ts_count',
+                      fieldtype: 'Int',
+                      default:0,
+                      in_list_view:1,
+                      columns:1,
+                    },
+                  ],data:r.message[0],
+                },
+                  {label:"Mode of Payments",fieldname:"ts_mode_of_payment",fieldtype:"Table",cannot_add_rows:1,in_place_edit: true,ts_block:"Yes",fields:[
+                    {
+                      label: 'Type',
+                      fieldname: 'ts_type',
+                      fieldtype: 'Read Only',
+                      in_list_view:1,
+                      columns:1,
+                    },
+                    {
+                      label: 'Amount',
+                      fieldname: 'ts_amount',
+                      fieldtype: 'Currency',
+                      in_list_view:1,
+                      columns:1,
+                    },
+                  ],data:r.message[1]
+                  }],
+                primary_action_label:"Submit",
+                primary_action: function(ts_denomination){
+                  data["ts_denomination"]=ts_denomination
+                  this.closingDialog = true;
+                  this.dialog_data = data;
+                  evntBus.$emit('submit_closing_pos', this.dialog_data);
+                  this.closingDialog = false;
+                  d.hide()
+                  frappe.show_alert({ message: __("Thirvu Closing Shift Created Successfully"), indicator: 'green' });
+                  location.href='/app/home';  
+                }
+              });
+            d.show()
             }
-          });
-        d.show()
+          })
         }
-      })
+        else{
+          frappe.call({
+            method:"posawesome.posawesome.api.posapp.get_fields_for_stock_details",
+            args:{ts_pos_profile},
+            callback(ts_r){
+              var d = new frappe.ui.Dialog({
+                title: "Thirvu Closing Stock Details",
+                fields:[{
+                  fieldname:"ts_stock_details",fieldtype:"Table",cannot_add_rows: 1,in_place_edit: true,ts_block:"Yes",fields:[
+                    {
+                      label: 'Items',
+                      fieldname: 'ts_items',
+                      fieldtype: 'Read Only',
+                      in_list_view:1,
+                      columns:2,
+                    },
+                    {
+                      label: 'UOM',
+                      fieldname: 'ts_uom',
+                      fieldtype: 'Read Only',
+                      in_list_view:1,
+                      columns:2,
+                    },
+                    {
+                      label: 'Qty',
+                      fieldname: 'ts_qty',
+                      fieldtype: 'Float',
+                      in_list_view:1,
+                      columns:2,
+                    },
+                    {
+                      label: 'bin',
+                      fieldname: 'ts_bin',
+                      fieldtype: 'Read Only',
+                      options:"Warehouse",
+                      in_list_view:1,
+                      columns:1,
+                    },
+                  ],data:ts_r.message,
+                }],
+                  primary_action_label:"Submit",
+                  primary_action: function(ts_closing_stock){
+                    d.hide()
+                    frappe.call({
+                      method:"posawesome.posawesome.api.posapp.get_fields_for_denomination",
+                      args:{pos_opening_shift},
+                      callback(r){
+                        var d = new frappe.ui.Dialog({
+                          title: "Thirvu Closing Shift",
+                          fields:[{
+                            
+                            label:"Denomination",fieldname:"ts_denomination",fieldtype:"Table",cannot_add_rows: 1,in_place_edit: true,ts_block:"Yes",fields:[
+                              {
+                                label: 'Amount',
+                                fieldname: 'ts_amount',
+                                fieldtype: 'Read Only',
+                                in_list_view:1,
+                                columns:1,
+                              },
+                              {
+                                label: 'Count',
+                                fieldname: 'ts_count',
+                                fieldtype: 'Int',
+                                default:0,
+                                in_list_view:1,
+                                columns:1,
+                              },
+                            ],data:r.message[0],
+                          },
+                            {label:"Mode of Payments",fieldname:"ts_mode_of_payment",fieldtype:"Table",cannot_add_rows:1,in_place_edit: true,ts_block:"Yes",fields:[
+                              {
+                                label: 'Type',
+                                fieldname: 'ts_type',
+                                fieldtype: 'Read Only',
+                                in_list_view:1,
+                                columns:1,
+                              },
+                              {
+                                label: 'Amount',
+                                fieldname: 'ts_amount',
+                                fieldtype: 'Currency',
+                                in_list_view:1,
+                                columns:1,
+                              },
+                            ],data:r.message[1]
+                            }],
+                          primary_action_label:"Submit",
+                          primary_action: function(ts_denomination){
+                            frappe.call({
+                              method:"posawesome.posawesome.api.posapp.make_stock_entry_material_issue",
+                              args:{ts_closing_stocks:ts_closing_stock["ts_stock_details"],ts_company}
+                            })
+                            data["ts_denomination"]=ts_denomination
+                            this.closingDialog = true;
+                            this.dialog_data = data;
+                            evntBus.$emit('submit_closing_pos', this.dialog_data);
+                            this.closingDialog = false;
+                            d.hide()
+                            frappe.show_alert({ message: __("Thirvu Closing Shift Created Successfully"), indicator: 'green' });
+                            location.href='/app/home'; 
+                          }
+                        });
+                      d.show()
+                      }
+                    })
+                  }
+                });
+              d.show()
+            }
+          })
+        } 
+			});
     });
     // End
   },
