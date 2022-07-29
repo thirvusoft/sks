@@ -77,7 +77,7 @@
             v-for="payment in invoice_doc.payments"
             :key="payment.name"
           >
-            <v-col cols="6" v-if="!is_mpesa_c2b_payment(payment)">
+            <v-col cols="6" v-if="!is_mpesa_c2b_payment(payment) && payment.idx==1">
               <v-text-field
                 dense
                 outlined
@@ -85,6 +85,23 @@
                 :label="frappe._(payment.mode_of_payment)"
                 background-color="white"
                 hide-details
+                autofocus
+                v-model="payment.amount"
+                type="number"
+                :prefix="invoice_doc.currency"
+                @focus="set_rest_amount(payment.idx)"
+                :readonly="invoice_doc.is_return ? true : false"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="6" v-if="!is_mpesa_c2b_payment(payment) && payment.idx>1">
+              <v-text-field
+                dense
+                outlined
+                color="indigo"
+                :label="frappe._(payment.mode_of_payment)"
+                background-color="white"
+                hide-details
+                
                 v-model="payment.amount"
                 type="number"
                 :prefix="invoice_doc.currency"
@@ -880,7 +897,7 @@ export default {
         return value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
       },
       shortPay(e) {
-        if (e.key === 'x' && (e.ctrlKey || e.metaKey)) {
+        if (e.key === 'F8') {
           e.preventDefault();
           this.submit();
         }

@@ -417,6 +417,15 @@ export default {
         .toFixed(this.float_precision)
         .replace(/\d(?=(\d{3})+\.)/g, '$&,');
     },
+     // Customized By Thirvusoft
+    // Start
+      shortOpenItem: function shortOpenItem(e) {
+        if (e.key === 'F1') {
+          e.preventDefault();
+          this.$refs.debounce_search.focus();
+        }
+      },
+    // End
   },
 
   computed: {
@@ -533,7 +542,14 @@ export default {
     evntBus.$on('update_customer_price_list', (data) => {
       this.customer_price_list = data;
     });
+    // Customized By Thirvusoft
+    // Start
+    document.addEventListener('keydown', this.shortOpenItem.bind(this));
   },
+  destroyed: function destroyed() {
+    document.removeEventListener('keydown', this.shortOpenItem);
+  },
+  // End
 
   mounted() {
     this.scan_barcoud();

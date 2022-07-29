@@ -1091,7 +1091,7 @@ export default {
           return;
         }
          // Customized By Thirvusoft
-         //Start
+         // Start
          frappe.db.get_single_value("Thirvu Retail Settings","allow_display_customer_transaction_history").then(value =>{
           if(value==1){
              frappe.call({
@@ -1131,6 +1131,7 @@ export default {
         var invoice_doc = this.proces_invoice();
         var thirvu_settings = this.thirvu_settings
         var feedback_required = this.feedback_required
+        
         evntBus.$emit('send_invoice_doc_payment', invoice_doc,thirvu_settings, feedback_required);
       },
 
@@ -1578,13 +1579,15 @@ export default {
         value = parseFloat(value);
         return value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
       },
-
+    // Customized By Thirvusoft
+    // Start
     shortOpenPayment: function shortOpenPayment(e) {
-        if (e.key === 's' && (e.ctrlKey || e.metaKey)) {
+        if (e.key === 'F7') {
           e.preventDefault();
           this.show_payment();
         }
       },
+    // End
 
     shortDeleteFirstItem: function shortDeleteFirstItem(e) {
         if (e.key === 'd' && (e.ctrlKey || e.metaKey)) {
@@ -1592,6 +1595,15 @@ export default {
           this.remove_item(this.items[0]);
         }
       },
+      // Customized By Thirvusoft
+      // Start
+      shortOpenReturn: function shortOpenReturn(e) {
+        if (e.key === 'F9') {
+          e.preventDefault();
+          this.open_returns();
+        }
+      },
+      //  End
 
     shortOpenFirstItem: function shortOpenFirstItem(e) {
         if (e.key === 'a' && (e.ctrlKey || e.metaKey)) {
@@ -2460,12 +2472,20 @@ export default {
       document.addEventListener('keydown', this.shortDeleteFirstItem.bind(this));
       document.addEventListener('keydown', this.shortOpenFirstItem.bind(this));
       document.addEventListener('keydown', this.shortSelectDiscount.bind(this));
+      // Customized By Thirvusoft
+      // Start
+      document.addEventListener('keydown', this.shortOpenReturn.bind(this));
+      // End
     },
     destroyed: function destroyed() {
       document.removeEventListener('keydown', this.shortOpenPayment);
       document.removeEventListener('keydown', this.shortDeleteFirstItem);
       document.removeEventListener('keydown', this.shortOpenFirstItem);
       document.removeEventListener('keydown', this.shortSelectDiscount);
+      // Customized By Thirvusoft
+      // Start
+      document.removeEventListener('keydown', this.shortOpenReturn);
+      // End
     },
     watch: {
       customer: function customer() {
