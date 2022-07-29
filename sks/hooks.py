@@ -38,7 +38,6 @@ doctype_js = {"Delivery Note" : "sks/custom/js/delivery_note.js",
 "Delivery Trip" : "sks/custom/js/delivery_trip.js",
 "Sales Order" : "sks/custom/js/sales_order.js",
 "Purchase Receipt":"sks/custom/js/purchase_receipt.js",
-"Purchase Order":"sks/custom/js/purchase_order.js",
 "Purchase Invoice":"sks/custom/js/purchase_invoice.js",
 "Item":"sks/custom/js/item.js",
 "POS Profile":"sks/custom/js/pos_profile.js",
@@ -112,6 +111,11 @@ after_install = ["sks.sks.custom.py.workflow.workflow_document_creation",
 # ---------------
 # Hook on document methods and events
 
+
+
+
+# "Purchase Order":"sks/custom/js/purchase_order.js", 
+
 doc_events = {
 	"Supplier": {
 		"before_save": "sks.sks.custom.py.supplier.validate_gstin"	
@@ -149,6 +153,12 @@ doc_events = {
 		            "sks.sks.custom.py.sales_invoice.warehouse_fetcing"
 		]
 	},
+	"Purchase Order":{
+		"validate":[
+			"sks.sks.custom.py.buying_module.validate_buying_rate_with_mrp",
+			"sks.sks.custom.py.purchase_order.warehouse_fetcing"
+		]
+	},
 	"Purchase Receipt":{
 		"validate":["sks.sks.custom.py.purchase_receipt.markup_and_markdown_calculator",
 					"sks.sks.custom.py.purchase_receipt.validate",
@@ -159,12 +169,6 @@ doc_events = {
 
 		],
 		"on_submit":"sks.sks.custom.py.purchase_receipt.purchased_qty_validation"
-	},
-	"Purchase Order":{
-		"validate":[
-			"sks.sks.custom.py.buying_module.validate_buying_rate_with_mrp",
-			"sks.sks.custom.py.purchase_order.warehouse_fetcing"
-		]
 	},
 	"Sales Order":{
 		"validate":[

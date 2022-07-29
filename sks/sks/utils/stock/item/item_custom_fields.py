@@ -101,7 +101,7 @@ def item_custom_fields():
                 fieldtype="Select",
                 label="Select Selling Price Type",
                 options="\nMarkup\nMarkdown",
-                reqd=1,
+                reqd=0,
                 insert_after="ts_markup_and_markdown",
                 allow_in_quick_entry=1,
             ),

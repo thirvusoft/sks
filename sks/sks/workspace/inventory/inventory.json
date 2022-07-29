@@ -1,7 +1,7 @@
 {
  "category": "Modules",
  "charts": [],
- "creation": "2022-07-04 16:33:36.452211",
+ "creation": "2022-07-20 16:49:56.151127",
  "developer_mode_only": 0,
  "disable_user_customization": 0,
  "docstatus": 0,
@@ -11,38 +11,38 @@
  "idx": 0,
  "is_default": 0,
  "is_standard": 1,
- "label": "Account User",
+ "label": "Inventory",
  "links": [],
- "modified": "2022-07-21 10:45:29.465808",
+ "modified": "2022-07-20 16:49:56.151127",
  "modified_by": "pparameshwari@thirvusoft.in",
  "module": "sks",
- "name": "Account User",
- "owner": "naveen.kumar@thirvusoft.in",
+ "name": "Inventory",
+ "owner": "pparameshwari@thirvusoft.in",
  "pin_to_bottom": 0,
  "pin_to_top": 1,
  "shortcuts": [
   {
    "doc_view": "List",
-   "label": "Journal Entry",
-   "link_to": "Journal Entry",
+   "label": "Item",
+   "link_to": "Item",
    "type": "DocType"
-  },
-  {
-   "doc_view": "Tree",
-   "label": "Chart of Account",
-   "link_to": "Account",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "Report Builder",
-   "label": "General Ledger",
-   "link_to": "General Ledger",
-   "type": "Report"
   },
   {
    "doc_view": "List",
-   "label": "Payment Entry",
-   "link_to": "Payment Entry",
+   "label": "Item Group",
+   "link_to": "Item Group",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Item Price",
+   "link_to": "Item Price",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Batch",
+   "link_to": "Batch",
    "type": "DocType"
   }
  ]

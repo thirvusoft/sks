@@ -13,8 +13,8 @@
  "is_standard": 1,
  "label": "HR User",
  "links": [],
- "modified": "2022-07-05 12:27:34.501784",
- "modified_by": "pparameshwari@thirvusoft.in",
+ "modified": "2022-07-22 13:23:43.512074",
+ "modified_by": "Administrator",
  "module": "sks",
  "name": "HR User",
  "owner": "naveen.kumar@thirvusoft.in",
@@ -73,6 +73,30 @@
    "doc_view": "List",
    "label": "Salary Structure Assignment",
    "link_to": "Salary Structure Assignment",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Thirvu Employee Penalty",
+   "link_to": "Thirvu Employee Penalty",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Thirvu HR Settings",
+   "link_to": "Thirvu HR Settings",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Employee Bonus Tool",
+   "link_to": "Employee Bonus Tool",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Employee Advance",
+   "link_to": "Employee Advance",
    "type": "DocType"
   }
  ]
