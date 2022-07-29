@@ -21,3 +21,13 @@ def is_batch_remover():
 			ts_item=frappe.get_doc("Item",ts_items)
 			ts_item.has_batch_no=0
 			ts_item.save()
+
+def batch_creation():
+	items_doc = frappe.get_all('Item')
+	if items_doc:
+		for single_doc in items_doc:
+			single_doc =frappe.get_doc('Item',single_doc)
+			single_doc.has_batch_no = 1
+			single_doc.create_new_batch = 1
+			single_doc.batch_number_series = '.{item}.-.YY.MM.-'
+			single_doc.save()

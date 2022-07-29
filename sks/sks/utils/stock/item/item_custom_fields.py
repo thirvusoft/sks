@@ -14,6 +14,13 @@ def item_custom_fields():
                 hidden=0
             ),
             dict(
+                fieldname="is_closing_shift_stock",
+                fieldtype="Check",
+                label="Is Closing Shift Stock",
+                insert_after="is_expiry_item",
+                hidden=0
+            ),
+            dict(
                 fieldname="section_break_27",
                 fieldtype="Section Break",
                 label="Warehouse",

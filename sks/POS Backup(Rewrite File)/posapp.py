@@ -1721,6 +1721,45 @@ def create_journal_entry(data,doc):
     new_jv_doc.submit()
 
     return 1
+
+@frappe.whitelist()
+def get_fields_for_stock_details(ts_pos_profile):
+    ts_pos_profile_details=frappe.get_doc("POS Profile",ts_pos_profile)
+    ts_closing_stock_details=[]
+    for ts_stock_details in ts_pos_profile_details.ts_closing_stock_details_table:
+        ts_row_details=frappe._dict()
+        ts_row_details.update({"ts_items":ts_stock_details.item_name,"ts_uom":ts_stock_details.uom,"ts_bin":ts_stock_details.bin})
+        ts_closing_stock_details.append(ts_row_details)
+    return ts_closing_stock_details
+
+@frappe.whitelist()
+def make_stock_entry_material_issue(ts_closing_stocks,ts_company):
+    ts_closing_stocks=json.loads(ts_closing_stocks)
+    ts_item_details=[]
+    for ts_details in ts_closing_stocks:
+        try:
+            qty=ts_details["ts_qty"]
+        except:
+            qty=0
+        if qty !=0:
+            ts_bin_qty=frappe.get_value("Bin",{"warehouse":ts_details["ts_bin"],"item_code":ts_details['ts_items']},["actual_qty"])
+            ts_final_qty=ts_bin_qty-qty
+            ts_item_details.append({
+                "s_warehouse":ts_details["ts_bin"],
+                "item_code":ts_details['ts_items'],
+                "qty":ts_final_qty,
+                "uom":ts_details['ts_uom']
+            })
+    if ts_item_details:
+        ts_stock_entry=frappe.new_doc("Stock Entry")
+        ts_stock_entry.update({
+            "stock_entry_type":"Material Issue",
+            "items":ts_item_details,
+            "company":ts_company
+        })
+        ts_stock_entry.insert()
+        ts_stock_entry.save()
+        ts_stock_entry.submit()
 # End
 
 @frappe.whitelist()

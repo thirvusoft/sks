@@ -246,6 +246,26 @@ class StockController(AccountsController):
 							supplier=getattr(self, 'supplier', None),
 							reference_doctype=self.doctype,
 							reference_name=self.name)).insert().name
+      #core code change Stock Entry
+		elif self.doctype=="Stock Entry":
+			for d in self.items:
+				if d.get(warehouse_field) and not d.batch_no:
+					has_batch_no, create_new_batch = frappe.db.get_value('Item', d.item_code, ['has_batch_no', 'create_new_batch'])
+					if has_batch_no and create_new_batch:
+						d.batch_no = frappe.get_doc(dict(
+							doctype='Batch',
+							item=d.item_code,
+							#Start
+							expiry_date=d.expire_dates,
+							ts_mrp=d.mrp_rates,
+							ts_selling_price=d.selling_rates,
+							ts_valuation_rate=d.valuation_rates,
+							purchase_qty=d.qty,
+							#End
+							supplier=getattr(self, 'supplier', None),
+							reference_doctype=self.doctype,
+							reference_name=self.name)).insert().name
+		#End
 		else:
 			for d in self.items:
 				if d.get(warehouse_field) and not d.batch_no:

@@ -45,7 +45,9 @@ doctype_js = {"Delivery Note" : "sks/custom/js/delivery_note.js",
 "Customer":"sks/custom/js/customer.js",
 "Employee Advance":"sks/custom/js/employee_advance.js",
 "Employee":"sks/custom/js/employee.js",
-"Job Offer":"sks/custom/js/job_offer.js"}
+"Job Offer":"sks/custom/js/job_offer.js",
+"Stock Entry":"sks/custom/js/stock_entry.js"
+}
 # doctype_js = {"Delivery Note" : "sks/sks/custom/js/outstanding_amount.js"}
 
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
@@ -173,6 +175,16 @@ doc_events = {
 	"Delivery Note":{
 		"validate":["sks.sks.custom.py.delivery_note.mandatory_validation",
 		             "sks.sks.custom.py.delivery_note.warehouse_fetcing"]
+	},
+	"POS Profile":{
+		"validate":"sks.sks.custom.py.pos_profile.stock_details_validation"
+	},
+	"Item":{
+		"validate":"sks.sks.custom.py.item.batch_needed"
+	},
+	"Stock Entry":{
+		"validate":["sks.sks.custom.py.stock_entry.stock_entry",
+					"sks.sks.custom.py.stock_entry.markup_and_markdown_calculator"]
 	}
  }
 

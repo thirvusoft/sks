@@ -61,12 +61,10 @@ def fetching_items_from_not_processed_po(reqd_po):
     items_list=[]
     reqd_po=eval(reqd_po)
     for po_doc in reqd_po:
-        print(po_doc)
         items = frappe.db.sql(''' select item_code,qty
                                 from `tabPurchase Order Item` as po
                                 where parent='{0}';
                               '''.format(po_doc),as_dict=1)
-        print(items)
         if items_list:
             item_code = [i['item_code'] for i in items_list]
             for i in items:
@@ -82,5 +80,4 @@ def fetching_items_from_not_processed_po(reqd_po):
         cancel_doc.docstatus=2
         cancel_doc.save()
         frappe.db.commit()
-    print(items_list)
     return items_list
