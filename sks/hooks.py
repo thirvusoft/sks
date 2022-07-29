@@ -180,6 +180,9 @@ doc_events = {
 		"validate":["sks.sks.custom.py.delivery_note.mandatory_validation",
 		             "sks.sks.custom.py.delivery_note.warehouse_fetcing"]
 	},
+	"Customer": {
+		"validate": "sks.sks.custom.py.customer.capitalize_each_words"	
+	},
 	"POS Profile":{
 		"validate":"sks.sks.custom.py.pos_profile.stock_details_validation"
 	},
