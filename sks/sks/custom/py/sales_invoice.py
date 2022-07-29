@@ -127,5 +127,11 @@ def warehouse_fetcing(doc,event):
     item = doc.items
     for i in item:
         i.warehouse = i.ts_warehouse
+        
+def saving_amount(doc,event):
+    total_mrp=0
+    for row in doc.items:
+        total_mrp+=row.mrp*row.qty
+    doc.your_savings = total_mrp-doc.rounded_total 
 
 

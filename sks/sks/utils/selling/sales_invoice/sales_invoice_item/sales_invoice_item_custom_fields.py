@@ -6,9 +6,11 @@ def sales_invoice_item_custom_fields():
     custom_fields={
         "Sales Invoice Item":[
                 dict(fieldname='item_verified', label='Item Verified',
-                fieldtype='Check', insert_after='amount',read_only=1,in_list_view=1,columns=2),
+                fieldtype='Check', insert_after='mrp',read_only=1,in_list_view=1,columns=2),
                 dict(fieldname='ts_warehouse', label='TS Warehouse',
-                fieldtype='Data', insert_after='warehouse',read_only=1)
+                fieldtype='Data', insert_after='warehouse',read_only=1),
+                dict(fieldname='mrp', label='MRP',
+                fieldtype='Currency', insert_after='amount',read_only=1,fetch_from="item_code.mrp"),
         ],
     }
     create_custom_fields(custom_fields)
