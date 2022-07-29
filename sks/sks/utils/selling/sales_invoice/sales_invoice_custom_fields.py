@@ -24,6 +24,8 @@ def sales_invoice_custom_field():
                 fieldtype='Data', insert_after='reason',fetch_from="Sales Order.mode_of_delivery",read_only=1,),
             dict(fieldname='due_day', label='Payment Due Day',
                 fieldtype='Data', insert_after='due_date',read_only=1),
+            dict(fieldname='your_savings', label='Your Savings',
+                fieldtype='Currency', insert_after='grand_total',read_only=1),
             
         ],
     }
