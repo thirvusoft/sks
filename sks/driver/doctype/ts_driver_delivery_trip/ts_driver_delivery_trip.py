@@ -125,18 +125,22 @@ def get_fields_for_denomination(driver_id):
 
 @frappe.whitelist()
 def create_driver_closing_shift(ts_denomination,driver_name,creation_datetime,driver_id,):
+    driver_closing_shift_grace_amt = frappe.db.get_single_value('Thirvu Retail Settings', 'driver_closing_shift_grace_amount')
     denomination_validation=json.loads(ts_denomination)
     denomination=denomination_validation["ts_denomination"]
     ts_mode_of_payment=denomination_validation["ts_mode_of_payment"]
     denomination_cash=0
     other_cash=0
     payment_reconcilation=[]
+    ts_total_count = 0
+    expected_denomination_cash = 0
+    ts_denomination_and_other_payments_count = len(denomination) + len(ts_mode_of_payment)
     for count in denomination:
         try:
             if count["count"]:
                 denomination_cash+=(count['currency'] * count['count'])
         except:
-            pass
+            ts_total_count+=1
     thirvu_mode_of_payments=frappe.get_list("Thirvu Driver Mode of Payments",{"parent":driver_id},pluck="mode_of_payment")
     for modes in thirvu_mode_of_payments:
         amount_type=frappe.db.get_value("Mode of Payment",modes,"type")
@@ -152,14 +156,15 @@ def create_driver_closing_shift(ts_denomination,driver_name,creation_datetime,dr
                                 "opening_amount":0,
                                 "closing_amount":denomination_cash,
                                 "expected_amount":expected_denomination_cash,
-                                "difference":expected_denomination_cash-denomination_cash})
+                                "difference":denomination_cash-expected_denomination_cash})
                     payment_reconcilation.append(row)
+            else:expected_denomination_cash=0
     for type in ts_mode_of_payment:
         try:
             if type["currency"]:
                 other_cash+=(type['currency'])
         except:
-            pass
+            ts_total_count+=1
     thirvu_mode_of_payments=frappe.get_list("Thirvu Driver Mode of Payments",{"parent":driver_id},pluck="mode_of_payment")
     for modes in thirvu_mode_of_payments:
         amount_type=frappe.db.get_value("Mode of Payment",modes,"type")
@@ -175,9 +180,14 @@ def create_driver_closing_shift(ts_denomination,driver_name,creation_datetime,dr
                                 "opening_amount":0,
                                 "closing_amount":other_cash,
                                 "expected_amount":expected_other_cash,
-                                "difference":expected_other_cash-other_cash})
+                                "difference":other_cash-expected_other_cash})
                     payment_reconcilation.append(row)
+            else:expected_other_cash=0
     grand_total=denomination_cash+other_cash
+    if ts_total_count == ts_denomination_and_other_payments_count:
+        frappe.msgprint("Your responsible for the difference amount.")
+    elif grand_total == 0:
+        frappe.msgprint("Your responsible for the difference amount.")
     driver_doc = frappe.new_doc('Thirvu Driver Closing Shift')
     driver_doc.update({
         'period_start_date':creation_datetime,

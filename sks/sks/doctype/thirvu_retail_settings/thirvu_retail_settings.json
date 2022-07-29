@@ -22,7 +22,9 @@
   "allow_display_feedback_required_option",
   "pos_denomination_section",
   "denomination",
-  "column_break_15"
+  "column_break_15",
+  "driver_closing_shift_section",
+  "driver_closing_shift_grace_amount"
  ],
  "fields": [
   {
@@ -134,12 +136,22 @@
    "fieldname": "add_item_from_not_processed_purchase_order",
    "fieldtype": "Check",
    "label": "Add items from not processed purchase order"
+  },
+  {
+   "fieldname": "driver_closing_shift_section",
+   "fieldtype": "Section Break",
+   "label": "Driver Closing Shift"
+  },
+  {
+   "fieldname": "driver_closing_shift_grace_amount",
+   "fieldtype": "Currency",
+   "label": "Driver Closing Shift Grace Amount"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-07-23 17:56:54.960547",
+ "modified": "2022-07-29 14:45:55.763862",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Thirvu Retail Settings",
