@@ -19,6 +19,8 @@
   "ts_denomination_counts",
   "ts_denomination_total",
   "details_section",
+  "total_difference",
+  "column_break_14",
   "grand_total",
   "amended_from"
  ],
@@ -27,19 +29,22 @@
    "fieldname": "period_start_date",
    "fieldtype": "Datetime",
    "in_list_view": 1,
-   "label": "Period Start Date"
+   "label": "Period Start Date",
+   "read_only": 1
   },
   {
    "fieldname": "period_end_date",
    "fieldtype": "Datetime",
    "in_list_view": 1,
-   "label": "Period End Date"
+   "label": "Period End Date",
+   "read_only": 1
   },
   {
    "fieldname": "posting_date",
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "Posting Date",
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -66,7 +71,8 @@
   {
    "fieldname": "ts_denomination_total",
    "fieldtype": "Currency",
-   "label": "Denomination Total"
+   "label": "Denomination Total",
+   "read_only": 1
   },
   {
    "fieldname": "details_section",
@@ -76,7 +82,8 @@
   {
    "fieldname": "grand_total",
    "fieldtype": "Currency",
-   "label": "Grand Total"
+   "label": "Grand Total",
+   "read_only": 1
   },
   {
    "fieldname": "amended_from",
@@ -91,22 +98,34 @@
    "fieldname": "driver",
    "fieldtype": "Link",
    "label": "Driver",
-   "options": "Driver"
+   "options": "Driver",
+   "read_only": 1
   },
   {
    "fieldname": "driver_name",
    "fieldtype": "Data",
-   "label": "Driver Name"
+   "label": "Driver Name",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_difference",
+   "fieldtype": "Currency",
+   "label": "Total Difference",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_14",
    "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-07-26 18:23:47.440802",
+ "modified": "2022-08-01 14:38:11.383348",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Thirvu Driver Closing Shift",

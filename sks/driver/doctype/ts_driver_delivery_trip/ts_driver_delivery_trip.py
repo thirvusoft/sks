@@ -147,18 +147,24 @@ def create_driver_closing_shift(ts_denomination,driver_name,creation_datetime,dr
         if(amount_type=="Cash"):
             expected_denomination_cash=frappe.db.sql("""select sum(paid_amount) from `tabPayment Entry`
                                             where creation between '{0}' and '{1}' and
-                                            driver='{2}' and mode_of_payment_by_driver='{3}' """.format(creation_datetime,now(),driver_id,modes),as_list=1)
-            if expected_denomination_cash:
-                expected_denomination_cash=expected_denomination_cash[0][0]
-                if(denomination_cash>0):
-                    row = frappe._dict()
-                    row.update({'mode_of_payment':modes,
-                                "opening_amount":0,
-                                "closing_amount":denomination_cash,
-                                "expected_amount":expected_denomination_cash,
-                                "difference":denomination_cash-expected_denomination_cash})
-                    payment_reconcilation.append(row)
-            else:expected_denomination_cash=0
+                                            driver='{2}' and mode_of_payment_by_driver='{3}' """.format(creation_datetime,now(),driver_id,modes),as_list=1)[0][0]
+            if expected_denomination_cash != None:
+                row = frappe._dict()
+                row.update({'mode_of_payment':modes,
+                            "opening_amount":0,
+                            "closing_amount":denomination_cash,
+                            "expected_amount":expected_denomination_cash,
+                            "difference":denomination_cash - expected_denomination_cash})
+                payment_reconcilation.append(row)
+            else:
+                expected_denomination_cash=0
+                row = frappe._dict()
+                row.update({'mode_of_payment':modes,
+                            "opening_amount":0,
+                            "closing_amount":denomination_cash,
+                            "expected_amount":expected_denomination_cash,
+                            "difference":denomination_cash-expected_denomination_cash})
+                payment_reconcilation.append(row)
     for type in ts_mode_of_payment:
         try:
             if type["currency"]:
@@ -171,23 +177,26 @@ def create_driver_closing_shift(ts_denomination,driver_name,creation_datetime,dr
         if(amount_type=="Bank"):
             expected_other_cash=frappe.db.sql("""select sum(paid_amount) from `tabPayment Entry`
                                             where creation between '{0}' and '{1}' and
-                                            driver='{2}' and mode_of_payment_by_driver='{3}' """.format(creation_datetime,now(),driver_id,modes),as_list=1)
-            if expected_other_cash:
-                expected_other_cash=expected_other_cash[0][0]
-                if(other_cash>0):
-                    row = frappe._dict()
-                    row.update({'mode_of_payment':modes,
-                                "opening_amount":0,
-                                "closing_amount":other_cash,
-                                "expected_amount":expected_other_cash,
-                                "difference":other_cash-expected_other_cash})
-                    payment_reconcilation.append(row)
-            else:expected_other_cash=0
+                                            driver='{2}' and mode_of_payment_by_driver='{3}' and paid_amount IS NOT NULL""".format(creation_datetime,now(),driver_id,modes),as_list=1)[0][0]
+            if expected_other_cash != None:
+                row = frappe._dict()
+                row.update({'mode_of_payment':modes,
+                            "opening_amount":0,
+                            "closing_amount":other_cash,
+                            "expected_amount":expected_other_cash,
+                            "difference":other_cash-expected_other_cash})
+                payment_reconcilation.append(row)
+            else:
+                expected_other_cash=0
+                row = frappe._dict()
+                row.update({'mode_of_payment':modes,
+                            "opening_amount":0,
+                            "closing_amount":other_cash,
+                            "expected_amount":expected_other_cash,
+                            "difference":other_cash-expected_other_cash})
+                payment_reconcilation.append(row)
     grand_total=denomination_cash+other_cash
-    if ts_total_count == ts_denomination_and_other_payments_count:
-        frappe.msgprint("Your responsible for the difference amount.")
-    elif grand_total == 0:
-        frappe.msgprint("Your responsible for the difference amount.")
+    total_difference=0
     driver_doc = frappe.new_doc('Thirvu Driver Closing Shift')
     driver_doc.update({
         'period_start_date':creation_datetime,
@@ -207,8 +216,23 @@ def create_driver_closing_shift(ts_denomination,driver_name,creation_datetime,dr
                 data.total=data.currency * data.count
         except:
             data.total=data.currency * 0
+    for rows in driver_doc.payment_reconciliation:
+        if rows.difference:total_difference+=rows.difference
+        else:total_difference+=0
+    if ts_total_count == ts_denomination_and_other_payments_count:
+        frappe.msgprint("Your responsible for the difference amount.")
+    elif grand_total == 0:
+        frappe.msgprint("Your responsible for the difference amount.")
+    elif driver_closing_shift_grace_amt < total_difference:
+        frappe.msgprint(f"Your responsible for the difference amount of rupees {abs(total_difference)}")
+    driver_doc.total_difference = total_difference
     driver_doc.save()
     
+
+# def driver_delivery_trip_submit(doc,event):
+#     if doc.status == "Closed":
+#         doc.submit()
+#         frappe.db.commit()
     
     
     
