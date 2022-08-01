@@ -15,7 +15,8 @@
   "company",
   "delivery_trip",
   "invoice_details_section",
-  "invoice_details"
+  "invoice_details",
+  "amended_from"
  ],
  "fields": [
   {
@@ -69,11 +70,21 @@
    "fieldtype": "Link",
    "label": "Driver ID",
    "options": "Driver"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "TS Driver Delivery Trip",
+   "print_hide": 1,
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2022-07-26 08:16:57.238065",
+ "modified": "2022-08-01 13:08:23.311919",
  "modified_by": "Administrator",
  "module": "Driver",
  "name": "TS Driver Delivery Trip",

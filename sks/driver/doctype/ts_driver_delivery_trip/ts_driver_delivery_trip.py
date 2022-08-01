@@ -125,59 +125,78 @@ def get_fields_for_denomination(driver_id):
 
 @frappe.whitelist()
 def create_driver_closing_shift(ts_denomination,driver_name,creation_datetime,driver_id,):
+    driver_closing_shift_grace_amt = frappe.db.get_single_value('Thirvu Retail Settings', 'driver_closing_shift_grace_amount')
     denomination_validation=json.loads(ts_denomination)
     denomination=denomination_validation["ts_denomination"]
     ts_mode_of_payment=denomination_validation["ts_mode_of_payment"]
     denomination_cash=0
     other_cash=0
     payment_reconcilation=[]
+    ts_total_count = 0
+    expected_denomination_cash = 0
+    ts_denomination_and_other_payments_count = len(denomination) + len(ts_mode_of_payment)
     for count in denomination:
         try:
             if count["count"]:
                 denomination_cash+=(count['currency'] * count['count'])
         except:
-            pass
+            ts_total_count+=1
     thirvu_mode_of_payments=frappe.get_list("Thirvu Driver Mode of Payments",{"parent":driver_id},pluck="mode_of_payment")
     for modes in thirvu_mode_of_payments:
         amount_type=frappe.db.get_value("Mode of Payment",modes,"type")
         if(amount_type=="Cash"):
             expected_denomination_cash=frappe.db.sql("""select sum(paid_amount) from `tabPayment Entry`
                                             where creation between '{0}' and '{1}' and
-                                            driver='{2}' and mode_of_payment_by_driver='{3}' """.format(creation_datetime,now(),driver_id,modes),as_list=1)
-            if expected_denomination_cash:
-                expected_denomination_cash=expected_denomination_cash[0][0]
-                if(denomination_cash>0):
-                    row = frappe._dict()
-                    row.update({'mode_of_payment':modes,
-                                "opening_amount":0,
-                                "closing_amount":denomination_cash,
-                                "expected_amount":expected_denomination_cash,
-                                "difference":expected_denomination_cash-denomination_cash})
-                    payment_reconcilation.append(row)
+                                            driver='{2}' and mode_of_payment_by_driver='{3}' """.format(creation_datetime,now(),driver_id,modes),as_list=1)[0][0]
+            if expected_denomination_cash != None:
+                row = frappe._dict()
+                row.update({'mode_of_payment':modes,
+                            "opening_amount":0,
+                            "closing_amount":denomination_cash,
+                            "expected_amount":expected_denomination_cash,
+                            "difference":denomination_cash - expected_denomination_cash})
+                payment_reconcilation.append(row)
+            else:
+                expected_denomination_cash=0
+                row = frappe._dict()
+                row.update({'mode_of_payment':modes,
+                            "opening_amount":0,
+                            "closing_amount":denomination_cash,
+                            "expected_amount":expected_denomination_cash,
+                            "difference":denomination_cash-expected_denomination_cash})
+                payment_reconcilation.append(row)
     for type in ts_mode_of_payment:
         try:
             if type["currency"]:
                 other_cash+=(type['currency'])
         except:
-            pass
+            ts_total_count+=1
     thirvu_mode_of_payments=frappe.get_list("Thirvu Driver Mode of Payments",{"parent":driver_id},pluck="mode_of_payment")
     for modes in thirvu_mode_of_payments:
         amount_type=frappe.db.get_value("Mode of Payment",modes,"type")
         if(amount_type=="Bank"):
             expected_other_cash=frappe.db.sql("""select sum(paid_amount) from `tabPayment Entry`
                                             where creation between '{0}' and '{1}' and
-                                            driver='{2}' and mode_of_payment_by_driver='{3}' """.format(creation_datetime,now(),driver_id,modes),as_list=1)
-            if expected_other_cash:
-                expected_other_cash=expected_other_cash[0][0]
-                if(other_cash>0):
-                    row = frappe._dict()
-                    row.update({'mode_of_payment':modes,
-                                "opening_amount":0,
-                                "closing_amount":other_cash,
-                                "expected_amount":expected_other_cash,
-                                "difference":expected_other_cash-other_cash})
-                    payment_reconcilation.append(row)
+                                            driver='{2}' and mode_of_payment_by_driver='{3}' and paid_amount IS NOT NULL""".format(creation_datetime,now(),driver_id,modes),as_list=1)[0][0]
+            if expected_other_cash != None:
+                row = frappe._dict()
+                row.update({'mode_of_payment':modes,
+                            "opening_amount":0,
+                            "closing_amount":other_cash,
+                            "expected_amount":expected_other_cash,
+                            "difference":other_cash-expected_other_cash})
+                payment_reconcilation.append(row)
+            else:
+                expected_other_cash=0
+                row = frappe._dict()
+                row.update({'mode_of_payment':modes,
+                            "opening_amount":0,
+                            "closing_amount":other_cash,
+                            "expected_amount":expected_other_cash,
+                            "difference":other_cash-expected_other_cash})
+                payment_reconcilation.append(row)
     grand_total=denomination_cash+other_cash
+    total_difference=0
     driver_doc = frappe.new_doc('Thirvu Driver Closing Shift')
     driver_doc.update({
         'period_start_date':creation_datetime,
@@ -197,8 +216,23 @@ def create_driver_closing_shift(ts_denomination,driver_name,creation_datetime,dr
                 data.total=data.currency * data.count
         except:
             data.total=data.currency * 0
+    for rows in driver_doc.payment_reconciliation:
+        if rows.difference:total_difference+=rows.difference
+        else:total_difference+=0
+    if ts_total_count == ts_denomination_and_other_payments_count:
+        frappe.msgprint("Your responsible for the difference amount.")
+    elif grand_total == 0:
+        frappe.msgprint("Your responsible for the difference amount.")
+    elif driver_closing_shift_grace_amt < total_difference:
+        frappe.msgprint(f"Your responsible for the difference amount of rupees {abs(total_difference)}")
+    driver_doc.total_difference = total_difference
     driver_doc.save()
     
+
+# def driver_delivery_trip_submit(doc,event):
+#     if doc.status == "Closed":
+#         doc.submit()
+#         frappe.db.commit()
     
     
     
