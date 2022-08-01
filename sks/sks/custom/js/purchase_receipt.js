@@ -13,6 +13,7 @@ frappe.ui.form.on("Purchase Receipt",{
 })
 frappe.ui.form.on("Purchase Receipt",{
 	onload:function(frm,cdt,cdn){
+		company=cur_frm.doc.company
 		frappe.db.get_single_value("Thirvu Retail Settings","item_verifed_in_purchase_receipt").then(value =>{
 			if(value==1){
 				if(frm.doc.items.length){
@@ -304,37 +305,6 @@ frappe.ui.form.on('Purchase Receipt',{
 	}
 
 })
-
-
-frappe.ui.form.on("Purchase Receipt Item",{
-    item_code:function(frm,cdt,cdn){
-            data=locals[cdt][cdn]
-            var item_code=data.item_code
-                if(item_code){
-                    frappe.call({
-                        method:"sks.sks.custom.py.purchase_receipt.item_warehouse_fetching",
-                        args:{item_code,company},
-                        callback(r){
-							if(r.message){
-								frappe.model.set_value(data.doctype, data.name, "warehouse", r.message)
-								frappe.model.set_value(data.doctype, data.name, "ts_warehouse", r.message)
-								
-							}
-							else{
-								frappe.show_alert({ message: __('Please Select Warehouse for Item '+item_code), indicator: 'red' });
-							}
-                        }
-                    })
-                    
-                }
-                
-               
-        },
-       
-    }
-)
-
-
 
 
 frappe.ui.form.on("Purchase Receipt Item",{

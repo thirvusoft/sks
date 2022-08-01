@@ -8,22 +8,22 @@ frappe.ui.form.on("Purchase Order",{
 })
 
 frappe.ui.form.on("Purchase Order",{
-	// before_save:function(frm,cdt,cdn){
-	// 	var data=locals[cdt][cdn]
-	// 	var items_code=[]
-	// 	var items_rate=[]
-	// 	for(var i=0;i<data.items.length;i++){
-	// 		items_code.push(data.items[i].item_code)
-	// 		items_rate.push(data.items[i].rate)
-	// 	}
-	// 	frappe.call({
-	// 		method:"sks.sks.custom.py.purchase_order.last_purchase_price_validate",
-	// 		args:{items_code,items_rate},
-	// 		callback(r){
-	// 			frm.set_value("item_price_changed",r["message"])
-	// 		}
-	// 	})
-	// }
+	before_save:function(frm,cdt,cdn){
+		var data=locals[cdt][cdn]
+		var items_code=[]
+		var items_rate=[]
+		for(var i=0;i<data.items.length;i++){
+			items_code.push(data.items[i].item_code)
+			items_rate.push(data.items[i].rate)
+		}
+		frappe.call({
+			method:"sks.sks.custom.py.purchase_order.last_purchase_price_validate",
+			args:{items_code,items_rate},
+			callback(r){
+				frm.set_value("item_price_changed",r["message"])
+			}
+		})
+	}
 })
 
 frappe.ui.form.on("Purchase Order",{
@@ -81,7 +81,6 @@ frappe.ui.form.on("Purchase Order",{
 												method:"sks.sks.custom.py.buying_module.fetching_items_from_not_processed_po",
 												args:{reqd_po:purchase_order},
 												callback(po_items){
-													console.log(po_items)
 													cur_frm.set_value('items',[])
 													for(let i = 0; i<po_items.message.length;i++){
 														cur_frm.add_child("items")
@@ -159,30 +158,3 @@ frappe.ui.form.on("Purchase Order Item",{
 		}
 	}
 })
-frappe.ui.form.on("Purchase Order Item",{
-    item_code:function(frm,cdt,cdn){
-            var data=locals[cdt][cdn]
-            var item_code=data.item_code
-                if(item_code){
-                    frappe.call({
-                        method:"sks.sks.custom.py.purchase_order.item_warehouse_fetching",
-                        args:{item_code,company},
-                        callback(r){
-							if(r.message){
-								frappe.model.set_value(data.doctype, data.name, "warehouse", r.message)
-								frappe.model.set_value(data.doctype, data.name, "ts_warehouse", r.message)
-								
-							}
-							else{
-								frappe.show_alert({ message: __('Please Select Warehouse for Item '+item_code), indicator: 'red' });
-							}
-                        }
-                    })
-                    
-                }
-                
-               
-        },
-       
-    }
-)

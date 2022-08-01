@@ -116,28 +116,17 @@ def customer_credit_sale(customer):
     alert_data = alert_data[:len(alert_data)-2]+"."
     return alert_data,pending_invoice,recievable, html
 
-
-
-
-
-@frappe.whitelist()
-def item_warehouse_fetching(item_code,company):
-    check = 1
-    item_name =  frappe.get_doc("Item",item_code)
-    for warehouse in item_name.warehouse:
-        if warehouse.company == company:
-            check = 0
-            return warehouse.storebin
-        else:
-            check = 1
-    
-    if check==1:
-        return 0
-
-
-
-
-def warehouse_fetcing(doc,event):
+def warehouse_fetching(doc,event):
     item = doc.items
+    items_with_no_warehouse=""
     for i in item:
-        i.warehouse = i.ts_warehouse
+        item_name =  frappe.get_doc("Item",i.item_code)
+        if item_name.warehouse:
+            for warehouse in item_name.warehouse:
+                if warehouse.company:
+                    if warehouse.company == doc.company:
+                        w_house = warehouse.storebin
+                        if w_house:i.warehouse = w_house
+        else:
+            items_with_no_warehouse+="•"+item_name.item_code+'<br>'
+    if items_with_no_warehouse:frappe.throw(_("Please Select warehouse for <br>{0}".format(items_with_no_warehouse)))
