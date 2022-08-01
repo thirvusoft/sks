@@ -271,7 +271,10 @@ frappe.ui.form.on("Sales Order Item",{
     item_code:function(frm,cdt,cdn){
             data=locals[cdt][cdn]
             var item_code=data.item_code
+            var actual_qty =0
+            actual_qty = data.actual_qty
                 if(item_code){
+                    frappe.show_alert({ message: __('Stock Quantity for '+actual_qty), indicator: 'green' });
                     frappe.call({
                         method:"sks.sks.custom.py.sales_order.item_warehouse_fetching",
                         args:{item_code,company},

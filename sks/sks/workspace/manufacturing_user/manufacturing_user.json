@@ -1,0 +1,67 @@
+{
+ "category": "Modules",
+ "charts": [],
+ "creation": "2022-07-21 13:51:40.977337",
+ "developer_mode_only": 0,
+ "disable_user_customization": 0,
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "extends_another_page": 0,
+ "hide_custom": 0,
+ "idx": 0,
+ "is_default": 0,
+ "is_standard": 1,
+ "label": "Manufacturing User",
+ "links": [],
+ "modified": "2022-07-21 13:54:02.535417",
+ "modified_by": "pparameshwari@thirvusoft.in",
+ "module": "sks",
+ "name": "Manufacturing User",
+ "owner": "pparameshwari@thirvusoft.in",
+ "pin_to_bottom": 0,
+ "pin_to_top": 1,
+ "shortcuts": [
+  {
+   "doc_view": "List",
+   "label": "BOM",
+   "link_to": "BOM",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Work Order",
+   "link_to": "Work Order",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Stock Entry",
+   "link_to": "Stock Entry",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Operation",
+   "link_to": "Operation",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Workstation",
+   "link_to": "Workstation",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Job Card",
+   "link_to": "Job Card",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Routing",
+   "link_to": "Routing",
+   "type": "DocType"
+  }
+ ]
+}

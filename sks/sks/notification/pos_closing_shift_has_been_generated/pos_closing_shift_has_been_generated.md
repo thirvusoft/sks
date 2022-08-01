@@ -1,0 +1,1 @@
+POS Closing Shift {{doc.name}} has been initiated

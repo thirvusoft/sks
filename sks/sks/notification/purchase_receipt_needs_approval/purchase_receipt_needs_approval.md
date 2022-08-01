@@ -1,0 +1,1 @@
+Purchase Receipt {{doc.name}} needs approval from HR Manager
