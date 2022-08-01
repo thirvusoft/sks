@@ -16,6 +16,7 @@
                   background-color="white"
                   hide-details
                   v-model="customer_name"
+                  ref="cus"
                 ></v-text-field>
               </v-col>
               <v-col cols="6">
@@ -222,6 +223,7 @@ export default {
   
   created: function () {
     evntBus.$on('open_new_customer', () => {
+      console.log("jjjddd")
       this.customerDialog = true;
       var  groups, territorys, citys;
       // v_model;

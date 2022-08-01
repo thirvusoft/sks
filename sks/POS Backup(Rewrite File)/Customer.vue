@@ -10,6 +10,7 @@
       :label="frappe._('Customer')"
       v-model="customer"
       :items="customers"
+      ref = "customer"
       item-text="customer_name"
       item-value="name"
       background-color="white"
@@ -101,8 +102,27 @@ export default {
     edit_customer() {
       evntBus.$emit('open_edit_customer');
     },
- 
-  
+    // Customized By Thirvusoft
+    // Start
+    shortOpenNewCustomer: function shortOpenNewCustomer(e) {
+        if (e.key === 'F3') {
+          e.preventDefault();
+          this.new_customer();
+        }
+      },
+      shortOpenEditCustomer: function shortOpenEditCustomer(e) {
+        if (e.key === 'F4') {
+          e.preventDefault();
+          this.edit_customer();
+        }
+      },
+      shortOpenCustomer: function shortOpenCustomer(e) {
+        if (e.key === 'F2') {
+          e.preventDefault();
+          this.$refs.customer.focus();
+        }
+      },
+    // End
     customFilter(item, queryText, itemText) {
       const textOne = item.customer_name
         ? item.customer_name.toLowerCase()
@@ -144,7 +164,7 @@ export default {
         
 
       // Customized By Thirvusoft
-      //Star
+      // Start
       frappe.db.get_single_value("Thirvu Retail Settings","allow_display_customer_outstanding_amount").then(value =>{
 	      if(value==1){
         customer =vm.customer;
@@ -277,8 +297,18 @@ export default {
         this.readonly = value;
       });
     });
+    // Customized By Thirvusoft
+    // Start
+    document.addEventListener('keydown', this.shortOpenNewCustomer.bind(this));
+    document.addEventListener('keydown', this.shortOpenEditCustomer.bind(this));
+    document.addEventListener('keydown', this.shortOpenCustomer.bind(this));
   },
-
+  destroyed: function destroyed() {
+    document.removeEventListener('keydown', this.shortOpenNewCustomer);
+    document.removeEventListener('keydown', this.shortOpenEditCustomer);
+    document.removeEventListener('keydown', this.shortOpenCustomer);
+  },
+  // End
   watch: {
     customer() {
       evntBus.$emit('update_customer', this.customer);
