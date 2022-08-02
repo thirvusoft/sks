@@ -88,7 +88,6 @@ def feed_back_form(doc, action):
     
     compliants_dict={}
     compliants=[]
-    print(frappe.get_meta("Customer Feedback Form").fields[0].__dict__)
     for i in frappe.get_meta("Customer Feedback Form").fields:
         compliants_dict[i.fieldname]=i.label
         if(i.fieldtype == "Check"):
