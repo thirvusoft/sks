@@ -13,8 +13,8 @@
  "is_standard": 1,
  "label": "Thirvu User",
  "links": [],
- "modified": "2022-07-29 09:41:34.856302",
- "modified_by": "naveenkumar@thirvusoft.in",
+ "modified": "2022-08-02 14:05:59.264535",
+ "modified_by": "pparameshwari@thirvusoft.in",
  "module": "sks",
  "name": "Thirvu User",
  "owner": "naveen.kumar@thirvusoft.in",
@@ -49,6 +49,12 @@
    "doc_view": "List",
    "label": "Thirvu Driver Mode of Payments",
    "link_to": "Thirvu Driver Mode of Payments",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "POS Profile",
+   "link_to": "POS Profile",
    "type": "DocType"
   }
  ]

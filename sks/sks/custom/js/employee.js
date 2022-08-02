@@ -28,21 +28,6 @@ frappe.ui.form.on('Employee',{
             })
         }
     },
-    validate:function(frm){
-        if(frm.doc.relieving_date){
-            var d = new Date(frm.doc.date_of_joining);
-            var year = d.getFullYear();
-            var month = d.getMonth();
-            var day = d.getDate();
-            var one_year_date = new Date(year + 1, month, day);
-            if(new Date(frm.doc.relieving_date) <= one_year_date){
-                frappe.call({
-                    method:"sks.sks.custom.py.employee.property_deduction",
-                    args:{doc:frm.doc}
-                })  
-            } 
-        }       
-    },
     date_of_birth:function(frm){
         var date_of_birth = frm.doc.date_of_birth
         frappe.call({

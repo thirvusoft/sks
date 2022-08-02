@@ -7,15 +7,16 @@
  "engine": "InnoDB",
  "field_order": [
   "allow_only_if_delivery_note_items_match_with_sales_order_items",
-  "allow_only_if_sales_invoice_items_match_with_sales_order_items",
   "item_verifed_in_purchase_receipt",
   "buying_rate_calculation",
   "add_item_from_not_processed_purchase_order",
+  "purchased_and_sold_qty_alert",
   "column_break_3",
   "customer_transaction_history",
   "automatic_batch_creation",
   "reserved_stock",
   "credit_bill_history",
+  "item_warehouse_fetching",
   "pos_awesome_settings_section",
   "allow_display_customer_outstanding_amount",
   "allow_display_customer_transaction_history",
@@ -33,15 +34,6 @@
    "fieldname": "allow_only_if_delivery_note_items_match_with_sales_order_items",
    "fieldtype": "Check",
    "label": "Item Verifed In Delivery Note"
-  },
-  {
-   "default": "0",
-   "description": "Allow Only, If Sales Invoice Items Match With Sales Order Items",
-   "fieldname": "allow_only_if_sales_invoice_items_match_with_sales_order_items",
-   "fieldtype": "Check",
-   "hidden": 1,
-   "label": "Item Verifed In Sales Invoice",
-   "read_only": 1
   },
   {
    "default": "0",
@@ -146,12 +138,26 @@
    "fieldname": "driver_closing_shift_grace_amount",
    "fieldtype": "Currency",
    "label": "Driver Closing Shift Grace Amount"
+  },
+  {
+   "default": "0",
+   "description": "Gives an alert about the last purchased qty of the batch and sold qty of the batch",
+   "fieldname": "purchased_and_sold_qty_alert",
+   "fieldtype": "Check",
+   "label": "Purchased & Sold Qty Alert "
+  },
+  {
+   "default": "0",
+   "description": "Fetch warehouse declared in Item List",
+   "fieldname": "item_warehouse_fetching",
+   "fieldtype": "Check",
+   "label": "Item Warehouse Fetching"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-07-29 14:45:55.763862",
+ "modified": "2022-08-02 17:02:38.646011",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Thirvu Retail Settings",

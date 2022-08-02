@@ -1,35 +1,7 @@
-var company 
-frappe.ui.form.on("Purchase Order",{
-    company:function(frm,cdt,cdn){
-        company=cur_frm.doc.company
-        
-        
-    }
-})
-
-frappe.ui.form.on("Purchase Order",{
-	// before_save:function(frm,cdt,cdn){
-	// 	var data=locals[cdt][cdn]
-	// 	var items_code=[]
-	// 	var items_rate=[]
-	// 	for(var i=0;i<data.items.length;i++){
-	// 		items_code.push(data.items[i].item_code)
-	// 		items_rate.push(data.items[i].rate)
-	// 	}
-	// 	frappe.call({
-	// 		method:"sks.sks.custom.py.purchase_order.last_purchase_price_validate",
-	// 		args:{items_code,items_rate},
-	// 		callback(r){
-	// 			frm.set_value("item_price_changed",r["message"])
-	// 		}
-	// 	})
-	// }
-})
-
 frappe.ui.form.on("Purchase Order",{
 	supplier:function(frm,cdt,cdn){
-		var ts_data=locals[cdt][cdn]
-		var ts_supplier=ts_data.supplier
+		var main_data=locals[cdt][cdn]
+		var ts_supplier=main_data.supplier
 		if(ts_supplier!=""){
 			frappe.call({
 				method:"sks.sks.custom.py.supplier_items_finder.ts_supplier_items_finder",
@@ -81,12 +53,11 @@ frappe.ui.form.on("Purchase Order",{
 												method:"sks.sks.custom.py.buying_module.fetching_items_from_not_processed_po",
 												args:{reqd_po:purchase_order},
 												callback(po_items){
-													console.log(po_items)
 													cur_frm.set_value('items',[])
 													for(let i = 0; i<po_items.message.length;i++){
 														cur_frm.add_child("items")
-														frappe.model.set_value(ts_data.items[i].doctype,ts_data.items[i].name,"item_code",po_items.message[i]['item_code'])
-														frappe.model.set_value(ts_data.items[i].doctype,ts_data.items[i].name,"qty",po_items.message[i]['qty'])
+														frappe.model.set_value(main_data.items[i].doctype,main_data.items[i].name,"item_code",po_items.message[i]['item_code'])
+														frappe.model.set_value(main_data.items[i].doctype,main_data.items[i].name,"qty",po_items.message[i]['qty'])
 													}
 												}
 											})
@@ -112,8 +83,8 @@ frappe.ui.form.on("Purchase Order",{
 })
 frappe.ui.form.on("Purchase Order Item",{
 	item_code:function(frm,cdt,cdn){
-		var ts_data=locals[cdt][cdn]
-		var ts_item_code=ts_data.item_code
+		var data=locals[cdt][cdn]
+		var ts_item_code=data.item_code
 		if(ts_item_code!=""){
 			frappe.call({
 				method:"sks.sks.custom.py.item_mrp_finder.ts_mrp_finder",
@@ -122,7 +93,7 @@ frappe.ui.form.on("Purchase Order Item",{
 					frappe.model.set_value(cdt,cdn,"ts_mrp",ts_r.message)
 				}
 			}),
-			frappe.db.get_single_value("Thirvu Retail Settings","automatic_batch_creation").then(value =>{
+			frappe.db.get_single_value("Thirvu Retail Settings","purchased_and_sold_qty_alert").then(value =>{
 				if(value==1){
 					frappe.call({
 						method:"sks.sks.custom.py.buying_module.last_purchased_and_sold_qty",
@@ -159,30 +130,3 @@ frappe.ui.form.on("Purchase Order Item",{
 		}
 	}
 })
-frappe.ui.form.on("Purchase Order Item",{
-    item_code:function(frm,cdt,cdn){
-            var data=locals[cdt][cdn]
-            var item_code=data.item_code
-                if(item_code){
-                    frappe.call({
-                        method:"sks.sks.custom.py.purchase_order.item_warehouse_fetching",
-                        args:{item_code,company},
-                        callback(r){
-							if(r.message){
-								frappe.model.set_value(data.doctype, data.name, "warehouse", r.message)
-								frappe.model.set_value(data.doctype, data.name, "ts_warehouse", r.message)
-								
-							}
-							else{
-								frappe.show_alert({ message: __('Please Select Warehouse for Item '+item_code), indicator: 'red' });
-							}
-                        }
-                    })
-                    
-                }
-                
-               
-        },
-       
-    }
-)

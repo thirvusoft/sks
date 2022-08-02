@@ -10,35 +10,22 @@ frappe.ui.form.on("Item",{
             frm.set_value("batch_number_series",".{item}.-.YY.MM.-")
         }
     },
-})
-
-
-frappe.ui.form.on("Item Warehouse",{
-    company: function(frm,cdt,cdn) {
-        var row = locals[cdt][cdn]
-        frm.set_query('warehousebin', 'warehouse', function() {
-
-        return {
-        filters: {
-        'company':row.company
-        }
-        };
-        });
-   },
-
-})
-
-frappe.ui.form.on("Item Warehouse",{
-    company: function(frm,cdt,cdn) {
-        var row = locals[cdt][cdn]
-        frm.set_query('storebin', 'warehouse', function() {
-
-        return {
-        filters: {
-        'company':row.company
-        }
-        };
-        });
-   },
-
+    setup:function(frm){
+        frm.set_query('warehousebin', 'warehouse', function(frm,cdt,cdn) {
+            var row = locals[cdt][cdn]
+            return {
+                    filters: {
+                    'company':row.company
+                    }
+                };
+            });
+        frm.set_query('storebin', 'warehouse',function(frm,cdt,cdn) {
+                var row = locals[cdt][cdn]
+                return {
+                    filters: {
+                    'company':row.company
+                    }
+                };
+            });
+    }
 })

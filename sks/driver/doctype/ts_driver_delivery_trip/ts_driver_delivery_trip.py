@@ -108,6 +108,7 @@ def driver_mode_of_payments(driver_id):
 def get_fields_for_denomination(driver_id):
     driver_doc=frappe.get_doc("Driver",driver_id)
     ts_mode_of_payment=[]
+    ts_denomination=[]
     for i in driver_doc.thirvu_mode_of_payments:
         ts_mode_of_payment_type=frappe.get_doc("Mode of Payment",i.mode_of_payment)
         if ts_mode_of_payment_type.type != "Cash":
@@ -116,7 +117,6 @@ def get_fields_for_denomination(driver_id):
             ts_mode_of_payment.append(row)
         if ts_mode_of_payment_type.type == "Cash":
             amounts = frappe.get_all("Denomination Rupees", pluck = 'amount',order_by = '`amount` desc')
-            ts_denomination=[]
             for i in amounts:
                 row = frappe._dict()
                 row.update({'currency':i})
@@ -223,7 +223,7 @@ def create_driver_closing_shift(ts_denomination,driver_name,creation_datetime,dr
         frappe.msgprint("Your responsible for the difference amount.")
     elif grand_total == 0:
         frappe.msgprint("Your responsible for the difference amount.")
-    elif driver_closing_shift_grace_amt < total_difference:
+    elif driver_closing_shift_grace_amt > total_difference:
         frappe.msgprint(f"Your responsible for the difference amount of rupees {abs(total_difference)}")
     driver_doc.total_difference = total_difference
     driver_doc.save()

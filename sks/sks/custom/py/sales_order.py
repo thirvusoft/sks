@@ -54,44 +54,44 @@ def item_append(item_code=None,current_document=None):
             doc.save()
         return 0
 
-@frappe.whitelist()
-def subwarehouse(sub_warehouse=None,company=None):
-    item_code=[]
-    item_warehouse=[]
-    sub_warehouse_list=[sub_warehouse]
-    ware_house=[]
-    while(True):
-        sub_warehouse1=[]
-        for i in sub_warehouse_list:
-            data = frappe.get_all("Warehouse",fields=['name','is_group','parent_warehouse'],filters={"parent_warehouse":i,"company":company})
-            for i in data:
-                if(i.is_group == 0):
-                    ware_house.append(i.name)
-                else:
-                        sub_warehouse1.append(i.name)
-                        data = frappe.get_all("Warehouse",fields=['name','is_group','parent_warehouse'],filters={'parent_warehouse':sub_warehouse,'company':'company'})
-        sub_warehouse_list=sub_warehouse1
-        if(len(sub_warehouse_list) == 0):
-            break
-    if(len(ware_house) == 0):
-        ware_house.append(sub_warehouse)
-    bin_data = frappe.get_all("Bin",fields=['item_code','actual_qty','warehouse'],filters={'actual_qty':('>',0),'warehouse':('in',ware_house)})
-    for i in range(0,len(bin_data),1):
-        item_code.append(bin_data[i]["item_code"])
-        item_warehouse.append(bin_data[i]["warehouse"])
-    return item_code, item_warehouse
+# @frappe.whitelist()
+# def subwarehouse(sub_warehouse=None,company=None):
+#     item_code=[]
+#     item_warehouse=[]
+#     sub_warehouse_list=[sub_warehouse]
+#     ware_house=[]
+#     while(True):
+#         sub_warehouse1=[]
+#         for i in sub_warehouse_list:
+#             data = frappe.get_all("Warehouse",fields=['name','is_group','parent_warehouse'],filters={"parent_warehouse":i,"company":company})
+#             for i in data:
+#                 if(i.is_group == 0):
+#                     ware_house.append(i.name)
+#                 else:
+#                         sub_warehouse1.append(i.name)
+#                         data = frappe.get_all("Warehouse",fields=['name','is_group','parent_warehouse'],filters={'parent_warehouse':sub_warehouse,'company':'company'})
+#         sub_warehouse_list=sub_warehouse1
+#         if(len(sub_warehouse_list) == 0):
+#             break
+#     if(len(ware_house) == 0):
+#         ware_house.append(sub_warehouse)
+#     bin_data = frappe.get_all("Bin",fields=['item_code','actual_qty','warehouse'],filters={'actual_qty':('>',0),'warehouse':('in',ware_house)})
+#     for i in range(0,len(bin_data),1):
+#         item_code.append(bin_data[i]["item_code"])
+#         item_warehouse.append(bin_data[i]["warehouse"])
+#     return item_code, item_warehouse
 
-@frappe.whitelist()
-def bins(total_item_code=None,subwarehouse_item_codes=None,subwarehouse_item_bins=None,doctype_name=None,document_name=None):
-    total_item_code=eval(total_item_code)
-    subwarehouse_item_codes=eval(subwarehouse_item_codes)
-    subwarehouse_item_bins=eval(subwarehouse_item_bins)
-    sales_order_document=frappe.get_doc(doctype_name,document_name)
-    for i in range(0,len(subwarehouse_item_codes),1):
-        for item in sales_order_document.items:
-            if(subwarehouse_item_codes[i]==item.__dict__["item_code"]):
-                    frappe.set_value(item.doctype,item.name,"warehouse",subwarehouse_item_bins[i])
-    return 0
+# @frappe.whitelist()
+# def bins(total_item_code=None,subwarehouse_item_codes=None,subwarehouse_item_bins=None,doctype_name=None,document_name=None):
+#     total_item_code=eval(total_item_code)
+#     subwarehouse_item_codes=eval(subwarehouse_item_codes)
+#     subwarehouse_item_bins=eval(subwarehouse_item_bins)
+#     sales_order_document=frappe.get_doc(doctype_name,document_name)
+#     for i in range(0,len(subwarehouse_item_codes),1):
+#         for item in sales_order_document.items:
+#             if(subwarehouse_item_codes[i]==item.__dict__["item_code"]):
+#                     frappe.set_value(item.doctype,item.name,"warehouse",subwarehouse_item_bins[i])
+#     return 0
 
 @frappe.whitelist(allow_guest=True)
 def customer_credit_sale(customer):
@@ -116,28 +116,19 @@ def customer_credit_sale(customer):
     alert_data = alert_data[:len(alert_data)-2]+"."
     return alert_data,pending_invoice,recievable, html
 
-
-
-
-
-@frappe.whitelist()
-def item_warehouse_fetching(item_code,company):
-    check = 1
-    item_name =  frappe.get_doc("Item",item_code)
-    for warehouse in item_name.warehouse:
-        if warehouse.company == company:
-            check = 0
-            return warehouse.storebin
-        else:
-            check = 1
-    
-    if check==1:
-        return 0
-
-
-
-
-def warehouse_fetcing(doc,event):
-    item = doc.items
-    for i in item:
-        i.warehouse = i.ts_warehouse
+def warehouse_fetching(doc,event):
+    ts_value=frappe.db.get_single_value("Thirvu Retail Settings","item_warehouse_fetching")
+    if ts_value==1:
+        item = doc.items
+        items_with_no_warehouse=""
+        for i in item:
+            item_name =  frappe.get_doc("Item",i.item_code)
+            if item_name.warehouse:
+                for warehouse in item_name.warehouse:
+                    if warehouse.company:
+                        if warehouse.company == doc.company:
+                            w_house = warehouse.storebin
+                            if w_house:i.warehouse = w_house
+            else:
+                items_with_no_warehouse+="•"+item_name.item_code+'<br>'
+        if items_with_no_warehouse:frappe.throw(_("Please Select warehouse for <br>{0}".format(items_with_no_warehouse)))
