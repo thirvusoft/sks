@@ -115,6 +115,24 @@ def purchase_receipt_custom_field():
                                         insert_after='to_verify_free_item_from_supplier',
                                                   
                               ),
+                              dict(
+                                        fieldname='scanned_items', 
+                                        label='Scanned items',
+                                        fieldtype='Small Text', 
+                                        insert_after='scan_barcode_to_verify_the_items',
+                                        no_copy=1,
+                                        hidden=1
+                                                  
+                              ),
+                              dict(
+                                        fieldname='scanned_barcodes', 
+                                        label='Scanned Barcodes',
+                                        fieldtype='Small Text', 
+                                        insert_after='scanned_items',
+                                        no_copy=1,
+                                        hidden=1
+                                                  
+                              )
           
                     ],
           }
