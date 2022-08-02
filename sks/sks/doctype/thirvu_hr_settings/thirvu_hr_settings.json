@@ -8,6 +8,7 @@
  "field_order": [
   "company_property_section",
   "company_property",
+  "property_reduction_component",
   "section_break_3",
   "leave_penalty_amount"
  ],
@@ -33,12 +34,19 @@
    "fieldname": "section_break_3",
    "fieldtype": "Section Break",
    "label": "Leave Penalty"
+  },
+  {
+   "depends_on": "eval:doc.company_property.length>0",
+   "fieldname": "property_reduction_component",
+   "fieldtype": "Link",
+   "label": "Property Reduction Component",
+   "options": "Salary Component"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-07-20 14:34:18.935555",
+ "modified": "2022-08-02 18:37:46.762066",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Thirvu HR Settings",
