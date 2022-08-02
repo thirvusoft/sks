@@ -171,8 +171,7 @@ doc_events = {
 		]
 	},
 	"Delivery Note":{
-		"validate":["sks.sks.custom.py.delivery_note.mandatory_validation",
-		             "sks.sks.custom.py.delivery_note.warehouse_fetching"]
+		"validate":["sks.sks.custom.py.delivery_note.mandatory_validation"]
 	},
 	"Customer": {
 		"validate": "sks.sks.custom.py.customer.capitalize_each_words"	

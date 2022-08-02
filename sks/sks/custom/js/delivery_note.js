@@ -1,17 +1,27 @@
 var company 
 var data
-var warehouse
+var warehouse,parent_data
 frappe.ui.form.on("Delivery Note",{
     company:function(frm,cdt,cdn){
         company=cur_frm.doc.company
-        
-        
-    }
+    },
+	onload:function(frm,cdt,cdn){
+			parent_data=locals[cdt][cdn]
+			var day = new Date(cur_frm.doc.posting_date);
+			var weekdays=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+			cur_frm.set_value("posting_day",weekdays[day.getDay()])
+	},
+	sales_order: function(frm, cdt, cdn) {
+		let outstanding_amount= locals[cdt][cdn]
+		let outstanding_amount_and_total_amount=frappe.db.get_value("Sales Order", outstanding_amount.sales_order, ["outstanding_amount","outstanding_amount_and_total_amount"]).then(function(f){
+		frappe.model.set_value(cdt,cdn, 'outstanding_amount',f.outstanding_amount)   
+		frappe.model.set_value(cdt,cdn,'outstanding_amount_and_total_amount',f.message.outstanding_amount_and_total_amount)
+		})
+	}
 })
 
 frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note_items_match_with_sales_order_items").then(value =>{
 	if(value==1){
-	cur_frm.set_df_property("scan_barcode","hidden",1)
 	cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",0)
 	frappe.ui.form.on("Delivery Note",{
 		scan_barcode_to_verify_the_items: function(frm,cdt,cdn){
@@ -87,31 +97,11 @@ frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note
 	})
 	}
 	else{
-		cur_frm.set_df_property("scan_barcode","hidden",0)
 		cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",1)
-		frappe.ui.form.on("Delivery Note Item",{
-			onload:function(frm,cdt,cdn){
-				// frm.get_docfield("items", "item_verified").hidden = 1;
-				// // console.log("gggggggggggggggggggggggggg")
-				// // // if(cur_frm.get_field("items")){
-				// // // hide_field(["items"]["item_verified"]);}
-				// // var df=frappe.meta.get_docfield(cdt,"item_verified",cdn);
-				// // df.hidden=1;
-				// // // frm.refresh_fields();
-				// frm.refresh_field("items");
-				// // console.log(df)
-				// // frm.set_df_property("item_verified","hidden",1)
-			}
-		})
 	}
  })
   
- var parent_data
- frappe.ui.form.on("Delivery Note",{
-	onload:function(frm,cdt,cdn){
-		parent_data=locals[cdt][cdn]
-	}
- })
+
  frappe.ui.form.on("Delivery Note Item",{
 	qty:function(frm,cdt,cdn){
 		frappe.db.get_single_value("Thirvu Retail Settings","reserved_stock").then(value =>{
@@ -142,23 +132,3 @@ frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note
 		})
 	}
  })
-
- frappe.ui.form.on("Delivery Note",{
-	onload:function(frm,cdt,cdn){
-		var day = new Date(cur_frm.doc.posting_date);
-		var weekdays=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
-		cur_frm.set_value("posting_day",weekdays[day.getDay()])
-	}
- })
-
- 
- frappe.ui.form.on('Delivery Note', {
-    sales_order: function(frm, cdt, cdn) {
-    let outstanding_amount= locals[cdt][cdn]
-    let outstanding_amount_and_total_amount=frappe.db.get_value("Sales Order", outstanding_amount.sales_order, ["outstanding_amount","outstanding_amount_and_total_amount"]).then(function(f){
-    frappe.model.set_value(cdt,cdn, 'outstanding_amount',f.outstanding_amount)   
-    frappe.model.set_value(cdt,cdn,'outstanding_amount_and_total_amount',f.message.outstanding_amount_and_total_amount)
-   
-    })
-}
-})
