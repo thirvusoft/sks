@@ -1,8 +1,5 @@
-var warehouse,parent_data,loop,company
+var warehouse,parent_data,loop
 frappe.ui.form.on("Sales Invoice",{
-    company:function(frm,cdt,cdn){
-        company=cur_frm.doc.company
-    },
 	onload:function(frm,cdt,cdn){
 		parent_data=locals[cdt][cdn]
 		loop=0

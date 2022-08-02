@@ -1,12 +1,9 @@
-var data,loop,warehouse,company,loading,parent_data
+var data,loop,warehouse,loading,parent_data
 frappe.ui.form.on("Sales Order",{
     onload:function(frm,cdt,cdn){
         loading=0
         loop=0
         parent_data=locals[cdt][cdn]
-    },
-    company:function(frm,cdt,cdn){
-        company=cur_frm.doc.company
     },
     after_save:function(frm,cdt,cdn){
         if(loading==0){

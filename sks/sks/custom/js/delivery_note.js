@@ -1,10 +1,6 @@
-var company 
 var data
 var warehouse,parent_data
 frappe.ui.form.on("Delivery Note",{
-    company:function(frm,cdt,cdn){
-        company=cur_frm.doc.company
-    },
 	onload:function(frm,cdt,cdn){
 			parent_data=locals[cdt][cdn]
 			var day = new Date(cur_frm.doc.posting_date);
