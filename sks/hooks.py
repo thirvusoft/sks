@@ -46,7 +46,7 @@ doctype_js = {"Delivery Note" : "sks/custom/js/delivery_note.js",
 "Employee":"sks/custom/js/employee.js",
 "Job Offer":"sks/custom/js/job_offer.js",
 "Stock Entry":"sks/custom/js/stock_entry.js",
-# "Purchase Order":"sks/custom/js/purchase_order.js", 
+"Purchase Order":"sks/custom/js/purchase_order.js", 
 }
 # doctype_js = {"Delivery Note" : "sks/sks/custom/js/outstanding_amount.js"}
 
@@ -152,7 +152,8 @@ doc_events = {
 	"Purchase Order":{
 		"validate":[
 			"sks.sks.custom.py.buying_module.validate_buying_rate_with_mrp",
-			"sks.sks.custom.py.purchase_order.warehouse_fetching"
+			"sks.sks.custom.py.purchase_order.warehouse_fetching",
+			# "sks.sks.custom.py.purchase_order.last_purchase_price_validate"
 		]
 	},
 	"Purchase Receipt":{

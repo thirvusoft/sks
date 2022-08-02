@@ -10,6 +10,7 @@
   "item_verifed_in_purchase_receipt",
   "buying_rate_calculation",
   "add_item_from_not_processed_purchase_order",
+  "purchased_and_sold_qty_alert",
   "column_break_3",
   "customer_transaction_history",
   "automatic_batch_creation",
@@ -136,12 +137,19 @@
    "fieldname": "driver_closing_shift_grace_amount",
    "fieldtype": "Currency",
    "label": "Driver Closing Shift Grace Amount"
+  },
+  {
+   "default": "0",
+   "description": "Gives an alert about the last purchased qty of the batch and sold qty of the batch",
+   "fieldname": "purchased_and_sold_qty_alert",
+   "fieldtype": "Check",
+   "label": "Purchased & Sold Qty Alert "
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-08-02 11:34:27.464784",
+ "modified": "2022-08-02 14:38:05.268242",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Thirvu Retail Settings",
