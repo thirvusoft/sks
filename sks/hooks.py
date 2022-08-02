@@ -45,7 +45,6 @@ doctype_js = {"Delivery Note" : "sks/custom/js/delivery_note.js",
 "Employee Advance":"sks/custom/js/employee_advance.js",
 "Employee":"sks/custom/js/employee.js",
 "Job Offer":"sks/custom/js/job_offer.js",
-"Stock Entry":"sks/custom/js/stock_entry.js",
 "Purchase Order":"sks/custom/js/purchase_order.js", 
 }
 # doctype_js = {"Delivery Note" : "sks/sks/custom/js/outstanding_amount.js"}
