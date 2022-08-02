@@ -7,7 +7,6 @@
  "engine": "InnoDB",
  "field_order": [
   "allow_only_if_delivery_note_items_match_with_sales_order_items",
-  "allow_only_if_sales_invoice_items_match_with_sales_order_items",
   "item_verifed_in_purchase_receipt",
   "buying_rate_calculation",
   "add_item_from_not_processed_purchase_order",
@@ -33,15 +32,6 @@
    "fieldname": "allow_only_if_delivery_note_items_match_with_sales_order_items",
    "fieldtype": "Check",
    "label": "Item Verifed In Delivery Note"
-  },
-  {
-   "default": "0",
-   "description": "Allow Only, If Sales Invoice Items Match With Sales Order Items",
-   "fieldname": "allow_only_if_sales_invoice_items_match_with_sales_order_items",
-   "fieldtype": "Check",
-   "hidden": 1,
-   "label": "Item Verifed In Sales Invoice",
-   "read_only": 1
   },
   {
    "default": "0",
@@ -151,7 +141,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-07-29 14:45:55.763862",
+ "modified": "2022-08-02 11:34:27.464784",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Thirvu Retail Settings",

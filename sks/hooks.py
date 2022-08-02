@@ -146,7 +146,6 @@ doc_events = {
 
 	"Sales Invoice":{
 		"validate":["sks.sks.custom.py.sales_invoice.feed_back_form",
-		            "sks.sks.custom.py.sales_invoice.warehouse_fethcing",
 					"sks.sks.custom.py.sales_invoice.saving_amount"
 		]
 	},
@@ -171,8 +170,7 @@ doc_events = {
 		]
 	},
 	"Delivery Note":{
-		"validate":["sks.sks.custom.py.delivery_note.mandatory_validation",
-		             "sks.sks.custom.py.delivery_note.warehouse_fetching"]
+		"validate":["sks.sks.custom.py.delivery_note.mandatory_validation"]
 	},
 	"Customer": {
 		"validate": "sks.sks.custom.py.customer.capitalize_each_words"	
