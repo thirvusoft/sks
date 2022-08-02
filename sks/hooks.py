@@ -159,7 +159,8 @@ doc_events = {
 		"validate":["sks.sks.custom.py.purchase_receipt.markup_and_markdown_calculator",
 					"sks.sks.custom.py.purchase_receipt.validate",
 					"sks.sks.custom.py.purchase_receipt.supplier_free_item",
-					"sks.sks.custom.py.purchase_receipt.mandatory_validation"
+					"sks.sks.custom.py.purchase_receipt.mandatory_validation",
+					"sks.sks.custom.py.purchase_receipt.automatic_batch_creation"
 
 		],
 		"on_submit":"sks.sks.custom.py.purchase_receipt.purchased_qty_validation"
