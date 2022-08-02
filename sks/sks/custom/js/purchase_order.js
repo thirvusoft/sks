@@ -130,13 +130,3 @@ frappe.ui.form.on("Purchase Order Item",{
 		}
 	}
 })
-
-
-// callback(po_items){
-// 	cur_frm.set_value('items',[])
-// 	for(let i = 0; i<po_items.message.length;i++){
-// 		table=cur_frm.add_child("items")
-// 		frappe.model.set_value(table.doctype,table.name,"item_code",po_items.message[i]['item_code'])
-// 		frappe.model.set_value(table.doctype,table.name,"qty",po_items.message[i]['qty'])
-// 	}
-// 	frm.refresh_field("items")
