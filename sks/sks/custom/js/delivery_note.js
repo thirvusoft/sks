@@ -162,31 +162,3 @@ frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note
     })
 }
 })
-
-frappe.ui.form.on("Delivery Note Item",{
-	item_code:function(frm,cdt,cdn){
-			data=locals[cdt][cdn]
-			var item_code=data.item_code
-				if(item_code){
-					frappe.call({
-						method:"sks.sks.custom.py.delivery_note.item_warehouse_fetching",
-						args:{item_code,company},
-						callback(r){
-							if(r.message){
-								frappe.model.set_value(data.doctype, data.name, "warehouse", r.message)
-								frappe.model.set_value(data.doctype, data.name, "ts_warehouse", r.message)
-								
-							}
-							else{
-								frappe.show_alert({ message: __('Please Select Warehouse for Item '+item_code), indicator: 'red' });
-							}
-						}
-					})
-					
-				}
-				
-				
-		},
-		
-	
-		})	

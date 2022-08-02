@@ -45,7 +45,8 @@ doctype_js = {"Delivery Note" : "sks/custom/js/delivery_note.js",
 "Employee Advance":"sks/custom/js/employee_advance.js",
 "Employee":"sks/custom/js/employee.js",
 "Job Offer":"sks/custom/js/job_offer.js",
-"Stock Entry":"sks/custom/js/stock_entry.js"
+"Stock Entry":"sks/custom/js/stock_entry.js",
+# "Purchase Order":"sks/custom/js/purchase_order.js", 
 }
 # doctype_js = {"Delivery Note" : "sks/sks/custom/js/outstanding_amount.js"}
 
@@ -111,11 +112,6 @@ after_install = ["sks.sks.custom.py.workflow.workflow_document_creation",
 # ---------------
 # Hook on document methods and events
 
-
-
-
-# "Purchase Order":"sks/custom/js/purchase_order.js", 
-
 doc_events = {
 	"Supplier": {
 		"before_save": "sks.sks.custom.py.supplier.validate_gstin"	
@@ -150,21 +146,19 @@ doc_events = {
 
 	"Sales Invoice":{
 		"validate":["sks.sks.custom.py.sales_invoice.feed_back_form",
-		            "sks.sks.custom.py.sales_invoice.warehouse_fetcing",
+		            "sks.sks.custom.py.sales_invoice.warehouse_fethcing",
 					"sks.sks.custom.py.sales_invoice.saving_amount"
 		]
 	},
 	"Purchase Order":{
 		"validate":[
 			"sks.sks.custom.py.buying_module.validate_buying_rate_with_mrp",
-			"sks.sks.custom.py.purchase_order.warehouse_fetcing"
+			"sks.sks.custom.py.purchase_order.warehouse_fetching"
 		]
 	},
 	"Purchase Receipt":{
 		"validate":["sks.sks.custom.py.purchase_receipt.markup_and_markdown_calculator",
 					"sks.sks.custom.py.purchase_receipt.validate",
-
-					"sks.sks.custom.py.purchase_receipt.warehouse_fetcing",
 					"sks.sks.custom.py.purchase_receipt.supplier_free_item",
 					"sks.sks.custom.py.purchase_receipt.mandatory_validation"
 
@@ -173,12 +167,12 @@ doc_events = {
 	},
 	"Sales Order":{
 		"validate":[
-			"sks.sks.custom.py.sales_order.warehouse_fetcing"
+			"sks.sks.custom.py.sales_order.warehouse_fetching"
 		]
 	},
 	"Delivery Note":{
 		"validate":["sks.sks.custom.py.delivery_note.mandatory_validation",
-		             "sks.sks.custom.py.delivery_note.warehouse_fetcing"]
+		             "sks.sks.custom.py.delivery_note.warehouse_fetching"]
 	},
 	"Customer": {
 		"validate": "sks.sks.custom.py.customer.capitalize_each_words"	

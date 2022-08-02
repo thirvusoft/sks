@@ -273,26 +273,9 @@ frappe.ui.form.on("Sales Order Item",{
             var item_code=data.item_code
             var actual_qty =0
             actual_qty = data.actual_qty
-                if(item_code){
-                    frappe.show_alert({ message: __('Stock Quantity for '+actual_qty), indicator: 'green' });
-                    frappe.call({
-                        method:"sks.sks.custom.py.sales_order.item_warehouse_fetching",
-                        args:{item_code,company},
-                        callback(r){
-                            if(r.message){
-								frappe.model.set_value(data.doctype, data.name, "warehouse", r.message)
-								frappe.model.set_value(data.doctype, data.name, "ts_warehouse", r.message)
-								
-							}
-							else{
-								frappe.show_alert({ message: __('Please Select Warehouse for Item '+item_code), indicator: 'red' });
-							}
-                        }
-                    })
-                    
-                }
-                
-               
+            if(item_code){
+                frappe.show_alert({ message: __('Stock Quantity for '+actual_qty), indicator: 'green' });
+            }  
         },
        
     }

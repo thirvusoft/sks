@@ -41,22 +41,17 @@ def last_purchased_and_sold_qty(ts_item_code):
         sold_qty = last_purchase_qty - Available_qty
     return last_purchase_qty,sold_qty
     
-    
-@frappe.whitelist()
-def item_warehouse_fetching(item_code,company):
-    check = 1
-    item_name =  frappe.get_doc("Item",item_code)
-    for warehouse in item_name.warehouse:
-        if warehouse.company == company:
-            check = 0
-            return warehouse.storebin
-        else:
-            check = 1
-    
-    if check==1:
-        return 0
-
-def warehouse_fetcing(doc,event):
+def warehouse_fetching(doc,event):
     item = doc.items
+    items_with_no_warehouse=""
     for i in item:
-        i.warehouse = i.ts_warehouse
+        item_name =  frappe.get_doc("Item",i.item_code)
+        if item_name.warehouse:
+            for warehouse in item_name.warehouse:
+                if warehouse.company:
+                    if warehouse.company == doc.company:
+                        w_house = warehouse.warehousebin
+                        if w_house:i.warehouse = w_house
+        else:
+            items_with_no_warehouse+="•"+item_name.item_code+'<br>'
+    if items_with_no_warehouse:frappe.throw(_("Please Select warehouse for <br>{0}".format(items_with_no_warehouse)))
