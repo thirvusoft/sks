@@ -191,7 +191,7 @@ doc_events = {
 	},
 	"Stock Entry":{
 		"validate":["sks.sks.custom.py.stock_entry.stock_entry",
-					"sks.sks.custom.py.stock_entry.markup_and_markdown_calculator"]
+		"sks.sks.custom.py.stock_entry.auto_batch_creations"]
 	},
 	# "TS Driver Delivery Trip":{
     #  	"validate":["sks.driver.doctype.ts_driver_delivery_trip.ts_driver_delivery_trip.driver_delivery_trip_submit"]
