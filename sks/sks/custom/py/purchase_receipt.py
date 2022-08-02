@@ -27,7 +27,8 @@ def adding_barcode(barcode,item_code):
 from frappe.utils import getdate
 @frappe.whitelist()
 def auto_batch_creation(expiry_date=None,item_rate=None,item_code=None,item_mrp=None,total_barcode_number_item=None,total_barcode_item_code=None,against_purchase_order_name=None,doctype_name=None,document_name=None):
-    expiry_date=eval(expiry_date)
+    if expiry_date == None:
+        expiry_date=eval(expiry_date)
     item_rate=eval(item_rate)
     item_code=eval(item_code)
     item_mrp=eval(item_mrp)
@@ -318,21 +319,21 @@ def mandatory_validation(doc,event):
                 ts_item_expiry_date += "•"+item.item_code+'<br>'
     if ts_item_expiry_date:
         frappe.throw(_("Please Select the Expiry Date For The Below Items... <br>{0}").format(ts_item_expiry_date))
-        
-    item = doc.items
-    items_with_no_warehouse=""
-    for i in item:
-        item_name =  frappe.get_doc("Item",i.item_code)
-        if item_name.warehouse:
-            for warehouse in item_name.warehouse:
-                if warehouse.company:
-                    if warehouse.company == doc.company:
-                        w_house = warehouse.warehousebin
-                        if w_house:i.warehouse = w_house
-        else:
-            items_with_no_warehouse+="•"+item_name.item_code+'<br>'
-    if items_with_no_warehouse:frappe.throw(_("Please Select warehouse for <br>{0}".format(items_with_no_warehouse)))
-
+    ts_value=frappe.db.get_single_value("Thirvu Retail Settings","item_warehouse_fetching")
+    if ts_value==1:   
+        item = doc.items
+        items_with_no_warehouse=""
+        for i in item:
+            item_name =  frappe.get_doc("Item",i.item_code)
+            if item_name.warehouse:
+                for warehouse in item_name.warehouse:
+                    if warehouse.company:
+                        if warehouse.company == doc.company:
+                            w_house = warehouse.warehousebin
+                            if w_house:i.warehouse = w_house
+            else:
+                items_with_no_warehouse+="•"+item_name.item_code+'<br>'
+        if items_with_no_warehouse:frappe.throw(_("Please Select warehouse for <br>{0}".format(items_with_no_warehouse)))
 
     ts_value=frappe.db.get_single_value("Thirvu Retail Settings","item_verifed_in_purchase_receipt")
     if ts_value==1:

@@ -17,6 +17,7 @@
   "automatic_batch_creation",
   "reserved_stock",
   "credit_bill_history",
+  "item_warehouse_fetching",
   "pos_awesome_settings_section",
   "allow_display_customer_outstanding_amount",
   "allow_display_customer_transaction_history",
@@ -154,12 +155,19 @@
    "fieldname": "purchased_and_sold_qty_alert",
    "fieldtype": "Check",
    "label": "Purchased & Sold Qty Alert "
+  },
+  {
+   "default": "0",
+   "description": "Fetch warehouse declared in Item List",
+   "fieldname": "item_warehouse_fetching",
+   "fieldtype": "Check",
+   "label": "Item Warehouse Fetching"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-08-02 14:38:05.268242",
+ "modified": "2022-08-02 17:02:38.646011",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Thirvu Retail Settings",

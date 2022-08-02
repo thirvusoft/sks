@@ -33,19 +33,21 @@ def item_check_with_sales_order(item_code_checking=None,checking_sales_order=Non
 from frappe import _
 @frappe.whitelist()
 def mandatory_validation(doc,event):
-    item = doc.items
-    items_with_no_warehouse=""
-    for i in item:
-        item_name =  frappe.get_doc("Item",i.item_code)
-        if item_name.warehouse:
-            for warehouse in item_name.warehouse:
-                if warehouse.company:
-                    if warehouse.company == doc.company:
-                        w_house = warehouse.storebin
-                        if w_house:i.warehouse = w_house
-        else:
-            items_with_no_warehouse+="•"+item_name.item_code+'<br>'
-    if items_with_no_warehouse:frappe.throw(_("Please Select warehouse for <br>{0}".format(items_with_no_warehouse)))
+    ts_value=frappe.db.get_single_value("Thirvu Retail Settings","item_warehouse_fetching")
+    if ts_value==1:
+        item = doc.items
+        items_with_no_warehouse=""
+        for i in item:
+            item_name =  frappe.get_doc("Item",i.item_code)
+            if item_name.warehouse:
+                for warehouse in item_name.warehouse:
+                    if warehouse.company:
+                        if warehouse.company == doc.company:
+                            w_house = warehouse.storebin
+                            if w_house:i.warehouse = w_house
+            else:
+                items_with_no_warehouse+="•"+item_name.item_code+'<br>'
+        if items_with_no_warehouse:frappe.throw(_("Please Select warehouse for <br>{0}".format(items_with_no_warehouse)))
     
     ts_value=frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note_items_match_with_sales_order_items")
     if ts_value==1:
