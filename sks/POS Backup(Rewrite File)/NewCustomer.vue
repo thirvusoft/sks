@@ -223,7 +223,6 @@ export default {
   
   created: function () {
     evntBus.$on('open_new_customer', () => {
-      console.log("jjjddd")
       this.customerDialog = true;
       var  groups, territorys, citys;
       // v_model;
