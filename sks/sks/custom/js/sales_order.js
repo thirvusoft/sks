@@ -1,23 +1,13 @@
-var loading
-var company 
-var warehouse
-var data
+var data,loop,warehouse,company,loading,parent_data
 frappe.ui.form.on("Sales Order",{
     onload:function(frm,cdt,cdn){
         loading=0
-        
-        
-    }
-})
-frappe.ui.form.on("Sales Order",{
+        loop=0
+        parent_data=locals[cdt][cdn]
+    },
     company:function(frm,cdt,cdn){
-       company=cur_frm.doc.company
-        
-        
-    }
-})
-
-frappe.ui.form.on("Sales Order",{
+        company=cur_frm.doc.company
+    },
     after_save:function(frm,cdt,cdn){
         if(loading==0){
             frappe.db.get_single_value("Thirvu Retail Settings","customer_transaction_history").then(value =>{
@@ -80,76 +70,8 @@ frappe.ui.form.on("Sales Order",{
                 loading=loading+1
             })
         }
-    }
- })
-
-
- frappe.ui.form.on("Sales Order",{
-    onload:function(frm,cdt,cdn){
-        frm.set_query("set_warehouse", function() {
-            return {
-                filters: [
-                    ["Warehouse", "company", "in", ["", cstr(frm.doc.company)]],
-				    ["Warehouse", "is_group", "=",1]
-                ]
-            };
-        });
     },
-    set_warehouse:function(frm,cdt,cdn){
-        var data=locals[cdt][cdn]
-        frappe.call({
-            method:"sks.sks.custom.py.sales_order.subwarehouse",
-            args:{sub_warehouse:data.set_warehouse,company:data.company},
-            callback(r){
-                    var subwarehouse_item_code=r["message"][0]
-                    frm.set_query("item_code", "items", function() {
-                        return {
-                            query: "erpnext.controllers.queries.item_query",
-                            filters: {'item_code' : ["in", subwarehouse_item_code],'is_sales_item': 1, 'customer': cur_frm.doc.customer}
-                        }
-                    })
-            }
-        })
-    },
-    before_submit:function(frm,cdt,cdn){
-        if(frm.doc.status=="Draft"){
-            var data=locals[cdt][cdn]
-            var doctype_name=data.doctype
-            var document_name=data.name
-            var total_item_code=[]
-            for(var i=0;i<data.items.length;i++){
-                total_item_code.push(data.items[i].item_code)
-            }
-            frappe.call({
-                method:"sks.sks.custom.py.sales_order.subwarehouse",
-                args:{sub_warehouse:data.set_warehouse,company:data.company},
-                callback(r){
-                    var subwarehouse_item_codes=r["message"][0]
-                    var subwarehouse_item_bins=r["message"][1]
-                    frappe.call({
-                        method:"sks.sks.custom.py.sales_order.bins",
-                        args:{total_item_code,subwarehouse_item_codes,subwarehouse_item_bins,doctype_name,document_name},
-                        callback(r){
-                            if(r["message"]==0){
-                                frm.refresh();
-                            }
-                        }
-                    })
-                }
-            })
-        }
-    }
-})
-
-var loop
-frappe.ui.form.on("Sales Order",{
-    onload:function(){
-        loop=0
-      
-    }
-})
-frappe.ui.form.on("Sales Order",{
-	customer:function(frm,cdt,cdn){
+    customer:function(frm,cdt,cdn){
         frappe.db.get_single_value("Thirvu Retail Settings","credit_bill_history").then(value =>{
             if(value==1){
                 if(cur_frm.doc.docstatus!=1){
@@ -194,44 +116,13 @@ frappe.ui.form.on("Sales Order",{
                 }
             }
         })
-    }
-})
-var subwarehouse_item_codes=[]
-var subwarehouse_item_bins=[]
-frappe.ui.form.on("Sales Order",{
-    set_warehouse:function(frm,cdt,cdn){
-        var data=locals[cdt][cdn]
-        frappe.call({
-            method:"sks.sks.custom.py.sales_order.subwarehouse",
-            args:{sub_warehouse:data.set_warehouse,company:data.company},
-            callback(r){
-                subwarehouse_item_codes=r["message"][0]
-                subwarehouse_item_bins=r["message"][1]
-            }
-        })
-    }
-})
-
-var parent_data
-frappe.ui.form.on("Sales Order",{
-    onload:function(frm,cdt,cdn){
-        parent_data=locals[cdt][cdn]
-    }
-})
-
-frappe.ui.form.on("Sales Order",{
-	delivery_date:function(frm,cdt,cdn){
-		var day = new Date(cur_frm.doc.delivery_date);
-		var weekdays=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
-		cur_frm.set_value("delivery_day",weekdays[day.getDay()])
-	},
-    	onload:function(frm,cdt,cdn){
+    },
+    delivery_date:function(frm,cdt,cdn){
 		var day = new Date(cur_frm.doc.delivery_date);
 		var weekdays=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
 		cur_frm.set_value("delivery_day",weekdays[day.getDay()])
 	}
- })
-
+})
 frappe.ui.form.on("Sales Order Item",{
     qty:function(frm,cdt,cdn){
         frappe.db.get_single_value("Thirvu Retail Settings","reserved_stock").then(value =>{
@@ -265,9 +156,7 @@ frappe.ui.form.on("Sales Order Item",{
                 })
             }
         })
-    }
-})
-frappe.ui.form.on("Sales Order Item",{
+    },
     item_code:function(frm,cdt,cdn){
             data=locals[cdt][cdn]
             var item_code=data.item_code
