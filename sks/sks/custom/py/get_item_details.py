@@ -935,7 +935,16 @@ def get_price_list_rate_for(args, item_code):
 		rate = frappe.db.get_list(
 			"Batch", fields="ts_selling_price", filters={'item': args.item_code}, order_by="ts_selling_price",pluck='ts_selling_price'
 		)
-		return rate[-1]
+		try:
+			return rate[-1]
+		except:
+			if item_price_data:
+				if item_price_data[0][2] == args.get("uom"):
+					return item_price_data[0][1]
+				elif not args.get("price_list_uom_dependant"):
+					return flt(item_price_data[0][1] * flt(args.get("conversion_factor", 1)))
+				else:
+					return item_price_data[0][1]
 	# End
 
 	else:
