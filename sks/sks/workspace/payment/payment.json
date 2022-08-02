@@ -1,7 +1,7 @@
 {
  "category": "Modules",
  "charts": [],
- "creation": "2022-07-05 15:07:38.924662",
+ "creation": "2022-08-02 16:44:25.166389",
  "developer_mode_only": 0,
  "disable_user_customization": 1,
  "docstatus": 0,
@@ -11,21 +11,21 @@
  "idx": 0,
  "is_default": 0,
  "is_standard": 1,
- "label": "Thirvu User",
+ "label": "Payment",
  "links": [],
- "modified": "2022-08-02 17:07:14.690049",
+ "modified": "2022-08-02 16:44:52.018993",
  "modified_by": "pparameshwari@thirvusoft.in",
  "module": "sks",
- "name": "Thirvu User",
- "owner": "naveen.kumar@thirvusoft.in",
+ "name": "Payment",
+ "owner": "pparameshwari@thirvusoft.in",
  "pin_to_bottom": 0,
  "pin_to_top": 1,
  "shortcuts": [
   {
    "doc_view": "List",
-   "label": "Thirvu Retail",
-   "link_to": "posapp",
-   "type": "Page"
+   "label": "Payment Entry",
+   "link_to": "Payment Entry",
+   "type": "DocType"
   }
  ]
 }
