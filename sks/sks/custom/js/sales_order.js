@@ -1,9 +1,10 @@
-var data,loop,warehouse,loading,parent_data
+var data,loop,warehouse,loading,parent_data,company
 frappe.ui.form.on("Sales Order",{
     onload:function(frm,cdt,cdn){
         loading=0
         loop=0
         parent_data=locals[cdt][cdn]
+        company=parent_data.company
     },
     after_save:function(frm,cdt,cdn){
         if(loading==0){
@@ -115,10 +116,10 @@ frappe.ui.form.on("Sales Order",{
         })
     },
     delivery_date:function(frm,cdt,cdn){
-		var day = new Date(cur_frm.doc.delivery_date);
-		var weekdays=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
-		cur_frm.set_value("delivery_day",weekdays[day.getDay()])
-	}
+        var day = new Date(cur_frm.doc.delivery_date);
+        var weekdays=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+        cur_frm.set_value("delivery_day",weekdays[day.getDay()])
+    }
 })
 frappe.ui.form.on("Sales Order Item",{
     qty:function(frm,cdt,cdn){
@@ -154,21 +155,20 @@ frappe.ui.form.on("Sales Order Item",{
             }
         })
     },
-    // item_code:function(frm,cdt,cdn){
-    //     data=locals[cdt][cdn]
-    //         if(data.item_code){
-    //             var item_code=data.item_code
-    //             var actual_qty = 0
-    //             if(data.actual_qty){
-    //                 actual_qty = data.actual_qty
-    //                 frappe.show_alert({ message: __('Stock Quantity for Item : '+data.item_code+"->"+actual_qty), indicator: 'green' });
-    //             }
-    //             else{
-    //                 frappe.show_alert({ message: __('Stock Quantity for Item : '+data.item_code+"->"+actual_qty), indicator: 'red' });
-    //             }
-    //         }
-    //     },
+    item_code:function(frm,cdt,cdn){
+        data=locals[cdt][cdn]
+            if(data.item_code){
+                var item_code=data.item_code
+                frappe.call({
+                    method:"sks.sks.custom.py.sales_order.warehouse_qty_details",
+                    args:{item_code,company},
+                    callback(r){
+                        frappe.show_alert({ message: __(r.message), indicator: 'blue' });
+                    }
+                })
+
+            }
+        },
        
     }
 )
-

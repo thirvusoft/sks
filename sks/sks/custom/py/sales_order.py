@@ -1,6 +1,6 @@
 import frappe
 from frappe import _
-
+from erpnext.stock.get_item_details import get_bin_details
 @frappe.whitelist(allow_guest=True)
 def customer_transaction_history(customer,item_codes): 
     from datetime import datetime
@@ -132,3 +132,26 @@ def warehouse_fetching(doc,event):
             else:
                 items_with_no_warehouse+="•"+item_name.item_code+'<br>'
         if items_with_no_warehouse:frappe.throw(_("Please Select warehouse for <br>{0}".format(items_with_no_warehouse)))
+@frappe.whitelist(allow_guest=True)        
+def warehouse_qty_details(item_code,company):
+    warehouse_qty_details=""
+    item_name =  frappe.get_doc("Item",item_code)
+    if item_name.warehouse:
+        for warehouse in item_name.warehouse:
+            if warehouse.company:
+                if warehouse.company == company:
+                    w_house = warehouse.storebin
+                    if w_house:
+                        item_list_qty=frappe.db.sql("""Select actual_qty from `tabBin`
+                                        where item_code = '{0}' and warehouse = '{1}' """.format(item_code,w_house),as_list=1)
+                        if item_list_qty:
+                            item_list_qty=item_list_qty[0][0]
+                            warehouse_qty_details+="Available Qty in {0} : {1} \n".format(w_house,item_list_qty)
+                        else:warehouse_qty_details+="Available Qty in {0} : 0 \n".format(w_house)
+    else:warehouse_qty_details+="Item is not mapped to any warehouse \n"
+    total_warehouse_qty=get_bin_details(item_code,"All Warehouses - SKS",company)
+    if total_warehouse_qty["company_total_stock"]:
+        warehouse_qty_details+="Available Qty in All Warehouse : {0} ".format(total_warehouse_qty["company_total_stock"])
+    else:warehouse_qty_details+="Available Qty in All Warehouse : 0 "
+    return warehouse_qty_details
+        
