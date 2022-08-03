@@ -124,97 +124,97 @@ def markup_and_markdown_calculator(document,event):
 				item.ts_valuation_rate=item.rate
 						
 
-        ts_item_code=[]
-        ts_item_name=[]
-        ts_mrp=[]
-        ts_selling_rate=[]
-        ts_valuation_rate=[]
-        for item in document.get('items'):
-            ts_item_code.append(item.item_code)
-            ts_item_name.append(item.item_name)
-            ts_mrp.append(item.ts_mrp)
-            ts_selling_rate.append(item.ts_selling_rate)
-            ts_valuation_rate.append(item.ts_valuation_rate)
-         
-        ts_unmatched_item=[]
-        ts_unmatched_selling_rate=[]
-        ts_matched_item=[]
-        ts_matched_selling_rate=[]
-        ts_markdown_items_to_verify = []
-        ts_markup_items_to_verify = []
-        ts_markup_items = ""
-        ts_markdown_items = ""
-        for i in range(0,len(ts_item_code),1):
-            ts_item_detais=frappe.get_doc("Item",ts_item_code[i])
-            if ts_item_detais:
-                ts_item_detais.mrp=ts_mrp[i]
-                ts_item_detais.save()
-                if(ts_item_detais.__dict__["select_selling_price_type"]=="Markdown"):
-                    ts_markdown=(ts_mrp[i]/100)*ts_item_detais.__dict__["ts_markdown_price"]
-                    ts_markdown=ts_mrp[i]-ts_markdown
-                    if(ts_markdown<ts_mrp[i] and ts_markdown>ts_valuation_rate[i]):
-                        ts_matched_item.append(ts_item_code[i])
-                        ts_matched_selling_rate.append(ts_markdown)
-                    else:
-                        ts_unmatched_item.append(ts_item_code[i])
-                        ts_unmatched_selling_rate.append(ts_markdown)
-                        item_row = frappe._dict({})                                              
-                        item_row.update({'items':ts_item_code[i],'selling_rate':ts_markdown,'difference':round(abs(ts_valuation_rate[i]-ts_markdown),2)})
-                        ts_markdown_items_to_verify.append(item_row)
-                        ts_markdown_items += f"{ts_item_name[i]}:{round(abs(ts_mrp[i]-ts_markdown),2)}\n"
-                            
-                        
-                elif(ts_item_detais.__dict__["select_selling_price_type"]=="Markup"):
-                    ts_markup=(ts_mrp[i]/100)*ts_item_detais.__dict__["ts_markup_price"]
-                    ts_markup=ts_valuation_rate[i]+ts_markup
-                    if(ts_markup<ts_mrp[i] and ts_markup>ts_valuation_rate[i]):
-                        ts_matched_item.append(ts_item_code[i])
-                        ts_matched_selling_rate.append(ts_markup)
-                    else:
-                        ts_unmatched_item.append(ts_item_code[i])
-                        ts_unmatched_selling_rate.append(ts_markup)
-                        item_row = frappe._dict({})                                              
-                        item_row.update({'items':ts_item_code[i],'selling_rate':ts_markup,'difference':round(abs(ts_mrp[i]-ts_markup),2)})
-                        ts_markup_items_to_verify.append(item_row)
-                        ts_markup_items += f"{ts_item_name[i]}:{round(abs(ts_valuation_rate[i]-ts_markup),2)}\n"
-        document.ts_markdown_items = ts_markdown_items
-        document.ts_markup_items = ts_markup_items
-        for item in document.get('items'):
-            for m in range (0,len(ts_matched_item),1):
-                if item.item_code==ts_matched_item[m]:
-                    item.ts_selling_rate=ts_matched_selling_rate[m]
-                    item.ts_selling_rate_automatic_calculation=1
-            for m in range (0,len(ts_unmatched_item),1):
-                if item.item_code==ts_unmatched_item[m]:
-                    item.ts_selling_rate=ts_unmatched_selling_rate[m]
-                    item.ts_selling_rate_automatic_calculation=1
-        
-        costing_details = []
-        if(ts_markup_items_to_verify):
-            for i in range(0,len(ts_markup_items_to_verify),1):
-                ts_markup_items_to_verify_ = [{
-                        'items':ts_markup_items_to_verify[i]['items'],
-                        'markup__markdown':"Markup",
-                        'selling_rate':ts_markup_items_to_verify[i]['selling_rate'],
-                        'difference':ts_markup_items_to_verify[i]['difference'],
-                        }]
-                document.update({
-                        'thirvu_items_to_verify':costing_details+ts_markup_items_to_verify_
-                    })
-        costing_details= document.get('thirvu_items_to_verify') or []
-        if(ts_markdown_items_to_verify):
-            for i in range(0,len(ts_markdown_items_to_verify)):
-                ts_markdown_items_to_verify_ = [{
-                        'items':ts_markdown_items_to_verify[i]['items'],
-                        'markup__markdown':"MarkDown",
-                        'selling_rate':ts_markdown_items_to_verify[i]['selling_rate'],
-                        'difference':ts_markdown_items_to_verify[i]['difference'],
-                        }]
-                document.update({
-                        'thirvu_items_to_verify':costing_details+ts_markdown_items_to_verify_
-                    })
-        if(len(document.thirvu_items_to_verify)>0):document.ts_markup_and_markdown_variations=1
-        else:document.ts_markup_and_markdown_variations=0
+		ts_item_code=[]
+		ts_item_name=[]
+		ts_mrp=[]
+		ts_selling_rate=[]
+		ts_valuation_rate=[]
+		for item in document.get('items'):
+			ts_item_code.append(item.item_code)
+			ts_item_name.append(item.item_name)
+			ts_mrp.append(item.ts_mrp)
+			ts_selling_rate.append(item.ts_selling_rate)
+			ts_valuation_rate.append(item.ts_valuation_rate)
+		 
+		ts_unmatched_item=[]
+		ts_unmatched_selling_rate=[]
+		ts_matched_item=[]
+		ts_matched_selling_rate=[]
+		ts_markdown_items_to_verify = []
+		ts_markup_items_to_verify = []
+		ts_markup_items = ""
+		ts_markdown_items = ""
+		for i in range(0,len(ts_item_code),1):
+			ts_item_detais=frappe.get_doc("Item",ts_item_code[i])
+			if ts_item_detais:
+				ts_item_detais.mrp=ts_mrp[i]
+				ts_item_detais.save()
+				if(ts_item_detais.__dict__["select_selling_price_type"]=="Markdown"):
+					ts_markdown=(ts_mrp[i]/100)*ts_item_detais.__dict__["ts_markdown_price"]
+					ts_markdown=ts_mrp[i]-ts_markdown
+					if(ts_markdown<ts_mrp[i] and ts_markdown>ts_valuation_rate[i]):
+						ts_matched_item.append(ts_item_code[i])
+						ts_matched_selling_rate.append(ts_markdown)
+					else:
+						ts_unmatched_item.append(ts_item_code[i])
+						ts_unmatched_selling_rate.append(ts_markdown)
+						item_row = frappe._dict({})                                              
+						item_row.update({'items':ts_item_code[i],'selling_rate':ts_markdown,'difference':round(abs(ts_valuation_rate[i]-ts_markdown),2)})
+						ts_markdown_items_to_verify.append(item_row)
+						ts_markdown_items += f"{ts_item_name[i]}:{round(abs(ts_mrp[i]-ts_markdown),2)}\n"
+							
+						
+				elif(ts_item_detais.__dict__["select_selling_price_type"]=="Markup"):
+					ts_markup=(ts_mrp[i]/100)*ts_item_detais.__dict__["ts_markup_price"]
+					ts_markup=ts_valuation_rate[i]+ts_markup
+					if(ts_markup<ts_mrp[i] and ts_markup>ts_valuation_rate[i]):
+						ts_matched_item.append(ts_item_code[i])
+						ts_matched_selling_rate.append(ts_markup)
+					else:
+						ts_unmatched_item.append(ts_item_code[i])
+						ts_unmatched_selling_rate.append(ts_markup)
+						item_row = frappe._dict({})                                              
+						item_row.update({'items':ts_item_code[i],'selling_rate':ts_markup,'difference':round(abs(ts_mrp[i]-ts_markup),2)})
+						ts_markup_items_to_verify.append(item_row)
+						ts_markup_items += f"{ts_item_name[i]}:{round(abs(ts_valuation_rate[i]-ts_markup),2)}\n"
+		document.ts_markdown_items = ts_markdown_items
+		document.ts_markup_items = ts_markup_items
+		for item in document.get('items'):
+			for m in range (0,len(ts_matched_item),1):
+				if item.item_code==ts_matched_item[m]:
+					item.ts_selling_rate=ts_matched_selling_rate[m]
+					item.ts_selling_rate_automatic_calculation=1
+			for m in range (0,len(ts_unmatched_item),1):
+				if item.item_code==ts_unmatched_item[m]:
+					item.ts_selling_rate=ts_unmatched_selling_rate[m]
+					item.ts_selling_rate_automatic_calculation=1
+		
+		costing_details = []
+		if(ts_markup_items_to_verify):
+			for i in range(0,len(ts_markup_items_to_verify),1):
+				ts_markup_items_to_verify_ = [{
+						'items':ts_markup_items_to_verify[i]['items'],
+						'markup__markdown':"Markup",
+						'selling_rate':ts_markup_items_to_verify[i]['selling_rate'],
+						'difference':ts_markup_items_to_verify[i]['difference'],
+						}]
+				document.update({
+						'thirvu_items_to_verify':costing_details+ts_markup_items_to_verify_
+					})
+		costing_details= document.get('thirvu_items_to_verify') or []
+		if(ts_markdown_items_to_verify):
+			for i in range(0,len(ts_markdown_items_to_verify)):
+				ts_markdown_items_to_verify_ = [{
+						'items':ts_markdown_items_to_verify[i]['items'],
+						'markup__markdown':"MarkDown",
+						'selling_rate':ts_markdown_items_to_verify[i]['selling_rate'],
+						'difference':ts_markdown_items_to_verify[i]['difference'],
+						}]
+				document.update({
+						'thirvu_items_to_verify':costing_details+ts_markdown_items_to_verify_
+					})
+		if(len(document.thirvu_items_to_verify)>0):document.ts_markup_and_markdown_variations=1
+		else:document.ts_markup_and_markdown_variations=0
 
 def calculating_landed_cost_voucher_amount(self):
 	total_item_cost = 0.0
@@ -310,56 +310,56 @@ def supplier_free_item(doc,event):
 
 @frappe.whitelist()
 def mandatory_validation(doc,event):
-    ts_item_expiry_date=""
-    ts_mrp_differ_selling_rate=""
-    ts_valuation_differ_selling_rate=""
-    for item in doc.items:
-        ts_has_expiry=frappe.db.get_value("Item",{"name":item.item_code},["is_expiry_item"])
-        if ts_has_expiry==1:
-            if not item.expiry_date:
-                ts_item_expiry_date += "•"+item.item_code+'<br>'
+	ts_item_expiry_date=""
+	ts_mrp_differ_selling_rate=""
+	ts_valuation_differ_selling_rate=""
+	for item in doc.items:
+		ts_has_expiry=frappe.db.get_value("Item",{"name":item.item_code},["is_expiry_item"])
+		if ts_has_expiry==1:
+			if not item.expiry_date:
+				ts_item_expiry_date += "•"+item.item_code+'<br>'
 
-        if item.ts_selling_rate_automatic_calculation !=1:
-            if item.ts_selling_rate > item.ts_mrp:
-                ts_mrp_differ_selling_rate += "•"+item.item_code+'<br>'
+		if item.ts_selling_rate_automatic_calculation !=1:
+			if item.ts_selling_rate > item.ts_mrp:
+				ts_mrp_differ_selling_rate += "•"+item.item_code+'<br>'
 
-            if item.ts_selling_rate <= item.ts_valuation_rate:
-                ts_valuation_differ_selling_rate += "•"+item.item_code+'<br>'
-    
-    if ts_item_expiry_date:
-        frappe.throw(_("Please Select the Expiry Date For The Below Items... <br>{0}").format(ts_item_expiry_date))
-    
-    if ts_mrp_differ_selling_rate:
-        frappe.throw(_("Selling Price Is Greater Than The MRP, Please Check It... <br>{0}").format(ts_mrp_differ_selling_rate))
-    
-    if ts_valuation_differ_selling_rate:
-        frappe.throw(_("Selling Price Is Lesser Than The Valuation Rate, Please Check It... <br>{0}").format(ts_valuation_differ_selling_rate))
+			if item.ts_selling_rate <= item.ts_valuation_rate:
+				ts_valuation_differ_selling_rate += "•"+item.item_code+'<br>'
+	
+	if ts_item_expiry_date:
+		frappe.throw(_("Please Select the Expiry Date For The Below Items... <br>{0}").format(ts_item_expiry_date))
+	
+	if ts_mrp_differ_selling_rate:
+		frappe.throw(_("Selling Price Is Greater Than The MRP, Please Check It... <br>{0}").format(ts_mrp_differ_selling_rate))
+	
+	if ts_valuation_differ_selling_rate:
+		frappe.throw(_("Selling Price Is Lesser Than The Valuation Rate, Please Check It... <br>{0}").format(ts_valuation_differ_selling_rate))
    
-    ts_value=frappe.db.get_single_value("Thirvu Retail Settings","item_warehouse_fetching")
-    if ts_value==1:   
-        item = doc.items
-        items_with_no_warehouse=""
-        for i in item:
-            item_name =  frappe.get_doc("Item",i.item_code)
-            if item_name.warehouse:
-                for warehouse in item_name.warehouse:
-                    if warehouse.company:
-                        if warehouse.company == doc.company:
-                            w_house = warehouse.warehousebin
-                            if w_house:i.warehouse = w_house
-            else:
-                items_with_no_warehouse+="•"+item_name.item_code+'<br>'
-        if items_with_no_warehouse:frappe.throw(_("Please Select warehouse for <br>{0}".format(items_with_no_warehouse)))
+	ts_value=frappe.db.get_single_value("Thirvu Retail Settings","item_warehouse_fetching")
+	if ts_value==1:   
+		item = doc.items
+		items_with_no_warehouse=""
+		for i in item:
+			item_name =  frappe.get_doc("Item",i.item_code)
+			if item_name.warehouse:
+				for warehouse in item_name.warehouse:
+					if warehouse.company:
+						if warehouse.company == doc.company:
+							w_house = warehouse.warehousebin
+							if w_house:i.warehouse = w_house
+			else:
+				items_with_no_warehouse+="•"+item_name.item_code+'<br>'
+		if items_with_no_warehouse:frappe.throw(_("Please Select warehouse for <br>{0}".format(items_with_no_warehouse)))
 
-    ts_value=frappe.db.get_single_value("Thirvu Retail Settings","item_verifed_in_purchase_receipt")
-    if ts_value==1:
-        ts_item_barcodes=""
-        for item in doc.items:
-            if item.purchase_order:
-                if item.item_verified == 0:
-                    ts_item_details=frappe.get_doc("Item",item.item_code)
-                    if ts_item_details.barcodes:
-                        ts_item_barcodes += "•"+item.item_code+'<br>'
-        if ts_item_barcodes:
-            frappe.throw(_("Below Items Are Not Verified, Please Check It... <br>{0}").format(ts_item_barcodes))
+	ts_value=frappe.db.get_single_value("Thirvu Retail Settings","item_verifed_in_purchase_receipt")
+	if ts_value==1:
+		ts_item_barcodes=""
+		for item in doc.items:
+			if item.purchase_order:
+				if item.item_verified == 0:
+					ts_item_details=frappe.get_doc("Item",item.item_code)
+					if ts_item_details.barcodes:
+						ts_item_barcodes += "•"+item.item_code+'<br>'
+		if ts_item_barcodes:
+			frappe.throw(_("Below Items Are Not Verified, Please Check It... <br>{0}").format(ts_item_barcodes))
 
