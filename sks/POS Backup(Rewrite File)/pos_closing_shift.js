@@ -30,6 +30,7 @@ frappe.ui.form.on('POS Closing Shift', {
 				doc: frm.doc,
 			},
 			callback: function(r) {
+				if(r.message.length != 0){
 				var d = new frappe.ui.Dialog({
 					size: "large",
 					title:"Choose Account Head",
@@ -94,6 +95,7 @@ frappe.ui.form.on('POS Closing Shift', {
 					primary_action_label: __('Create Journal Entry')
 				});
 		  d.show();
+			}
 		}
 	});
 	},
