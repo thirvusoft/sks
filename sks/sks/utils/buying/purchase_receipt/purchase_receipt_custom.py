@@ -39,7 +39,7 @@ def purchase_receipt_custom_field():
                                         label='Altered Item Quantity Verified',
                                         fieldtype='Check',
                                         insert_after='thirvu_altered_quantity',
-                                        hidden=1
+                                        hidden=0
                               ),
                               dict(
                                         fieldname='ts_item_price_changed', 
