@@ -138,8 +138,8 @@ doc_events = {
 		# "validate":"sks.sks.custom.py.batch.item_price_creator"
 	},
 	"Delivery Trip": {
-        "on_submit" :"sks.sks.custom.py.delivery_trip.assign_to_driver"
-
+        "on_submit" :"sks.sks.custom.py.delivery_trip.assign_to_driver",
+		"on_cancel" :"sks.sks.custom.py.delivery_trip.update_sales_invoice"
     },
 
 
