@@ -101,6 +101,7 @@ def get_condition_from_dialog(data):
             filter1['outstanding_amount'] = ['>=', data['outstanding']]
             filter1['name'] = ['in', sales_invoice]
             filter1['docstatus'] = 1
+            filter1['delivery_status']= ['not in', ['Delivered', 'Returned','Out to Delivery']]
             sales_invoice = get_sales_invoice(filter1,"Sales Invoice",'name')
             return get_sales_invoice_details(sales_invoice)
     else:
@@ -115,6 +116,13 @@ def get_sales_invoice(filter,doctype,name):
 def get_sales_invoice_details(sales_invoice):
     return frappe.get_all("Sales Invoice",fields=['name','customer_address','customer','delivery_status','reason','contact_person','time_of_delivery','rounded_total','outstanding_amount'],filters ={'name':['in',sales_invoice],'delivery_status':['not in', ['Delivered', 'Returned']]})
 def assign_to_driver(del_trip,a):
+
+    # Updation of Out to Delivery Status
+    for i in del_trip.delivery_stops:
+        sales_inv_doc = frappe.get_doc('Sales Invoice',i.sales_invoice)
+        sales_inv_doc.delivery_status = 'Out to Delivery'
+        sales_inv_doc.save()
+
     allow=0
     row=0
     for i in del_trip.delivery_stops:
@@ -144,3 +152,10 @@ def assign_to_driver(del_trip,a):
         return doc
     else:
         frappe.throw("All the Sales Invoice are Delivered")
+
+def update_sales_invoice(doc,event):
+    # Updation of Hold Status
+    for i in doc.delivery_stops:
+        sales_inv_doc = frappe.get_doc('Sales Invoice',i.sales_invoice)
+        sales_inv_doc.delivery_status = 'Hold'
+        sales_inv_doc.save()
