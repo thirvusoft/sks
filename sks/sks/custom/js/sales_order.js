@@ -154,15 +154,20 @@ frappe.ui.form.on("Sales Order Item",{
             }
         })
     },
-    item_code:function(frm,cdt,cdn){
-            data=locals[cdt][cdn]
-            var item_code=data.item_code
-            var actual_qty =0
-            actual_qty = data.actual_qty
-            if(item_code){
-                frappe.show_alert({ message: __('Stock Quantity for '+actual_qty), indicator: 'green' });
-            }  
-        },
+    // item_code:function(frm,cdt,cdn){
+    //     data=locals[cdt][cdn]
+    //         if(data.item_code){
+    //             var item_code=data.item_code
+    //             var actual_qty = 0
+    //             if(data.actual_qty){
+    //                 actual_qty = data.actual_qty
+    //                 frappe.show_alert({ message: __('Stock Quantity for Item : '+data.item_code+"->"+actual_qty), indicator: 'green' });
+    //             }
+    //             else{
+    //                 frappe.show_alert({ message: __('Stock Quantity for Item : '+data.item_code+"->"+actual_qty), indicator: 'red' });
+    //             }
+    //         }
+    //     },
        
     }
 )

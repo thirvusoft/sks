@@ -1,7 +1,7 @@
 {
  "category": "Modules",
  "charts": [],
- "creation": "2022-07-05 15:07:38.924662",
+ "creation": "2022-08-03 09:38:37.628980",
  "developer_mode_only": 0,
  "disable_user_customization": 1,
  "docstatus": 0,
@@ -13,19 +13,43 @@
  "is_standard": 1,
  "label": "Thirvu User",
  "links": [],
- "modified": "2022-08-02 17:07:14.690049",
- "modified_by": "pparameshwari@thirvusoft.in",
+ "modified": "2022-08-03 09:38:37.628980",
+ "modified_by": "naveenkumar@thirvusoft.in",
  "module": "sks",
  "name": "Thirvu User",
- "owner": "naveen.kumar@thirvusoft.in",
+ "owner": "naveenkumar@thirvusoft.in",
  "pin_to_bottom": 0,
  "pin_to_top": 1,
  "shortcuts": [
   {
    "doc_view": "List",
-   "label": "Thirvu Retail",
-   "link_to": "posapp",
-   "type": "Page"
+   "label": "Thirvu Opening Shift",
+   "link_to": "POS Opening Shift",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Thirvu Closing Shift",
+   "link_to": "POS Closing Shift",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Thirvu Driver Closing Shift",
+   "link_to": "Thirvu Driver Closing Shift",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Thirvu Driver Closing Shift",
+   "link_to": "Thirvu Driver Mode of Payments",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Thirvu Profile",
+   "link_to": "POS Profile",
+   "type": "DocType"
   }
  ]
 }
