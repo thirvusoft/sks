@@ -124,7 +124,7 @@ def get_fields_for_denomination(driver_id):
     return ts_denomination,ts_mode_of_payment
 
 @frappe.whitelist()
-def create_driver_closing_shift(ts_denomination,driver_name,creation_datetime,driver_id,):
+def create_driver_closing_shift(ts_denomination,driver_name,creation_datetime,driver_id,doc_name):
     driver_closing_shift_grace_amt = frappe.db.get_single_value('Thirvu Retail Settings', 'driver_closing_shift_grace_amount')
     denomination_validation=json.loads(ts_denomination)
     denomination=denomination_validation["ts_denomination"]
@@ -208,6 +208,7 @@ def create_driver_closing_shift(ts_denomination,driver_name,creation_datetime,dr
         'ts_denomination_counts': denomination,
         'grand_total': grand_total,
         'ts_denomination_total':denomination_cash,
+        'reference':doc_name
     })
     driver_doc.insert()
     for data in driver_doc.ts_denomination_counts:
@@ -223,16 +224,11 @@ def create_driver_closing_shift(ts_denomination,driver_name,creation_datetime,dr
         frappe.msgprint("Your responsible for the difference amount.")
     elif grand_total == 0:
         frappe.msgprint("Your responsible for the difference amount.")
-    elif driver_closing_shift_grace_amt > total_difference:
-        frappe.msgprint(f"Your responsible for the difference amount of rupees {abs(total_difference)}")
+    # elif driver_closing_shift_grace_amt > total_difference:
+    #     frappe.msgprint(f"Your responsible for the difference amount of rupees {abs(total_difference)}")
     driver_doc.total_difference = total_difference
     driver_doc.save()
-    
-
-# def driver_delivery_trip_submit(doc,event):
-#     if doc.status == "Closed":
-#         doc.submit()
-#         frappe.db.commit()
+    return total_difference, driver_closing_shift_grace_amt 
     
     
     

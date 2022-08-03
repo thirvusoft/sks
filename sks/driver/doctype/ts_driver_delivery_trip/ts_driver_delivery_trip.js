@@ -5,7 +5,8 @@ let company;
 var driver_id;
 var driver_name;
 var creation_datetime;
-var count = 0;
+var submit = false;
+var doc_name
 frappe.ui.form.on('TS Driver Delivery Trip', {
 	setup: function(frm,cdt,cdn) {
 		company = frm.doc.company;
@@ -14,76 +15,97 @@ frappe.ui.form.on('TS Driver Delivery Trip', {
 		creation_datetime=frm.doc.creation
 		update_fields(frm,cdt,cdn)
 	},
-	on_submit: function(frm,cdt,cdn) {
+	before_submit: function(frm,cdt,cdn){
+		if (submit){
+			return
+		}
+		frappe.validated=false
+		if(frm.doc.status=="Closed"){
+			frappe.call({
+				method:"sks.driver.doctype.ts_driver_delivery_trip.ts_driver_delivery_trip.get_fields_for_denomination",
+				args:{driver_id},
+				callback(r){
+				var d = new frappe.ui.Dialog({
+					title: "Thirvu Driver Closing Shift",
+					fields:[{
+					
+					label:"Denomination",fieldname:"ts_denomination",fieldtype:"Table",cannot_add_rows: 1,in_place_edit: true,ts_block:"Yes",fields:[
+						{
+						label: 'Amount',
+						fieldname: 'currency',
+						fieldtype: 'Read Only',
+						in_list_view:1,
+						columns:4,
+						},
+						{
+						label: 'Count',
+						fieldname: 'count',
+						fieldtype: 'Int',
+						default:0,
+						in_list_view:1,
+						columns:2,
+								},
+					],data:r.message[0],
+					},
+					{label:"Mode of Payments",fieldname:"ts_mode_of_payment",fieldtype:"Table",cannot_add_rows:1,in_place_edit: true,ts_block:"Yes",fields:[
+						{
+						label: 'Type',
+						fieldname: 'ts_type',
+						fieldtype: 'Read Only',
+						in_list_view:1,
+						columns:4,
+								},
+						{
+						label: 'Amount',
+						fieldname: 'currency',
+						fieldtype: 'Currency',
+						in_list_view:1,
+						columns:2,
+								},
+					],data:r.message[1]
+					}],
+					primary_action_label:"Submit",
+					primary_action: function(ts_denomination){
+						frappe.call({
+							method: "sks.driver.doctype.ts_driver_delivery_trip.ts_driver_delivery_trip.create_driver_closing_shift",
+							args:{
+								ts_denomination,driver_name,creation_datetime,driver_id,doc_name
+								},
+							callback:function(thirvu_dcs){
+								frm.set_df_property("status", "read_only",1);
+								d.hide()
+								frappe.show_alert({ message: __("Thirvu Driver Closing Shift Created Successfully"), indicator: 'green' });
+								frappe.validated=true
+								submit=true
+								cur_frm.save("Submit")
+								var difference=thirvu_dcs.message[0]
+								if (thirvu_dcs.message[1] > thirvu_dcs.message[0]) {
+									frappe.msgprint({
+										message: __("Your responsible for the difference amount of rupees "+difference ),
+										title: __('Payment Shortage')
+									});
+								} 
+
+							}
+						})	
+					}
+				});
+				d.show()
+				
+				}
+			})
+		}
+		else if(frm.doc.status!="Closed"){
+			frappe.throw({title: "Message", message: "Kindly move the document to closed state!"})
+		}
 		update_fields(frm,cdt,cdn)
 	},
+	after_save:function(frm,cdt,cdn){
+		doc_name=frm.doc.name
+	},
 	validate:function(frm,cdt,cdn){
-		if (count == 0){
-			if(frm.doc.status=="Closed"){
-				frappe.call({
-					method:"sks.driver.doctype.ts_driver_delivery_trip.ts_driver_delivery_trip.get_fields_for_denomination",
-					args:{driver_id},
-					callback(r){
-					var d = new frappe.ui.Dialog({
-						title: "Thirvu Driver Closing Shift",
-						fields:[{
-						
-						label:"Denomination",fieldname:"ts_denomination",fieldtype:"Table",cannot_add_rows: 1,in_place_edit: true,ts_block:"Yes",fields:[
-							{
-							label: 'Amount',
-							fieldname: 'currency',
-							fieldtype: 'Read Only',
-							in_list_view:1,
-							columns:4,
-							},
-							{
-							label: 'Count',
-							fieldname: 'count',
-							fieldtype: 'Int',
-							default:0,
-							in_list_view:1,
-							columns:2,
-									},
-						],data:r.message[0],
-						},
-						{label:"Mode of Payments",fieldname:"ts_mode_of_payment",fieldtype:"Table",cannot_add_rows:1,in_place_edit: true,ts_block:"Yes",fields:[
-							{
-							label: 'Type',
-							fieldname: 'ts_type',
-							fieldtype: 'Read Only',
-							in_list_view:1,
-							columns:4,
-									},
-							{
-							label: 'Amount',
-							fieldname: 'currency',
-							fieldtype: 'Currency',
-							in_list_view:1,
-							columns:2,
-									},
-						],data:r.message[1]
-						}],
-						primary_action_label:"Submit",
-						primary_action: function(ts_denomination){
-							frappe.call({
-								method: "sks.driver.doctype.ts_driver_delivery_trip.ts_driver_delivery_trip.create_driver_closing_shift",
-								args:{
-									ts_denomination,driver_name,creation_datetime,driver_id
-									},
-							})	
-						frm.set_df_property("status", "read_only",1);
-						d.hide()
-						frappe.show_alert({ message: __("Thirvu Driver Closing Shift Created Successfully"), indicator: 'green' }); 
-						}
-					});
-					d.show()
-					
-					}
-				})
-			count=count+1
-			}
-			update_fields(frm,cdt,cdn)
-		}
+		// frappe.validated=false
+		update_fields(frm,cdt,cdn)	
 	},
 });
 function update_fields(frm,cdt,cdn) {

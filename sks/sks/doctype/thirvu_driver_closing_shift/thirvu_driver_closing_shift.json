@@ -23,6 +23,7 @@
   "total_difference",
   "column_break_14",
   "grand_total",
+  "reference",
   "amended_from"
  ],
  "fields": [
@@ -127,12 +128,17 @@
    "fieldtype": "Link",
    "label": "Company",
    "options": "Company"
+  },
+  {
+   "fieldname": "reference",
+   "fieldtype": "Data",
+   "label": "Reference"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-08-02 15:42:26.898416",
+ "modified": "2022-08-03 10:12:58.594823",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Thirvu Driver Closing Shift",
