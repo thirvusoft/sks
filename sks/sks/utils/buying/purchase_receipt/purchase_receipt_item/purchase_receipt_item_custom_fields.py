@@ -32,7 +32,15 @@ def purchase_receipt_item_custom_fields():
                               label='Selling Rate',
                               fieldtype='Currency', 
                               insert_after='ts_mrp',
-                              read_only=1
+                              read_only=0
+                    ),
+                    dict(
+                              fieldname='ts_selling_rate_automatic_calculation', 
+                              label='Selling Rate Automatic Calculation',
+                              fieldtype='Check', 
+                              insert_after='ts_selling_rate',
+                              read_only=1,
+                              hidden=0
                     ),
                     dict(
                               fieldname='ts_valuation_rate', 
