@@ -1,12 +1,9 @@
-var data,loop,warehouse,company,loading,parent_data
+var data,loop,warehouse,loading,parent_data
 frappe.ui.form.on("Sales Order",{
     onload:function(frm,cdt,cdn){
         loading=0
         loop=0
         parent_data=locals[cdt][cdn]
-    },
-    company:function(frm,cdt,cdn){
-        company=cur_frm.doc.company
     },
     after_save:function(frm,cdt,cdn){
         if(loading==0){
@@ -157,15 +154,20 @@ frappe.ui.form.on("Sales Order Item",{
             }
         })
     },
-    item_code:function(frm,cdt,cdn){
-            data=locals[cdt][cdn]
-            var item_code=data.item_code
-            var actual_qty =0
-            actual_qty = data.actual_qty
-            if(item_code){
-                frappe.show_alert({ message: __('Stock Quantity for '+actual_qty), indicator: 'green' });
-            }  
-        },
+    // item_code:function(frm,cdt,cdn){
+    //     data=locals[cdt][cdn]
+    //         if(data.item_code){
+    //             var item_code=data.item_code
+    //             var actual_qty = 0
+    //             if(data.actual_qty){
+    //                 actual_qty = data.actual_qty
+    //                 frappe.show_alert({ message: __('Stock Quantity for Item : '+data.item_code+"->"+actual_qty), indicator: 'green' });
+    //             }
+    //             else{
+    //                 frappe.show_alert({ message: __('Stock Quantity for Item : '+data.item_code+"->"+actual_qty), indicator: 'red' });
+    //             }
+    //         }
+    //     },
        
     }
 )

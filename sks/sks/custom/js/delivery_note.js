@@ -1,10 +1,6 @@
-var company 
 var data
 var warehouse,parent_data
 frappe.ui.form.on("Delivery Note",{
-    company:function(frm,cdt,cdn){
-        company=cur_frm.doc.company
-    },
 	onload:function(frm,cdt,cdn){
 			parent_data=locals[cdt][cdn]
 			var day = new Date(cur_frm.doc.posting_date);
@@ -22,7 +18,7 @@ frappe.ui.form.on("Delivery Note",{
 
 frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note_items_match_with_sales_order_items").then(value =>{
 	if(value==1){
-	cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",0)
+	// cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",0)
 	frappe.ui.form.on("Delivery Note",{
 		scan_barcode_to_verify_the_items: function(frm,cdt,cdn){
 			let data=locals[cdt][cdn]
@@ -97,7 +93,7 @@ frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note
 	})
 	}
 	else{
-		cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",1)
+		// cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",1)
 	}
  })
   

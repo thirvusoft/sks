@@ -17,7 +17,7 @@ def delivery_note_custom_field():
                 fieldtype='Data', 
                 insert_after='scan_barcode',
                 options="Barcode",
-                hidden=1),
+                hidden=0),
             dict(fieldname='mode_of_delivery', 
                 label='Mode of Delivery',
                 fieldtype='Data', 

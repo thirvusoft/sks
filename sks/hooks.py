@@ -45,7 +45,6 @@ doctype_js = {"Delivery Note" : "sks/custom/js/delivery_note.js",
 "Employee Advance":"sks/custom/js/employee_advance.js",
 "Employee":"sks/custom/js/employee.js",
 "Job Offer":"sks/custom/js/job_offer.js",
-"Stock Entry":"sks/custom/js/stock_entry.js",
 "Purchase Order":"sks/custom/js/purchase_order.js", 
 }
 # doctype_js = {"Delivery Note" : "sks/sks/custom/js/outstanding_amount.js"}
@@ -160,7 +159,8 @@ doc_events = {
 		"validate":["sks.sks.custom.py.purchase_receipt.markup_and_markdown_calculator",
 					"sks.sks.custom.py.purchase_receipt.validate",
 					"sks.sks.custom.py.purchase_receipt.supplier_free_item",
-					"sks.sks.custom.py.purchase_receipt.mandatory_validation"
+					"sks.sks.custom.py.purchase_receipt.mandatory_validation",
+					"sks.sks.custom.py.purchase_receipt.automatic_batch_creation"
 
 		],
 		"on_submit":"sks.sks.custom.py.purchase_receipt.purchased_qty_validation"
@@ -184,7 +184,7 @@ doc_events = {
 	},
 	"Stock Entry":{
 		"validate":["sks.sks.custom.py.stock_entry.stock_entry",
-					"sks.sks.custom.py.stock_entry.markup_and_markdown_calculator"]
+		"sks.sks.custom.py.stock_entry.auto_batch_creations"]
 	},
 	# "TS Driver Delivery Trip":{
     #  	"validate":["sks.driver.doctype.ts_driver_delivery_trip.ts_driver_delivery_trip.driver_delivery_trip_submit"]

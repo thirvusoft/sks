@@ -1,19 +1,9 @@
 var total_barcode_number_item=[]
 var total_barcode_item_code=[]
 var item_codes=[]
-
-var company 
 var data
 frappe.ui.form.on("Purchase Receipt",{
-    company:function(frm,cdt,cdn){
-       company=cur_frm.doc.company
-        
-        
-    }
-})
-frappe.ui.form.on("Purchase Receipt",{
 	onload:function(frm,cdt,cdn){
-		company=cur_frm.doc.company
 		frappe.db.get_single_value("Thirvu Retail Settings","item_verifed_in_purchase_receipt").then(value =>{
 			if(value==1){
 				if(frm.doc.items.length){
@@ -37,6 +27,25 @@ frappe.ui.form.on("Purchase Receipt",{
 			item_codes.push(data.items[i].item_code)
 		}
 	},
+	// supplier:function(frm,cdt,cdn){
+	// 	var ts_data=locals[cdt][cdn]
+	// 	var ts_supplier=ts_data.supplier
+	// 	if(ts_supplier!=""){
+	// 		frappe.call({
+	// 			method:"sks.sks.custom.py.supplier_items_finder.ts_supplier_items_finder",
+	// 			args:{ts_supplier},
+	// 			callback(ts_r){
+	// 				var ts_supplier_matched_item=ts_r["message"]
+	// 				frm.set_query("item_code", "items", function() {
+	// 					return {
+	// 						query: "erpnext.controllers.queries.item_query",
+	// 						filters: {'item_code' : ["in", ts_supplier_matched_item],'is_purchase_item': 1}
+	// 					}
+	// 				})
+	// 			}
+	// 		})
+	// 	}
+	// },
 	scan_barcode_to_verify_the_items: function(frm,cdt,cdn){
 		let data=locals[cdt][cdn]
 		var search_value = data.scan_barcode_to_verify_the_items
@@ -115,95 +124,42 @@ frappe.ui.form.on("Purchase Receipt",{
 				}
 			})
 		}
+		frm.set_value("scanned_items",JSON.stringify(total_barcode_item_code))
+		frm.set_value("scanned_barcodes",JSON.stringify(total_barcode_number_item))
 	}
 })
 
-frappe.db.get_single_value("Thirvu Retail Settings","automatic_batch_creation").then(value =>{
-	if(value==1){
-		frappe.ui.form.on("Purchase Receipt",{
-			after_save:function(frm,cdt,cdn){
-				var data = locals[cdt][cdn]
-				var doctype_name=data.doctype
-				var document_name=data.name
-				var expiry_date=[]
-				var item_rate=[]
-				var item_mrp=[]
-				var item_code=[]
-				for(var i=0;i<data.items.length;i++){
-					var against_purchase_order_name=data.items[i].purchase_order
-					expiry_date.push(data.items[i].expiry_date)
-					item_rate.push(data.items[i].ts_valuation_rate)
-					item_code.push(data.items[i].item_code)
-					item_mrp.push(data.items[i].ts_mrp)
-				}
-				frappe.call({
-					method:"sks.sks.custom.py.purchase_receipt.auto_batch_creation",
-					args:{expiry_date,item_rate,item_code,item_mrp,total_barcode_number_item,total_barcode_item_code,against_purchase_order_name,doctype_name,document_name},
-					callback(r){
-						if(r["message"]==0){
-							frm.refresh();
-						}
-					}
-				})
-			}
-		})
-	}
-})
-
-
-frappe.ui.form.on("Purchase Receipt",{
-	supplier:function(frm,cdt,cdn){
-		var ts_data=locals[cdt][cdn]
-		var ts_supplier=ts_data.supplier
-		if(ts_supplier!=""){
-			frappe.call({
-				method:"sks.sks.custom.py.supplier_items_finder.ts_supplier_items_finder",
-				args:{ts_supplier},
-				callback(ts_r){
-					var ts_supplier_matched_item=ts_r["message"]
-					frm.set_query("item_code", "items", function() {
-						return {
-							query: "erpnext.controllers.queries.item_query",
-							filters: {'item_code' : ["in", ts_supplier_matched_item],'is_purchase_item': 1}
-						}
-					})
-				}
-			})
-		}
-	}
-})
-
-
-frappe.ui.form.on("Purchase Receipt",{
-	before_save:function(frm,cdt,cdn){
-		var count = 0
-		let list_item_code={}
-		let l=locals[cdt][cdn]
-		if(l.items){
-			if(l.items[0].purchase_order){
-				for(let i=0;i<(l.items).length;i++){
-					let p=locals[cur_frm.doc.items[i].doctype][cur_frm.doc.items[i].name]
-					list_item_code[p.item_code]=[p.rate]
-					frappe.call({
-						method:"sks.sks.custom.py.purchase_receipt.purchase_price_checking_with_order",
-						args:{e:list_item_code,po:l.items[0].purchase_order},
-						callback:function(r){
-							if(count==0){
-								if(r["message"]!=0){
-									var item_changed=(r.message).toString()
-									item_changed=item_changed.bold()
-									frappe.show_alert("Some Item Price Is Differ from Purchase Order For This Items : "+item_changed+" To submit this Purchase Invoice Please Get Approvel From Authority People")
-									count=count+1
-								}
-							}
-						}
-					})
-				}
-			}
-		}
-	}
-})
-
+// frappe.db.get_single_value("Thirvu Retail Settings","automatic_batch_creation").then(value =>{
+// 	if(value==1){
+// 		frappe.ui.form.on("Purchase Receipt",{
+// 			after_save:function(frm,cdt,cdn){
+// 				var data = locals[cdt][cdn]
+// 				var doctype_name=data.doctype
+// 				var document_name=data.name
+// 				var expiry_date=[]
+// 				var item_rate=[]
+// 				var item_mrp=[]
+// 				var item_code=[]
+// 				for(var i=0;i<data.items.length;i++){
+// 					var against_purchase_order_name=data.items[i].purchase_order
+// 					expiry_date.push(data.items[i].expiry_date)
+// 					item_rate.push(data.items[i].ts_valuation_rate)
+// 					item_code.push(data.items[i].item_code)
+// 					item_mrp.push(data.items[i].ts_mrp)
+// 				}
+// 				frappe.call({
+// 					method:"sks.sks.custom.py.purchase_receipt.auto_batch_creation",
+// 					args:{expiry_date,item_rate,item_code,item_mrp,total_barcode_number_item,total_barcode_item_code,against_purchase_order_name,doctype_name,document_name},
+// 					callback(r){
+// 						if(r["message"]==0){
+// 							frm.refresh();
+// 						}
+// 					}
+// 				})
+// 			}
+// 		})
+// 	}
+// })
 frappe.ui.form.on("Purchase Receipt Item",{
 	item_code:function(frm,cdt,cdn){
 		var ts_data=locals[cdt][cdn]
@@ -251,80 +207,19 @@ frappe.ui.form.on("Purchase Receipt Item",{
 				}
 			})
 		}
-	}
-})
-frappe.ui.form.on("Purchase Receipt",{
-	onload:function(frm,cdt,cdn){
-		if(cur_frm.doc.ts_markup_and_markdown_variations == 1){
-			show_alert("Some items price has to be changed. Kindly please verify it !!! ")
-		}
-
-		if(in_list(frappe.user_roles, "Purchase Manager")) {
-			frm.set_df_property('check_qty','hidden',0)
-		}
-		else if(!in_list(frappe.user_roles, "Purchase Manager")){
-			frm.set_df_property('check_qty','hidden',1)
-		}
 	},
-	// validate:function(frm){
-	// 	var check=1
-	// 	cur_frm.set_value("check_qty",0)
-	// 	for(var i=0;i<cur_frm.doc.items.length;i++){
-	// 		if(check == 1){
-	// 			frappe.call({
-	// 				method:"sks.sks.custom.py.purchase_receipt.validate",
-	// 				args:{
-	// 					qty:cur_frm.doc.items[i].qty,
-	// 					purchase_order:cur_frm.doc.items[i].purchase_order,
-	// 					item:cur_frm.doc.items[i].item_code
-	// 				},
-	// 				callback(res){
-	// 					if(res.message == false){
-	// 						cur_frm.set_value("check_qty",1)
-	// 						check=0	
-	// 					}
-	// 					else if(res.message == true){
-	// 						cur_frm.set_value("check_qty",0)
-	// 					}
-	// 				}
-	// 			})
-	// 		}
-	// 	}
-	// }
-})
-
-frappe.ui.form.on('Purchase Receipt',{
-	before_save:function(frm,cdt,cdn)
-	{
-		var total_rejected_qty=0;
-		for(var i=0;i<cur_frm.doc.items.length;i++)
-		{
-			total_rejected_qty+=cur_frm.doc.items[i].rejected_qty?cur_frm.doc.items[i].rejected_qty:0;
-		}
-		frm.set_value("total_rejected_qty",total_rejected_qty);
-	}
-
-})
-
-
-frappe.ui.form.on("Purchase Receipt Item",{
 	is_free_item_from_supplier:function(frm,cdt,cdn){
-			data=locals[cdt][cdn]
-			if(data.is_free_item_from_supplier == 1){
-				 var df=frappe.meta.get_docfield(cdt,"ts_selling_rate",cdn);
-				 df.read_only=0;
-				 frm.refresh_fields();
-				 
-			}else {
-				var df=frappe.meta.get_docfield(cdt,"ts_selling_rate",cdn);
-				df.read_only=1;
-				frm.refresh_fields();
-			}
-		   
-		   
-		   
-		},
-	  
-	}
- )
+		data=locals[cdt][cdn]
+		if(data.is_free_item_from_supplier == 1){
+			 var df=frappe.meta.get_docfield(cdt,"ts_selling_rate",cdn);
+			 df.read_only=0;
+			 frm.refresh_fields();
+			 
+		}else {
+			var df=frappe.meta.get_docfield(cdt,"ts_selling_rate",cdn);
+			df.read_only=1;
+			frm.refresh_fields();
+		}   
+	},
+})
 
