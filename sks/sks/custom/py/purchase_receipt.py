@@ -317,7 +317,7 @@ def mandatory_validation(doc,event):
             if item.ts_selling_rate > item.ts_mrp:
                 ts_mrp_differ_selling_rate += "•"+item.item_code+'<br>'
 
-            if item.ts_selling_rate < item.ts_valuation_rate:
+            if item.ts_selling_rate <= item.ts_valuation_rate:
                 ts_valuation_differ_selling_rate += "•"+item.item_code+'<br>'
     
     if ts_item_expiry_date:
