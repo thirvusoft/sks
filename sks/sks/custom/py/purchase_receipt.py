@@ -39,9 +39,12 @@ def automatic_batch_creation(doc,event):
         item_changes_details=[]
         correct_batch_name=0
         changed_barcode=0
-        total_barcode_item_code = eval(doc.scanned_items)
-        print(type(total_barcode_item_code),"lghfuhgfiugi")
-        total_barcode_number_item = eval(doc.scanned_barcodes)
+        total_barcode_item_code=[]
+        total_barcode_number_item=[]
+        if doc.scanned_items:
+            total_barcode_item_code = eval(doc.scanned_items)
+        if doc.scanned_barcodes:
+            total_barcode_number_item = eval(doc.scanned_barcodes)
         for row in doc.items:
             item_code.append(row.item_code)
             # expiry_date.append(row.expiry_date)
