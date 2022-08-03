@@ -17,6 +17,12 @@
   "reserved_stock",
   "credit_bill_history",
   "item_warehouse_fetching",
+  "purchase_workflow_section",
+  "verification_of_free_item",
+  "verification_of_altered_quantity",
+  "column_break_12",
+  "verification_of_rate_change",
+  "verification_of_rejected_quantity",
   "pos_awesome_settings_section",
   "allow_display_customer_outstanding_amount",
   "allow_display_customer_transaction_history",
@@ -152,12 +158,49 @@
    "fieldname": "item_warehouse_fetching",
    "fieldtype": "Check",
    "label": "Item Warehouse Fetching"
+  },
+  {
+   "fieldname": "purchase_workflow_section",
+   "fieldtype": "Section Break",
+   "label": "Purchase Workflow"
+  },
+  {
+   "default": "0",
+   "description": "To Verify Free Item from Supplier",
+   "fieldname": "verification_of_free_item",
+   "fieldtype": "Check",
+   "label": "Verification of Free item"
+  },
+  {
+   "default": "0",
+   "description": "To Verify Altered Quantity of Item from Purchase Order",
+   "fieldname": "verification_of_altered_quantity",
+   "fieldtype": "Check",
+   "label": "Verification of Altered Quantity"
+  },
+  {
+   "fieldname": "column_break_12",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "To Verify Change in Price of Item from Purchase Order",
+   "fieldname": "verification_of_rate_change",
+   "fieldtype": "Check",
+   "label": "Verification of Rate Change"
+  },
+  {
+   "default": "0",
+   "description": "To Verify Rejected Quanity of Item",
+   "fieldname": "verification_of_rejected_quantity",
+   "fieldtype": "Check",
+   "label": "Verification of Rejected Quantity"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-08-02 17:02:38.646011",
+ "modified": "2022-08-03 16:22:55.047778",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Thirvu Retail Settings",
