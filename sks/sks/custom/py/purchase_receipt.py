@@ -183,10 +183,11 @@ def markup_and_markdown_calculator(document,event):
             for m in range (0,len(ts_matched_item),1):
                 if item.item_code==ts_matched_item[m]:
                     item.ts_selling_rate=ts_matched_selling_rate[m]
-         
+                    item.ts_selling_rate_automatic_calculation=1
             for m in range (0,len(ts_unmatched_item),1):
                 if item.item_code==ts_unmatched_item[m]:
                     item.ts_selling_rate=ts_unmatched_selling_rate[m]
+                    item.ts_selling_rate_automatic_calculation=1
         
         costing_details = []
         if(ts_markup_items_to_verify):
@@ -304,13 +305,30 @@ def supplier_free_item(doc,event):
 @frappe.whitelist()
 def mandatory_validation(doc,event):
     ts_item_expiry_date=""
+    ts_mrp_differ_selling_rate=""
+    ts_valuation_differ_selling_rate=""
     for item in doc.items:
         ts_has_expiry=frappe.db.get_value("Item",{"name":item.item_code},["is_expiry_item"])
         if ts_has_expiry==1:
             if not item.expiry_date:
                 ts_item_expiry_date += "•"+item.item_code+'<br>'
+
+        if item.ts_selling_rate_automatic_calculation !=1:
+            if item.ts_selling_rate > item.ts_mrp:
+                ts_mrp_differ_selling_rate += "•"+item.item_code+'<br>'
+
+            if item.ts_selling_rate < item.ts_valuation_rate:
+                ts_valuation_differ_selling_rate += "•"+item.item_code+'<br>'
+    
     if ts_item_expiry_date:
         frappe.throw(_("Please Select the Expiry Date For The Below Items... <br>{0}").format(ts_item_expiry_date))
+    
+    if ts_mrp_differ_selling_rate:
+        frappe.throw(_("Selling Price Is Greater Than The MRP, Please Check It... <br>{0}").format(ts_mrp_differ_selling_rate))
+    
+    if ts_valuation_differ_selling_rate:
+        frappe.throw(_("Selling Price Is Lesser Than The Valuation Rate, Please Check It... <br>{0}").format(ts_valuation_differ_selling_rate))
+   
     ts_value=frappe.db.get_single_value("Thirvu Retail Settings","item_warehouse_fetching")
     if ts_value==1:   
         item = doc.items
@@ -338,3 +356,4 @@ def mandatory_validation(doc,event):
                         ts_item_barcodes += "•"+item.item_code+'<br>'
         if ts_item_barcodes:
             frappe.throw(_("Below Items Are Not Verified, Please Check It... <br>{0}").format(ts_item_barcodes))
+
