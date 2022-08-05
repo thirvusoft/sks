@@ -78,7 +78,7 @@ def automatic_batch_creation(doc,event):
 					item_changes_count=item_changes_count+1
 					item_changes_details.append("Barcode")
 					changed_barcode=total_barcode_number_item[b]
-			if(item_changes_count==0):
+			if(item_changes_count==0) and frappe.db.exists("Batch", {"item": item_code[i]}):
 				frappe.db.set_value("Item",item_code[i],"create_new_batch",0)
 				for item in doc.items:
 					if(item_code[i]==item.__dict__["item_code"]):
