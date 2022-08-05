@@ -27,3 +27,4 @@ def supplier_property_setter():
     make_property_setter("Supplier", "is_frozen", "hidden", 1,"Check")
     make_property_setter("Supplier", "section_break_7", "hidden", 1,"Check")
     make_property_setter("Supplier", "country", "hidden", 1,"Check")
+    make_property_setter("Supplier", "mobile_no", "unique", "1", "Check")

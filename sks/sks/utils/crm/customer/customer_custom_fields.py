@@ -57,3 +57,5 @@ def customer_property_setter():
     make_property_setter("Customer", "posa_referral_code", "allow_in_quick_entry", "0", "Check")
     make_property_setter("Customer", "posa_referral_company", "allow_in_quick_entry", "0", "Check")
     make_property_setter("Customer", "posa_referral_company", "hidden", "1", "Check")
+    make_property_setter("Customer", "mobile_no", "unique", "1", "Check")
+

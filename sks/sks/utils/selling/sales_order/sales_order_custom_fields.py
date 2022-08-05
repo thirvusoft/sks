@@ -53,6 +53,8 @@ def sales_order_property_setter():
     make_property_setter("Sales Order", "currency_and_price_list", "1", "hidden", "Check")
     make_property_setter("Sales Order", "packing_list", "1", "hidden", "Check")
     make_property_setter("Sales Order", "currency_and_price_list", "hidden", "1", "Check")
+    make_property_setter("Sales Order", "accounting_dimensions_section", "hidden", "1", "Column Break")
+    make_property_setter("Sales Order", "posa_additional_notes_section", "hidden", "1", "Column Break")
    
 
 
