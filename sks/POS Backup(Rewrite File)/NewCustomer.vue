@@ -186,31 +186,50 @@ export default {
           c_group:this.group,
 
         };
-        frappe.call({
-          method: 'posawesome.posawesome.api.posapp.create_customer',
-          args: args,
-          callback: (r) => {
-            if (!r.exc && r.message.name) {
-              evntBus.$emit('show_mesage', {
-                text: __('Customer contact created successfully.'),
-                color: 'success',
-              });
-              args.name = r.message.name;
-              frappe.utils.play_sound('submit');
-              evntBus.$emit('add_customer_to_list', args);
-              evntBus.$emit('set_customer', r.message.name);
-              this.customer_name='',
-              this.mobile1=''
-              this.address1=''
-              this.address2=''
-              this.territory=''
-              this.city=''
-              this.group=''
-              this.customerDialog = false;
-            }
-          },
-        });
-        
+        if (this.mobile1){
+          if(this.territory){
+            frappe.call({
+              method: 'posawesome.posawesome.api.posapp.create_customer',
+              args: args,
+              callback: (r) => {
+                if (!r.exc && r.message.name) {
+                  evntBus.$emit('show_mesage', {
+                    text: __('Customer contact created successfully.'),
+                    color: 'success',
+                  });
+                  args.name = r.message.name;
+                  frappe.utils.play_sound('submit');
+                  evntBus.$emit('add_customer_to_list', args);
+                  evntBus.$emit('set_customer', r.message.name);
+                  this.customer_name='',
+                  this.mobile1=''
+                  this.address1=''
+                  this.address2=''
+                  this.territory=''
+                  this.city=''
+                  this.group=''
+                  this.customerDialog = false;
+                }
+              },
+            });
+          }else{
+            evntBus.$emit('show_mesage', {
+            text: __('Please Select Territory'),
+            color: 'error',
+          })
+          }
+        }
+        else{
+            evntBus.$emit('show_mesage', {
+              text: __('Please Enter Mobile Number'),
+              color: 'error',
+          })
+        }
+      }else{
+        evntBus.$emit('show_mesage', {
+            text: __('Please Type Customer Name'),
+            color: 'error',
+          })
       }
       
     },
@@ -223,7 +242,6 @@ export default {
   
   created: function () {
     evntBus.$on('open_new_customer', () => {
-      console.log("jjjddd")
       this.customerDialog = true;
       var  groups, territorys, citys;
       // v_model;

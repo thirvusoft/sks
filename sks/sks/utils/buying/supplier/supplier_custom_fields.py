@@ -27,3 +27,8 @@ def supplier_property_setter():
     make_property_setter("Supplier", "is_frozen", "hidden", 1,"Check")
     make_property_setter("Supplier", "section_break_7", "hidden", 1,"Check")
     make_property_setter("Supplier", "country", "hidden", 1,"Check")
+    make_property_setter("Supplier", "mobile_no", "unique", "1", "Check")
+    make_property_setter("Supplier", "supplier_group", "default", "All Supplier Groups", "Link")
+    make_property_setter("Supplier", "supplier_type", "default", "Company", "Select")
+    make_property_setter("Supplier", "gst_category", "default", "Unregistered", "Select")
+    make_property_setter("Supplier", "tax_category", "default", "In-State", "Link")

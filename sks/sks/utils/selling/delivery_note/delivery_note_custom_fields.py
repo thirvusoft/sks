@@ -64,3 +64,5 @@ def delivery_note_property_setter():
     make_property_setter("Delivery Note", "section_break_49", "hidden", "1", "Section Break")
     make_property_setter("Delivery Note", "section_break_41", "hidden", "1", "Section Break")
     make_property_setter("Delivery Note", "accounting_dimensions_section", "hidden", "1", "Section Break")
+    make_property_setter("Delivery Note", "section_break_44", "hidden", "1", "Section Break")
+    make_property_setter("Delivery Note", "totals", "hidden", "1", "Section Break")

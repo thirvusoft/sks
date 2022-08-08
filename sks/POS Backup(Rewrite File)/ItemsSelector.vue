@@ -15,7 +15,6 @@
         <v-col class="pb-0 mb-2">
           <v-text-field
             dense
-            clearable
             autofocus
             outlined
             color="indigo"
@@ -417,7 +416,7 @@ export default {
         .toFixed(this.float_precision)
         .replace(/\d(?=(\d{3})+\.)/g, '$&,');
     },
-     // Customized By Thirvusoft
+    // Customized By Thirvusoft
     // Start
       shortOpenItem: function shortOpenItem(e) {
         if (e.key === 'F1') {
@@ -471,13 +470,21 @@ export default {
           return found;
         });
         if (filtred_list.length == 0) {
-          filtred_list = filtred_group_list.filter((item) =>
-            item.item_code.toLowerCase().includes(this.search.toLowerCase())
-          );
+          // filtred_list = filtred_group_list.filter((item) =>
+          //   item.item_code.toLowerCase().includes(this.search.toLowerCase())
+           filtred_list = filtred_group_list.filter(function (item) {
+            let ts_item=item.item_code.replace(/[^a-zA-Z0-9]/g, '');
+            return ts_item.toLowerCase().includes(this$1.search.toLowerCase()); 
+
+        });
           if (filtred_list.length == 0) {
-            filtred_list = filtred_group_list.filter((item) =>
-              item.item_name.toLowerCase().includes(this.search.toLowerCase())
-            );
+             filtred_list = filtred_group_list.filter(function (item) {
+              let ts_item=item.item_name.replace(/[^a-zA-Z0-9]/g, ''); 
+              return ts_item.toLowerCase().includes(this$1.search.toLowerCase()); 
+              });
+            // filtred_list = filtred_group_list.filter((item) =>
+            //   item.item_name.toLowerCase().includes(this.search.toLowerCase())
+            // );
           }
           if (
             filtred_list.length == 0 &&

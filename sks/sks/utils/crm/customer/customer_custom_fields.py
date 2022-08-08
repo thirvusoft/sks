@@ -54,4 +54,13 @@ def customer_property_setter():
     make_property_setter("Customer", "customer_type", "reqd", "0", "Check")
     make_property_setter("Customer", "is_credit_customer", "allow_in_quick_entry", "0", "Check")
     make_property_setter("Customer", "feedback_required", "allow_in_quick_entry", "0", "Check")
+    make_property_setter("Customer", "posa_referral_code", "allow_in_quick_entry", "0", "Check")
+    make_property_setter("Customer", "posa_referral_company", "allow_in_quick_entry", "0", "Check")
+    make_property_setter("Customer", "posa_referral_company", "hidden", "1", "Check")
+    make_property_setter("Customer", "mobile_no", "unique", "1", "Check")
+    make_property_setter("Customer", "customer_group", "default", "Individual", "Link")
+    make_property_setter("Customer", "tax_category", "default", "In-State", "Link")
+    make_property_setter("Customer", "customer_type", "default", "Individual", "Select")
+    make_property_setter("Customer", "gst_category", "default", "Unregistered", "Select")
+
 

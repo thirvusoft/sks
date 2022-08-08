@@ -505,7 +505,7 @@
                 hide-details
               ></v-text-field>
             </v-col>
-            <v-col
+            <!-- <v-col
               v-if="!pos_profile.posa_use_percentage_discount"
               cols="6"
               class="pa-1"
@@ -526,7 +526,7 @@
                     : false
                 "
               ></v-text-field>
-            </v-col>
+            </v-col> -->
             <v-col
               v-if="pos_profile.posa_use_percentage_discount"
               cols="6"
@@ -550,7 +550,7 @@
               ></v-text-field>
 <!--code start -->        
             </v-col>
-            <v-col cols="6" class="pa-1">
+            <!-- <v-col cols="6" class="pa-1">
               <v-text-field
                 :value="formtCurrency(total_items_discount_amount)"
                 :label="frappe._('Item Wise Discount Amount')"
@@ -560,8 +560,8 @@
                 hide-details
                 :prefix="pos_profile.currency"
               ></v-text-field>
-            </v-col>
-             <v-col
+            </v-col> -->
+             <!-- <v-col
              cols="6"
               class="pa-1">
                <v-text-field
@@ -575,16 +575,12 @@
                 type="number"
                 @change="change_dic_amount"
               ></v-text-field>
-
-
-
-
-            </v-col>
+            </v-col> -->
 
             <v-col cols="6" class="pa-1">
               <v-text-field
                 :value="formtCurrency(subtotal)"
-                :label="frappe._('Total')"
+                :label="frappe._('Total Amount')"
                 outlined
                 dense
                 readonly
@@ -597,7 +593,7 @@
         </v-col>
         <v-col cols="5">
           <v-row no-gutters class="pa-1 pt-2 pl-0">
-            <v-col cols="6" class="pa-1">
+            <!-- <v-col cols="6" class="pa-1">
               <v-btn
                 block
                 class="pa-0"
@@ -606,13 +602,13 @@
                 @click="get_draft_invoices"
                 >{{ __('Held') }}</v-btn
               >
-            </v-col>
+            </v-col> -->
             <v-col cols="6" class="pa-1">
               <v-btn
                 block
                 class="pa-0"
                 :class="{ 'disable-events': !pos_profile.posa_allow_return }"
-                color="info"
+                color="primary"
                 dark
                 @click="open_returns"
                 >{{ __('Return') }}</v-btn
@@ -628,7 +624,7 @@
                 >{{ __('Cancel') }}</v-btn
               >
             </v-col>
-            <v-col cols="6" class="pa-1">
+            <!-- <v-col cols="6" class="pa-1">
               <v-btn
                 block
                 class="pa-0"
@@ -637,12 +633,12 @@
                 @click="new_invoice"
                 >{{ __('Save/New') }}</v-btn
               >
-            </v-col>
+            </v-col> -->
             <v-col cols="12" class="pa-1">
               <v-btn
                 block
                 class="pa-0"
-                color="primary"
+                color="success"
                 @click="show_payment"
                 dark
                 >{{ __('PAY') }}</v-btn
@@ -698,7 +694,10 @@ export default {
         { text: __('UOM'), value: 'uom', align: 'center' },
         { text: __('Rate'), value: 'rate', align: 'center' },
         { text: __('Amount'), value: 'amount', align: 'center' },
-        { text: __('is Offer'), value: 'posa_is_offer', align: 'center' },
+        // Customized By Thirvusoft
+        // Start
+        // { text: __('is Offer'), value: 'posa_is_offer', align: 'center' },
+        // End
       ],
     };
   },
@@ -1603,6 +1602,12 @@ export default {
           this.open_returns();
         }
       },
+      shortCancelInvoice: function shortCancelInvoice(e) {
+        if (e.key === 'c' && (e.altKey)) {
+          e.preventDefault();
+          this.cancel_invoice();
+        }
+      },
       //  End
 
     shortOpenFirstItem: function shortOpenFirstItem(e) {
@@ -2475,6 +2480,7 @@ export default {
       // Customized By Thirvusoft
       // Start
       document.addEventListener('keydown', this.shortOpenReturn.bind(this));
+      document.addEventListener('keydown', this.shortCancelInvoice.bind(this));
       // End
     },
     destroyed: function destroyed() {
@@ -2485,6 +2491,7 @@ export default {
       // Customized By Thirvusoft
       // Start
       document.removeEventListener('keydown', this.shortOpenReturn);
+      document.addEventListener('keydown', this.shortCancelInvoice.bind(this));
       // End
     },
     watch: {

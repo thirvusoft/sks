@@ -12,9 +12,8 @@ frappe.ui.form.CustomerQuickEntryForm = frappe.ui.form.QuickEntryForm.extend({
 	},
 
 	get_variant_fields: function() {
-		 var variant_fields = [
-	// Customized by Thirvusoft
-		// {
+		var variant_fields = [
+		// 	{
 		// 	fieldtype: "Section Break",
 		// 	label: __("Primary Contact Details"),
 		// 	collapsible: 1
@@ -27,14 +26,11 @@ frappe.ui.form.CustomerQuickEntryForm = frappe.ui.form.QuickEntryForm.extend({
 		// {
 		// 	fieldtype: "Column Break"
 		// },
-		// {
-		// 	label: __("Mobile Number"),
-		// 	fieldname: "mobile_no",
-		// 	fieldtype: "Data"
-		// },
-		// file path
-		// erpnext/erpnext/public/js/utils/customer_quick_entry.js
-		// Customization End
+		{
+			label: __("Mobile Number"),
+			fieldname: "mobile_no",
+			fieldtype: "Data"
+		},
 		{
 			fieldtype: "Section Break",
 			label: __("Primary Address Details"),
@@ -45,16 +41,16 @@ frappe.ui.form.CustomerQuickEntryForm = frappe.ui.form.QuickEntryForm.extend({
 			fieldname: "address_line1",
 			fieldtype: "Data"
 		},
-		{
-			label: __("Address Line 2"),
-			fieldname: "address_line2",
-			fieldtype: "Data"
-		},
-		{
-			label: __("ZIP Code"),
-			fieldname: "pincode",
-			fieldtype: "Data"
-		},
+		// {
+		// 	label: __("Address Line 2"),
+		// 	fieldname: "address_line2",
+		// 	fieldtype: "Data"
+		// },
+		// {
+		// 	label: __("ZIP Code"),
+		// 	fieldname: "pincode",
+		// 	fieldtype: "Data"
+		// },
 		{
 			fieldtype: "Column Break"
 		},
@@ -72,14 +68,18 @@ frappe.ui.form.CustomerQuickEntryForm = frappe.ui.form.QuickEntryForm.extend({
 			label: __("Country"),
 			fieldname: "country",
 			fieldtype: "Link",
-			options: "Country"
+			options: "Country",
+			default:"India",
+			hidden:1
+
 		},
-		{
-			label: __("Customer POS Id"),
-			fieldname: "customer_pos_id",
-			fieldtype: "Data",
-			hidden: 1
-		}];
+		// {
+		// 	label: __("Customer POS Id"),
+		// 	fieldname: "customer_pos_id",
+		// 	fieldtype: "Data",
+		// 	hidden: 1
+		// }
+	];
 
 		return variant_fields;
 	},

@@ -7,7 +7,7 @@
       <v-card>
         <v-card-title>
           <span class="headline indigo--text">{{
-            __('Tirvu Retail Opening Shift')
+            __('Thirvu Retail Opening Shift')
           }}</span>
         </v-card-title>
         <v-card-text>

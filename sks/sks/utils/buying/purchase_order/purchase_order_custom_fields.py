@@ -40,6 +40,7 @@ def purchase_order_property_setter():
     make_property_setter("Purchase Order", "disable_rounded_total", "default", 1,"Text")
     make_property_setter("Purchase Order", "rounding_adjustment", "hidden", 1,"Check")
     make_property_setter("Purchase Order", "total_net_weight", "hidden", 1,"Check")
+    make_property_setter("Purchase Order", "cost_center", "default", "Main - SKS", "Link")
     
     purchase_order=frappe.get_doc({
     'doctype':'Property Setter',

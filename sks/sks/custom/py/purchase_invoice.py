@@ -1,7 +1,7 @@
 import json
 import frappe
 from frappe import _
-from frappe.utils import flt
+from frappe.utils import flt,nowdate
 @frappe.whitelist()
 def item_check_with_purchase_order(item_code_checking=None,checking_purchase_order=None):
 	matched_item=0
@@ -37,7 +37,6 @@ def automatic_batch_creation(doc,event):
 		matched_creation_date=[]
 		item_changes_count=0
 		item_changes_details=[]
-		correct_batch_name=0
 		changed_barcode=0
 		total_barcode_item_code=[]
 		total_barcode_number_item=[]
@@ -52,38 +51,57 @@ def automatic_batch_creation(doc,event):
 			item_mrp.append(row.ts_mrp)
 		batch_expiry=frappe.get_all("Batch",fields=["name","ts_valuation_rate","item","expiry_date","creation","ts_mrp"])
 		for i in range(0,len(item_code),1):
-			for j in range(0,(len(batch_expiry)),1):
-					if(item_code[i]==batch_expiry[j]["item"]):
-						matched_batch_name.append(batch_expiry[j]["name"])
-			for l in range(0,len(matched_batch_name),1):
-				for n in range(0,(len(batch_expiry)),1):
-					if(matched_batch_name[l]==batch_expiry[n]["name"]):
-						matched_creation_date.append(batch_expiry[n]["creation"])
-			for c in range(0,(len(batch_expiry)),1):
-				if(matched_creation_date!=[]):
-					if(max(matched_creation_date)==batch_expiry[c]["creation"]):
-						correct_batch_name=batch_expiry[c]["name"]
-						# formatted_expiry_date=getdate(expiry_date[i])
-						# if(batch_expiry[c]["expiry_date"]!=formatted_expiry_date):
-						#     item_changes_count=item_changes_count+1
-						#     item_changes_details.append("Expiry date")
-						if(batch_expiry[c]["ts_mrp"]!=item_mrp[i]):
-							item_changes_count=item_changes_count+1
-							item_changes_details.append("MRP")
-						if(batch_expiry[c]["ts_valuation_rate"]!=item_rate[i]):
-							item_changes_count=item_changes_count+1
-							item_changes_details.append("Valuation Rate")
-			for b in range(0,len(total_barcode_item_code),1):
-				if(item_code[i]==total_barcode_item_code[b]):
-					item_changes_count=item_changes_count+1
-					item_changes_details.append("Barcode")
-					changed_barcode=total_barcode_number_item[b]
-			if(item_changes_count==0) and frappe.db.exists("Batch", {"item": item_code[i]}):
+			try:
+				if(frappe.db.get_value("Item",{"name":item_code[i]},["is_expiry_item"])):
+					batch_doc = frappe.get_last_doc("Batch", filters = [["item","=", item_code[i]],['expiry_date','>=',nowdate()]],order_by="modified desc")
+				else:
+					batch_doc = frappe.get_last_doc("Batch", filters = [["item","=", item_code[i]]],order_by="modified desc")
+
+				if(batch_doc.ts_mrp!=item_mrp[i]):
+						item_changes_count=item_changes_count+1
+						item_changes_details.append("MRP")
+				if(batch_doc.ts_valuation_rate!=item_rate[i]):
+						item_changes_count=item_changes_count+1
+						item_changes_details.append("Valuation Rate")
+				for b in range(0,len(total_barcode_item_code),1):
+					if(item_code[i]==total_barcode_item_code[b]):
+						item_changes_count=item_changes_count+1
+						item_changes_details.append("Barcode")
+						changed_barcode=total_barcode_number_item[b]
+			except:
+				batch_doc = 0
+			# for j in range(0,(len(batch_expiry)),1):
+			# 		if(item_code[i]==batch_expiry[j]["item"]):
+			# 			matched_batch_name.append(batch_expiry[j]["name"])
+			# for l in range(0,len(matched_batch_name),1):
+			# 	for n in range(0,(len(batch_expiry)),1):
+			# 		if(matched_batch_name[l]==batch_expiry[n]["name"]):
+			# 			matched_creation_date.append(batch_expiry[n]["creation"])
+			# for c in range(0,(len(batch_expiry)),1):
+			# 	if(matched_creation_date!=[]):
+			# 		if(max(matched_creation_date)==batch_expiry[c]["creation"]):
+			# 			correct_batch_name=batch_expiry[c]["name"]
+			# 			# formatted_expiry_date=getdate(expiry_date[i])
+			# 			# if(batch_expiry[c]["expiry_date"]!=formatted_expiry_date):
+			# 			#     item_changes_count=item_changes_count+1
+			# 			#     item_changes_details.append("Expiry date")
+			# 			if(batch_expiry[c]["ts_mrp"]!=item_mrp[i]):
+			# 				item_changes_count=item_changes_count+1
+			# 				item_changes_details.append("MRP")
+			# 			if(batch_expiry[c]["ts_valuation_rate"]!=item_rate[i]):
+			# 				item_changes_count=item_changes_count+1
+			# 				item_changes_details.append("Valuation Rate")
+			# for b in range(0,len(total_barcode_item_code),1):
+			# 	if(item_code[i]==total_barcode_item_code[b]):
+			# 		item_changes_count=item_changes_count+1
+			# 		item_changes_details.append("Barcode")
+			# 		changed_barcode=total_barcode_number_item[b]
+			if(item_changes_count==0) and batch_doc:
 				frappe.db.set_value("Item",item_code[i],"create_new_batch",0)
 				for item in doc.items:
 					if(item_code[i]==item.__dict__["item_code"]):
-						if(correct_batch_name!=0):
-							item.batch_no=correct_batch_name
+						if(batch_doc.name!=0):
+							item.batch_no=batch_doc.name
 			else:
 				if(total_barcode_number_item):
 					for item in doc.items:
@@ -105,23 +123,46 @@ def markup_and_markdown_calculator(document,event):
 		ts_val_rate=0
 		ts_landed_cost_voucher_table=document.ts_landed_cost_voucher_table
 		if ts_landed_cost_voucher_table:
-			ts_val_rate=1
-			ts_valuation_details=calculating_landed_cost_voucher_amount(document)
-			ts_val_item=[]
-			ts_val_rate=[]
-			ts_val_tot_item=ts_valuation_details[0]
-			ts_val_tot_rate=ts_valuation_details[1]
-			for v in range(0,len(ts_val_tot_item),1):
-				ts_val_item.append(ts_val_tot_item[v])
-				ts_val_rate.append(ts_val_tot_rate[v])
-			for item in document.get('items'):
-				for vi in range(0,len(ts_val_item),1):
-					if ts_val_item[vi]==item.item_code:
-						ts_rate=ts_val_rate[vi]+item.rate
-						item.ts_valuation_rate=ts_rate/item.qty
+			if document.type == 'Exclusive':
+				ts_val_rate=1
+				ts_valuation_details=calculating_landed_cost_voucher_amount(document)
+				ts_val_item=[]
+				ts_val_rate=[]
+				ts_val_tot_item=ts_valuation_details[0]
+				ts_val_tot_rate=ts_valuation_details[1]
+				for v in range(0,len(ts_val_tot_item),1):
+					ts_val_item.append(ts_val_tot_item[v])
+					ts_val_rate.append(ts_val_tot_rate[v])
+				for item in document.get('items'):
+					for vi in range(0,len(ts_val_item),1):
+						if ts_val_item[vi]==item.item_code:
+							ts_rate=ts_val_rate[vi]
+							ts_valuation_rate=ts_rate/item.qty
+
+							# core function start
+							qty_in_stock_uom = flt(item.qty * item.conversion_factor)
+							item.ts_valuation_rate = (
+								item.base_net_amount
+								+ item.item_tax_amount
+								+ item.rm_supp_cost
+								+ flt(item.landed_cost_voucher_amount)
+							) / qty_in_stock_uom + ts_valuation_rate
+							item.valuation_rate = item.ts_valuation_rate
+							# core function end
 		else:
 			for item in document.get('items'):
-				item.ts_valuation_rate=item.rate
+
+				# core function start
+				qty_in_stock_uom = flt(item.qty * item.conversion_factor)
+				item.ts_valuation_rate = (
+					item.base_net_amount
+					+ item.item_tax_amount
+					+ item.rm_supp_cost
+					+ flt(item.landed_cost_voucher_amount)
+				) / qty_in_stock_uom
+				item.valuation_rate = item.ts_valuation_rate
+
+				# core function end
 						
 
 		ts_item_code=[]
@@ -236,6 +277,7 @@ def calculating_landed_cost_voucher_amount(self):
 
 @frappe.whitelist()
 def validate(doc,event):
+	doc.update_stock = 1
 	alter_verification = frappe.db.get_single_value('Thirvu Retail Settings',"verification_of_altered_quantity")
 	if alter_verification:
 		#Altered Qty
@@ -292,9 +334,10 @@ def purchased_qty_validation(doc,event):
 		for items in doc.items:
 			batch=items.batch_no
 			purchased_qty=frappe.db.sql("""select sum(qty)
-								from `tabPurchase Receipt Item`
-								where batch_no ='{0}' """.format(batch),as_list=1)[0][0]
-			frappe.db.set_value("Batch",batch,"purchase_qty",purchased_qty)
+								from `tabPurchase Invoice Item`
+								where batch_no ='{0}' and docstatus = 1""".format(batch),as_list=1)
+			if purchased_qty[0][0]!=None:
+				frappe.db.set_value("Batch",batch,"purchase_qty",purchased_qty[0][0])
 
 def supplier_free_item(doc,event):
 	verification = frappe.db.get_single_value('Thirvu Retail Settings',"verification_of_free_item")
@@ -351,7 +394,7 @@ def mandatory_validation(doc,event):
 				items_with_no_warehouse+="•"+item_name.item_code+'<br>'
 		if items_with_no_warehouse:frappe.throw(_("Please Select warehouse for <br>{0}".format(items_with_no_warehouse)))
 
-	ts_value=frappe.db.get_single_value("Thirvu Retail Settings","item_verifed_in_purchase_receipt")
+	ts_value=frappe.db.get_single_value("Thirvu Retail Settings","item_verifed_in_purchase_invoice")
 	if ts_value==1:
 		ts_item_barcodes=""
 		for item in doc.items:
