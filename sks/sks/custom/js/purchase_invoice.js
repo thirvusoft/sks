@@ -130,37 +130,6 @@ frappe.ui.form.on("Purchase Invoice",{
 	}
 })
 
-// frappe.db.get_single_value("Thirvu Retail Settings","automatic_batch_creation").then(value =>{
-// 	if(value==1){
-// 		frappe.ui.form.on("Purchase Receipt",{
-// 			after_save:function(frm,cdt,cdn){
-// 				var data = locals[cdt][cdn]
-// 				var doctype_name=data.doctype
-// 				var document_name=data.name
-// 				var expiry_date=[]
-// 				var item_rate=[]
-// 				var item_mrp=[]
-// 				var item_code=[]
-// 				for(var i=0;i<data.items.length;i++){
-// 					var against_purchase_order_name=data.items[i].purchase_order
-// 					expiry_date.push(data.items[i].expiry_date)
-// 					item_rate.push(data.items[i].ts_valuation_rate)
-// 					item_code.push(data.items[i].item_code)
-// 					item_mrp.push(data.items[i].ts_mrp)
-// 				}
-// 				frappe.call({
-// 					method:"sks.sks.custom.py.purchase_receipt.auto_batch_creation",
-// 					args:{expiry_date,item_rate,item_code,item_mrp,total_barcode_number_item,total_barcode_item_code,against_purchase_order_name,doctype_name,document_name},
-// 					callback(r){
-// 						if(r["message"]==0){
-// 							frm.refresh();
-// 						}
-// 					}
-// 				})
-// 			}
-// 		})
-// 	}
-// })
 frappe.ui.form.on("Purchase Invoice Item",{
 	item_code:function(frm,cdt,cdn){
 		var ts_data=locals[cdt][cdn]
