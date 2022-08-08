@@ -123,31 +123,32 @@ def markup_and_markdown_calculator(document,event):
 		ts_val_rate=0
 		ts_landed_cost_voucher_table=document.ts_landed_cost_voucher_table
 		if ts_landed_cost_voucher_table:
-			ts_val_rate=1
-			ts_valuation_details=calculating_landed_cost_voucher_amount(document)
-			ts_val_item=[]
-			ts_val_rate=[]
-			ts_val_tot_item=ts_valuation_details[0]
-			ts_val_tot_rate=ts_valuation_details[1]
-			for v in range(0,len(ts_val_tot_item),1):
-				ts_val_item.append(ts_val_tot_item[v])
-				ts_val_rate.append(ts_val_tot_rate[v])
-			for item in document.get('items'):
-				for vi in range(0,len(ts_val_item),1):
-					if ts_val_item[vi]==item.item_code:
-						ts_rate=ts_val_rate[vi]
-						ts_valuation_rate=ts_rate/item.qty
+			if document.type == 'Exclusive':
+				ts_val_rate=1
+				ts_valuation_details=calculating_landed_cost_voucher_amount(document)
+				ts_val_item=[]
+				ts_val_rate=[]
+				ts_val_tot_item=ts_valuation_details[0]
+				ts_val_tot_rate=ts_valuation_details[1]
+				for v in range(0,len(ts_val_tot_item),1):
+					ts_val_item.append(ts_val_tot_item[v])
+					ts_val_rate.append(ts_val_tot_rate[v])
+				for item in document.get('items'):
+					for vi in range(0,len(ts_val_item),1):
+						if ts_val_item[vi]==item.item_code:
+							ts_rate=ts_val_rate[vi]
+							ts_valuation_rate=ts_rate/item.qty
 
-						# core function start
-						qty_in_stock_uom = flt(item.qty * item.conversion_factor)
-						item.ts_valuation_rate = (
-							item.base_net_amount
-							+ item.item_tax_amount
-							+ item.rm_supp_cost
-							+ flt(item.landed_cost_voucher_amount)
-						) / qty_in_stock_uom + ts_valuation_rate
-
-						# core function end
+							# core function start
+							qty_in_stock_uom = flt(item.qty * item.conversion_factor)
+							item.ts_valuation_rate = (
+								item.base_net_amount
+								+ item.item_tax_amount
+								+ item.rm_supp_cost
+								+ flt(item.landed_cost_voucher_amount)
+							) / qty_in_stock_uom + ts_valuation_rate
+							item.valuation_rate = item.ts_valuation_rate
+							# core function end
 		else:
 			for item in document.get('items'):
 
@@ -159,6 +160,8 @@ def markup_and_markdown_calculator(document,event):
 					+ item.rm_supp_cost
 					+ flt(item.landed_cost_voucher_amount)
 				) / qty_in_stock_uom
+				item.valuation_rate = item.ts_valuation_rate
+
 				# core function end
 						
 
