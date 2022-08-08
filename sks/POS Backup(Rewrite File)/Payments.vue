@@ -278,7 +278,7 @@
               :prefix="invoice_doc.currency"
             ></v-text-field>
           </v-col>
-          <v-col cols="6">
+          <!-- <v-col cols="6">
             <v-text-field
               dense
               outlined
@@ -290,7 +290,7 @@
               disabled
               :prefix="invoice_doc.currency"
             ></v-text-field>
-          </v-col>
+          </v-col> -->
           <v-col cols="6">
             <v-text-field
               dense
@@ -614,7 +614,7 @@
             block
             class="mt-2"
             large
-            color="primary"
+            color="success"
             dark
             @click="submit"
             :disabled="vaildatPayment"
