@@ -266,10 +266,7 @@ export default {
           sortable: true,
           value: 'item_code',
         },
-        // Customized By Thirvusoft
-        // Start
-        // { text: __('Rate'), value: 'rate', align: 'start' },
-        // End
+        { text: __('Rate'), value: 'rate', align: 'start' },
         { text: __('Available QTY'), value: 'actual_qty', align: 'start' },
         { text: __('UOM'), value: 'stock_uom', align: 'start' },
       ];
