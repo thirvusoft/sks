@@ -155,15 +155,15 @@ doc_events = {
 			# "sks.sks.custom.py.purchase_order.last_purchase_price_validate"
 		]
 	},
-	"Purchase Receipt":{
-		"validate":["sks.sks.custom.py.purchase_receipt.markup_and_markdown_calculator",
-					"sks.sks.custom.py.purchase_receipt.validate",
-					"sks.sks.custom.py.purchase_receipt.supplier_free_item",
-					"sks.sks.custom.py.purchase_receipt.mandatory_validation",
-					"sks.sks.custom.py.purchase_receipt.automatic_batch_creation"
+	"Purchase Invoice":{
+		"validate":["sks.sks.custom.py.purchase_invoice.markup_and_markdown_calculator",
+					"sks.sks.custom.py.purchase_invoice.validate",
+					"sks.sks.custom.py.purchase_invoice.supplier_free_item",
+					"sks.sks.custom.py.purchase_invoice.mandatory_validation",
+					"sks.sks.custom.py.purchase_invoice.automatic_batch_creation"
 
 		],
-		"on_submit":"sks.sks.custom.py.purchase_receipt.purchased_qty_validation"
+		"on_submit":"sks.sks.custom.py.purchase_invoice.purchased_qty_validation"
 	},
 	"Sales Order":{
 		"validate":[
