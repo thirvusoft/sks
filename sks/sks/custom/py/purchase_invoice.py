@@ -163,6 +163,8 @@ def markup_and_markdown_calculator(document,event):
 				item.valuation_rate = item.ts_valuation_rate
 
 				# core function end
+			else:
+				item.ts_valuation_rate = item.valuation_rate
 						
 
 		ts_item_code=[]
