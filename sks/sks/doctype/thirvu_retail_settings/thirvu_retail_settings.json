@@ -8,6 +8,7 @@
  "field_order": [
   "allow_only_if_delivery_note_items_match_with_sales_order_items",
   "item_verifed_in_purchase_receipt",
+  "item_verifed_in_purchase_invoice",
   "buying_rate_calculation",
   "add_item_from_not_processed_purchase_order",
   "purchased_and_sold_qty_alert",
@@ -96,6 +97,7 @@
    "description": "Allow Only, If Purchase Receipt Items Are Matched With Purchase Order Items",
    "fieldname": "item_verifed_in_purchase_receipt",
    "fieldtype": "Check",
+   "hidden": 1,
    "label": "Item Verifed In Purchase Receipt"
   },
   {
@@ -195,12 +197,19 @@
    "fieldname": "verification_of_rejected_quantity",
    "fieldtype": "Check",
    "label": "Verification of Rejected Quantity"
+  },
+  {
+   "default": "0",
+   "description": "Allow Only, If Purchase Invoice Items Are Matched With Purchase Order Items",
+   "fieldname": "item_verifed_in_purchase_invoice",
+   "fieldtype": "Check",
+   "label": "Item Verifed In Purchase Invoice"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-08-03 16:22:55.047778",
+ "modified": "2022-08-08 10:33:19.550397",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Thirvu Retail Settings",

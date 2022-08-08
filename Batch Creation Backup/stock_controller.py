@@ -226,7 +226,7 @@ class StockController(AccountsController):
 		'''Create batches if required. Called before submit'''
 		# Customize By Thirvusoft
 		# Start
-		if self.doctype=="Purchase Receipt":
+		if self.doctype=="Purchase Invoice":
 			for d in self.items:
 				if d.get(warehouse_field) and not d.batch_no:
 					has_batch_no, create_new_batch = frappe.db.get_value('Item', d.item_code, ['has_batch_no', 'create_new_batch'])
