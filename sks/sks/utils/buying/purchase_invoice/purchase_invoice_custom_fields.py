@@ -39,7 +39,8 @@ def purchase_invoice_custom_field():
                                         label='Altered Item Quantity Verified',
                                         fieldtype='Check',
                                         insert_after='thirvu_altered_quantity',
-                                        hidden=0
+                                        hidden=0,
+                                        no_copy=1
                               ),
                               dict(
                                         fieldname='ts_item_price_changed', 
@@ -47,13 +48,15 @@ def purchase_invoice_custom_field():
                                         fieldtype='Check', 
                                         insert_after='check_qty',
                                         permlevel=2,hidden=1,
-                                        read_only=1
+                                        read_only=1,
+                                        no_copy=1
                               ),
                               dict(
                                         fieldname='thirvu_item_price_changed', 
                                         label='Item Price Changes Verified',
                                         fieldtype='Check', 
                                         insert_after='thirvu_price_changed_items',
+                                        no_copy=1
                               ),
                               dict(
                                         fieldname='ts_markup_and_markdown_variations', 
@@ -84,14 +87,16 @@ def purchase_invoice_custom_field():
                                         label='Scan Barcode To Verify The Items',
                                         fieldtype='Data', 
                                         insert_after='scan_barcode',
-                                        options="Barcode"
+                                        options="Barcode",
+                                        no_copy=1
                               ),
                                dict(
                                         fieldname='total_rejected_qty', 
                                         label='Total Rejected Qty',
                                         fieldtype='Int', 
                                         insert_after='items',
-                                        read_only=1
+                                        read_only=1,
+                                        no_copy=1
                               ),
                               dict(
                                         fieldname="is_approved",
@@ -99,6 +104,7 @@ def purchase_invoice_custom_field():
                                         label="Approved All Rejected Items",
                                         insert_after="total_rejected_qty",
                                         depends_on="eval:doc.total_rejected_qty>0 ||doc.workflow_state=='Approval Pending'",
+                                        no_copy=1
                               ),
                                 dict(
                                         fieldname='to_verify_free_item_from_supplier', 
@@ -106,6 +112,7 @@ def purchase_invoice_custom_field():
                                         fieldtype='Table', 
                                         options= "Supplier Free Item",
                                         insert_after='thirvu_items_to_verify',
+                                        no_copy=1
                                         
                               ),
                               dict(
@@ -113,6 +120,7 @@ def purchase_invoice_custom_field():
                                         label='Supplier Free Item verified',
                                         fieldtype='Check', 
                                         insert_after='to_verify_free_item_from_supplier',
+                                        no_copy=1
                                                   
                               ),
                               dict(

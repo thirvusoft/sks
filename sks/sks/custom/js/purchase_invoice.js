@@ -26,6 +26,61 @@ frappe.ui.form.on("Purchase Invoice",{
 		for(var i=0;i<data.items.length;i++){
 			item_codes.push(data.items[i].item_code)
 		}
+		// Free Item From Supplier
+		frappe.db.get_single_value("Thirvu Retail Settings","verification_of_free_item").then(value =>{
+			if(value==1){
+				cur_frm.set_df_property("to_verify_free_item_from_supplier","hidden",0)
+				cur_frm.set_df_property("item_verified","hidden",0)
+			}
+			else{
+				cur_frm.set_df_property("to_verify_free_item_from_supplier","hidden",1)
+				cur_frm.set_df_property("item_verified","hidden",1)
+			}
+		})
+		// Rejected Quantity
+		frappe.db.get_single_value("Thirvu Retail Settings","verification_of_rejected_quantity").then(value =>{
+			if(value==1){
+				cur_frm.set_df_property("total_rejected_qty","hidden",0)
+				cur_frm.set_df_property("is_approved","hidden",0)
+			}
+			else{
+				cur_frm.set_df_property("total_rejected_qty","hidden",1)
+				cur_frm.set_df_property("is_approved","hidden",1)
+			}
+		})
+		// Altered Quantity
+		frappe.db.get_single_value("Thirvu Retail Settings","verification_of_altered_quantity").then(value =>{
+			if(value==1){
+				cur_frm.set_df_property("thirvu_altered_quantity","hidden",0)
+				cur_frm.set_df_property("check_qty","hidden",0)
+			}
+			else{
+				cur_frm.set_df_property("thirvu_altered_quantity","hidden",1)
+				cur_frm.set_df_property("check_qty","hidden",1)
+			}
+		})
+		// Buying Rate Change from Purchase Order
+		frappe.db.get_single_value("Thirvu Retail Settings","verification_of_rate_change").then(value =>{
+			if(value==1){
+				cur_frm.set_df_property("thirvu_price_changed_items","hidden",0)
+				cur_frm.set_df_property("thirvu_item_price_changed","hidden",0)
+			}
+			else{
+				cur_frm.set_df_property("thirvu_price_changed_items","hidden",1)
+				cur_frm.set_df_property("thirvu_item_price_changed","hidden",1)
+			}
+		})
+		// Markup & Markdown
+		frappe.db.get_single_value("Thirvu Retail Settings","verification_of_markup_and_down").then(value =>{
+			if(value==1){
+				cur_frm.set_df_property("thirvu_items_to_verify","hidden",0)
+				cur_frm.set_df_property("thirvu_items_to_verify","hidden",0)
+			}
+			else{
+				cur_frm.set_df_property("thirvu_items_to_verify","hidden",1)
+				cur_frm.set_df_property("thirvu_items_to_verify","hidden",1)
+			}
+		})
 	},
 	// supplier:function(frm,cdt,cdn){
 	// 	var ts_data=locals[cdt][cdn]
