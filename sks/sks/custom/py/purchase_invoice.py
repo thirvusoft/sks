@@ -1,7 +1,7 @@
 import json
 import frappe
 from frappe import _
-from frappe.utils import flt,nowdate
+from frappe.utils import flt,getdate,nowdate
 @frappe.whitelist()
 def item_check_with_purchase_order(item_code_checking=None,checking_purchase_order=None):
 	matched_item=0
@@ -33,8 +33,6 @@ def automatic_batch_creation(doc,event):
 		item_rate=[]
 		item_mrp=[]
 		item_code=[]
-		matched_batch_name=[]
-		matched_creation_date=[]
 		item_changes_count=0
 		item_changes_details=[]
 		changed_barcode=0
@@ -49,7 +47,6 @@ def automatic_batch_creation(doc,event):
 			# expiry_date.append(row.expiry_date)
 			item_rate.append(row.ts_valuation_rate)
 			item_mrp.append(row.ts_mrp)
-		batch_expiry=frappe.get_all("Batch",fields=["name","ts_valuation_rate","item","expiry_date","creation","ts_mrp"])
 		for i in range(0,len(item_code),1):
 			try:
 				if(frappe.db.get_value("Item",{"name":item_code[i]},["is_expiry_item"])):
@@ -58,11 +55,16 @@ def automatic_batch_creation(doc,event):
 					batch_doc = frappe.get_last_doc("Batch", filters = [["item","=", item_code[i]]],order_by="modified desc")
 
 				if(batch_doc.ts_mrp!=item_mrp[i]):
-						item_changes_count=item_changes_count+1
-						item_changes_details.append("MRP")
+					item_changes_count=item_changes_count+1
+					item_changes_details.append("MRP")
 				if(batch_doc.ts_valuation_rate!=item_rate[i]):
-						item_changes_count=item_changes_count+1
-						item_changes_details.append("Valuation Rate")
+					item_changes_count=item_changes_count+1
+					item_changes_details.append("Valuation Rate")
+				# if batch_doc.expiry_date:
+				# 	ts_date=getdate(expiry_date[i])
+				# 	if(batch_doc.expiry_date!=ts_date):
+				# 		item_changes_count=item_changes_count+1
+				# 		item_changes_details.append("Valuation Rate")
 				for b in range(0,len(total_barcode_item_code),1):
 					if(item_code[i]==total_barcode_item_code[b]):
 						item_changes_count=item_changes_count+1
@@ -70,32 +72,7 @@ def automatic_batch_creation(doc,event):
 						changed_barcode=total_barcode_number_item[b]
 			except:
 				batch_doc = 0
-			# for j in range(0,(len(batch_expiry)),1):
-			# 		if(item_code[i]==batch_expiry[j]["item"]):
-			# 			matched_batch_name.append(batch_expiry[j]["name"])
-			# for l in range(0,len(matched_batch_name),1):
-			# 	for n in range(0,(len(batch_expiry)),1):
-			# 		if(matched_batch_name[l]==batch_expiry[n]["name"]):
-			# 			matched_creation_date.append(batch_expiry[n]["creation"])
-			# for c in range(0,(len(batch_expiry)),1):
-			# 	if(matched_creation_date!=[]):
-			# 		if(max(matched_creation_date)==batch_expiry[c]["creation"]):
-			# 			correct_batch_name=batch_expiry[c]["name"]
-			# 			# formatted_expiry_date=getdate(expiry_date[i])
-			# 			# if(batch_expiry[c]["expiry_date"]!=formatted_expiry_date):
-			# 			#     item_changes_count=item_changes_count+1
-			# 			#     item_changes_details.append("Expiry date")
-			# 			if(batch_expiry[c]["ts_mrp"]!=item_mrp[i]):
-			# 				item_changes_count=item_changes_count+1
-			# 				item_changes_details.append("MRP")
-			# 			if(batch_expiry[c]["ts_valuation_rate"]!=item_rate[i]):
-			# 				item_changes_count=item_changes_count+1
-			# 				item_changes_details.append("Valuation Rate")
-			# for b in range(0,len(total_barcode_item_code),1):
-			# 	if(item_code[i]==total_barcode_item_code[b]):
-			# 		item_changes_count=item_changes_count+1
-			# 		item_changes_details.append("Barcode")
-			# 		changed_barcode=total_barcode_number_item[b]
+
 			if(item_changes_count==0) and batch_doc:
 				frappe.db.set_value("Item",item_code[i],"create_new_batch",0)
 				for item in doc.items:
