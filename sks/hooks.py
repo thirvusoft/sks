@@ -50,7 +50,7 @@ doctype_js = {"Delivery Note" : "sks/custom/js/delivery_note.js",
 # doctype_js = {"Delivery Note" : "sks/sks/custom/js/outstanding_amount.js"}
 
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
-doctype_list_js = {"Delivery Note" : "sks/custom/js/delivery_note_list.js"}
+# doctype_list_js = {"Delivery Note" : "sks/custom/js/delivery_note_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
 
@@ -186,7 +186,8 @@ doc_events = {
 	},
 	"Stock Entry":{
 		"validate":["sks.sks.custom.py.stock_entry.stock_entry",
-		"sks.sks.custom.py.stock_entry.auto_batch_creations"]
+		"sks.sks.custom.py.stock_entry.auto_batch_creations",
+		"sks.sks.custom.py.stock_entry.material_transfer"]
 	},
 	# "TS Driver Delivery Trip":{
     #  	"validate":["sks.driver.doctype.ts_driver_delivery_trip.ts_driver_delivery_trip.driver_delivery_trip_submit"]
