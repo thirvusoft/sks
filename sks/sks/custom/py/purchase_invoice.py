@@ -149,6 +149,9 @@ def markup_and_markdown_calculator(document,event):
 							) / qty_in_stock_uom + ts_valuation_rate
 							item.valuation_rate = item.ts_valuation_rate
 							# core function end
+			else:
+				for item in document.get('items'):
+					item.ts_valuation_rate = item.valuation_rate
 		else:
 			for item in document.get('items'):
 
