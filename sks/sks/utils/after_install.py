@@ -37,7 +37,7 @@ def after_install():
     sales_invoice_customization()
     item_customization()
     purchase_invoice_customization()
-    purchase_receipt_customization()
+    # purchase_receipt_customization()
     customer_customization()
     item_tax_customization()
     item_barcode_customization()
