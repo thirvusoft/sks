@@ -18,7 +18,11 @@ def sales_order_custom_field():
             dict(fieldname='mode_of_delivery', label='Mode of Delivery',
                 fieldtype='Select',options=' \nPick up\nDoor Delivery', insert_after='order_type',reqd=1),
             dict(fieldname='delivery_day', label='Delivery day',
-                fieldtype='Data', insert_after='delivery_date',read_only=1)
+                fieldtype='Data', insert_after='delivery_date',read_only=1),
+            dict(fieldname='is_against_delivery_note', label='Is Against Delivery Note',
+                fieldtype='Check',allow_on_submit=1,
+                insert_after='posting_day', 
+                hidden=1)
         ]
     }
     create_custom_fields(custom_fields)
