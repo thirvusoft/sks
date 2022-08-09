@@ -6,6 +6,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "common_features_section",
   "allow_only_if_delivery_note_items_match_with_sales_order_items",
   "item_verifed_in_purchase_receipt",
   "item_verifed_in_purchase_invoice",
@@ -21,7 +22,8 @@
   "purchase_workflow_section",
   "verification_of_free_item",
   "verification_of_altered_quantity",
-  "column_break_12",
+  "verification_of_markup_and_down",
+  "column_break_17",
   "verification_of_rate_change",
   "verification_of_rejected_quantity",
   "pos_awesome_settings_section",
@@ -68,6 +70,7 @@
    "label": "Credit Bill History"
   },
   {
+   "collapsible": 1,
    "fieldname": "pos_awesome_settings_section",
    "fieldtype": "Section Break",
    "label": "POS Awesome Settings"
@@ -138,6 +141,7 @@
    "label": "Add items from not processed purchase order"
   },
   {
+   "collapsible": 1,
    "fieldname": "driver_closing_shift_section",
    "fieldtype": "Section Break",
    "label": "Driver Closing Shift"
@@ -162,6 +166,7 @@
    "label": "Item Warehouse Fetching"
   },
   {
+   "collapsible": 1,
    "fieldname": "purchase_workflow_section",
    "fieldtype": "Section Break",
    "label": "Purchase Workflow"
@@ -179,10 +184,6 @@
    "fieldname": "verification_of_altered_quantity",
    "fieldtype": "Check",
    "label": "Verification of Altered Quantity"
-  },
-  {
-   "fieldname": "column_break_12",
-   "fieldtype": "Column Break"
   },
   {
    "default": "0",
@@ -204,12 +205,29 @@
    "fieldname": "item_verifed_in_purchase_invoice",
    "fieldtype": "Check",
    "label": "Item Verifed In Purchase Invoice"
+  },
+  {
+   "fieldname": "column_break_17",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "To Verify Markup and Markdown for Mismatched Items",
+   "fieldname": "verification_of_markup_and_down",
+   "fieldtype": "Check",
+   "label": "Verification of Markup & Markdown"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "common_features_section",
+   "fieldtype": "Section Break",
+   "label": "Common Features"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-08-08 10:33:19.550397",
+ "modified": "2022-08-09 12:44:53.058848",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Thirvu Retail Settings",

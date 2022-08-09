@@ -234,33 +234,37 @@ def markup_and_markdown_calculator(document,event):
 				if item.item_code==ts_unmatched_item[m]:
 					item.ts_selling_rate=ts_unmatched_selling_rate[m]
 					item.ts_selling_rate_automatic_calculation=1
-		
-		costing_details = []
-		if(ts_markup_items_to_verify):
-			for i in range(0,len(ts_markup_items_to_verify),1):
-				ts_markup_items_to_verify_ = [{
-						'items':ts_markup_items_to_verify[i]['items'],
-						'markup__markdown':"Markup",
-						'selling_rate':ts_markup_items_to_verify[i]['selling_rate'],
-						'difference':ts_markup_items_to_verify[i]['difference'],
-						}]
-				document.update({
-						'thirvu_items_to_verify':costing_details+ts_markup_items_to_verify_
-					})
-		costing_details= document.get('thirvu_items_to_verify') or []
-		if(ts_markdown_items_to_verify):
-			for i in range(0,len(ts_markdown_items_to_verify)):
-				ts_markdown_items_to_verify_ = [{
-						'items':ts_markdown_items_to_verify[i]['items'],
-						'markup__markdown':"MarkDown",
-						'selling_rate':ts_markdown_items_to_verify[i]['selling_rate'],
-						'difference':ts_markdown_items_to_verify[i]['difference'],
-						}]
-				document.update({
-						'thirvu_items_to_verify':costing_details+ts_markdown_items_to_verify_
-					})
-		if(len(document.thirvu_items_to_verify)>0):document.ts_markup_and_markdown_variations=1
-		else:document.ts_markup_and_markdown_variations=0
+
+		# Markup & Markdown
+		markup_down_verification = frappe.db.get_single_value('Thirvu Retail Settings',"verification_of_markup_and_down")
+		if markup_down_verification == 1:
+			costing_details = []
+			if(ts_markup_items_to_verify):
+				for i in range(0,len(ts_markup_items_to_verify),1):
+					ts_markup_items_to_verify_ = [{
+							'items':ts_markup_items_to_verify[i]['items'],
+							'markup__markdown':"Markup",
+							'selling_rate':ts_markup_items_to_verify[i]['selling_rate'],
+							'difference':ts_markup_items_to_verify[i]['difference'],
+							}]
+					document.update({
+							'thirvu_items_to_verify':costing_details+ts_markup_items_to_verify_
+						})
+			costing_details= document.get('thirvu_items_to_verify') or []
+			if(ts_markdown_items_to_verify):
+				for i in range(0,len(ts_markdown_items_to_verify)):
+					ts_markdown_items_to_verify_ = [{
+							'items':ts_markdown_items_to_verify[i]['items'],
+							'markup__markdown':"MarkDown",
+							'selling_rate':ts_markdown_items_to_verify[i]['selling_rate'],
+							'difference':ts_markdown_items_to_verify[i]['difference'],
+							}]
+					document.update({
+							'thirvu_items_to_verify':costing_details+ts_markdown_items_to_verify_
+						})
+			if(len(document.thirvu_items_to_verify)>0):document.ts_markup_and_markdown_variations=1
+			else:
+				document.ts_markup_and_markdown_variations=0
 
 def calculating_landed_cost_voucher_amount(self):
 	total_item_cost = 0.0
@@ -331,7 +335,8 @@ def validate(doc,event):
 							price_changed.append(item_row)
 		doc.update({'thirvu_price_changed_items':price_changed})
 		if(len(doc.thirvu_price_changed_items)>0):doc.ts_item_price_changed=1
-		else:doc.ts_item_price_changed=0
+		else:
+			doc.ts_item_price_changed=0
 	
 def purchased_qty_validation(doc,event):
 	thirvu_settings = frappe.db.get_single_value("Thirvu Retail Settings","automatic_batch_creation")

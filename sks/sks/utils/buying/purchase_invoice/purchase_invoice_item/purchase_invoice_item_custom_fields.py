@@ -46,7 +46,8 @@ def purchase_invoice_item_custom_fields():
                               fieldtype='Check', 
                               insert_after='ts_selling_rate',
                               read_only=1,
-                              hidden=0
+                              hidden=1,
+                              no_copy=1
                     ),
                     dict(
                               fieldname='ts_valuation_rate', 
