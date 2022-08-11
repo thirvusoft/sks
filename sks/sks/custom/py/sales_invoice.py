@@ -104,3 +104,7 @@ def billed_by(doc,event):
         if doc.pos_profile:
             ts_user=frappe.get_value("User",{"name":doc.owner},"full_name")
             doc.billed_by=ts_user
+
+@frappe.whitelist()
+def barcode_creation(doc,event):
+    doc.bill_barcode=doc.name
