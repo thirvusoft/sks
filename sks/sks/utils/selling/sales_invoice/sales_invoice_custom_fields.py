@@ -29,7 +29,7 @@ def sales_invoice_custom_field():
             dict(fieldname='billed_by', label='Billed By',
                 fieldtype='Data', insert_after='pos_profile',read_only=1),
             dict(fieldname='bill_barcode', label='Bill Barcode',
-                fieldtype='Barcode', insert_after='reason',read_only=1),
+                fieldtype='Barcode', insert_after='reason',read_only=1,hidden=1),
         ],
     }
     create_custom_fields(custom_fields)
