@@ -34,7 +34,13 @@
   "denomination",
   "column_break_15",
   "driver_closing_shift_section",
-  "driver_closing_shift_grace_amount"
+  "driver_closing_shift_grace_amount",
+  "column_break_30",
+  "thirvu_retail_closing_shift_grace_amount",
+  "printing_details_section",
+  "message",
+  "column_break_34",
+  "customer_care_number"
  ],
  "fields": [
   {
@@ -73,7 +79,7 @@
    "collapsible": 1,
    "fieldname": "pos_awesome_settings_section",
    "fieldtype": "Section Break",
-   "label": "POS Awesome Settings"
+   "label": "Thirvu Retail Settings"
   },
   {
    "default": "0",
@@ -114,7 +120,7 @@
    "collapsible": 1,
    "fieldname": "pos_denomination_section",
    "fieldtype": "Section Break",
-   "label": "POS Denomination "
+   "label": "Thirvu Retail Denomination "
   },
   {
    "fieldname": "denomination",
@@ -144,7 +150,7 @@
    "collapsible": 1,
    "fieldname": "driver_closing_shift_section",
    "fieldtype": "Section Break",
-   "label": "Driver Closing Shift"
+   "label": "Closing Shift Details"
   },
   {
    "fieldname": "driver_closing_shift_grace_amount",
@@ -222,12 +228,41 @@
    "fieldname": "common_features_section",
    "fieldtype": "Section Break",
    "label": "Common Features"
+  },
+  {
+   "fieldname": "thirvu_retail_closing_shift_grace_amount",
+   "fieldtype": "Currency",
+   "label": "Thirvu Retail Closing Shift Grace Amount"
+  },
+  {
+   "fieldname": "column_break_30",
+   "fieldtype": "Column Break"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "printing_details_section",
+   "fieldtype": "Section Break",
+   "label": "Printing Details"
+  },
+  {
+   "fieldname": "message",
+   "fieldtype": "Data",
+   "label": "Message"
+  },
+  {
+   "fieldname": "column_break_34",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "customer_care_number",
+   "fieldtype": "Int",
+   "label": "Customer Care Number"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-08-09 12:44:53.058848",
+ "modified": "2022-08-11 16:02:50.754904",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Thirvu Retail Settings",

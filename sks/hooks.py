@@ -146,8 +146,9 @@ doc_events = {
 
 	"Sales Invoice":{
 		"validate":["sks.sks.custom.py.sales_invoice.feed_back_form",
-					"sks.sks.custom.py.sales_invoice.saving_amount"
-		]
+					"sks.sks.custom.py.sales_invoice.saving_amount",
+					"sks.sks.custom.py.sales_invoice.billed_by"
+				]
 	},
 	"Purchase Order":{
 		"validate":[

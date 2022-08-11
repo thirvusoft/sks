@@ -61,7 +61,7 @@ def payment_entry(amount,mode,customer,pending_invoice,company,ref_no=None,ref_d
     frappe.db.commit()
     return doc.paid_amount,mode
 
-
+@frappe.whitelist()
 def feed_back_form(doc, action): 
     si=frappe.get_all('Customer Feedback Form', 
 		    filters={'customer_name': doc.customer},
@@ -89,9 +89,18 @@ def feed_back_form(doc, action):
                     compliants_list.append("<p>"+cff.others+"</p>")
         
         frappe.msgprint('<b>Rating: </b> '+('⭐'*feedback3)+'<p><b>Feedback: </b> </p><ul>'+" ".join(compliants_list)+'</ul>')
-          
+
+
+@frappe.whitelist()
 def saving_amount(doc,event):
     total_mrp=0
     for row in doc.items:
         total_mrp+=row.mrp*row.qty
-    doc.your_savings = total_mrp-doc.rounded_total 
+    doc.your_savings = total_mrp-doc.rounded_total
+
+@frappe.whitelist()
+def billed_by(doc,event):
+    if doc.is_pos==1:
+        if doc.pos_profile:
+            ts_user=frappe.get_value("User",{"name":doc.owner},"full_name")
+            doc.billed_by=ts_user

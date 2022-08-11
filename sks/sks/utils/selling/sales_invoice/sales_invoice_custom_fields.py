@@ -26,7 +26,8 @@ def sales_invoice_custom_field():
                 fieldtype='Data', insert_after='due_date',read_only=1),
             dict(fieldname='your_savings', label='Your Savings',
                 fieldtype='Currency', insert_after='grand_total',read_only=1),
-            
+            dict(fieldname='billed_by', label='Billed By',
+                fieldtype='Data', insert_after='pos_profile',read_only=1),
         ],
     }
     create_custom_fields(custom_fields)
