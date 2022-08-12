@@ -400,8 +400,9 @@ def mandatory_validation(doc,event):
 	ts_value=frappe.db.get_single_value("Thirvu Retail Settings","invoice_amount_should_be_matched")
 	if ts_value==1:
 		ts_difference_amount=""
-		if doc.supplier_invoice_amount != doc.rounded_total:
-			ts_difference_amount = doc.rounded_total - doc.supplier_invoice_amount
-		
-		if ts_difference_amount:
-			frappe.throw(_("• Supplier Invoice Amount Is Differ From Our Purchase Invoice<br> • Difference Amount Is <b>₹{0}</b> <br> • So,Please Verify It...").format(ts_difference_amount))
+		if doc.rounded_total:
+			if doc.supplier_invoice_amount != doc.rounded_total:
+				ts_difference_amount = doc.rounded_total - doc.supplier_invoice_amount
+			
+			if ts_difference_amount:
+				frappe.throw(_("• Supplier Invoice Amount Is Differ From Our Purchase Invoice<br> • Difference Amount Is <b>₹{0}</b> <br> • So,Please Verify It...").format(ts_difference_amount))
