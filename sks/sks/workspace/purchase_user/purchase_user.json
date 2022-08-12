@@ -19,7 +19,7 @@
  "is_standard": 1,
  "label": "Purchase User",
  "links": [],
- "modified": "2022-08-08 18:16:01.165252",
+ "modified": "2022-08-09 19:17:49.345508",
  "modified_by": "naveenkumar@thirvusoft.in",
  "module": "sks",
  "name": "Purchase User",
@@ -32,12 +32,6 @@
    "doc_view": "List",
    "label": "Purchase Order",
    "link_to": "Purchase Order",
-   "type": "DocType"
-  },
-  {
-   "doc_view": "List",
-   "label": "Purchase Receipt",
-   "link_to": "Purchase Receipt",
    "type": "DocType"
   },
   {
