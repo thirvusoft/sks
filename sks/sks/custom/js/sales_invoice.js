@@ -8,7 +8,6 @@ frappe.ui.form.on("Sales Invoice",{
 		}
 	},
 	due_date:function(frm,cdt,cdn){
-		console.log("kkkkkkkkkkkk")
 		var day = new Date(cur_frm.doc.due_date);
 		var weekdays=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
 		cur_frm.set_value("due_day",weekdays[day.getDay()])
