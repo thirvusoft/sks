@@ -74,7 +74,7 @@ def purchase_invoice_item_custom_fields():
 				fieldname='is_free_item_from_supplier', 
 				label='Free Item From Supplier',
 				fieldtype='Check', 
-				insert_after='item_code',		
+				insert_after='item_code'	
 			),
 		],
 	}
