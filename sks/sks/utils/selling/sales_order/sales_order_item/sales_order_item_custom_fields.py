@@ -13,12 +13,22 @@ def sales_order_item_customization():
 def sales_order_item_custom_fields():
     custom_fields={
         "Sales Order Item":[
-             dict(fieldname='ts_warehouse', label='TS Warehouse',
-
-                fieldtype='Data',hidden=1, insert_after='gros_profit'),
-
-           ]
-        }
+            dict(fieldname='ts_warehouse',
+                label='TS Warehouse',
+                fieldtype='Data',
+                hidden=1, 
+                insert_after='gros_profit'
+            ),
+            dict(fieldname='ts_mrp',
+                label='MRP',
+                fieldtype='Currency', 
+                insert_after='item_code',
+                in_list_view=1,
+                columns=1,
+                read_only=1
+            )
+        ]
+    }
     create_custom_fields(custom_fields)
 
 def sales_order_item_property_setter():
