@@ -107,4 +107,5 @@ def billed_by(doc,event):
 
 @frappe.whitelist()
 def barcode_creation(doc,event):
-    doc.bill_barcode=doc.name
+    if doc.bill_barcode == None:
+        doc.bill_barcode=doc.name

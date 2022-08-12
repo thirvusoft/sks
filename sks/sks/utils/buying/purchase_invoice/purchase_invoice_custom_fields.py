@@ -136,6 +136,19 @@ def purchase_invoice_custom_field():
                     insert_after='scanned_items',
                     no_copy=1,
                     hidden=1               
+                ),
+                dict(
+                    fieldname='ts_column_break_01', 
+                    label='',
+                    fieldtype='Column Break', 
+                    insert_after='bill_date'        
+                ),
+                dict(
+                    fieldname='supplier_invoice_amount', 
+                    label='Supplier Invoice Amount',
+                    fieldtype='Currency', 
+                    insert_after='ts_column_break_01',
+                    reqd=1           
                 )
             ],
         }
@@ -154,7 +167,7 @@ def purchase_invoice_property_setter():
     make_property_setter("Purchase Invoice", "party_account_currency", "hidden", "1", "Check")
     make_property_setter("Purchase Invoice", "subscription_section", "hidden", "1", "Check")
     make_property_setter("Purchase Invoice", "accounting_dimensions_section", "hidden", 1, "Check")
-    make_property_setter("Purchase Invoice", "supplier_invoice_details", "hidden", 1, "Check")
+    make_property_setter("Purchase Invoice", "supplier_invoice_details", "hidden", 0, "Check")
     make_property_setter("Purchase Invoice", "update_stock", "hidden", 1, "Check")
     make_property_setter("Purchase Invoice", "scan_barcode", "hidden", 1, "Check")
     make_property_setter("Purchase Invoice", "terms_section_break", "hidden", 1, "Check")
@@ -174,3 +187,5 @@ def purchase_invoice_property_setter():
     make_property_setter("Purchase Invoice", "taxes_and_charges_deducted", "hidden", 1, "Check")
     make_property_setter("Purchase Invoice", "is_subcontracted", "hidden", 1, "Check")
     make_property_setter("Purchase Invoice", "cost_center", "default", "Main - SKS", "Link")
+    make_property_setter("Purchase Invoice", "bill_no", "reqd", 1, "Check")
+    make_property_setter("Purchase Invoice", "bill_date", "reqd", 1, "Check")
