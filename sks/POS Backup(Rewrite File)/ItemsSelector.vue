@@ -132,7 +132,9 @@
             <v-btn small value="card">{{ __('Card') }}</v-btn>
           </v-btn-toggle>
         </v-col>
-        <v-col cols="4" class="mt-2">
+        <!-- Customized By Thirvusoft
+        Start -->
+        <!-- <v-col cols="4" class="mt-2">
           <v-btn small block color="warning" text @click="show_coupons"
             >{{ couponsCount }} {{ __('Coupons') }}</v-btn
           >
@@ -142,7 +144,8 @@
             >{{ offersCount }} {{ __('Offers') }} : {{ appliedOffersCount }}
             {{ __('Applied') }}</v-btn
           >
-        </v-col>
+        </v-col> -->
+        <!-- End -->
       </v-row>
     </v-card>
   </div>
