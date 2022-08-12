@@ -340,6 +340,7 @@ def supplier_free_item(doc,event):
 
 @frappe.whitelist()
 def mandatory_validation(doc,event):
+	# Expiry Date and Selling Price Validation
 	ts_item_expiry_date=""
 	ts_mrp_differ_selling_rate=""
 	ts_valuation_differ_selling_rate=""
@@ -364,7 +365,8 @@ def mandatory_validation(doc,event):
 	
 	if ts_valuation_differ_selling_rate:
 		frappe.throw(_("Selling Price Is Lesser Than The Valuation Rate, Please Check It... <br>{0}").format(ts_valuation_differ_selling_rate))
-   
+	
+	# Warehouse Validation
 	ts_value=frappe.db.get_single_value("Thirvu Retail Settings","item_warehouse_fetching")
 	if ts_value==1:   
 		item = doc.items
@@ -381,6 +383,7 @@ def mandatory_validation(doc,event):
 				items_with_no_warehouse+="•"+item_name.item_code+'<br>'
 		if items_with_no_warehouse:frappe.throw(_("Please Select warehouse for <br>{0}".format(items_with_no_warehouse)))
 
+	# Barcode Veification validation
 	ts_value=frappe.db.get_single_value("Thirvu Retail Settings","item_verifed_in_purchase_invoice")
 	if ts_value==1:
 		ts_item_barcodes=""
@@ -393,3 +396,12 @@ def mandatory_validation(doc,event):
 		if ts_item_barcodes:
 			frappe.throw(_("Below Items Are Not Verified, Please Check It... <br>{0}").format(ts_item_barcodes))
 
+	# Supplier Invoice Amount Validation With Our Invoice
+	ts_value=frappe.db.get_single_value("Thirvu Retail Settings","invoice_amount_should_be_matched")
+	if ts_value==1:
+		ts_difference_amount=""
+		if doc.supplier_invoice_amount != doc.rounded_total:
+			ts_difference_amount = doc.rounded_total - doc.supplier_invoice_amount
+		
+		if ts_difference_amount:
+			frappe.throw(_("• Supplier Invoice Amount Is Differ From Our Purchase Invoice<br> • Difference Amount Is <b>₹{0}</b> <br> • So,Please Verify It...").format(ts_difference_amount))

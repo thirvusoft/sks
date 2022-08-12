@@ -13,6 +13,7 @@
   "buying_rate_calculation",
   "add_item_from_not_processed_purchase_order",
   "purchased_and_sold_qty_alert",
+  "invoice_amount_should_be_matched",
   "column_break_3",
   "customer_transaction_history",
   "automatic_batch_creation",
@@ -257,12 +258,19 @@
    "fieldname": "customer_care_number",
    "fieldtype": "Int",
    "label": "Customer Care Number"
+  },
+  {
+   "default": "0",
+   "description": "In Purchase Invoice, Total Amount Should Be Mapped With Supplier Invoice Total Amount Then only Able To Submit That Invoice",
+   "fieldname": "invoice_amount_should_be_matched",
+   "fieldtype": "Check",
+   "label": "Invoice Amount Should Be Matched"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-08-11 16:02:50.754904",
+ "modified": "2022-08-12 11:38:34.818280",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Thirvu Retail Settings",
