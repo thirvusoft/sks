@@ -85,11 +85,10 @@ def automatic_batch_creation(doc,event):
 						if(item_code[i]==item.__dict__["item_code"]):
 							if(changed_barcode!=0):
 								item.barcode=changed_barcode
+								item.batch_no=""
 				frappe.db.set_value("Item",item_code[i],"create_new_batch",1)
 			item_changes_count=0
 			item_changes_details=[]
-		return 0
-		
 
 def markup_and_markdown_calculator(document,event):
 	document.update({

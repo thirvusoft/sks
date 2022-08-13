@@ -59,48 +59,43 @@ def auto_batch_creations(doc,event):
 				item_mrp.append(item.mrp_rates)
 				# expiry_date.append(item.expire_dates)
 
-		matched_batch_name=[]
-		matched_creation_date=[]
 		item_changes_count=0
 		item_changes_details=[]
-		correct_batch_name=0
-		batch_expiry=frappe.get_all("Batch",fields=["name","ts_valuation_rate","item","expiry_date","creation","ts_mrp"])
 		for i in range(0,len(item_code),1):
-			for j in range(0,(len(batch_expiry)),1):
-				if(item_code[i]==batch_expiry[j]["item"]):
-					matched_batch_name.append(batch_expiry[j]["name"])
-			for l in range(0,len(matched_batch_name),1):
-				for n in range(0,(len(batch_expiry)),1):
-					if(matched_batch_name[l]==batch_expiry[n]["name"]):
-						matched_creation_date.append(batch_expiry[n]["creation"])
-			for c in range(0,(len(batch_expiry)),1):
-				if(matched_creation_date!=[]):
-					if(max(matched_creation_date)==batch_expiry[c]["creation"]):
-						correct_batch_name=batch_expiry[c]["name"]
-						# formatted_expiry_date=getdate(expiry_date[i])
-						# if(batch_expiry[c]["expiry_date"]!=formatted_expiry_date):
-						#     item_changes_count=item_changes_count+1
-						#     item_changes_details.append("Expiry date")
-						if(batch_expiry[c]["ts_mrp"]!=item_mrp[i]):
-							item_changes_count=item_changes_count+1
-							item_changes_details.append("MRP")
-						if(batch_expiry[c]["ts_valuation_rate"]!=item_rate[i]):
-							item_changes_count=item_changes_count+1
-							item_changes_details.append("Valuation Rate")
-						
-		if(item_changes_count==0):
-			frappe.db.set_value("Item",item_code[i],"create_new_batch",0)
-			for item in doc.items:
-				if(item_code[i]==item.__dict__["item_code"]):
-					if(correct_batch_name!=0):
-						item.batch_no=correct_batch_name
+			try:
+				if(frappe.db.get_value("Item",{"name":item_code[i]},["is_expiry_item"])):
+					batch_doc = frappe.get_last_doc("Batch", filters = [["item","=", item_code[i]],['expiry_date','>=',nowdate()]],order_by="modified desc")
+				else:
+					batch_doc = frappe.get_last_doc("Batch", filters = [["item","=", item_code[i]]],order_by="modified desc")
 
-		else:
-			frappe.db.set_value("Item",item_code[i],"create_new_batch",1)
-		
-		item_changes_count=0
-		item_changes_details=[]
+				if(batch_doc.ts_mrp!=item_mrp[i]):
+					item_changes_count=item_changes_count+1
+					item_changes_details.append("MRP")
+				if(batch_doc.ts_valuation_rate!=item_rate[i]):
+					item_changes_count=item_changes_count+1
+					item_changes_details.append("Valuation Rate")
+				# if batch_doc.expiry_date:
+				# 	ts_date=getdate(expiry_date[i])
+				# 	if(batch_doc.expiry_date!=ts_date):
+				# 		item_changes_count=item_changes_count+1
+				# 		item_changes_details.append("Valuation Rate")
+			except:
+				batch_doc = 0
 
+			if(item_changes_count==0) and batch_doc:
+				frappe.db.set_value("Item",item_code[i],"create_new_batch",0)
+				for item in doc.items:
+					if(item_code[i]==item.__dict__["item_code"]):
+						if(batch_doc.name!=0):
+							item.batch_no=batch_doc.name
+			else:
+				frappe.db.set_value("Item",item_code[i],"create_new_batch",1)
+				for item in doc.items:
+					if(item_code[i]==item.__dict__["item_code"]):
+						if(batch_doc.name!=0):
+							item.batch_no=""
+			item_changes_count=0
+			item_changes_details=[]
 
 @frappe.whitelist()
 def material_transfer(doc,event):
