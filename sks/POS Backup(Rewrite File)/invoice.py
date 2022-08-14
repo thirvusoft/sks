@@ -13,9 +13,11 @@ from posawesome.posawesome.api.posapp import get_company_domain
 from posawesome.posawesome.doctype.delivery_charges.delivery_charges import (
     get_applicable_delivery_charges,
 )
+# Customized By Thirvusoft
+# Start
 import datetime
 import calendar
-
+# End
 
 def validate(doc, method):
     set_patient(doc)
