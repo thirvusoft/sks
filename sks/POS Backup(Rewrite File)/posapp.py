@@ -394,7 +394,6 @@ def update_invoice(data):
     else:
         invoice_doc = frappe.get_doc(data)
 
-
     invoice_doc.flags.ignore_permissions = True
     frappe.flags.ignore_account_permission = True
     if invoice_doc.is_return and invoice_doc.return_against:
@@ -424,6 +423,11 @@ def submit_invoice(invoice, data):
     invoice_doc.update(invoice)
     if invoice.get("posa_delivery_date"):
         invoice_doc.update_stock = 0
+    # Customized By Thirvusoft
+    # Start
+    else:
+        invoice_doc.update_stock = 1
+    # End
     mop_cash_list = [
         i.mode_of_payment
         for i in invoice_doc.payments
@@ -508,8 +512,8 @@ def submit_invoice(invoice, data):
     frappe.flags.ignore_account_permission = True
     invoice_doc.posa_is_printed = 1
     invoice_doc.save()
-    invoice_doc.docstatus = 1
-    invoice_doc.update_stock = 1
+    # invoice_doc.docstatus = 1
+    # invoice_doc.update_stock = 1
     if frappe.get_value(
         "POS Profile",
         invoice_doc.pos_profile,

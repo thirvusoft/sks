@@ -12,35 +12,34 @@ def custom_field():
                 fieldtype='Check', 
                 insert_after='section_break_9',
                 hidden=1,
-                allow_on_submit=1),
-        ]
-    }
-    create_custom_fields(custom_fields)
-    custom_fields={
+                allow_on_submit=1
+            ),
+        ],
         "POS Closing Shift":[
             dict(fieldname='ts_denomination_details',
                 label='Denomination Details',
                 fieldtype='Section Break', 
-                insert_after='payment_reconciliation'),
+                insert_after='payment_reconciliation'
+            ),
             dict(fieldname='ts_denomination_counts',
                 label=' ',
                 fieldtype='Table', 
                 insert_after='ts_denomination_details',
                 options="Denomination",
-                read_only=1),
+                read_only=1
+            ),
             dict(fieldname='ts_denomination_total',
                 label='Denomination Total',
                 fieldtype='Currency', 
                 insert_after='ts_denomination_counts',
-                read_only=1),
+                read_only=1
+            ),
             dict(fieldname='ts_column_break',
                 label=' ',
                 fieldtype='Column Break',
-                insert_after='ts_denomination_total',),
-        ]
-    }
-    create_custom_fields(custom_fields)
-    custom_fields={
+                insert_after='ts_denomination_total',
+            )
+        ],
         "POS Profile":[
             dict(fieldname='ts_is_closing_stock_detail',
                 label='Is Closing Stock Detail',

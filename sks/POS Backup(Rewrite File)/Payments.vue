@@ -341,6 +341,32 @@
               </v-date-picker>
             </v-menu>
           </v-col>
+          <!-- Customized By Thirvusoft
+          Start -->
+          <v-col cols="6" v-if="invoice_doc.posa_delivery_date">
+            <v-autocomplete
+              dense
+              clearable
+              outlined
+              color="indigo"
+              :label="frappe._('Mode Of Delivery')"
+              v-model="invoice_doc.mode_of_delivery"
+              :items=ts_mode_of_delivery
+              background-color="white"
+            >
+            </v-autocomplete>
+            </v-col>
+          <v-col
+            cols="6" v-if="invoice_doc.posa_delivery_date && invoice_doc.mode_of_delivery == 'Door Delivery'"
+          >
+            <v-switch
+              v-model="invoice_doc.is_local_delivery"
+              flat
+              :label="frappe._('Is Local Delivery')"
+              class="my-0 py-0"
+            ></v-switch>
+          </v-col>
+          <!-- End -->
           <v-col cols="12" v-if="invoice_doc.posa_delivery_date">
             <v-autocomplete
               dense
@@ -609,7 +635,7 @@
             >{{ __('Back') }}</v-btn
           >
         </v-col>
-        <v-col cols="12">
+        <v-col cols="12" >
           <v-btn
             block
             class="mt-2"
@@ -1188,8 +1214,12 @@ export default {
   vaildatPayment() {
         if (this.pos_profile.posa_allow_sales_order) {
           if (
-            this.invoiceType == 'Order' &&
-            !this.invoice_doc.posa_delivery_date
+            this.invoiceType == 'Order'
+            // Customized By Thirvusoft
+            // Start
+            // && !this.invoice_doc.posa_delivery_date 
+            && !this.invoice_doc.mode_of_delivery
+            // End
           ) {
             return true;
           } else {
@@ -1221,6 +1251,9 @@ export default {
       this.$nextTick(function () {
         evntBus.$on('send_invoice_doc_payment', (invoice_doc, thirvu_settings, feedback_required) => {
         this.invoice_doc = invoice_doc;
+        // Customized By Thirvusoft
+        // Start
+        this.ts_mode_of_delivery=["Pick Up","Door Delivery"]
         if(thirvu_settings == "1"){
           this.thirvu_settings = 1
         }
@@ -1233,7 +1266,7 @@ export default {
         else{
           this.feedback_required = 0
         }
-        
+        // End
         const default_payment = this.invoice_doc.payments.find(
           (payment) => payment.default == 1
           );
@@ -1259,6 +1292,11 @@ export default {
           this.invoice_doc.posa_delivery_date = null;
           this.invoice_doc.posa_notes = null;
           this.invoice_doc.shipping_address_name = null;
+          // Customized By Thirvusoft
+          // Start
+          this.invoice_doc.is_local_delivery = null;
+          this.invoice_doc.ts_mode_of_delivery = null;
+          // End
         }
       });
     });
