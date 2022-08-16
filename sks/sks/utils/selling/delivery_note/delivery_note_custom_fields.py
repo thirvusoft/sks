@@ -54,7 +54,8 @@ def delivery_note_custom_field():
                 label='Is Local Delivery',
                 fieldtype='Check', 
                 insert_after='mode_of_delivery',
-                read_only=1
+                read_only=1,
+                depends_on="eval:doc.mode_of_delivery=='Door Delivery'"
             ),
             dict(fieldname='is_against_sales_invoice',
                 label='Is Against Sales Invoice',
