@@ -27,6 +27,12 @@ def delivery_note_custom_field():
                 read_only=1,
                 fetch_from="Sales Order.mode_of_delivery"
             ),
+            dict(fieldname='delivery_day',
+                label='Delivery day',
+                fieldtype='Data',
+                insert_after='mode_of_delivery',
+                read_only=1
+            ),
             dict(fieldname='outstanding_amount', 
                 label='Outstanding Amount',
                 fieldtype='Currency', 
@@ -48,8 +54,18 @@ def delivery_note_custom_field():
                 label='Is Local Delivery',
                 fieldtype='Check', 
                 insert_after='mode_of_delivery',
-                read_only=1
+                read_only=1,
+                depends_on="eval:doc.mode_of_delivery=='Door Delivery'"
             ),
+            dict(fieldname='is_against_sales_invoice',
+                label='Is Against Sales Invoice',
+                fieldtype='Check', 
+                insert_after='is_local_delivery',
+                read_only=1,
+                hidden=1,
+                no_copy=1,
+                allow_on_submit=1
+            )
         ]
     }
     create_custom_fields(custom_fields)
