@@ -41,7 +41,8 @@ def sales_order_custom_field():
                 fieldtype='Check',
                 allow_on_submit=1,
                 insert_after='posting_day', 
-                hidden=1
+                hidden=1,
+                no_copy=1
             ),
             dict(fieldname='is_local_delivery', 
                 label='Is Local Delivery',
