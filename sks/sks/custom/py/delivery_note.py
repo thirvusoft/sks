@@ -70,7 +70,7 @@ def mandatory_validation(doc,event):
                             ts_difference = str(item.total_item_original_qty - item.total_item_verified_count)
                             ts_item_barcodes += "• "+item.item_code+' -> Difference Quantity : '+ts_difference+'<br>'
             if ts_item_barcodes:
-                frappe.throw(_("Below Items Are Not Matched With Required Quantity, Please Check It... <br>{0}").format(ts_item_barcodes))
+                frappe.throw(_("Below Items Are Not Matched With The Required Quantity, Please Check It... <br>{0}").format(ts_item_barcodes))
             
 @frappe.whitelist()
 def sales_order_to_delivery_note(data):

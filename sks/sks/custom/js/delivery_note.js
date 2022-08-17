@@ -25,7 +25,7 @@ frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note
 	// cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",0)
 	frappe.ui.form.on("Delivery Note",{
 		scan_barcode_to_verify_the_items: function(frm,cdt,cdn){
-			var p=0
+			var batch_popup_count=0
 			var data=locals[cdt][cdn]
 			var search_value = data.scan_barcode_to_verify_the_items
 			var checking_sales_order = data.items[0].against_sales_order
@@ -190,8 +190,8 @@ frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note
 														d.hide();
 													}
 												});
-												if(p==0){
-													p=p+1
+												if(batch_popup_count==0){
+													batch_popup_count=batch_popup_count+1
 													d.show();
 												}
 											}
