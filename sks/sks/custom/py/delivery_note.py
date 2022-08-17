@@ -103,13 +103,4 @@ def sales_order_to_delivery_note(data):
     else:
         msg="No Sales Orders To Convert"
         return msg
-  
-def validate_delivery_note(doc,event):
-   for row in doc.items:
-       if row.against_sales_order:
-           so=frappe.get_doc("Sales Order",row.against_sales_order)
-           so.is_against_delivery_note=1
-           so.save()
-           frappe.db.commit()
-           break
-          
+

@@ -92,8 +92,8 @@ def auto_batch_creations(doc,event):
 				frappe.db.set_value("Item",item_code[i],"create_new_batch",1)
 				for item in doc.items:
 					if(item_code[i]==item.__dict__["item_code"]):
-						if(batch_doc.name!=0):
-							item.batch_no=""
+						pass
+						# item.batch_no=""
 			item_changes_count=0
 			item_changes_details=[]
 
