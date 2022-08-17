@@ -45,7 +45,8 @@ def delivery_note_custom_field():
                 insert_after='outstanding_amount',
                 read_only=1
             ),
-            dict(fieldname='posting_day', label='Posting Day',
+            dict(fieldname='posting_day',
+                label='Posting Day',
                 fieldtype='Data', 
                 insert_after='posting_date', 
                 read_only=1
