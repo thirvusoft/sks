@@ -193,6 +193,9 @@ doc_events = {
 		"sks.sks.custom.py.stock_entry.auto_batch_creations",
 		"sks.sks.custom.py.stock_entry.material_transfer"]
 	},
+	"Stock Verification":{
+		"on_submit":"sks.sks.doctype.stock_verification.stock_verification.stock_emtry_creation"
+	}
 	# "TS Driver Delivery Trip":{
     #  	"validate":["sks.driver.doctype.ts_driver_delivery_trip.ts_driver_delivery_trip.driver_delivery_trip_submit"]
 	# }
