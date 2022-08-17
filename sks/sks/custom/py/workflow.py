@@ -217,9 +217,7 @@ def create_stock_verification():
     workflow.append('states', dict(
         state = 'Submitted',doc_status=1, allow_edit = 'Purchase User',update_field = 'status', update_value = 'To Bill'
     ))
-    workflow.append('states', dict(
-        state = 'To Bill',doc_status=1, allow_edit = 'Purchase User',update_field = 'status', update_value = 'To Bill'
-    ))
+   
     
     
     workflow.append('transitions', dict(
@@ -235,11 +233,11 @@ def create_stock_verification():
         allowed='Purchase Manager', allow_self_approval= 1
     ))
     workflow.append('transitions', dict(
-        state = 'Approved', action='Submit', next_state = 'To Bill',
+        state = 'Approved', action='Submit', next_state = 'Submitted',
         allowed='Purchase User', allow_self_approval= 1
     ))
     workflow.append('transitions', dict(
-        state = 'Draft', action='Submit', next_state = 'To Bill',
+        state = 'Draft', action='Submit', next_state = 'Submitted',
         allowed='Purchase User', allow_self_approval= 1
     ))
     workflow.append('transitions', dict(

@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "STOC-VER-.####",
  "creation": "2022-08-17 12:52:53.893746",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -8,6 +9,7 @@
  "field_order": [
   "select_bin",
   "select_item",
+  "item_warehouse",
   "qty",
   "stock",
   "verify",
@@ -35,7 +37,9 @@
   {
    "fieldname": "stock",
    "fieldtype": "Int",
-   "label": "Stock"
+   "in_list_view": 1,
+   "label": "Stock",
+   "reqd": 1
   },
   {
    "fieldname": "verify",
@@ -55,12 +59,17 @@
    "options": "Stock Verification",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "item_warehouse",
+   "fieldtype": "Data",
+   "label": "Item Warehouse"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-08-17 13:01:40.161951",
+ "modified": "2022-08-17 16:49:20.509530",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Stock Verification",
