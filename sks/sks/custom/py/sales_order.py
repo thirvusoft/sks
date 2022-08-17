@@ -132,6 +132,8 @@ def warehouse_fetching(doc,event):
             else:
                 items_with_no_warehouse+="•"+item_name.item_code+'<br>'
         if items_with_no_warehouse:frappe.throw(_("Please Select warehouse for <br>{0}".format(items_with_no_warehouse)))
+
+
 @frappe.whitelist(allow_guest=True)        
 def warehouse_qty_details(item_code,company):
     warehouse_qty_details=""
@@ -154,4 +156,14 @@ def warehouse_qty_details(item_code,company):
         warehouse_qty_details+="Available Qty in All Warehouse : {0} ".format(total_warehouse_qty["company_total_stock"])
     else:warehouse_qty_details+="Available Qty in All Warehouse : 0 "
     return warehouse_qty_details
-        
+
+@frappe.whitelist()
+def mrp_finder(item_code):
+    item_mrp = frappe.db.get_list(
+        "Batch",
+        fields={"ts_selling_price","ts_mrp"},
+        filters={'item': item_code},
+        order_by="ts_selling_price",
+        pluck='ts_mrp'
+    )
+    return item_mrp[-1]

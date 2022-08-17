@@ -7,6 +7,8 @@ from frappe.model.document import Document
 from frappe.model.mapper import get_mapped_doc
 from frappe.model.utils import get_fetch_values
 from frappe.utils.data import cstr, flt
+import json
+from erpnext.selling.doctype.sales_order.sales_order import make_delivery_note
 @frappe.whitelist()
 def item_check_with_sales_order(item_code_checking=None,checking_sales_order=None,search_value=None):
     matched_item=0
@@ -36,7 +38,7 @@ def item_check_with_sales_order(item_code_checking=None,checking_sales_order=Non
         return item_code,item_batch_name,item_batch_mrp
     else:
         return 0
-    
+  
 from frappe import _
 @frappe.whitelist()
 def mandatory_validation(doc,event):
@@ -55,7 +57,7 @@ def mandatory_validation(doc,event):
             else:
                 items_with_no_warehouse+="•"+item_name.item_code+'<br>'
         if items_with_no_warehouse:frappe.throw(_("Please Select warehouse for <br>{0}".format(items_with_no_warehouse)))
-    
+
     ts_value=frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note_items_match_with_sales_order_items")
     if ts_value==1:
         ts_item_barcodes=""
@@ -69,88 +71,45 @@ def mandatory_validation(doc,event):
             frappe.throw(_("Below Items Are Not Verified, Please Check It... <br>{0}").format(ts_item_barcodes))
             
 @frappe.whitelist()
-def sales_order_to_delivery_note(day):
-    so_doc=frappe.get_list("Sales Order",{"delivery_day":day,"status":"To Deliver and Bill"},pluck="name")
-    if so_doc != []:
-        delivery_today=0
-        unsuccessful_converts=0
-        for source_name in so_doc:
-            so_doc=frappe.get_doc("Sales Order",source_name)
-            if so_doc.is_against_delivery_note == 0:
-                try:
-                    skip_item_mapping=False
-                    target_doc=None
-                    def set_missing_values(source, target):
-                        target.run_method("set_missing_values")
-                        target.run_method("set_po_nos")
-                        target.run_method("calculate_taxes_and_totals")
-                        if source.company_address:
-                            target.update({"company_address": source.company_address})
-                        else:
-                            # set company address
-                            target.update(get_company_address(target.company))
-                        if target.company_address:
-                            target.update(get_fetch_values("Delivery Note", "company_address", target.company_address))
-                    def update_item(source, target, source_parent):
-                        target.base_amount = (flt(source.qty) - flt(source.delivered_qty)) * flt(source.base_rate)
-                        target.amount = (flt(source.qty) - flt(source.delivered_qty)) * flt(source.rate)
-                        target.qty = flt(source.qty) - flt(source.delivered_qty)
-                        item = get_item_defaults(target.item_code, source_parent.company)
-                        item_group = get_item_group_defaults(target.item_code, source_parent.company)
-                        if item:
-                            target.cost_center = (
-                                frappe.db.get_value("Project", source_parent.project, "cost_center")
-                                or item.get("buying_cost_center")
-                                or item_group.get("buying_cost_center")
-                            )
-                    mapper = {
-                        "Sales Order": {"doctype": "Delivery Note", "validation": {"docstatus": ["=", 1]}},
-                        "Sales Taxes and Charges": {"doctype": "Sales Taxes and Charges", "add_if_empty": True},
-                        "Sales Team": {"doctype": "Sales Team", "add_if_empty": True},
-                    }
-                    if not skip_item_mapping:
-                        def condition(doc):
-                            # make_mapped_doc sets js `args` into `frappe.flags.args`
-                            if frappe.flags.args and frappe.flags.args.delivery_dates:
-                                if cstr(doc.delivery_date) not in frappe.flags.args.delivery_dates:
-                                    return False
-                            return abs(doc.delivered_qty) < abs(doc.qty) and doc.delivered_by_supplier != 1
-                        mapper["Sales Order Item"] = {
-                            "doctype": "Delivery Note Item",
-                            "field_map": {
-                                "rate": "rate",
-                                "name": "so_detail",
-                                "parent": "against_sales_order",
-                            },
-                            "postprocess": update_item,
-                            "condition": condition,
-                        }
-                    target_doc = get_mapped_doc("Sales Order", source_name, mapper, target_doc, set_missing_values)
-                    target_doc.set_onload("ignore_price_list", True)
-                    target_doc.save()
-                    frappe.db.commit()
-                    delivery_today+=1
-                except:
-                    unsuccessful_converts+=1
-            s_msg=f"No of delivery notes created :{delivery_today} \n"
-            f_msg=f"No of failed orders to convert :{unsuccessful_converts}"
-            if s_msg != "No of delivery notes created :0" and f_msg !="No of failed orders to convert :0":
-                msg=s_msg+f_msg
-            elif s_msg != "No of delivery notes created :":
-                msg=s_msg
-            elif f_msg !="No of failed orders to convert :":
-                msg=f_msg
-            return msg
+def sales_order_to_delivery_note(data):
+    data=json.loads(data)
+    if data["mode_of_delivery"] == "Is Local Delivery":
+        so_doc=frappe.get_list("Sales Order",{"is_against_delivery_note":0,"is_local_delivery":1,"status":("in",("To Deliver","To Deliver and Bill"))},pluck="name")
     else:
-        msg="No Sales Orders to convert"
+        so_doc=frappe.get_list("Sales Order",{"is_against_delivery_note":0,"mode_of_delivery":data["mode_of_delivery"],"delivery_day":data["delivery_day"],"status":("in",("To Deliver","To Deliver and Bill"))},pluck="name")
+    if so_doc != []:
+        convereted_doc_count=0
+        not_converted_doc=""
+        for source_name in so_doc:
+            try:
+                delivery_note_doc=(make_delivery_note(source_name))
+                delivery_note_doc.save()
+                dn_new_doc=frappe.get_doc("Sales Order",source_name)
+                dn_new_doc.is_against_sales_invoice = 1
+                dn_new_doc.save()
+                frappe.db.commit()
+                convereted_doc_count+=1
+            except:
+                not_converted_doc += "•"+source_name+'<br>'
+            s_msg=f"No Of Delivery Notes Created : {convereted_doc_count} <br>"
+            f_msg=f"Below Sales Order Are Not Converted To Deliver Note :<br> {not_converted_doc}"
+            if s_msg != "No Of Delivery Notes Created :0" and not_converted_doc != "":
+                msg=s_msg+f_msg
+            elif s_msg != "No Of Delivery Notes Created :":
+                msg=s_msg
+            elif f_msg !="Below Sales Order Are Not Converted To Deliver Note :":
+                msg=f_msg
         return msg
-    
+    else:
+        msg="No Sales Orders To Convert"
+        return msg
+  
 def validate_delivery_note(doc,event):
-    for row in doc.items:
-        if row.against_sales_order:
-            so=frappe.get_doc("Sales Order",row.against_sales_order)
-            so.is_against_delivery_note=1
-            so.save()
-            frappe.db.commit()
-            break
-            
+   for row in doc.items:
+       if row.against_sales_order:
+           so=frappe.get_doc("Sales Order",row.against_sales_order)
+           so.is_against_delivery_note=1
+           so.save()
+           frappe.db.commit()
+           break
+          

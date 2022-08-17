@@ -11,18 +11,45 @@ def sales_order_customization():
 def sales_order_custom_field():
     custom_fields={
         "Sales Order":[
-            dict(fieldname='outstanding_amount', label='Outstanding Amount',
-                fieldtype='Currency', insert_after='total_qty',read_only=1),
-            dict(fieldname='outstanding_amount_and_total_amount', label='Outstanding Amount and Total Amount',
-                fieldtype='Currency', insert_after='outstanding_amount',hidden=1),
-            dict(fieldname='mode_of_delivery', label='Mode of Delivery',
-                fieldtype='Select',options=' \nPick up\nDoor Delivery', insert_after='order_type',reqd=1),
-            dict(fieldname='delivery_day', label='Delivery day',
-                fieldtype='Data', insert_after='delivery_date',read_only=1),
-            dict(fieldname='is_against_delivery_note', label='Is Against Delivery Note',
-                fieldtype='Check',allow_on_submit=1,
+            dict(fieldname='outstanding_amount', 
+                label='Outstanding Amount',
+                fieldtype='Currency',
+                insert_after='total_qty',
+                read_only=1
+            ),
+            dict(fieldname='outstanding_amount_and_total_amount',
+                label='Outstanding Amount and Total Amount',
+                fieldtype='Currency',
+                insert_after='outstanding_amount',
+                hidden=1
+            ),
+            dict(fieldname='mode_of_delivery',
+                label='Mode of Delivery',
+                fieldtype='Select',
+                options=' \nPick Up\nDoor Delivery',
+                insert_after='order_type',
+                reqd=1
+            ),
+            dict(fieldname='delivery_day',
+                label='Delivery day',
+                fieldtype='Data',
+                insert_after='delivery_date',
+                read_only=1
+            ),
+            dict(fieldname='is_against_delivery_note',
+                label='Is Against Delivery Note',
+                fieldtype='Check',
+                allow_on_submit=1,
                 insert_after='posting_day', 
-                hidden=1)
+                hidden=1,
+                no_copy=1
+            ),
+            dict(fieldname='is_local_delivery', 
+                label='Is Local Delivery',
+                fieldtype='Check',
+                insert_after='mode_of_delivery',
+                depends_on="eval:doc.mode_of_delivery=='Door Delivery'"
+            )
         ]
     }
     create_custom_fields(custom_fields)

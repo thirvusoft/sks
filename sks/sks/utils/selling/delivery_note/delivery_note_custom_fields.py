@@ -17,28 +17,55 @@ def delivery_note_custom_field():
                 fieldtype='Data', 
                 insert_after='scan_barcode',
                 options="Barcode",
-                hidden=0),
+                hidden=0
+            ),
             dict(fieldname='mode_of_delivery', 
                 label='Mode of Delivery',
-                fieldtype='Data', 
+                fieldtype='Select', 
                 insert_after='customer',
-                options="Barcode",
+                options='\nPick Up\nDoor Delivery',
                 read_only=1,
-                fetch_from="Sales Order.mode_of_delivery"),
+                fetch_from="Sales Order.mode_of_delivery"
+            ),
+            dict(fieldname='delivery_day',
+                label='Delivery day',
+                fieldtype='Data',
+                insert_after='mode_of_delivery',
+                read_only=1
+            ),
             dict(fieldname='outstanding_amount', 
                 label='Outstanding Amount',
                 fieldtype='Currency', 
                 insert_after='total_qty',
-                read_only=1),
+                read_only=1
+            ),
             dict(fieldname='outstanding_amount_and_total_amount', 
                 label='Outstanding Amount and Total Amount',
                 fieldtype='Currency', 
                 insert_after='outstanding_amount',
-                read_only=1),
+                read_only=1
+            ),
             dict(fieldname='posting_day', label='Posting Day',
                 fieldtype='Data', 
                 insert_after='posting_date', 
-                read_only=1)
+                read_only=1
+            ),
+            dict(fieldname='is_local_delivery',
+                label='Is Local Delivery',
+                fieldtype='Check', 
+                insert_after='mode_of_delivery',
+                read_only=1,
+                depends_on="eval:doc.mode_of_delivery=='Door Delivery'"
+            ),
+            dict(fieldname='is_against_sales_invoice',
+                label='Is Against Sales Invoice',
+                fieldtype='Check', 
+                insert_after='is_local_delivery',
+                read_only=1,
+                hidden=1,
+                no_copy=1,
+                allow_on_submit=1
+            )
         ]
     }
     create_custom_fields(custom_fields)

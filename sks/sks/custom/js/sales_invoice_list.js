@@ -1,9 +1,9 @@
-frappe.listview_settings['Delivery Note'] = {
+frappe.listview_settings['Sales Invoice'] = {
 	onload: function(listview) {
 		listview.page.clear_menu()
-		listview.page.add_menu_item(__("Create Delivery Notes"), function() {
+		listview.page.add_menu_item(__("Create Sales Invoice"), function() {
 			var d = new frappe.ui.Dialog({
-				title: "Choose A Filter To Pack The Orders",
+				title: "Choose A Filter To Bill The Orders",
 				fields: [
 					{
 						label:"Mode Of Delivery",
@@ -34,7 +34,7 @@ frappe.listview_settings['Delivery Note'] = {
 				primary_action_label: "Submit",
 				primary_action: function(data){
 					frappe.call({
-						method: "sks.sks.custom.py.delivery_note.sales_order_to_delivery_note",
+						method: "sks.sks.custom.py.sales_invoice.delivery_note_to_sales_invoice",
 						args: {data:data},
 						callback(msg){
 							frappe.msgprint(msg);

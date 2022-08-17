@@ -18,7 +18,7 @@
       </v-card>
     </v-dialog>
     <v-card
-      style="max-height: 70vh; height: 70vh"
+      style="max-height: 82vh; height: 82vh"
       class="cards my-0 py-0 grey lighten-5"
     >
       <v-row align="center" class="items px-2 py-1">
@@ -406,7 +406,9 @@
                       </template>
                     </v-autocomplete>
                   </v-col>
-                  <v-col
+                  <!-- Customized By Thirvusoft
+                  Start -->
+                  <!-- <v-col
                     cols="4"
                     v-if="
                       pos_profile.posa_allow_sales_order &&
@@ -466,7 +468,8 @@
                         </v-btn>
                       </v-date-picker>
                     </v-menu>
-                  </v-col>
+                  </v-col> -->
+                  <!-- End -->
                   <v-col
                     cols="8"
                     v-if="pos_profile.posa_display_additional_notes"

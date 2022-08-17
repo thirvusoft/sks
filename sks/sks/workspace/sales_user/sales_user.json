@@ -1,42 +1,59 @@
 {
  "category": "Modules",
- "charts": [],
+ "charts": [
+  {
+   "chart_name": "Outgoing Bills (Sales Invoice)",
+   "label": "Outgoing Bills"
+  },
+  {
+   "chart_name": "Sales Order Trends",
+   "label": "Sales Order Trends"
+  }
+ ],
  "creation": "2022-06-30 09:37:53.109391",
  "developer_mode_only": 0,
- "disable_user_customization": 0,
+ "disable_user_customization": 1,
  "docstatus": 0,
  "doctype": "Workspace",
  "extends_another_page": 0,
  "hide_custom": 0,
+ "icon": "sell",
  "idx": 0,
  "is_default": 0,
  "is_standard": 1,
  "label": "Sales User",
  "links": [],
- "modified": "2022-06-30 09:37:53.109391",
- "modified_by": "parameshwari@gmail.com",
+ "modified": "2022-08-08 18:21:16.187374",
+ "modified_by": "naveenkumar@thirvusoft.in",
  "module": "sks",
  "name": "Sales User",
+ "onboarding": "",
  "owner": "parameshwari@gmail.com",
  "pin_to_bottom": 0,
  "pin_to_top": 1,
  "shortcuts": [
   {
-   "doc_view": "",
+   "doc_view": "List",
    "label": "Sales Order",
    "link_to": "Sales Order",
    "type": "DocType"
   },
   {
-   "doc_view": "",
+   "doc_view": "List",
    "label": "Delivery Note",
    "link_to": "Delivery Note",
    "type": "DocType"
   },
   {
-   "doc_view": "",
+   "doc_view": "List",
    "label": "Sales Invoice",
    "link_to": "Sales Invoice",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Delivery Trip",
+   "link_to": "Delivery Trip",
    "type": "DocType"
   }
  ]

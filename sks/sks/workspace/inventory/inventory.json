@@ -1,20 +1,26 @@
 {
  "category": "Modules",
- "charts": [],
+ "charts": [
+  {
+   "chart_name": "Warehouse wise Stock Value",
+   "label": "Warehouse wise Stock Value"
+  }
+ ],
  "creation": "2022-07-20 16:49:56.151127",
  "developer_mode_only": 0,
- "disable_user_customization": 0,
+ "disable_user_customization": 1,
  "docstatus": 0,
  "doctype": "Workspace",
  "extends_another_page": 0,
  "hide_custom": 0,
+ "icon": "stock",
  "idx": 0,
  "is_default": 0,
  "is_standard": 1,
  "label": "Inventory",
  "links": [],
- "modified": "2022-07-20 16:49:56.151127",
- "modified_by": "pparameshwari@thirvusoft.in",
+ "modified": "2022-08-08 18:31:00.116020",
+ "modified_by": "naveenkumar@thirvusoft.in",
  "module": "sks",
  "name": "Inventory",
  "owner": "pparameshwari@thirvusoft.in",
@@ -43,6 +49,12 @@
    "doc_view": "List",
    "label": "Batch",
    "link_to": "Batch",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "Stock Entry",
+   "link_to": "Stock Entry",
    "type": "DocType"
   }
  ]

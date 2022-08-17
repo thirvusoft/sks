@@ -166,9 +166,14 @@ frappe.ui.form.on("Sales Order Item",{
                         frappe.show_alert({ message: __(r.message), indicator: 'blue' });
                     }
                 })
-
+                frappe.call({
+                    method:"sks.sks.custom.py.sales_order.mrp_finder",
+                    args:{item_code},
+                    callback(r){
+                        frappe.model.set_value(cdt,cdn,"ts_mrp",r.message);
+                    }
+                })
             }
         },
-       
     }
 )

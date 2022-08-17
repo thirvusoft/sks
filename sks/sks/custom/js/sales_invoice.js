@@ -6,9 +6,6 @@ frappe.ui.form.on("Sales Invoice",{
 		if(cur_frm.doc.items[0].delivery_note){
 			frm.set_df_property('update_stock', 'hidden', 1);
 		}
-		var day = new Date(cur_frm.doc.due_date);
-		var weekdays=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
-		cur_frm.set_value("due_day",weekdays[day.getDay()])
 	},
 	due_date:function(frm,cdt,cdn){
 		var day = new Date(cur_frm.doc.due_date);

@@ -6,12 +6,14 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "common_features_section",
   "allow_only_if_delivery_note_items_match_with_sales_order_items",
   "item_verifed_in_purchase_receipt",
   "item_verifed_in_purchase_invoice",
   "buying_rate_calculation",
   "add_item_from_not_processed_purchase_order",
   "purchased_and_sold_qty_alert",
+  "invoice_amount_should_be_matched",
   "column_break_3",
   "customer_transaction_history",
   "automatic_batch_creation",
@@ -21,7 +23,8 @@
   "purchase_workflow_section",
   "verification_of_free_item",
   "verification_of_altered_quantity",
-  "column_break_12",
+  "verification_of_markup_and_down",
+  "column_break_17",
   "verification_of_rate_change",
   "verification_of_rejected_quantity",
   "pos_awesome_settings_section",
@@ -32,7 +35,13 @@
   "denomination",
   "column_break_15",
   "driver_closing_shift_section",
-  "driver_closing_shift_grace_amount"
+  "driver_closing_shift_grace_amount",
+  "column_break_30",
+  "thirvu_retail_closing_shift_grace_amount",
+  "printing_details_section",
+  "message",
+  "column_break_34",
+  "customer_care_number"
  ],
  "fields": [
   {
@@ -68,9 +77,10 @@
    "label": "Credit Bill History"
   },
   {
+   "collapsible": 1,
    "fieldname": "pos_awesome_settings_section",
    "fieldtype": "Section Break",
-   "label": "POS Awesome Settings"
+   "label": "Thirvu Retail Settings"
   },
   {
    "default": "0",
@@ -111,7 +121,7 @@
    "collapsible": 1,
    "fieldname": "pos_denomination_section",
    "fieldtype": "Section Break",
-   "label": "POS Denomination "
+   "label": "Thirvu Retail Denomination "
   },
   {
    "fieldname": "denomination",
@@ -138,9 +148,10 @@
    "label": "Add items from not processed purchase order"
   },
   {
+   "collapsible": 1,
    "fieldname": "driver_closing_shift_section",
    "fieldtype": "Section Break",
-   "label": "Driver Closing Shift"
+   "label": "Closing Shift Details"
   },
   {
    "fieldname": "driver_closing_shift_grace_amount",
@@ -162,6 +173,7 @@
    "label": "Item Warehouse Fetching"
   },
   {
+   "collapsible": 1,
    "fieldname": "purchase_workflow_section",
    "fieldtype": "Section Break",
    "label": "Purchase Workflow"
@@ -179,10 +191,6 @@
    "fieldname": "verification_of_altered_quantity",
    "fieldtype": "Check",
    "label": "Verification of Altered Quantity"
-  },
-  {
-   "fieldname": "column_break_12",
-   "fieldtype": "Column Break"
   },
   {
    "default": "0",
@@ -204,12 +212,65 @@
    "fieldname": "item_verifed_in_purchase_invoice",
    "fieldtype": "Check",
    "label": "Item Verifed In Purchase Invoice"
+  },
+  {
+   "fieldname": "column_break_17",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "To Verify Markup and Markdown for Mismatched Items",
+   "fieldname": "verification_of_markup_and_down",
+   "fieldtype": "Check",
+   "label": "Verification of Markup & Markdown"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "common_features_section",
+   "fieldtype": "Section Break",
+   "label": "Common Features"
+  },
+  {
+   "fieldname": "thirvu_retail_closing_shift_grace_amount",
+   "fieldtype": "Currency",
+   "label": "Thirvu Retail Closing Shift Grace Amount"
+  },
+  {
+   "fieldname": "column_break_30",
+   "fieldtype": "Column Break"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "printing_details_section",
+   "fieldtype": "Section Break",
+   "label": "Printing Details"
+  },
+  {
+   "fieldname": "message",
+   "fieldtype": "Data",
+   "label": "Message"
+  },
+  {
+   "fieldname": "column_break_34",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "customer_care_number",
+   "fieldtype": "Int",
+   "label": "Customer Care Number"
+  },
+  {
+   "default": "0",
+   "description": "In Purchase Invoice, Total Amount Should Be Mapped With Supplier Invoice Total Amount Then only Able To Submit That Invoice",
+   "fieldname": "invoice_amount_should_be_matched",
+   "fieldtype": "Check",
+   "label": "Invoice Amount Should Be Matched"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-08-08 10:33:19.550397",
+ "modified": "2022-08-12 11:38:34.818280",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Thirvu Retail Settings",
