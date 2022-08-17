@@ -27,6 +27,7 @@ from sks.sks.utils.hr.employee.employee import employee_custom_fields
 from sks.sks.utils.stock.stock_entry.stock_entry import stock_entry_details
 from sks.sks.utils.accounting.payment_entry.payment_entry_custom_fields import payment_entry_customization
 from sks.sks.utils.selling.sales_order.sales_order_item.sales_order_item_custom_fields import sales_order_item_customization
+from sks.sks.utils.accounting.mode_of_payments.mode_of_payments import mode_of_payments
 
 
 
@@ -60,3 +61,4 @@ def after_install():
     stock_entry_details()
     payment_entry_customization()
     sales_order_item_customization()
+    mode_of_payments()

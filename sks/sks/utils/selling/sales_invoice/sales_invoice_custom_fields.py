@@ -77,6 +77,12 @@ def sales_invoice_custom_field():
                 insert_after='mode_of_delivery',
                 read_only=1,
                 depends_on="eval:doc.mode_of_delivery=='Door Delivery'"
+            ),
+            dict(fieldname='mode_of_payment',
+                label='Mode of Payment',
+                fieldtype='Data', 
+                insert_after='billed_by',
+                hidden=1,
             )
         ],
     }
