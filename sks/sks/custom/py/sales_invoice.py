@@ -151,12 +151,14 @@ def delivery_note_to_sales_invoice(data):
 		  
 def mode_of_payment(doc,event):
 	try:
-		mode_of_payment = doc.payments[0].mode_of_payment
-		bank_type= frappe.get_value("Mode of Payment",{"name":mode_of_payment},["type","bank_type"], as_dict=1)
-		print(bank_type)
-		if bank_type["type"] == "Bank":
-			doc.mode_of_payment = bank_type["bank_type"]
-		elif bank_type["type"] == "Cash":
-			doc.mode_of_payment = bank_type["type"]
+		if len(doc.payments) == 1:
+			mode_of_payment = doc.payments[0].mode_of_payment
+			bank_type= frappe.get_value("Mode of Payment",{"name":mode_of_payment},["type","bank_type"], as_dict=1)
+			if bank_type["type"] == "Bank":
+				doc.mode_of_payment = bank_type["bank_type"]
+			elif bank_type["type"] == "Cash":
+				doc.mode_of_payment = bank_type["type"]
+		elif len(doc.payments) > 1:
+			doc.mode_of_payment = "Mixed Payments"
 	except:
-	 	pass
+		pass
