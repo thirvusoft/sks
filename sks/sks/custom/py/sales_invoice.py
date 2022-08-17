@@ -149,3 +149,14 @@ def delivery_note_to_sales_invoice(data):
 		msg="No Delivery Notes to convert"
 		return msg
 		  
+def mode_of_payment(doc,event):
+	try:
+		mode_of_payment = doc.payments[0].mode_of_payment
+		bank_type= frappe.get_value("Mode of Payment",{"name":mode_of_payment},["type","bank_type"], as_dict=1)
+		print(bank_type)
+		if bank_type["type"] == "Bank":
+			doc.mode_of_payment = bank_type["bank_type"]
+		elif bank_type["type"] == "Cash":
+			doc.mode_of_payment = bank_type["type"]
+	except:
+	 	pass

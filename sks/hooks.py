@@ -149,7 +149,8 @@ doc_events = {
 		"validate":["sks.sks.custom.py.sales_invoice.feed_back_form",
 					"sks.sks.custom.py.sales_invoice.saving_amount",
 					"sks.sks.custom.py.sales_invoice.billed_by",
-					"sks.sks.custom.py.sales_invoice.barcode_creation"
+					"sks.sks.custom.py.sales_invoice.barcode_creation",
+					"sks.sks.custom.py.sales_invoice.mode_of_payment"
 				]
 	},
 	"Purchase Order":{
@@ -191,6 +192,9 @@ doc_events = {
 		"sks.sks.custom.py.stock_entry.auto_batch_creations",
 		"sks.sks.custom.py.stock_entry.material_transfer"]
 	},
+	"Stock Verification":{
+		"on_submit":"sks.sks.doctype.stock_verification.stock_verification.stock_emtry_creation"
+	}
 	# "TS Driver Delivery Trip":{
     #  	"validate":["sks.driver.doctype.ts_driver_delivery_trip.ts_driver_delivery_trip.driver_delivery_trip_submit"]
 	# }
