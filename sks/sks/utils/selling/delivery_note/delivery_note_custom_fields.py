@@ -65,6 +65,14 @@ def delivery_note_custom_field():
                 hidden=1,
                 no_copy=1,
                 allow_on_submit=1
+            ),
+            dict(fieldname='is_first_onload',
+                label='Is First Onload',
+                fieldtype='Check', 
+                insert_after='is_against_sales_invoice',
+                read_only=1,
+                hidden=1,
+                no_copy=1
             )
         ]
     }
