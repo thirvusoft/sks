@@ -4,5 +4,5 @@
 # import frappe
 import unittest
 
-class TestSalesorderprediction(unittest.TestCase):
+class TestRequiredQuantityPrediction(unittest.TestCase):
 	pass

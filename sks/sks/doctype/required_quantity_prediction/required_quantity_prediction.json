@@ -1,14 +1,16 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2022-08-18 14:45:08.551074",
+ "creation": "2022-08-18 16:21:06.892991",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "item",
   "required_days",
-  "lead_days",
+  "from_date",
+  "to_date",
+  "find_required_quantity",
   "needed_quantity",
   "supplier"
  ],
@@ -23,35 +25,44 @@
   },
   {
    "fieldname": "required_days",
-   "fieldtype": "Data",
+   "fieldtype": "Int",
    "in_list_view": 1,
    "label": "Required days",
    "reqd": 1
   },
   {
-   "fieldname": "lead_days",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Lead days",
-   "reqd": 1
-  },
-  {
    "fieldname": "needed_quantity",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "label": "Needed quantity"
   },
   {
    "fieldname": "supplier",
-   "fieldtype": "Data",
-   "label": "Supplier"
+   "fieldtype": "Link",
+   "label": "Supplier",
+   "options": "Supplier"
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date"
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date"
+  },
+  {
+   "fieldname": "find_required_quantity",
+   "fieldtype": "Button",
+   "label": "FInd Required Quantity"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-08-18 14:45:08.551074",
+ "modified": "2022-08-18 16:24:46.384193",
  "modified_by": "Administrator",
  "module": "sks",
- "name": "Sales order prediction",
+ "name": "Required Quantity Prediction",
  "owner": "Administrator",
  "permissions": [
   {
