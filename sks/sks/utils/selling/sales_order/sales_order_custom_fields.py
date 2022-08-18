@@ -50,6 +50,13 @@ def sales_order_custom_field():
                 insert_after='mode_of_delivery',
                 depends_on="eval:doc.mode_of_delivery=='Door Delivery'"
             ),
+            dict(fieldname='payment_type',
+                label='Payment Type',
+                fieldtype='Select',
+                options=' \nDue Bill\nCredit Bill',
+                insert_after='mode_of_delivery',
+                reqd=1,no_copy=0
+            ),
             dict(fieldname='print_with_price', 
                 label='Print With Price',
                 fieldtype='Check',
@@ -57,6 +64,7 @@ def sales_order_custom_field():
                 default=1,
                 no_copy=1
             )
+
         ]
     }
     create_custom_fields(custom_fields)
