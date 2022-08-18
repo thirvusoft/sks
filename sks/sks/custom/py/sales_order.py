@@ -167,3 +167,12 @@ def mrp_finder(item_code):
         pluck='ts_mrp'
     )
     return item_mrp[-1]
+
+@frappe.whitelist()
+def payment_type(customer):
+    is_credit_customer=frappe.db.get_value("Customer",customer,"is_credit_customer")
+    print(is_credit_customer)
+    if is_credit_customer:
+        return 1
+    else:
+        return 0

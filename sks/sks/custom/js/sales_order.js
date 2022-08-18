@@ -70,6 +70,7 @@ frappe.ui.form.on("Sales Order",{
         }
     },
     customer:function(frm,cdt,cdn){
+        frm.set_value("payment_type","")
         frappe.db.get_single_value("Thirvu Retail Settings","credit_bill_history").then(value =>{
             if(value==1){
                 if(cur_frm.doc.docstatus!=1){
@@ -119,6 +120,32 @@ frappe.ui.form.on("Sales Order",{
         var day = new Date(cur_frm.doc.delivery_date);
         var weekdays=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
         cur_frm.set_value("delivery_day",weekdays[day.getDay()])
+    },
+    payment_type:function(frm,cdt,cdn){
+        if(parent_data.payment_type){
+            var customer_name=parent_data.customer
+            var payment_type=parent_data.payment_type
+            if (customer_name){
+                if (payment_type == "Credit Bill"){
+                    frappe.call({
+                        method:"sks.sks.custom.py.sales_order.payment_type",
+                        args:{
+                            customer:customer_name
+                        },
+                        callback(r){
+                            if(r.message==0){
+                                frm.set_value("payment_type","")
+                                frappe.throw('The Selected Customer is not a credit customer')
+                            }
+                        }
+                    })
+                }
+            }
+            else{
+                frm.set_value("payment_type","")
+                frappe.throw('Please select customer')
+            }
+        }
     }
 })
 frappe.ui.form.on("Sales Order Item",{
