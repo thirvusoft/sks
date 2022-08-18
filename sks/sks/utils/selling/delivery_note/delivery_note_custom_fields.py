@@ -33,6 +33,13 @@ def delivery_note_custom_field():
                 insert_after='mode_of_delivery',
                 read_only=1
             ),
+            dict(fieldname='payment_type',
+                label='Payment Type',
+                fieldtype='Select',
+                options='\nDue Bill\nCredit Bill',
+                insert_after='delivery_day',
+                reqd=0,no_copy=0
+            ),
             dict(fieldname='outstanding_amount', 
                 label='Outstanding Amount',
                 fieldtype='Currency', 
