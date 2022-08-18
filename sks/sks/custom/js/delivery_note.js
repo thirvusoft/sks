@@ -6,6 +6,7 @@ frappe.ui.form.on("Delivery Note",{
 			if (parent_data.is_first_onload == 0){
 				for(var i=0;i<parent_data.items.length;i++){
 					frappe.model.set_value(parent_data.items[i].doctype,parent_data.items[i].name,"batch_no","")
+					frappe.model.set_value(parent_data.items[i].doctype,parent_data.items[i].name,"total_item_original_qty",parent_data.items[i].qty)
 				}
 				frm.set_value("is_first_onload",1)
 			}
@@ -24,7 +25,8 @@ frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note
 	// cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",0)
 	frappe.ui.form.on("Delivery Note",{
 		scan_barcode_to_verify_the_items: function(frm,cdt,cdn){
-			let data=locals[cdt][cdn]
+			var batch_popup_count=0
+			var data=locals[cdt][cdn]
 			var search_value = data.scan_barcode_to_verify_the_items
 			var checking_sales_order = data.items[0].against_sales_order
 			if(search_value !="")
@@ -44,6 +46,7 @@ frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note
 							else{
 								var ts_main,single_barcode=0,matched=0,new_total_item_count,j,new_length,item_code,against_sales_order,so_detail
 								var length=data.items.length
+								
 								for(var i=0;i<length;i++){
 									if(r["message"][0]==data.items[i].item_code){
 										ts_main=data.items[i]
@@ -52,10 +55,20 @@ frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note
 												single_barcode=1
 												if(ts_main.is_batch_different_item == 0){
 													var f=i
+													var total_item_verified_count = ts_main.total_item_verified_count
+													total_item_verified_count= total_item_verified_count+1
+													if(total_item_verified_count>ts_main.total_item_original_qty){
+														frappe.model.set_value(cdt,cdn,"scan_barcode_to_verify_the_items","")
+														frappe.throw({
+															title:("Message"),
+															message:("Required Quantity For Item <b>"+ts_main.item_code+"</b> is Already Satisfied")
+														})
+													}
+													else{
+														frappe.model.set_value(data.items[i].doctype,data.items[i].name,"total_item_verified_count",total_item_verified_count)
+													}
 												}
-												console.log(ts_main.batch_no,ts_main.batch_no,r.message[1][0],ts_main.is_batch_different_item)
 												if (ts_main.batch_no == "" || ts_main.batch_no==r.message[1][0] && ts_main.is_batch_different_item == 0){
-													console.log("1")
 													matched=1
 													frappe.model.set_value(data.items[i].doctype,data.items[i].name,"batch_no",r.message[1][0])
 													frappe.model.set_value(data.items[i].doctype,data.items[i].name,"item_verified",1)
@@ -66,7 +79,6 @@ frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note
 													break
 												}
 												else if(ts_main.is_batch_different_item == 1 && ts_main.batch_no==r.message[1][0]){
-													console.log("2")
 													matched=1
 													var item_verified_count = ts_main.item_verified_count
 													item_verified_count= item_verified_count+1
@@ -79,7 +91,6 @@ frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note
 													break
 												}
 												else {
-													console.log("3")
 													var total_item_count=ts_main.qty
 													new_total_item_count = total_item_count-1
 													j=i
@@ -90,6 +101,7 @@ frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note
 												}
 											}
 											else if((r.message[1]).length>1){
+												var datas=locals[cdt][cdn]
 												var ts_batch_details=[]
 												var ts_maping={}
 												for (var j = 0; j < r.message[1].length; j++) {
@@ -109,23 +121,79 @@ frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note
 													primary_action_label: 'OK',
 													primary_action(values) {
 														var batch_no = ts_maping[values["batch_no"]]
-														if (ts_main.batch_no == "" || ts_main.batch_no==batch_no && ts_main.is_batch_different_item == 0){
-														// frappe.model.set_value(ts_main.doctype,ts_main.name,"batch_no",batch_no)
-														// frappe.model.set_value(ts_main.doctype,ts_main.name,"item_verified",1)
-														// frappe.show_alert({ message: __('Item Matched'), indicator: 'green' });
-															console.log("1")
-															matched=1
-															frappe.model.set_value(ts_main.doctype,ts_main.name,"batch_no",batch_no)
-															frappe.model.set_value(ts_main.doctype,ts_main.name,"item_verified",1)
-															var item_verified_count = ts_main.item_verified_count
-															item_verified_count= item_verified_count+1
-															frappe.model.set_value(ts_main.doctype,ts_main.name,"item_verified_count",item_verified_count)
-															frappe.show_alert({ message: __('Item Matched'), indicator: 'green' });
+														var lengths=datas.items.length
+														for(var x=0;x<lengths;x++){
+															if(r["message"][0]==datas.items[x].item_code){
+																var ts_main=datas.items[x]
+																if(ts_main.is_batch_different_item == 0){
+																	var f=x
+																	var total_item_verified_count = ts_main.total_item_verified_count
+																	total_item_verified_count= total_item_verified_count+1
+																	if(total_item_verified_count>ts_main.total_item_original_qty){
+																		frappe.model.set_value(cdt,cdn,"scan_barcode_to_verify_the_items","")
+																		frappe.throw({
+																			title:("Message"),
+																			message:("Required Quantity For Item <b>"+ts_main.item_code+"</b> is Already Satisfied")
+																		})
+																	}
+																	else{
+																		frappe.model.set_value(datas.items[x].doctype,datas.items[x].name,"total_item_verified_count",total_item_verified_count)
+																	}
+																}
+																if (ts_main.batch_no == "" || ts_main.batch_no==batch_no && ts_main.is_batch_different_item == 0){
+																	matched=1
+																	frappe.model.set_value(datas.items[x].doctype,datas.items[x].name,"batch_no",batch_no)
+																	frappe.model.set_value(datas.items[x].doctype,datas.items[x].name,"item_verified",1)
+																	var item_verified_count = ts_main.item_verified_count
+																	item_verified_count= item_verified_count+1
+																	frappe.model.set_value(datas.items[x].doctype,data.items[x].name,"item_verified_count",item_verified_count)
+																	frappe.show_alert({ message: __('Item Matched'), indicator: 'green' });
+																	break
+																}
+																else if(ts_main.is_batch_different_item == 1 && ts_main.batch_no==batch_no){
+																	matched=1
+																	var item_verified_count = ts_main.item_verified_count
+																	item_verified_count= item_verified_count+1
+																	frappe.model.set_value(datas.items[x].doctype,datas.items[x].name,"item_verified_count",item_verified_count)
+																	frappe.model.set_value(datas.items[x].doctype,datas.items[x].name,"qty",item_verified_count)
+																	frappe.show_alert({ message: __('Item Matched'), indicator: 'green' });
+																	var item_count=datas.items[f].qty
+																	item_count = item_count-1
+																	frappe.model.set_value(datas.items[f].doctype,datas.items[f].name,"qty",item_count)
+																	break
+																}
+																else {
+																	var total_item_count=ts_main.qty
+																	new_total_item_count = total_item_count-1
+																	j=x
+																	new_length=lengths
+																	against_sales_order = ts_main.against_sales_order
+																	so_detail=ts_main.so_detail
+																	item_code=ts_main.item_code
+																}
+															}
+														}
+														if(matched==0){
+															frappe.model.set_value(datas.items[j].doctype,datas.items[j].name,"qty",new_total_item_count)
+															frm.add_child("items",{
+																
+															})
+															refresh_field("items");
+															frappe.model.set_value(datas.items[new_length].doctype,datas.items[new_length].name,"item_code",item_code)
+															frappe.model.set_value(datas.items[new_length].doctype,datas.items[new_length].name,"is_batch_different_item",1)
+															frappe.model.set_value(datas.items[new_length].doctype,datas.items[new_length].name,"batch_no",batch_no)
+															frappe.model.set_value(datas.items[new_length].doctype,datas.items[new_length].name,"item_verified_count",1)
+															frappe.model.set_value(datas.items[new_length].doctype,datas.items[new_length].name,"against_sales_order",against_sales_order)
+															frappe.model.set_value(datas.items[new_length].doctype,datas.items[new_length].name,"so_detail",so_detail)
+														
 														}
 														d.hide();
 													}
 												});
-												d.show();
+												if(batch_popup_count==0){
+													batch_popup_count=batch_popup_count+1
+													d.show();
+												}
 											}
 											else{
 												frappe.model.set_value(data.items[i].doctype,data.items[i].name,"item_verified",1)
@@ -136,7 +204,6 @@ frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note
 
 								}
 								if(matched==0 && single_barcode==1){
-									console.log("3")
 									frappe.model.set_value(data.items[j].doctype,data.items[j].name,"qty",new_total_item_count)
 									frm.add_child("items",{
 										

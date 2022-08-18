@@ -57,6 +57,14 @@ def sales_order_custom_field():
                 insert_after='mode_of_delivery',
                 reqd=1,no_copy=0
             ),
+            dict(fieldname='print_with_price', 
+                label='Print With Price',
+                fieldtype='Check',
+                insert_after='is_local_delivery',
+                default=1,
+                no_copy=1
+            )
+
         ]
     }
     create_custom_fields(custom_fields)

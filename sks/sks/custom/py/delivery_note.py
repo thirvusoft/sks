@@ -60,15 +60,17 @@ def mandatory_validation(doc,event):
 
     ts_value=frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note_items_match_with_sales_order_items")
     if ts_value==1:
-        ts_item_barcodes=""
-        for item in doc.items:
-            if item.against_sales_order:
-                if item.item_verified == 0:
-                    ts_item_details=frappe.get_doc("Item",item.item_code)
-                    if ts_item_details.barcodes:
-                        ts_item_barcodes += "•"+item.item_code+'<br>'
-        if ts_item_barcodes:
-            frappe.throw(_("Below Items Are Not Verified, Please Check It... <br>{0}").format(ts_item_barcodes))
+        if doc.is_first_onload ==1:
+            ts_item_barcodes=""
+            for item in doc.items:
+                if item.against_sales_order:
+                    if item.total_item_verified_count != item.total_item_original_qty:
+                        ts_item_details=frappe.get_doc("Item",item.item_code)
+                        if ts_item_details.barcodes:
+                            ts_difference = str(item.total_item_original_qty - item.total_item_verified_count)
+                            ts_item_barcodes += "• "+item.item_code+' -> Difference Quantity : '+ts_difference+'<br>'
+            if ts_item_barcodes:
+                frappe.throw(_("Below Items Are Not Matched With The Required Quantity, Please Check It... <br>{0}").format(ts_item_barcodes))
             
 @frappe.whitelist()
 def sales_order_to_delivery_note(data):
