@@ -61,7 +61,7 @@ def sales_order_custom_field():
                 label='Print With Price',
                 fieldtype='Check',
                 insert_after='is_local_delivery',
-                default=1,
+                default="1",
                 no_copy=1
             )
 
