@@ -14,13 +14,17 @@ class RequiredQuantityPrediction(Document):
 @frappe.whitelist()
 def required_quantity_prediction(data):
 	data = json.loads(data)
-
-	print(data,"hii")
+	print(data["required_days"])
+	items=[]
+	item = {}
+	item["name"] = data["item"]
+	item["safety_stock"] = data["safety_stock"]
+	item["lead_time_days"] = data["lead_time_days"]
+	items.append(item)
 	filters={}
 	filters["from_date"]=data["from_date"]
 	filters["to_date"]=data["to_date"]
-	# filters += data[9]
-	print(filters,"hii")
+
 	if not filters:
 		filters = {}
 	float_precision = frappe.db.get_default("float_precision")
@@ -32,73 +36,16 @@ def required_quantity_prediction(data):
 	if diff <= 0:
 		frappe.throw(_("'From Date' must be after 'To Date'"))
 
-	columns = get_columns()
-	items = get_item_info(filters)
-	print(items)
 	consumed_item_map = get_consumed_items(condition)
 	delivered_item_map = get_delivered_items(condition)
 
-	data = []
 	for item in items:
-		total_outgoing = flt(consumed_item_map.get(item.name, 0)) + flt(
-			delivered_item_map.get(item.name, 0)
+		total_outgoing = flt(consumed_item_map.get(item["name"], 0)) + flt(
+			delivered_item_map.get(item["name"], 0)
 		)
 		avg_daily_outgoing = flt(total_outgoing / diff, float_precision)
-		reorder_level = (avg_daily_outgoing * flt(item.lead_time_days)) + flt(item.safety_stock)
-
-		data.append(
-			[
-				item.name,
-				item.item_name,
-				item.item_group,
-				item.brand,
-				item.description,
-				item.safety_stock,
-				item.lead_time_days,
-				consumed_item_map.get(item.name, 0),
-				delivered_item_map.get(item.name, 0),
-				total_outgoing,
-				avg_daily_outgoing,
-				reorder_level,
-			]
-		)
-
-	return columns, data
-
-
-def get_columns():
-	return [
-		_("Item") + ":Link/Item:120",
-		_("Item Name") + ":Data:120",
-		_("Item Group") + ":Link/Item Group:100",
-		_("Brand") + ":Link/Brand:100",
-		_("Description") + "::160",
-		_("Safety Stock") + ":Float:160",
-		_("Lead Time Days") + ":Float:120",
-		_("Consumed") + ":Float:120",
-		_("Delivered") + ":Float:120",
-		_("Total Outgoing") + ":Float:120",
-		_("Avg Daily Outgoing") + ":Float:160",
-		_("Reorder Level") + ":Float:120",
-	]
-
-
-def get_item_info(filters):
-	from erpnext.stock.report.stock_ledger.stock_ledger import get_item_group_condition
-
-	conditions = [get_item_group_condition(filters.get("item_group"))]
-	if filters.get("brand"):
-		conditions.append("item.brand=%(brand)s")
-	conditions.append("is_stock_item = 1")
-
-	return frappe.db.sql(
-		"""select name, item_name, description, brand, item_group,
-		safety_stock, lead_time_days from `tabItem` item where {}""".format(
-			" and ".join(conditions)
-		),
-		filters,
-		as_dict=1,
-	)
+	needed_qty = avg_daily_outgoing * data["required_days"]
+	return needed_qty
 
 
 def get_consumed_items(condition):
