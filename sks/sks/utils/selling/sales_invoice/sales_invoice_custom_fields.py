@@ -81,7 +81,7 @@ def sales_invoice_custom_field():
             dict(fieldname='payment_type',
                 label='Payment Type',
                 fieldtype='Select',
-                options=' \nDue Bill\nCredit Bill',
+                options='\nDue Bill\nCredit Bill',
                 insert_after='is_local_delivery',
                 reqd=0,no_copy=0
             ),

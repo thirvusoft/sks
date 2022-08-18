@@ -87,7 +87,7 @@ def sales_order_to_delivery_note(data):
                 delivery_note_doc=(make_delivery_note(source_name))
                 delivery_note_doc.save()
                 dn_new_doc=frappe.get_doc("Sales Order",source_name)
-                dn_new_doc.is_against_sales_invoice = 1
+                dn_new_doc.is_against_delivery_note = 1
                 dn_new_doc.save()
                 frappe.db.commit()
                 convereted_doc_count+=1

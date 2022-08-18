@@ -47,13 +47,13 @@ def sales_order_custom_field():
             dict(fieldname='is_local_delivery', 
                 label='Is Local Delivery',
                 fieldtype='Check',
-                insert_after='mode_of_delivery',
+                insert_after='payment_type',
                 depends_on="eval:doc.mode_of_delivery=='Door Delivery'"
             ),
             dict(fieldname='payment_type',
                 label='Payment Type',
                 fieldtype='Select',
-                options=' \nDue Bill\nCredit Bill',
+                options='\nDue Bill\nCredit Bill',
                 insert_after='mode_of_delivery',
                 reqd=1,no_copy=0
             ),
