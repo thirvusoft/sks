@@ -19,7 +19,7 @@
  "is_standard": 1,
  "label": "Inventory",
  "links": [],
- "modified": "2022-08-08 18:31:00.116020",
+ "modified": "2022-08-16 12:01:41.111780",
  "modified_by": "naveenkumar@thirvusoft.in",
  "module": "sks",
  "name": "Inventory",
@@ -55,6 +55,12 @@
    "doc_view": "List",
    "label": "Stock Entry",
    "link_to": "Stock Entry",
+   "type": "DocType"
+  },
+  {
+   "doc_view": "List",
+   "label": "BOM",
+   "link_to": "BOM",
    "type": "DocType"
   }
  ]

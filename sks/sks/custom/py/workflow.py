@@ -4,7 +4,7 @@ def workflow_document_creation():
     create_action()
     create_rate_changer_from_purchase_order()
     create_invoice_workflow_from_purchase_order()
-    employee_advance()
+    # employee_advance()
     create_stock_verification()
 
 def create_rate_changer_from_purchase_order():
