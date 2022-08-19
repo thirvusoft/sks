@@ -17,7 +17,7 @@ def batch_custom_fields():
                 fieldname="ts_mrp",
                 fieldtype="Currency",
                 label="MRP",
-                insert_after="barcode"
+                insert_after="bill_barcode"
             ),
             dict(
                 fieldname="ts_selling_price",
@@ -36,6 +36,12 @@ def batch_custom_fields():
                 fieldtype="Float",
                 label="Purchase Qty",
                 insert_after="batch_qty",
+                read_only=1
+            ),
+            dict(fieldname='label_barcode',
+                label='Label Barcode',
+                fieldtype='Barcode',
+                insert_after='barcode',
                 read_only=1
             ),
             ],      
