@@ -42,7 +42,7 @@ def batch_custom_fields():
                 label='Label Barcode',
                 fieldtype='Barcode',
                 insert_after='barcode',
-                read_only=1
+                read_only=0
             ),
             ],      
     }
