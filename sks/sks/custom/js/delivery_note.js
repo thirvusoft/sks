@@ -41,7 +41,7 @@ frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note
 						 args:{item_code_checking,checking_sales_order,search_value},
 						 callback(r){
 							if(r["message"]==0){
-								frappe.msgprint("Scanned Barcode Is Not Matching With The Sales Order Items")  
+								frappe.msgprint("Scanned Barcode Is Not Matching With The Below Items")  
 							}
 							else{
 								var ts_main,single_barcode=0,matched=0,new_total_item_count,j,new_length,item_code,against_sales_order,so_detail

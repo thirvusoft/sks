@@ -8,6 +8,7 @@ from frappe.model.mapper import get_mapped_doc
 from frappe.model.utils import get_fetch_values
 from frappe.utils.data import cstr, flt
 import json
+from frappe.utils import nowdate
 from erpnext.selling.doctype.sales_order.sales_order import make_delivery_note
 @frappe.whitelist()
 def item_check_with_sales_order(item_code_checking=None,checking_sales_order=None,search_value=None):
@@ -23,7 +24,7 @@ def item_check_with_sales_order(item_code_checking=None,checking_sales_order=Non
                 item_code=total_item[j].__dict__["item_code"]
                 matched_item=matched_item+1
                 if search_value:
-                    ts_item_barcode=frappe.get_all("Batch",{"item":item_code_checking,"disabled":0,"barcode":search_value},["name","ts_mrp"])
+                    ts_item_barcode=frappe.get_all("Batch",{"item":item_code_checking,"disabled":0,"barcode":search_value,'expiry_date':[">" ,nowdate()],"batch_qty":[">",0]},["name","ts_mrp"])
                     if ts_item_barcode:
                         if len(ts_item_barcode)==1:
                             item_batch_name.append(ts_item_barcode[0]["name"])
