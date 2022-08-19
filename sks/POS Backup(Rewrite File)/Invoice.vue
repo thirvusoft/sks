@@ -1076,7 +1076,6 @@ export default {
       },
 
     show_payment: function show_payment() {
-
         if (!this.customer) {
           evntBus.$emit('show_mesage', {
             text: __("There is no Customer !"),
@@ -1084,7 +1083,7 @@ export default {
           });
           return;
         }
-
+        
         if (!this.items.length) {
           evntBus.$emit('show_mesage', {
             text: __("There is no Items !"),
@@ -1094,6 +1093,16 @@ export default {
         }
          // Customized By Thirvusoft
          // Start
+         for(var i=0;i<this.items.length;i++){
+          if(!this.items[i].batch_no){
+            evntBus.$emit('show_mesage', {
+              text: __("Please Select The Batch For An Item : "+this.items[i].item_code),
+              color: 'error',
+            });
+            return;
+          }
+         }
+
          frappe.db.get_single_value("Thirvu Retail Settings","allow_display_customer_transaction_history").then(value =>{
           if(value==1){
              frappe.call({
