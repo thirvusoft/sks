@@ -32,3 +32,6 @@ def batch_creation():
 			single_doc.create_new_batch = 1
 			single_doc.batch_number_series = '.{item}.-.YY.MM.-'
 			single_doc.save()
+#barcode
+def label_barcode(doc,event):
+	doc.label_barcode = doc.barcode

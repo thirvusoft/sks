@@ -137,6 +137,7 @@ doc_events = {
 	},
 	"Batch":{
 		"after_insert":"sks.sks.custom.py.batch.item_price_creator",
+		"validate":["sks.sks.custom.py.batch.label_barcode"]
 		# "validate":"sks.sks.custom.py.batch.item_price_creator"
 	},
 	"Delivery Trip": {
