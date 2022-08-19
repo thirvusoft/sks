@@ -881,7 +881,7 @@ def create_customer(
                 "customer_name": customer_name,
                 "mobile_no": mobile1,
                 "territory": area,
-                "customer_group": c_group,  
+                "customer_group": "Individual",
             }
         )
 
