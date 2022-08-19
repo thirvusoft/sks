@@ -55,7 +55,7 @@ def sales_order_custom_field():
                 fieldtype='Select',
                 options='\nDue Bill\nCredit Bill',
                 insert_after='mode_of_delivery',
-                reqd=1,no_copy=0
+                reqd=0,no_copy=0
             ),
             dict(fieldname='print_with_price', 
                 label='Print With Price',
