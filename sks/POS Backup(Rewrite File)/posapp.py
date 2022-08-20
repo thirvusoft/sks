@@ -130,6 +130,7 @@ def update_opening_shift_data(data, pos_profile):
 @frappe.whitelist()
 def get_items(pos_profile, price_list=None):
     pos_profile = json.loads(pos_profile)
+    print(pos_profile["posa_display_items_in_stock"])
     if not price_list:
         price_list = pos_profile.get("selling_price_list")
     condition = ""
@@ -170,33 +171,34 @@ def get_items(pos_profile, price_list=None):
         ),
         as_dict=1,
     )
-    #code start
-    sub_warehouses=[pos_profile.get('warehouse')]
+    # Customized By Thirvusoft
+    # Start
+    if pos_profile["posa_display_items_in_stock"] == 1:
+        sub_warehouses=[pos_profile.get('warehouse')]
 
-    ware_house=[]  
-    while(True):
-        for i in sub_warehouses:
-            data = frappe.get_all("Warehouse",fields=['name','is_group','parent_warehouse'],filters={'parent_warehouse':i,'company':pos_profile.get('company')})
-            for i in data:
-                if(i.is_group == 0):ware_house.append(i.name)
-                else:sub_warehouses.append(i.name)
-            data = frappe.get_all("Warehouse",fields=['name','is_group','parent_warehouse'],filters={'parent_warehouse':pos_profile.get('warehouse'),'company':pos_profile.get('company')})
-        sub_warehouses=[]
-        if(len(sub_warehouses) == 0):
-            break
-    if(len(ware_house) == 0):ware_house.append(pos_profile.get("warehouse"))
-    bin_data = frappe.get_all("Bin",fields=['item_code','actual_qty','warehouse'],filters={'actual_qty':('>',0),'warehouse':('in',ware_house)})
-    item_warehouse={i['item_code']:i['warehouse'] for i in bin_data}
-    items=item_warehouse.keys()
-    items_data1=[]
-    for i in range(len(items_data)):
-        if(items_data[i].item_code in items):
-            items_data[i]['warehouse']=item_warehouse[items_data[i].item_code]
-            items_data[i]['actual_qty']= get_stock_availability(items_data[i].item_code,item_warehouse[items_data[i].item_code])
-            items_data1.append(items_data[i])
-    items_data=items_data1
-    #code end
-
+        ware_house=[]  
+        while(True):
+            for i in sub_warehouses:
+                data = frappe.get_all("Warehouse",fields=['name','is_group','parent_warehouse'],filters={'parent_warehouse':i,'company':pos_profile.get('company')})
+                for i in data:
+                    if(i.is_group == 0):ware_house.append(i.name)
+                    else:sub_warehouses.append(i.name)
+                data = frappe.get_all("Warehouse",fields=['name','is_group','parent_warehouse'],filters={'parent_warehouse':pos_profile.get('warehouse'),'company':pos_profile.get('company')})
+            sub_warehouses=[]
+            if(len(sub_warehouses) == 0):
+                break
+        if(len(ware_house) == 0):ware_house.append(pos_profile.get("warehouse"))
+        bin_data = frappe.get_all("Bin",fields=['item_code','actual_qty','warehouse'],filters={'actual_qty':('>',0),'warehouse':('in',ware_house)})
+        item_warehouse={i['item_code']:i['warehouse'] for i in bin_data}
+        items=item_warehouse.keys()
+        items_data1=[]
+        for i in range(len(items_data)):
+            if(items_data[i].item_code in items):
+                items_data[i]['warehouse']=item_warehouse[items_data[i].item_code]
+                items_data[i]['actual_qty']= get_stock_availability(items_data[i].item_code,item_warehouse[items_data[i].item_code])
+                items_data1.append(items_data[i])
+        items_data=items_data1
+    # End
 
     if items_data:
         items = [d.item_code for d in items_data]
@@ -243,9 +245,14 @@ def get_items(pos_profile, price_list=None):
                 item_stock_qty = get_stock_availability(
                     item_code, item_wh
                 )
-                #items_data[i]['actual_qty']=item_stock_qty
-            #else:
-                #items_data[i]['actual_qty']=0
+            # Customized By Thirvusoft
+            # Start
+                if pos_profile["posa_display_items_in_stock"] == 0:
+                    [i]['actual_qty']=item_stock_qty
+            else:
+                if pos_profile["posa_display_items_in_stock"] == 0:
+                    items_data[i]['actual_qty']=0
+            # End
             attributes = ""
             if pos_profile.get("posa_show_template_items") and item.has_variants:
                 attributes = get_item_attributes(item.item_code)
