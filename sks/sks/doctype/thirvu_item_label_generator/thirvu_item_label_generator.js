@@ -5,7 +5,7 @@ frappe.ui.form.on('Thirvu Item Label Generator', {
 	setup: function(frm){
 		frm.set_query("batch_id", function () {
 			return {
-				filters: { 'item': frm.doc.item ,'disabled':0,'expiry_date':[">" ,frappe.datetime.nowdate()]}
+				filters: { 'item': frm.doc.item ,'disabled':0}
 			};
 		})
 	},
