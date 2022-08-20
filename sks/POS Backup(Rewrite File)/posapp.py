@@ -36,7 +36,7 @@ def get_opening_dialog_data():
         filters={"disabled": 0},
         fields=["name", "company"],
         limit_page_length=0,
-        order_by="name",
+        order_by="name"
     )
 
     pos_profiles_list = []
@@ -1549,6 +1549,7 @@ def get_fields_for_denomination(pos_opening_shift):
                 row.update({'ts_amount':i})
                 ts_denomination.append(row)
     return ts_denomination,ts_mode_of_payment
+
 
 @frappe.whitelist()
 def batch_finder(ts_barcode=None,ts_item=None):
