@@ -1,0 +1,119 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:batch_id",
+ "creation": "2022-08-20 13:15:37.708728",
+ "doctype": "DocType",
+ "document_type": "Document",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "item",
+  "batch_id",
+  "required_labels",
+  "item_name",
+  "barcode",
+  "available_qty_in_batch",
+  "column_break_5",
+  "label_barcode",
+  "ts_mrp",
+  "ts_selling_price",
+  "expiry_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "Item",
+   "options": "Item"
+  },
+  {
+   "fieldname": "batch_id",
+   "fieldtype": "Link",
+   "label": "Batch ID",
+   "options": "Batch",
+   "unique": 1
+  },
+  {
+   "fieldname": "required_labels",
+   "fieldtype": "Int",
+   "label": "Required Labels"
+  },
+  {
+   "fetch_from": "item.item_name",
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "batch_id.barcode",
+   "fieldname": "barcode",
+   "fieldtype": "Data",
+   "label": "Barcode",
+   "read_only": 1,
+   "unique": 1
+  },
+  {
+   "fetch_from": "batch_id.batch_qty",
+   "fieldname": "available_qty_in_batch",
+   "fieldtype": "Data",
+   "label": "Available Qty In Batch",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "batch_id.label_barcode",
+   "fieldname": "label_barcode",
+   "fieldtype": "Barcode",
+   "label": "Label Barcode"
+  },
+  {
+   "fetch_from": "batch_id.ts_mrp",
+   "fieldname": "ts_mrp",
+   "fieldtype": "Currency",
+   "label": "MRP",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "batch_id.ts_selling_price",
+   "fieldname": "ts_selling_price",
+   "fieldtype": "Currency",
+   "label": "Selling Price",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "batch_id.expiry_date",
+   "fieldname": "expiry_date",
+   "fieldtype": "Date",
+   "label": "Expiry Date",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2022-08-20 13:25:26.312081",
+ "modified_by": "Administrator",
+ "module": "sks",
+ "name": "Thirvu Item Label Generator",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "search_fields": "item",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "title_field": "item"
+}

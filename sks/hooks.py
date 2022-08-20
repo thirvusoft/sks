@@ -195,7 +195,10 @@ doc_events = {
 	},
 	"Stock Verification":{
 		"on_submit":"sks.sks.doctype.stock_verification.stock_verification.stock_emtry_creation"
-	}
+	},
+	"Thirvu Item Label Generator":{
+		"validate":"sks.sks.doctype.thirvu_item_label_generator.thirvu_item_label_generator.barcode_label"
+		}
 	# "TS Driver Delivery Trip":{
     #  	"validate":["sks.driver.doctype.ts_driver_delivery_trip.ts_driver_delivery_trip.driver_delivery_trip_submit"]
 	# }
