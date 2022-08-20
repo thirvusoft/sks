@@ -130,7 +130,6 @@ def update_opening_shift_data(data, pos_profile):
 @frappe.whitelist()
 def get_items(pos_profile, price_list=None):
     pos_profile = json.loads(pos_profile)
-    print(pos_profile["posa_display_items_in_stock"])
     if not price_list:
         price_list = pos_profile.get("selling_price_list")
     condition = ""
