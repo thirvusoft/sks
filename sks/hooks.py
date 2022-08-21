@@ -186,7 +186,9 @@ doc_events = {
 		"validate":"sks.sks.custom.py.pos_profile.stock_details_validation"
 	},
 	"Item":{
-		"validate":"sks.sks.custom.py.item.batch_needed"
+		"validate":["sks.sks.custom.py.item.batch_needed",
+					"sks.sks.custom.py.item.single_batch_validation"
+		]
 	},
 	"Stock Entry":{
 		"validate":["sks.sks.custom.py.stock_entry.stock_entry",

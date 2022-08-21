@@ -43,10 +43,19 @@ def automatic_batch_creation(doc,event):
 		if doc.scanned_barcodes:
 			total_barcode_number_item = eval(doc.scanned_barcodes)
 		for row in doc.items:
-			item_code.append(row.item_code)
-			# expiry_date.append(row.expiry_date)
-			item_rate.append(row.ts_valuation_rate)
-			item_mrp.append(row.ts_mrp)
+			single_batch_item = frappe.db.get_value("Item",{"item_code":row.item_code},"is_single_batch")
+			if single_batch_item == 0:
+				item_code.append(row.item_code)
+				# expiry_date.append(row.expiry_date)
+				item_rate.append(row.ts_valuation_rate)
+				item_mrp.append(row.ts_mrp)
+			else:
+				single_batch = frappe.db.get_value("Batch",{"item":row.item_code},"name")
+				if single_batch:
+					row.batch_no=single_batch
+				else:
+					frappe.db.set_value("Item",row.item_code,"create_new_batch",1)
+
 		for i in range(0,len(item_code),1):
 			try:
 				if(frappe.db.get_value("Item",{"name":item_code[i]},["is_expiry_item"])):

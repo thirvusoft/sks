@@ -149,6 +149,18 @@ def item_custom_fields():
                 insert_after="ts_column_break_purchase_margin",
                 allow_in_quick_entry=1,
             ),
+            dict(
+                fieldname="is_single_batch",
+                fieldtype="Check",
+                label="Create Batch On Price Change",
+                insert_after="has_batch_no",
+            ),
+            dict(
+                fieldname="cb_batch",
+                fieldtype="Column Break",
+                insert_after="create_new_batch",
+                label="",
+            ),
         ],
             
     }
@@ -193,4 +205,5 @@ def item_property_setter():
     make_property_setter("Item", "over_delivery_receipt_allowance", "hidden", 1, "Float")
     make_property_setter("Item", "over_billing_allowance", "hidden", 1, "Float")
     make_property_setter("Item", "opening_stock", "hidden", 1, "Float"),
+    make_property_setter("Item","create_new_batch","depends_on","eval:doc.is_single_batch == 0","Data")
    
