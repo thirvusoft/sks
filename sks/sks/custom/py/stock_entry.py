@@ -53,12 +53,19 @@ def auto_batch_creations(doc,event):
 		item_mrp=[]
 		# expiry_date=[]
 		for item in doc.items:
-			if item.t_warehouse:
-				item_rate.append(item.valuation_rates)
-				item_code.append(item.item_code)
-				item_mrp.append(item.mrp_rates)
-				# expiry_date.append(item.expire_dates)
-
+			single_batch_item = frappe.db.get_value("Item",{"item_code":item.item_code},"is_single_batch")
+			if single_batch_item == 0:
+				if item.t_warehouse:
+					item_rate.append(item.valuation_rates)
+					item_code.append(item.item_code)
+					item_mrp.append(item.mrp_rates)
+					# expiry_date.append(item.expire_dates)
+			else:
+				single_batch = frappe.db.get_value("Batch",{"item":item.item_code},"name")
+				if single_batch:
+					item.batch_no=single_batch
+				else:
+					frappe.db.set_value("Item",item.item_code,"create_new_batch",1)
 		item_changes_count=0
 		item_changes_details=[]
 		for i in range(0,len(item_code),1):
