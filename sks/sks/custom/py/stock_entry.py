@@ -61,11 +61,12 @@ def auto_batch_creations(doc,event):
 					item_mrp.append(item.mrp_rates)
 					# expiry_date.append(item.expire_dates)
 			else:
-				single_batch = frappe.db.get_value("Batch",{"item":item.item_code},"name")
-				if single_batch:
-					item.batch_no=single_batch
-				else:
-					frappe.db.set_value("Item",item.item_code,"create_new_batch",1)
+				if item.t_warehouse:
+					single_batch = frappe.db.get_value("Batch",{"item":item.item_code},"name")
+					if single_batch:
+						item.batch_no=single_batch
+					else:
+						frappe.db.set_value("Item",item.item_code,"create_new_batch",1)
 		item_changes_count=0
 		item_changes_details=[]
 		for i in range(0,len(item_code),1):
@@ -106,7 +107,7 @@ def auto_batch_creations(doc,event):
 
 @frappe.whitelist()
 def material_transfer(doc,event):
-	if doc.stock_entry_type == "Material Transfer":
+	if (doc.stock_entry_type == "Material Transfer" or doc.stock_entry_type == "Repack"):
 		not_verified_items=""
 		for item in doc.items:
 			item.valuation_rate=item.valuation_rates
@@ -116,3 +117,35 @@ def material_transfer(doc,event):
 
 		if not_verified_items:
 			frappe.throw(_("Below Items Are Not Verified, Please Check It... <br>{0}").format(not_verified_items))
+
+def mandatory_validation(doc,event):
+	# Expiry Date and Selling Price Validation
+	ts_item_expiry_date=""
+	ts_mrp_differ_selling_rate=""
+	ts_valuation_differ_selling_rate=""
+	if doc.stock_entry_type=="Material Receipt":
+		for item in doc.items:
+			if item.t_warehouse:
+				ts_has_expiry=frappe.db.get_value("Item",{"name":item.item_code},["is_expiry_item"])
+				if ts_has_expiry==1:
+					if not item.expire_dates:
+						ts_item_expiry_date += "•"+item.item_code+'<br>'
+
+				if item.selling_rates > item.mrp_rates:
+					ts_mrp_differ_selling_rate += "•"+item.item_code+'<br>'
+				if item.selling_rates <= float(item.valuation_rates):
+					ts_valuation_differ_selling_rate += "•"+item.item_code+'<br>'
+				else: item.valuation_rate=item.valuation_rates
+		if ts_item_expiry_date:
+			frappe.throw(_("Please Select the Expiry Date For The Below Items... <br>{0}").format(ts_item_expiry_date))
+		
+		if ts_mrp_differ_selling_rate:
+			frappe.throw(_("Selling Price Is Greater Than The MRP, Please Check It... <br>{0}").format(ts_mrp_differ_selling_rate))
+		
+		if ts_valuation_differ_selling_rate:
+			frappe.throw(_("Selling Price Is Lesser Than The Valuation Rate, Please Check It... <br>{0}").format(ts_valuation_differ_selling_rate))
+
+@frappe.whitelist()
+def valuation_rate_fetching(batch_no):
+	valuation_rate=frappe.db.get_value("Batch",{"name":batch_no},["ts_valuation_rate"])
+	return valuation_rate
