@@ -1,6 +1,7 @@
 var total_barcode_number_item=[]
 var total_barcode_item_code=[]
 var item_codes=[]
+var item_codes_dict={}
 var data
 frappe.ui.form.on("Purchase Invoice",{
 	onload:function(frm,cdt,cdn){
@@ -22,10 +23,11 @@ frappe.ui.form.on("Purchase Invoice",{
 				cur_frm.set_df_property("scan_barcode_to_verify_the_items","hidden",1)
 			}
 		})
-		var data=locals[cdt][cdn]
+		data=locals[cdt][cdn]
 		for(var i=0;i<data.items.length;i++){
 			item_codes.push(data.items[i].item_code)
 		}
+		item_codes_dict = item_codes.map(x => ({item_code_label: x}));
 		// Free Item From Supplier
 		frappe.db.get_single_value("Thirvu Retail Settings","verification_of_free_item").then(value =>{
 			if(value==1){
@@ -81,6 +83,83 @@ frappe.ui.form.on("Purchase Invoice",{
 				cur_frm.set_df_property("thirvu_items_to_verify","hidden",1)
 			}
 		})
+		frm.add_custom_button(('Generate Label'), function() {
+			if (data.docstatus==1){
+				frappe.call({
+					method:"sks.sks.custom.py.purchase_invoice.fetching_items",
+					args:{data:data.items},
+					callback(items){
+						var d = new frappe.ui.Dialog({
+							title: __('Select Item Code To Generate Label'),
+							fields:[
+								{fieldname:'items_to_generate_label', fieldtype:'Table',cannot_add_rows: 1,in_place_edit: true, fields:[
+								{
+									label: 'Item Code',
+									fieldname: 'item_code_label',
+									fieldtype: 'Read Only',
+									in_list_view:1,
+									read_only:1,
+									columns:2
+								},
+								{
+									label: 'Batch',
+									fieldname: 'batch',
+									fieldtype: 'Read Only',
+									in_list_view:1,
+									read_only:1,
+									columns:2
+								},
+								{
+									label: 'Qty',
+									fieldname: 'qty',
+									fieldtype: 'Int',
+									in_list_view:1,
+									read_only:1,
+									columns:2
+								},
+								],
+								data:items.message},
+								],
+								primary_action: function(data) {
+									
+									var final_list=[]
+									var value = d.fields_dict.items_to_generate_label.grid.get_selected_children()
+									for (let i = 0; i<value.length;i++){
+										var item_code_labels=[]
+										if(value[i].__checked){
+											item_code_labels.push(value[i]["item_code_label"])
+											item_code_labels.push(value[i]['qty'])
+											if (value[i]['batch']){
+												item_code_labels.push(value[i]['batch'])
+											}
+											else{
+												item_code_labels.push("")
+											}
+											final_list.push(item_code_labels)
+										}
+									}
+									if(item_code_labels){
+										frappe.call({
+											method:"sks.sks.custom.py.purchase_invoice.label_generation",
+											args:{items:final_list},
+										})
+									}
+									else{
+										frappe.msgprint('No Items added are selected')
+									}
+									d.hide();
+								}
+						});d.show()
+					}
+				})
+			}
+			else{
+				frappe.throw({
+					title:("Message"),
+					message:('Submit the document to generate label')
+				})
+			}	
+		}).addClass("btn-danger").css({'color':'#2490EF','background-color': 'white','font-weight': 'bold'});
 	},
 	// supplier:function(frm,cdt,cdn){
 	// 	var ts_data=locals[cdt][cdn]

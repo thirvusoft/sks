@@ -58,6 +58,7 @@
    "fetch_from": "batch_id.batch_qty",
    "fieldname": "available_qty_in_batch",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Available Qty In Batch",
    "read_only": 1
   },
@@ -75,27 +76,24 @@
    "fetch_from": "batch_id.ts_mrp",
    "fieldname": "ts_mrp",
    "fieldtype": "Currency",
-   "label": "MRP",
-   "read_only": 1
+   "label": "MRP"
   },
   {
    "fetch_from": "batch_id.ts_selling_price",
    "fieldname": "ts_selling_price",
    "fieldtype": "Currency",
-   "label": "Selling Price",
-   "read_only": 1
+   "label": "Selling Price"
   },
   {
    "fetch_from": "batch_id.expiry_date",
    "fieldname": "expiry_date",
    "fieldtype": "Date",
-   "label": "Expiry Date",
-   "read_only": 1
+   "label": "Expiry Date"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-08-20 13:25:26.312081",
+ "modified": "2022-08-22 20:28:55.088017",
  "modified_by": "Administrator",
  "module": "sks",
  "name": "Thirvu Item Label Generator",
