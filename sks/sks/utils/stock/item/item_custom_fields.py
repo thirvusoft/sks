@@ -175,7 +175,7 @@ def item_property_setter():
     make_property_setter("Item", "is_non_gst", "hidden", 1, "Check")
     make_property_setter("Item", "standard_rate", "hidden", 1, "Check")
     make_property_setter("Item", "is_fixed_asset", "hidden", 1, "Check")
-    make_property_setter("Item", "valuation_rate", "hidden", 1, "Check")
+    make_property_setter("Item", "valuation_rate", "hidden", 0, "Check")
     make_property_setter("Item", "barcodes", "hidden", 0, "Check")
     make_property_setter("Item", "inventory_section", "hidden", 1, "Check")
     make_property_setter("Item", "reorder_section", "hidden", 0, "Check")
