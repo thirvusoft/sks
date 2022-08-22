@@ -1,7 +1,6 @@
 var total_barcode_number_item=[]
 var total_barcode_item_code=[]
 var item_codes=[]
-var item_codes_dict={}
 var data
 frappe.ui.form.on("Purchase Invoice",{
 	onload:function(frm,cdt,cdn){
@@ -27,7 +26,6 @@ frappe.ui.form.on("Purchase Invoice",{
 		for(var i=0;i<data.items.length;i++){
 			item_codes.push(data.items[i].item_code)
 		}
-		item_codes_dict = item_codes.map(x => ({item_code_label: x}));
 		// Free Item From Supplier
 		frappe.db.get_single_value("Thirvu Retail Settings","verification_of_free_item").then(value =>{
 			if(value==1){
