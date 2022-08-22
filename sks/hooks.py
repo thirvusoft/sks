@@ -45,7 +45,8 @@ doctype_js = {"Delivery Note" : "sks/custom/js/delivery_note.js",
 "Employee Advance":"sks/custom/js/employee_advance.js",
 "Employee":"sks/custom/js/employee.js",
 "Job Offer":"sks/custom/js/job_offer.js",
-"Purchase Order":"sks/custom/js/purchase_order.js", 
+"Purchase Order":"sks/custom/js/purchase_order.js",
+"Stock Entry":"sks/custom/js/stock_entry.js", 
 }
 # doctype_js = {"Delivery Note" : "sks/sks/custom/js/outstanding_amount.js"}
 
@@ -193,7 +194,8 @@ doc_events = {
 	"Stock Entry":{
 		"validate":["sks.sks.custom.py.stock_entry.stock_entry",
 		"sks.sks.custom.py.stock_entry.auto_batch_creations",
-		"sks.sks.custom.py.stock_entry.material_transfer"]
+		"sks.sks.custom.py.stock_entry.material_transfer",
+		"sks.sks.custom.py.stock_entry.mandatory_validation"]
 	},
 	"Stock Verification":{
 		"on_submit":"sks.sks.doctype.stock_verification.stock_verification.stock_emtry_creation"
