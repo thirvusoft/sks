@@ -166,7 +166,8 @@ def mrp_finder(item_code):
         order_by="ts_selling_price",
         pluck='ts_mrp'
     )
-    return item_mrp[-1]
+    if item_mrp:
+        return item_mrp[-1]
 
 @frappe.whitelist()
 def payment_type(customer):

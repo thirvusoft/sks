@@ -135,7 +135,7 @@ frappe.ui.form.on("Sales Order",{
                         callback(r){
                             if(r.message==0){
                                 frm.set_value("payment_type","")
-                                frappe.throw('The Selected Customer is not a credit customer')
+                                frappe.throw({ message: __('The Selected Customer is not a credit customer')});
                             }
                         }
                     })
