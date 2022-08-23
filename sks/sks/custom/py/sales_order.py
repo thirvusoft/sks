@@ -1,6 +1,8 @@
 import frappe
 from frappe import _
 from erpnext.stock.get_item_details import get_bin_details
+from erpnext.accounts.party import  get_dashboard_info
+
 @frappe.whitelist(allow_guest=True)
 def customer_transaction_history(customer,item_codes): 
     from datetime import datetime
@@ -177,3 +179,27 @@ def payment_type(customer):
         return 1
     else:
         return 0
+
+@frappe.whitelist()
+def get_customer_data(customer,company):
+	if customer:
+		doc = frappe.get_doc("Customer",customer)
+		data_points = get_dashboard_info(doc.doctype, doc.name, doc.loyalty_program)
+		res = {
+			'total_unpaid': 0,
+			'billing_this_year': 0,
+			'info': '',
+			'loyalty_points': 0
+		}
+		for data_point in data_points:
+			if data_point['total_unpaid']:
+				res['total_unpaid'] += data_point['total_unpaid']
+			if data_point['billing_this_year']:
+				res['billing_this_year'] += data_point['billing_this_year']
+			if 'loyalty_points' not in data_point:
+				data_point['loyalty_points'] = 0
+			if 'loyalty_points' in data_point:
+				if company == data_point["company"]:
+					res['loyalty_points'] = data_point['loyalty_points']
+			res['info'] += f"Company: {data_point['company']}, \n Outstanding: {data_point['total_unpaid']}, \n Turn Over: {data_point['billing_this_year']}, \n Loyalty Points: {data_point['loyalty_points']}"
+		return res

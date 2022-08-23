@@ -115,6 +115,25 @@ frappe.ui.form.on("Sales Order",{
                 }
             }
         })
+        if (frm.doc.customer) {
+            frappe.call({
+              method: "sks.sks.custom.py.sales_order.get_customer_data",
+              args: {
+                customer: frm.doc.customer,
+                company: frm.doc.company,
+                freeze: true
+              },
+              callback: function (r) {
+                if (r.message) {
+                //   frm.doc.annual_billing = r.message["billing_this_year"]
+                //   frm.doc.total_unpaid = r.message["total_unpaid"]
+                //   frm.doc.loyalty_point_balance = r.message["loyalty_points"]
+                  frm.doc.customer_details = r.message["info"]
+                  frm.refresh_fields();
+                }
+              }
+            });
+          }
     },
     delivery_date:function(frm,cdt,cdn){
         var day = new Date(cur_frm.doc.delivery_date);
