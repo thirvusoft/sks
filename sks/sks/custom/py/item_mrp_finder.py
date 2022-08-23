@@ -1,8 +1,10 @@
 import frappe
 @frappe.whitelist()
 def ts_mrp_finder(ts_item_code):
-	ts_item=frappe.get_doc("Item",ts_item_code)
-	if ts_item.mrp:
-		return ts_item.mrp
-	else:
-		return 0
+	try:
+		ts_item = frappe.get_last_doc("Item Price", {"item_code": ts_item_code,"selling":1})
+		item_mrp=ts_item.ts_mrp
+		item_selling_price=ts_item.price_list_rate
+		return item_mrp,item_selling_price
+	except:
+		pass
