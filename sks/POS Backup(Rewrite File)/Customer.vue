@@ -7,6 +7,7 @@
       auto-select-first
       outlined
       color="indigo"
+      minLength=10
       :label="frappe._('Customer')"
       v-model="customer"
       :items="customers"
@@ -30,26 +31,29 @@
               class="indigo--text subtitle-1"
               v-html="data.item.customer_name"
             ></v-list-item-title>
-            <v-list-item-subtitle
+            <!-- Customized By Thirvusoft
+            Start -->
+            <!-- <v-list-item-subtitle
               v-if="data.item.customer_name != data.item.name"
               v-html="`ID: ${data.item.name}`"
             ></v-list-item-subtitle>
             <v-list-item-subtitle
               v-if="data.item.tax_id"
               v-html="`TAX ID: ${data.item.tax_id}`"
-            ></v-list-item-subtitle>
-            <v-list-item-subtitle
+            ></v-list-item-subtitle> -->
+            <!-- <v-list-item-subtitle
               v-if="data.item.email_id"
               v-html="`Email: ${data.item.email_id}`"
-            ></v-list-item-subtitle>
+            ></v-list-item-subtitle> -->
             <v-list-item-subtitle
               v-if="data.item.mobile_no"
               v-html="`Mobile No: ${data.item.mobile_no}`"
             ></v-list-item-subtitle>
-            <v-list-item-subtitle
+            <!-- <v-list-item-subtitle
               v-if="data.item.primary_address"
               v-html="`Primary Address: ${data.item.primary_address}`"
-            ></v-list-item-subtitle>
+            ></v-list-item-subtitle> -->
+            <!-- End -->
           </v-list-item-content>
         </template>
       </template>
@@ -65,6 +69,7 @@ import { evntBus } from '../../bus';
 export default {
   data: () => ({
     pos_profile: '',
+    pagelength :10,
     customers: [],
     customer: '',
     readonly: false,
@@ -73,6 +78,7 @@ export default {
   methods: {
     get_customer_names() {
       const vm = this;
+      
       if (vm.pos_profile.posa_local_storage && localStorage.customer_storage) {
         vm.customers = JSON.parse(localStorage.getItem('customer_storage'));
       }
@@ -84,7 +90,9 @@ export default {
         callback: function (r) {
           if (r.message) {
             vm.customers = r.message;
+            
             console.info('loadCustomers');
+            console.info('testCustomers');
             if (vm.pos_profile.posa_local_storage) {
               localStorage.setItem('customer_storage', '');
               localStorage.setItem(

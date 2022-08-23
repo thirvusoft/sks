@@ -374,14 +374,14 @@ def get_customer_names(pos_profile):
     pos_profile = json.loads(pos_profile)
     condition = ""
     condition += get_customer_group_condition(pos_profile)
+    # Customized By Thirvusoft
+    # Start
     customers = frappe.db.sql(
         """
-        SELECT cust.name as name, cust.mobile_no as mobile_no, cust.email_id as email_id, cust.tax_id as tax_id, cust.customer_name as customer_name,
-        addr.phone as phone1,  
-        addr.address_line1 as primary_address, addr.name as addrname
+        SELECT cust.name as name, cust.mobile_no as mobile_no, cust.email_id as email_id, cust.tax_id as tax_id, cust.customer_name as customer_name
         FROM `tabCustomer` as cust
-        left outer join `tabDynamic Link` as link on cust.name = link.link_name
-        left outer join `tabAddress` as addr on addr.name = link.parent
+        
+        
         WHERE {0}
         ORDER by cust.name
         """.format(
@@ -389,6 +389,7 @@ def get_customer_names(pos_profile):
         ),
         as_dict=1,
     )
+    # End
     return customers
 
 
@@ -1553,15 +1554,16 @@ def get_fields_for_denomination(pos_opening_shift):
 
 @frappe.whitelist()
 def batch_finder(ts_barcode=None,ts_item=None):
+    qty = print_weight()
     if ts_barcode:
         ts_batchs=frappe.db.get_all('Batch', fields=['name','expiry_date','batch_qty','ts_mrp'], filters={'barcode':ts_barcode, 'disabled':0,"batch_qty":[">",0]})
-        return(ts_batchs)
+        return(ts_batchs), qty
     else:
         ts_batchs=frappe.db.get_all('Batch', fields=['name'], filters={'item':ts_item})
         if ts_batchs:
-            return(ts_batchs[len(ts_batchs)-1]["name"])
+            return(ts_batchs[len(ts_batchs)-1]["name"]), qty
         else:
-            return 0
+            return 0, qty
 
 @frappe.whitelist(allow_guest=True)
 def customer_credit_sale(customer):
@@ -1779,3 +1781,39 @@ def update_feedback_status(customer,status):
     if(status == "false"):status=0
     else:status=1
     frappe.db.set_value("Customer", customer, 'feedback_required', status)
+
+import time
+import serial
+
+@frappe.whitelist() 
+def print_weight():
+    ser = serial.Serial(
+        port='COM1',
+        baudrate=9600,
+        timeout=None,
+        parity=serial.PARITY_EVEN,
+        stopbits=serial.STOPBITS_ONE,
+        bytesize=serial.SEVENBITS
+    )
+    ser.isOpen()
+    weight = [0]
+    while 1:
+            bytesToRead = ser.inWaiting()
+            data = ser.read(bytesToRead)
+            time.sleep(1)
+            s= str(data)
+            final_data = data.split(b'\n')
+            print(final_data)
+            if final_data[0] and len(final_data)!=1:
+                try:
+                    if float(final_data[0]) == 0:
+                        print(weight)
+                        return weight[-1]
+                    else:
+                        weight.append((float(final_data[0])))
+
+                except:
+                    weight.append((float(final_data[1])))
+            else:
+                if len(final_data)!=1:
+                    return max(weight)
