@@ -67,6 +67,7 @@ frappe.ui.form.on("Stock Entry",{
                                             method:"sks.sks.custom.py.stock_entry.label_generation",
                                             args:{items:final_list},
                                         })
+                                        frappe.set_route('List','Thirvu Item Label Generator')
                                     }
                                     else{
                                         frappe.msgprint('No Items added are selected')

@@ -1,6 +1,7 @@
 import json
 import frappe
 from frappe import _
+from frappe.utils.data import nowdate
 def stock_entry(doc,action):
 	item_wise_batch_details=[]
 	if doc.stock_entry_type == "Repack":
