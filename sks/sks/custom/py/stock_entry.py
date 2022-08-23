@@ -1,5 +1,7 @@
+import json
 import frappe
 from frappe import _
+from frappe.utils.data import nowdate
 def stock_entry(doc,action):
 	item_wise_batch_details=[]
 	if doc.stock_entry_type == "Repack":
@@ -149,3 +151,46 @@ def mandatory_validation(doc,event):
 def valuation_rate_fetching(batch_no):
 	valuation_rate=frappe.db.get_value("Batch",{"name":batch_no},["ts_valuation_rate"])
 	return valuation_rate
+
+@frappe.whitelist()
+def fetching_items(data):
+	print(data)
+	data = json.loads(data)
+	item_codes_dict={}
+	items=[]
+	for item in data:
+		try:
+			if item["t_warehouse"]:
+				try:
+					if item["batch_no"]:
+						batch=item["batch_no"]
+				except:
+					batch=""
+				item_codes_dict={
+					"item_code_label":item["item_code"],
+					"batch":batch,
+					"qty":item["qty"]
+				}
+				items.append(item_codes_dict)
+		except:
+			pass
+	return items
+@frappe.whitelist()
+def label_generation(items):
+	items=eval(items)
+	for item in items:
+		item_code=item[0]
+		batch=item[2]
+		qty=item[1]
+		if item_code and batch:
+			batch_doc_list=frappe.get_list("Thirvu Item Label Generator",{"batch_id":batch,"item":item_code},pluck="name")
+			if batch_doc_list:
+				batch_doc=frappe.get_doc("Thirvu Item Label Generator",{"name":batch_doc_list[0]})
+				batch_doc.required_labels=qty
+				batch_doc.save()
+			else:
+				new_label_doc=frappe.new_doc("Thirvu Item Label Generator")
+				new_label_doc.batch_id=batch
+				new_label_doc.item=item_code
+				new_label_doc.required_labels=qty
+				new_label_doc.save()

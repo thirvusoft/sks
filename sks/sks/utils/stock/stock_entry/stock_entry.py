@@ -34,7 +34,14 @@ def stock_entry_details():
                 depends_on = "eval:doc.add_to_transit",
                 mandatory_depends_on ="eval:doc.add_to_transit",
                 options = "Driver"
-            )
+            ),
+            dict(
+                fieldname='generate_label', 
+                label='Generate Label', 
+                fieldtype='Button',
+                insert_after='purpose',
+                depends_on = "eval:doc.docstatus==1 && doc.stock_entry_type=='Repack'",
+            ),
         ]
     }
     
