@@ -31,6 +31,8 @@
               class="indigo--text subtitle-1"
               v-html="data.item.customer_name"
             ></v-list-item-title>
+            <!-- Customized By Thirvusoft
+            Start -->
             <!-- <v-list-item-subtitle
               v-if="data.item.customer_name != data.item.name"
               v-html="`ID: ${data.item.name}`"
@@ -47,10 +49,13 @@
               v-if="data.item.mobile_no"
               v-html="`Mobile No: ${data.item.mobile_no}`"
             ></v-list-item-subtitle>
+            <!-- Customized By Thirvusoft
+            Start -->
             <!-- <v-list-item-subtitle
               v-if="data.item.primary_address"
               v-html="`Primary Address: ${data.item.primary_address}`"
             ></v-list-item-subtitle> -->
+            <!-- End -->
           </v-list-item-content>
         </template>
       </template>
