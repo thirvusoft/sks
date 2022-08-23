@@ -242,8 +242,8 @@ export default {
   created: function () {
     // Customized By Thirvusoft
     // Start
-    evntBus.$on('open_new_customer', (ts_current_number) => {
-      this.mobile1=ts_current_number
+    evntBus.$on('open_new_customer', (a) => {
+      this.mobile1=a
       // End
       this.customerDialog = true;
       var  groups, territorys, citys;

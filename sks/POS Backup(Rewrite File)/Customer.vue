@@ -73,7 +73,7 @@ export default {
     pos_profile: '',
     // Customized By Thirvusoft
     // Start
-    ts_current_number:"",
+    a:"",
     // End
     customers: [],
     customer: '',
@@ -113,7 +113,7 @@ export default {
     new_customer() {
     // Customized By Thirvusoft
     // Start
-      evntBus.$emit('open_new_customer',ts_current_number);
+      evntBus.$emit('open_new_customer',a);
     // End
     },
     edit_customer() {
