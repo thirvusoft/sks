@@ -24,7 +24,7 @@ def item_check_with_sales_order(item_code_checking=None,checking_sales_order=Non
                 item_code=total_item[j].__dict__["item_code"]
                 matched_item=matched_item+1
                 if search_value:
-                    ts_item_barcode=frappe.get_all("Batch",{"item":item_code_checking,"disabled":0,"barcode":search_value,'expiry_date':[">" ,nowdate()],"batch_qty":[">",0]},["name","ts_mrp"])
+                    ts_item_barcode=frappe.get_all("Batch",{"item":item_code_checking,"disabled":0,"barcode":search_value,"batch_qty":[">",0]},["name","ts_mrp"])
                     if ts_item_barcode:
                         if len(ts_item_barcode)==1:
                             item_batch_name.append(ts_item_barcode[0]["name"])
@@ -36,7 +36,10 @@ def item_check_with_sales_order(item_code_checking=None,checking_sales_order=Non
                 break
     if(matched_item==1):
         matched_item=0
-        return item_code,item_batch_name,item_batch_mrp
+        if not item_batch_name:
+            return 1
+        else:
+            return item_code,item_batch_name,item_batch_mrp
     else:
         return 0
   

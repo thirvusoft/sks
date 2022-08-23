@@ -40,8 +40,19 @@ frappe.db.get_single_value("Thirvu Retail Settings","allow_only_if_delivery_note
 						 method:"sks.sks.custom.py.delivery_note.item_check_with_sales_order",
 						 args:{item_code_checking,checking_sales_order,search_value},
 						 callback(r){
-							if(r["message"]==0){
-								frappe.msgprint("Scanned Barcode Is Not Matching With The Below Items")  
+							if(r["message"]===0){
+								frappe.model.set_value(cdt,cdn,"scan_barcode_to_verify_the_items","")
+								frappe.throw({
+									title:("Message"),
+									message:("Scanned Barcode <b>"+search_value+"</b>Is Not Matching With The Below Items")
+								})
+							}
+							if(r["message"]===1){
+								frappe.model.set_value(cdt,cdn,"scan_barcode_to_verify_the_items","")
+								frappe.throw({
+									title:("Message"),
+									message:('There Is No Stock For This Scanned Barcode : <b>'+search_value+"</b>")
+								})
 							}
 							else{
 								var ts_main,single_barcode=0,matched=0,new_total_item_count,j,new_length,item_code,against_sales_order,so_detail
