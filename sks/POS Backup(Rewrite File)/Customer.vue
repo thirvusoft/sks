@@ -49,6 +49,8 @@
               v-if="data.item.mobile_no"
               v-html="`Mobile No: ${data.item.mobile_no}`"
             ></v-list-item-subtitle>
+            <!-- Customized By Thirvusoft
+            Start -->
             <!-- <v-list-item-subtitle
               v-if="data.item.primary_address"
               v-html="`Primary Address: ${data.item.primary_address}`"
@@ -69,13 +71,17 @@ import { evntBus } from '../../bus';
 export default {
   data: () => ({
     pos_profile: '',
-    pagelength :10,
+    // Customized By Thirvusoft
+    // Start
+    ts_current_number:"",
+    // End
     customers: [],
     customer: '',
     readonly: false,
   }),
 
   methods: {
+
     get_customer_names() {
       const vm = this;
       
@@ -105,7 +111,10 @@ export default {
       });
     },
     new_customer() {
-      evntBus.$emit('open_new_customer');
+    // Customized By Thirvusoft
+    // Start
+      evntBus.$emit('open_new_customer',ts_current_number);
+    // End
     },
     edit_customer() {
       evntBus.$emit('open_edit_customer');
@@ -140,7 +149,7 @@ export default {
       const textFour = item.mobile_no ? item.mobile_no.toLowerCase() : '';
       const textFifth = item.name.toLowerCase();
       const searchText = queryText.toLowerCase();
-
+      a=queryText
       return (
         textOne.indexOf(searchText) > -1 ||
         textTwo.indexOf(searchText) > -1 ||

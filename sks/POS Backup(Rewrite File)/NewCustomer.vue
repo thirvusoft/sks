@@ -26,6 +26,7 @@
                   :label="frappe._('Mobile')"
                   background-color="white"
                   hide-details
+                  :items="phone"
                   v-model="mobile1"
                 ></v-text-field>
               </v-col>
@@ -64,6 +65,8 @@
                 >
                 </v-autocomplete>
               </v-col>
+              <!-- Customized By Thirvusoft
+              Start -->
               <!-- <v-col cols="6">
                 <v-autocomplete
                  clearable
@@ -94,7 +97,7 @@
                 >
                 </v-autocomplete>
               </v-col> -->
-             
+             <!-- End -->
             </v-row>
           </v-container>
         </v-card-text>
@@ -236,12 +239,12 @@ export default {
     
   },
 
-
-    
-  
-  
   created: function () {
-    evntBus.$on('open_new_customer', () => {
+    // Customized By Thirvusoft
+    // Start
+    evntBus.$on('open_new_customer', (ts_current_number) => {
+      this.mobile1=ts_current_number
+      // End
       this.customerDialog = true;
       var  groups, territorys, citys;
       // v_model;
@@ -276,8 +279,6 @@ export default {
   }),
   watch: {},
 };
-
- 
 
 </script>
 
