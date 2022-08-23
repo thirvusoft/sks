@@ -31,8 +31,6 @@
               class="indigo--text subtitle-1"
               v-html="data.item.customer_name"
             ></v-list-item-title>
-            <!-- Customized By Thirvusoft
-            Start -->
             <!-- <v-list-item-subtitle
               v-if="data.item.customer_name != data.item.name"
               v-html="`ID: ${data.item.name}`"
@@ -53,7 +51,6 @@
               v-if="data.item.primary_address"
               v-html="`Primary Address: ${data.item.primary_address}`"
             ></v-list-item-subtitle> -->
-            <!-- End -->
           </v-list-item-content>
         </template>
       </template>
@@ -69,13 +66,17 @@ import { evntBus } from '../../bus';
 export default {
   data: () => ({
     pos_profile: '',
-    pagelength :10,
+    // Customized By Thirvusoft
+    // Start
+    ts_current_number:"",
+    // End
     customers: [],
     customer: '',
     readonly: false,
   }),
 
   methods: {
+
     get_customer_names() {
       const vm = this;
       
@@ -105,7 +106,10 @@ export default {
       });
     },
     new_customer() {
-      evntBus.$emit('open_new_customer');
+    // Customized By Thirvusoft
+    // Start
+      evntBus.$emit('open_new_customer',ts_current_number);
+    // End
     },
     edit_customer() {
       evntBus.$emit('open_edit_customer');
@@ -140,7 +144,7 @@ export default {
       const textFour = item.mobile_no ? item.mobile_no.toLowerCase() : '';
       const textFifth = item.name.toLowerCase();
       const searchText = queryText.toLowerCase();
-
+      a=queryText
       return (
         textOne.indexOf(searchText) > -1 ||
         textTwo.indexOf(searchText) > -1 ||
