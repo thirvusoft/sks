@@ -151,7 +151,7 @@ def warehouse_qty_details(item_code,company):
                             warehouse_qty_details+="Available Qty in {0} : {1} \n".format(w_house,item_list_qty)
                         else:warehouse_qty_details+="Available Qty in {0} : 0 \n".format(w_house)
     else:warehouse_qty_details+="Item is not mapped to any warehouse \n"
-    total_warehouse_qty=get_bin_details(item_code,"All Warehouses - SKS",company)
+    total_warehouse_qty=get_bin_details(item_code,"All Warehouses - SKSS",company)
     if total_warehouse_qty["company_total_stock"]:
         warehouse_qty_details+="Available Qty in All Warehouse : {0} ".format(total_warehouse_qty["company_total_stock"])
     else:warehouse_qty_details+="Available Qty in All Warehouse : 0 "

@@ -103,7 +103,7 @@ def sales_order_property_setter():
     make_property_setter("Sales Order", "posa_additional_notes_section", "hidden", "1", "Column Break")
     make_property_setter("Sales Order", "total_net_weight", "hidden", "1", "Float")
     make_property_setter("Sales Order", "rounding_adjustment", "hidden", "1", "Currency")
-    make_property_setter("Sales Order", "cost_center", "default", "Main - SKS", "Link")
+    make_property_setter("Sales Order", "cost_center", "default", "Main - SKSS", "Link")
    
 
 
