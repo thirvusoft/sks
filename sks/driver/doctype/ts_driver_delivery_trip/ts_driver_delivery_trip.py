@@ -130,11 +130,11 @@ def create_driver_closing_shift(ts_denomination,driver_name,creation_datetime,dr
     try:
         denomination=denomination_validation["ts_denomination"]
     except:
-        pass
+        denomination=[]
     try:
         ts_mode_of_payment=denomination_validation["ts_mode_of_payment"]
     except:
-        pass
+        ts_mode_of_payment=[]
     denomination_cash=0
     other_cash=0
     payment_reconcilation=[]
