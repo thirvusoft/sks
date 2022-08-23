@@ -63,6 +63,13 @@ def sales_order_custom_field():
                 insert_after='is_local_delivery',
                 default="1",
                 no_copy=1
+            ),
+            dict(fieldname='customer_details', 
+                label='Customer Details',
+                fieldtype='Code',
+                insert_after='delivery_day',
+                no_copy=1,
+                read_only=1
             )
 
         ]
