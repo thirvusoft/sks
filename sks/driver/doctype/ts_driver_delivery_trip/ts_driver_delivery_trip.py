@@ -127,8 +127,14 @@ def get_fields_for_denomination(driver_id):
 def create_driver_closing_shift(ts_denomination,driver_name,creation_datetime,driver_id,doc_name):
     driver_closing_shift_grace_amt = frappe.db.get_single_value('Thirvu Retail Settings', 'driver_closing_shift_grace_amount')
     denomination_validation=json.loads(ts_denomination)
-    denomination=denomination_validation["ts_denomination"]
-    ts_mode_of_payment=denomination_validation["ts_mode_of_payment"]
+    try:
+        denomination=denomination_validation["ts_denomination"]
+    except:
+        pass
+    try:
+        ts_mode_of_payment=denomination_validation["ts_mode_of_payment"]
+    except:
+        pass
     denomination_cash=0
     other_cash=0
     payment_reconcilation=[]

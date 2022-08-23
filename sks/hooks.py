@@ -195,7 +195,8 @@ doc_events = {
 		"validate":["sks.sks.custom.py.stock_entry.stock_entry",
 		"sks.sks.custom.py.stock_entry.auto_batch_creations",
 		"sks.sks.custom.py.stock_entry.material_transfer",
-		"sks.sks.custom.py.stock_entry.mandatory_validation"]
+		# "sks.sks.custom.py.stock_entry.mandatory_validation"
+		]
 	},
 	"Stock Verification":{
 		"on_submit":"sks.sks.doctype.stock_verification.stock_verification.stock_emtry_creation"
