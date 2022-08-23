@@ -90,7 +90,10 @@ frappe.ui.form.on("Purchase Order Item",{
 				method:"sks.sks.custom.py.item_mrp_finder.ts_mrp_finder",
 				args:{ts_item_code},
 				callback(ts_r){
-					frappe.model.set_value(cdt,cdn,"ts_mrp",ts_r.message)
+					if(ts_r["message"]){ 
+						frappe.model.set_value(cdt,cdn,"ts_mrp",ts_r["message"][0])
+						frappe.model.set_value(cdt,cdn,"ts_selling_rate",ts_r["message"][1])
+					}
 				}
 			}),
 			frappe.db.get_single_value("Thirvu Retail Settings","purchased_and_sold_qty_alert").then(value =>{
