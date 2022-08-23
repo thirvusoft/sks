@@ -143,7 +143,7 @@ frappe.ui.form.on("Sales Order",{
             }
             else{
                 frm.set_value("payment_type","")
-                frappe.throw('Please select customer')
+                frappe.throw({ message: __('Please select customer')});
             }
         }
     }

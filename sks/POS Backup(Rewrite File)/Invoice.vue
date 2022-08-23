@@ -1307,6 +1307,7 @@ export default {
                 var updated_item = r.message.find(
                   function (element) { return element.posa_row_id == item.posa_row_id; }
                 );
+                console.log( updated_item.batch_no_data,"jjjj")
                 item.actual_qty = updated_item.actual_qty;
                 item.serial_no_data = updated_item.serial_no_data;
                 item.batch_no_data = updated_item.batch_no_data;
