@@ -2,6 +2,7 @@ import frappe
 from frappe import _
 from erpnext.stock.get_item_details import get_bin_details
 from erpnext.accounts.party import  get_dashboard_info
+import re
 
 @frappe.whitelist(allow_guest=True)
 def customer_transaction_history(customer,item_codes): 
@@ -203,3 +204,21 @@ def get_customer_data(customer,company):
 					res['loyalty_points'] = data_point['loyalty_points']
 			res['info'] += f"Company: {data_point['company']}, \n Outstanding: {data_point['total_unpaid']}, \n Turn Over: {data_point['billing_this_year']}, \n Loyalty Points: {data_point['loyalty_points']}"
 		return res
+
+
+def customer_address_change(doc,event):
+    if doc.address_change:
+        add_doc=frappe.get_doc("Address",doc.customer_address)
+        if doc.address_line1:
+            add_doc.address_line1=doc.address_line1
+        if doc.address_line2:
+            add_doc.address_line2=doc.address_line2
+        if doc.city:
+            add_doc.city=doc.city
+        if doc.status:
+            add_doc.state=doc.state
+        if doc.phone:
+            add_doc.phone=doc.phone
+        if doc.phone_2:
+            add_doc.phone_2=doc.phone_2
+        add_doc.save()

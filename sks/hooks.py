@@ -174,7 +174,8 @@ doc_events = {
 	},
 	"Sales Order":{
 		"validate":[
-			"sks.sks.custom.py.sales_order.warehouse_fetching"
+			"sks.sks.custom.py.sales_order.warehouse_fetching",
+			"sks.sks.custom.py.sales_order.customer_address_change"
 		]
 	},
 	"Delivery Note":{

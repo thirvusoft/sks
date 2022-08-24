@@ -68,6 +68,7 @@ frappe.ui.form.on("Sales Order",{
                 loading=loading+1
             })
         }
+        frm.set_df_property("address_change", "read_only",1);
     },
     customer:function(frm,cdt,cdn){
         frm.set_value("payment_type","")
