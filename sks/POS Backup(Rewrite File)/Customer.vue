@@ -1,28 +1,30 @@
+
 <template>
   <div>
-    
     <v-autocomplete
       dense
       clearable
       auto-select-first
       outlined
       color="indigo"
-      minLength=10
       :label="frappe._('Customer')"
       v-model="customer"
-      :items="customers"
-      ref = "customer"
+      :loading="isLoading"
+      :items="fetchcustomers"
+      :search-input.sync="search"
       item-text="customer_name"
       item-value="name"
+      ref = "customer"
+      hide-selected
       background-color="white"
-      :no-data-text="__('Customer not found')"
-      hide-details
+      :no-data-text="__('Create New Customer')"
       :filter="customFilter"
       :disabled="readonly"
       append-icon="mdi-account-plus"
       @click:append="new_customer"
       prepend-inner-icon="mdi-account-edit"
       @click:prepend-inner="edit_customer"
+      return-object
     >
       <template v-slot:item="data">
         <template>
@@ -49,8 +51,6 @@
               v-if="data.item.mobile_no"
               v-html="`Mobile No: ${data.item.mobile_no}`"
             ></v-list-item-subtitle>
-            <!-- Customized By Thirvusoft
-            Start -->
             <!-- <v-list-item-subtitle
               v-if="data.item.primary_address"
               v-html="`Primary Address: ${data.item.primary_address}`"
@@ -71,44 +71,97 @@ import { evntBus } from '../../bus';
 export default {
   data: () => ({
     pos_profile: '',
+    pagelength :10,
+    customers: [],
     // Customized By Thirvusoft
     // Start
     a:"",
     // End
-    customers: [],
-    customer: '',
     readonly: false,
+    isLoading: false,
+    customer: '',
+    search: null
   }),
 
-  methods: {
+  computed: {
+    fields () {
+      if (!this.customer) return []
 
-    get_customer_names() {
-      const vm = this;
-      
-      if (vm.pos_profile.posa_local_storage && localStorage.customer_storage) {
-        vm.customers = JSON.parse(localStorage.getItem('customer_storage'));
+      return Object.keys(this.customer).map(key => {
+        return {
+          key,
+          value: this.customer[key] || 'n/a'
+        }
+      })
+    },
+    fetchcustomers () {
+      return this.customers.map(entry => {
+        return Object.assign({}, entry)
+      })
+    }
+  },
+  
+
+  watch: {
+    search (val) {
+      if (!val) {
+        return
       }
-      frappe.call({
-        method: 'posawesome.posawesome.api.posapp.get_customer_names',
-        args: {
-          pos_profile: this.pos_profile.pos_profile,
-        },
-        callback: function (r) {
-          if (r.message) {
-            vm.customers = r.message;
+
+      this.clearEntries()
+      this.isLoading = true
+      this.fetchEntriesDebounced(val)
+    }
+  },
+
+  methods: {
+    clearEntries() {
+      this.count = 0
+      this.customers = []
+    },
+    fetchEntriesDebounced(val) {
+      clearTimeout(this._searchTimerId)
+      this._searchTimerId = setTimeout(() => {
+        this.fetchEntries(val)
+      }, 500) /* 500ms throttle */
+    },
+    fetchEntries(val) {
+      frappe.call('posawesome.posawesome.api.posapp.get_customer_names', {
+					searchterm: val
+				})
+				.then(r => {
+					this.count = r.message[1]
+          this.customers = r.message[0]
+				})
+				.then(() => (this.isLoading = false));
+    },
+    get_customer_names() {
+      // const vm = this;
+      
+      // if (vm.pos_profile.posa_local_storage && localStorage.customer_storage) {
+      //   vm.customers = JSON.parse(localStorage.getItem('customer_storage'));
+      // }
+      // frappe.call({
+      //   method: 'posawesome.posawesome.api.posapp.get_customer_names',
+      //   args: {
+      //     pos_profile: this.pos_profile.pos_profile,
+      //   },
+      //   callback: function (r) {
+      //     if (r.message) {
+      //       vm.customers = r.message;
             
-            console.info('loadCustomers');
-            console.info('testCustomers');
-            if (vm.pos_profile.posa_local_storage) {
-              localStorage.setItem('customer_storage', '');
-              localStorage.setItem(
-                'customer_storage',
-                JSON.stringify(r.message)
-              );
-            }
-          }
-        },
-      });
+      //       console.info('loadCustomers');
+      //       console.info('testCustomers');
+      //       if (vm.pos_profile.posa_local_storage) {
+      //         localStorage.setItem('customer_storage', '');
+      //         localStorage.setItem(
+      //           'customer_storage',
+      //           JSON.stringify(r.message)
+      //         );
+      //       }
+      //     }
+      //   },
+      // });
     },
     new_customer() {
     // Customized By Thirvusoft
@@ -141,6 +194,7 @@ export default {
       },
     // End
     customFilter(item, queryText, itemText) {
+      
       const textOne = item.customer_name
         ? item.customer_name.toLowerCase()
         : '';
@@ -160,9 +214,7 @@ export default {
     },
   },
 
-  computed: {},
-
-// CREATE
+// CREATE 
    created: function () {
     this.customer = customer;
     var vm = this;
@@ -184,7 +236,7 @@ export default {
       // Start
       frappe.db.get_single_value("Thirvu Retail Settings","allow_display_customer_outstanding_amount").then(value =>{
 	      if(value==1){
-        customer =vm.customer;
+        customer =vm.customer.name;
          if(customer){
 
           frappe.db.get_value("Customer",customer,'payment_terms').then(function(value){
@@ -327,6 +379,15 @@ export default {
   },
   // End
   watch: {
+     search (val) {
+      if (!val) {
+        return
+      }
+
+      this.clearEntries()
+      this.isLoading = true
+      this.fetchEntriesDebounced(val)
+    },
     customer() {
       evntBus.$emit('update_customer', this.customer);
     },
