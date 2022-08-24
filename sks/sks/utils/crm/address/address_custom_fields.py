@@ -6,7 +6,16 @@ def address_customization():
     address_property_setter()
      
 def address_custom_field():
-    pass
+    custom_fields={
+        "Address":[
+            dict(fieldname='phone_2',
+                label='Phone 2',
+                fieldtype='Data',
+                insert_after='phone',
+            ),
+        ]
+    }
+    create_custom_fields(custom_fields)
 
 def address_property_setter(): 
     make_property_setter("Address", "links", "hidden", "1", "Check")

@@ -2,6 +2,7 @@ import frappe
 from frappe import _
 from erpnext.stock.get_item_details import get_bin_details
 from erpnext.accounts.party import  get_dashboard_info
+import re
 
 @frappe.whitelist(allow_guest=True)
 def customer_transaction_history(customer,item_codes): 
@@ -203,3 +204,86 @@ def get_customer_data(customer,company):
 					res['loyalty_points'] = data_point['loyalty_points']
 			res['info'] += f"Company: {data_point['company']}, \n Outstanding: {data_point['total_unpaid']}, \n Turn Over: {data_point['billing_this_year']}, \n Loyalty Points: {data_point['loyalty_points']}"
 		return res
+
+
+def customer_address_change(doc,event):
+    if doc.address_change:
+        add_doc=frappe.get_doc("Address",doc.customer_address)
+        if doc.address_line1:
+            add_doc.address_line1=doc.address_line1
+        if doc.address_line2:
+            add_doc.address_line2=doc.address_line2
+        if doc.city:
+            add_doc.city=doc.city
+        if doc.status:
+            add_doc.state=doc.state
+        if doc.phone:
+            add_doc.phone=doc.phone
+        if doc.phone_2:
+            add_doc.phone_2=doc.phone_2
+        add_doc.save()
+    
+
+    
+
+
+# @frappe.whitelist()
+# def set_customer_info(fieldname, customer, value=""):
+#     field_with_doctype = {'mobile_no':'Customer','phone':'Address','phone_no_optional':'Address',
+#     'phone_no1optional':'Address','address_line1':'Address','address_line2':'Address','territory':"Customer",
+#     'customer_group':'Customer','city':'Address'}
+    
+#     doctype = field_with_doctype[fieldname]
+#     if(doctype == 'Address'):
+#         address = frappe.get_all("Dynamic Link",{'link_doctype':"Customer", 'link_name':customer, 'parenttype':'Address'},pluck='parent')
+#         if(len(address)>=1):
+#             frappe.db.set_value('Address', address[0], fieldname, value)
+            
+#             frappe.db.commit()
+
+#     if(doctype == 'Customer'):
+#         frappe.db.set_value('Customer', customer, fieldname, value)
+#         if(fieldname == 'mobile_no'):
+#             address = frappe.get_all("Dynamic Link",{'link_doctype':"Customer", 'link_name':customer, 'parenttype':'Address'},pluck='parent')
+#             if(len(address)>=1):
+#                 frappe.db.set_value('Address', address[0], 'phone', value)
+#                 frappe.db.commit()
+
+
+
+#     if fieldname == "loyalty_program":
+#         frappe.db.set_value("Customer", customer, "loyalty_program", value)
+
+#     contact = (
+#         frappe.get_cached_value("Customer", customer, "customer_primary_contact") or ""
+#     )
+
+#     if contact:
+#         contact_doc = frappe.get_doc("Contact", contact)
+#         if fieldname == "email_id":
+#             contact_doc.set("email_ids", [{"email_id": value, "is_primary": 1}])
+#             frappe.db.set_value("Customer", customer, "email_id", value)
+#         elif fieldname == "mobile_no":
+#             contact_doc.set("phone_nos", [{"phone": value, "is_primary_mobile_no": 1}])
+#             frappe.db.set_value("Customer", customer, "mobile_no", value)
+#         contact_doc.save()
+
+#     else:
+#         contact_doc = frappe.new_doc("Contact")
+#         contact_doc.first_name = customer
+#         contact_doc.is_primary_contact = 1
+#         contact_doc.is_billing_contact = 1
+#         if fieldname == "mobile_no":
+#             contact_doc.add_phone(value, is_primary_mobile_no=1, is_primary_phone=1)
+
+#         if fieldname == "email_id":
+#             contact_doc.add_email(value, is_primary=1)
+
+#         contact_doc.append("links", {"link_doctype": "Customer", "link_name": customer})
+
+#         contact_doc.flags.ignore_mandatory = True
+#         contact_doc.save()
+#         frappe.set_value(
+#             "Customer", customer, "customer_primary_contact", contact_doc.name
+#         )
+#     return customer
