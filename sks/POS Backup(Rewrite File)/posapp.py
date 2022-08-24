@@ -369,28 +369,6 @@ def get_customer_group_condition(pos_profile):
     return cond % tuple(customer_groups)
 
 
-# @frappe.whitelist()
-# def get_customer_names(pos_profile):
-    # pos_profile = json.loads(pos_profile)
-    # condition = ""
-    # condition += get_customer_group_condition(pos_profile)
-    # # Customized By Thirvusoft
-    # # Start
-    # customers = frappe.db.sql(
-    #     """
-    #     SELECT cust.name as name, cust.mobile_no as mobile_no, cust.email_id as email_id, cust.tax_id as tax_id, cust.customer_name as customer_name
-    #     FROM `tabCustomer` as cust
-        
-        
-    #     WHERE {0}
-    #     ORDER by cust.name
-    #     """.format(
-    #         condition
-    #     ),
-    #     as_dict=1,
-    # )
-    # # End
-    # return customers
 @frappe.whitelist()
 def get_customer_names(searchterm):
     condition = ""
@@ -418,6 +396,7 @@ def get_customer_names(searchterm):
 @frappe.whitelist()
 def update_invoice(data):
     data = json.loads(data)
+    data['customer'] = data['customer']['name']
     if data.get("name"):
         invoice_doc = frappe.get_doc("Sales Invoice", data.get("name"))
         invoice_doc.update(data)
@@ -430,7 +409,6 @@ def update_invoice(data):
         ref_doc = frappe.get_doc(invoice_doc.doctype, invoice_doc.return_against)
         if not ref_doc.update_stock:
             invoice_doc.update_stock = 0
-
     for item in invoice_doc.items:
         add_taxes_from_tax_template(item, invoice_doc)
     if frappe.get_value("POS Profile", invoice_doc.pos_profile, "posa_tax_inclusive"):
@@ -1574,7 +1552,6 @@ def get_fields_for_denomination(pos_opening_shift):
     return ts_denomination,ts_mode_of_payment
 
 
-
 @frappe.whitelist()
 def batch_finder(ts_barcode=None,ts_item=None):
     if ts_barcode:
@@ -1586,7 +1563,6 @@ def batch_finder(ts_barcode=None,ts_item=None):
             return(ts_batchs[len(ts_batchs)-1]["name"])
         else:
             return 0
-
 
 @frappe.whitelist(allow_guest=True)
 def customer_credit_sale(customer):
@@ -1805,7 +1781,7 @@ def update_feedback_status(customer,status):
     else:status=1
     frappe.db.set_value("Customer", customer, 'feedback_required', status)
 
-# import time
+import time
 # import serial
 
 # @frappe.whitelist() 
