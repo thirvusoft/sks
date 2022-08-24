@@ -243,7 +243,11 @@ export default {
     // Customized By Thirvusoft
     // Start
     evntBus.$on('open_new_customer', (a) => {
+      console.log(a,"kkkkkkkkkkkkkkkkkkkk")
+      if(a.id != "a"){
       this.mobile1=a
+      }
+      console.log("ffffffffffff",this.mobile1)
       // End
       this.customerDialog = true;
       var  groups, territorys, citys;
