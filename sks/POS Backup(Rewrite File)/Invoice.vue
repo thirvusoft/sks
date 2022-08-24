@@ -1329,7 +1329,7 @@ export default {
             price_list: this.pos_profile.price_list,
             item: {
               item_code: item.item_code,
-              customer: this.customer,
+              customer: this.customer.name,
               doctype: 'Sales Invoice',
               name: 'New Sales Invoice 1',
               company: this.pos_profile.company,
@@ -1415,7 +1415,7 @@ export default {
           frappe.call({
             method: 'posawesome.posawesome.api.posapp.get_customer_info',
             args: {
-              customer: vm.customer,
+              customer: vm.customer['name'],
             },
             async: false,
             callback: function (r) {

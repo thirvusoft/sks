@@ -369,28 +369,50 @@ def get_customer_group_condition(pos_profile):
     return cond % tuple(customer_groups)
 
 
+# @frappe.whitelist()
+# def get_customer_names(pos_profile):
+    # pos_profile = json.loads(pos_profile)
+    # condition = ""
+    # condition += get_customer_group_condition(pos_profile)
+    # # Customized By Thirvusoft
+    # # Start
+    # customers = frappe.db.sql(
+    #     """
+    #     SELECT cust.name as name, cust.mobile_no as mobile_no, cust.email_id as email_id, cust.tax_id as tax_id, cust.customer_name as customer_name
+    #     FROM `tabCustomer` as cust
+        
+        
+    #     WHERE {0}
+    #     ORDER by cust.name
+    #     """.format(
+    #         condition
+    #     ),
+    #     as_dict=1,
+    # )
+    # # End
+    # return customers
 @frappe.whitelist()
-def get_customer_names(pos_profile):
-    pos_profile = json.loads(pos_profile)
+def get_customer_names(searchterm):
     condition = ""
-    condition += get_customer_group_condition(pos_profile)
-    # Customized By Thirvusoft
-    # Start
-    customers = frappe.db.sql(
-        """
-        SELECT cust.name as name, cust.mobile_no as mobile_no, cust.email_id as email_id, cust.tax_id as tax_id, cust.customer_name as customer_name
-        FROM `tabCustomer` as cust
-        
-        
-        WHERE {0}
-        ORDER by cust.name
-        """.format(
-            condition
-        ),
-        as_dict=1,
-    )
+
+    if searchterm.isdigit(): 
+        customers = frappe.get_all(
+            "Customer",
+            filters={"mobile_no": ("like", "%{0}%".format(searchterm))},
+            fields=["name", "mobile_no", "email_id", "tax_id", "customer_name"],
+            order_by = "name",
+            limit = 20
+        )
+    else:
+        customers = frappe.get_all(
+            "Customer",
+            filters={"customer_name": ("like", "%{0}%".format(searchterm))},
+            fields=["name", "mobile_no", "email_id", "tax_id", "customer_name"],
+            order_by = "name",
+            limit = 20
+        )
     # End
-    return customers
+    return customers, len(customers) + 1
 
 
 @frappe.whitelist()
@@ -1552,18 +1574,19 @@ def get_fields_for_denomination(pos_opening_shift):
     return ts_denomination,ts_mode_of_payment
 
 
+
 @frappe.whitelist()
 def batch_finder(ts_barcode=None,ts_item=None):
-    qty = print_weight()
     if ts_barcode:
         ts_batchs=frappe.db.get_all('Batch', fields=['name','expiry_date','batch_qty','ts_mrp'], filters={'barcode':ts_barcode, 'disabled':0,"batch_qty":[">",0]})
-        return(ts_batchs), qty
+        return(ts_batchs)
     else:
         ts_batchs=frappe.db.get_all('Batch', fields=['name'], filters={'item':ts_item})
         if ts_batchs:
-            return(ts_batchs[len(ts_batchs)-1]["name"]), qty
+            return(ts_batchs[len(ts_batchs)-1]["name"])
         else:
-            return 0, qty
+            return 0
+
 
 @frappe.whitelist(allow_guest=True)
 def customer_credit_sale(customer):
@@ -1782,38 +1805,38 @@ def update_feedback_status(customer,status):
     else:status=1
     frappe.db.set_value("Customer", customer, 'feedback_required', status)
 
-import time
-import serial
+# import time
+# import serial
 
-@frappe.whitelist() 
-def print_weight():
-    ser = serial.Serial(
-        port='COM1',
-        baudrate=9600,
-        timeout=None,
-        parity=serial.PARITY_EVEN,
-        stopbits=serial.STOPBITS_ONE,
-        bytesize=serial.SEVENBITS
-    )
-    ser.isOpen()
-    weight = [0]
-    while 1:
-            bytesToRead = ser.inWaiting()
-            data = ser.read(bytesToRead)
-            time.sleep(1)
-            s= str(data)
-            final_data = data.split(b'\n')
-            print(final_data)
-            if final_data[0] and len(final_data)!=1:
-                try:
-                    if float(final_data[0]) == 0:
-                        print(weight)
-                        return weight[-1]
-                    else:
-                        weight.append((float(final_data[0])))
+# @frappe.whitelist() 
+# def print_weight():
+#     ser = serial.Serial(
+#         port='COM1',
+#         baudrate=9600,
+#         timeout=None,
+#         parity=serial.PARITY_EVEN,
+#         stopbits=serial.STOPBITS_ONE,
+#         bytesize=serial.SEVENBITS
+#     )
+#     ser.isOpen()
+#     weight = [0]
+#     while 1:
+#             bytesToRead = ser.inWaiting()
+#             data = ser.read(bytesToRead)
+#             time.sleep(1)
+#             s= str(data)
+#             final_data = data.split(b'\n')
+#             print(final_data)
+#             if final_data[0] and len(final_data)!=1:
+#                 try:
+#                     if float(final_data[0]) == 0:
+#                         print(weight)
+#                         return weight[-1]
+#                     else:
+#                         weight.append((float(final_data[0])))
 
-                except:
-                    weight.append((float(final_data[1])))
-            else:
-                if len(final_data)!=1:
-                    return max(weight)
+#                 except:
+#                     weight.append((float(final_data[1])))
+#             else:
+#                 if len(final_data)!=1:
+#                     return max(weight)
