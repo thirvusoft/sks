@@ -206,13 +206,13 @@ frappe.ui.form.on("Sales Order Item",{
         data=locals[cdt][cdn]
             if(data.item_code){
                 var item_code=data.item_code
-                frappe.call({
-                    method:"sks.sks.custom.py.sales_order.warehouse_qty_details",
-                    args:{item_code,company},
-                    callback(r){
-                        frappe.show_alert({ message: __(r.message), indicator: 'blue' });
-                    }
-                })
+                // frappe.call({
+                //     method:"sks.sks.custom.py.sales_order.warehouse_qty_details",
+                //     args:{item_code,company},
+                //     callback(r){
+                //         frappe.show_alert({ message: __(r.message), indicator: 'blue' });
+                //     }
+                // })
                 frappe.call({
                     method:"sks.sks.custom.py.sales_order.mrp_finder",
                     args:{item_code},

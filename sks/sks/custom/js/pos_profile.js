@@ -9,14 +9,14 @@ frappe.ui.form.on("POS Profile",{
                     ["Warehouse", "is_group", "=",1]
                 ]
             }
-        }),
-        frm.set_query('item_name', 'ts_closing_stock_details_table', function() {
-            return{
-                filters: {
-                'is_closing_shift_stock':1
-                }
-            };
-        });
+        })
+        // frm.set_query('item_name', 'ts_closing_stock_details_table', function() {
+        //     return{
+        //         filters: {
+        //         'is_closing_shift_stock':1
+        //         }
+        //     };
+        // });
     }
 })
 

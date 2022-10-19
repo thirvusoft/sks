@@ -127,26 +127,36 @@ export default {
       this.customerDialog = false;
     },
     set_customer_info(field, value) {
-      const vm = this;
-      frappe.call({
-        method: 'posawesome.posawesome.api.posapp.set_customer_info',
-        args: {
-          fieldname: field,
-          customer: this.customer_info.name,
-          value: value,
-        },
-        callback: (r) => {
-          if (!r.exc) {
-            vm.customer_info[field] = value;
-            evntBus.$emit('show_mesage', {
-              text: __('Customer contact edited successfully.'),
-              color: 'success',
-            });
-            frappe.utils.play_sound('submit');
-          }
-        },
-      });
-    },  
+      if(this.customer_info.name){
+        const vm = this;
+        frappe.call({
+          method: 'posawesome.posawesome.api.posapp.set_customer_info',
+          args: {
+            fieldname: field,
+            customer: this.customer_info.name,
+            value: value,
+          },
+          callback: (r) => {
+            if (!r.exc) {
+              vm.customer_info[field] = value;
+              evntBus.$emit('show_mesage', {
+                text: __('Customer Contact Edited Successfully.'),
+                color: 'success',
+              });
+              frappe.utils.play_sound('submit');
+            }
+          },
+        });
+     }
+
+     else{
+      this.customerDialog = false;
+      evntBus.$emit('show_mesage', {
+          text: __('Please Select Customer.'),
+          color: 'error',
+      })
+     }
+    },
   },
 
 
