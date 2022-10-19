@@ -186,6 +186,7 @@ export default {
   },
 };
 </script>
+<<<<<<< HEAD
 <template>
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="600px">
@@ -374,3 +375,5 @@ export default {
   },
 };
 </script>
+=======
+>>>>>>> 3fabb4a95126ebd8ac5b9ddd836c1682fbd5fe95

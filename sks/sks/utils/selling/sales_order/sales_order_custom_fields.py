@@ -70,6 +70,7 @@ def sales_order_custom_field():
                 insert_after='delivery_day',
                 no_copy=1,
                 read_only=1
+<<<<<<< HEAD
             ),
             dict(fieldname='address_change', 
                 label='Address Change',
@@ -120,6 +121,10 @@ def sales_order_custom_field():
                 insert_after='phone',
                 depends_on="eval:doc.address_change"
             ),
+=======
+            )
+
+>>>>>>> 3fabb4a95126ebd8ac5b9ddd836c1682fbd5fe95
         ]
     }
     create_custom_fields(custom_fields)
@@ -158,6 +163,7 @@ def sales_order_property_setter():
     make_property_setter("Sales Order", "posa_additional_notes_section", "hidden", "1", "Column Break")
     make_property_setter("Sales Order", "total_net_weight", "hidden", "1", "Float")
     make_property_setter("Sales Order", "rounding_adjustment", "hidden", "1", "Currency")
+<<<<<<< HEAD
     make_property_setter("Sales Order", "cost_center", "default", "Main - SKS", "Link")
     #############
     make_property_setter("Sales Order", "address_display", "hidden", "0", "Check")
@@ -177,6 +183,12 @@ def sales_order_property_setter():
     make_property_setter("Sales Order", "dispatch_address", "hidden", "1", "Check")
     make_property_setter("Sales Order", "customer_group", "hidden", "1", "Check")
     make_property_setter("Sales Order", "customer_gstin", "hidden", "1", "Check")
+=======
+    make_property_setter("Sales Order", "cost_center", "default", "Main - SKSS", "Link")
+   
+
+
+>>>>>>> 3fabb4a95126ebd8ac5b9ddd836c1682fbd5fe95
 
 
    
