@@ -2397,7 +2397,6 @@ export default {
         this$1.stock_settings = data.stock_settings;
       });
      evntBus.$on('add_item', (item) => {
-      console.log(this$1.customer,"ccccccccccccccccccccccccccccccccccccccc")
       // Customized By Thirvusoft
       // Start
       if (this$1.customer){
