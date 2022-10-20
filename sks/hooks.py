@@ -184,9 +184,9 @@ doc_events = {
 	"Customer": {
 		"validate": "sks.sks.custom.py.customer.capitalize_each_words"	
 	},
-	"POS Profile":{
-		"validate":"sks.sks.custom.py.pos_profile.stock_details_validation"
-	},
+	# "POS Profile":{
+	# 	"validate":"sks.sks.custom.py.pos_profile.stock_details_validation"
+	# },
 	"Item":{
 		"validate":["sks.sks.custom.py.item.batch_needed",
 					"sks.sks.custom.py.item.single_batch_validation"

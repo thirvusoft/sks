@@ -70,56 +70,8 @@ def sales_order_custom_field():
                 insert_after='delivery_day',
                 no_copy=1,
                 read_only=1
-            ),
-            dict(fieldname='address_change', 
-                label='Address Change',
-                fieldtype='Check',
-                insert_after='address_display',
-                no_copy=1
-            ),
-            dict(fieldname='address_line1',
-                label='Address Line 1',
-                fieldtype='Data',
-                insert_after='territory',
-                depends_on="eval:doc.address_change"
-            ),
-            dict(fieldname='address_line2',
-                label='Address Line 2',
-                fieldtype='Data',
-                insert_after='address_line1',
-                depends_on="eval:doc.address_change"
-            ),
-            dict(fieldname='city',
-                label='City/Town',
-                fieldtype='Data',
-                insert_after='address_line2',
-                depends_on="eval:doc.address_change"
-            ),
-            dict(fieldname='state',
-                label='State/Province',
-                fieldtype='Data',
-                insert_after='city',
-                depends_on="eval:doc.address_change"
-            ),
-            # dict(fieldname='pincode',
-            #     label='Postal Code',
-            #     fieldtype='Data',
-            #     insert_after='state',
-            #     hidden=1,
-                # depends_on="eval:doc.address_change"
-            # ),
-            dict(fieldname='phone',
-                label='Phone',
-                fieldtype='Data',
-                insert_after='state',
-                depends_on="eval:doc.address_change"
-            ),
-            dict(fieldname='phone_2',
-                label='Phone 2',
-                fieldtype='Data',
-                insert_after='phone',
-                depends_on="eval:doc.address_change"
-            ),
+            )
+
         ]
     }
     create_custom_fields(custom_fields)
@@ -158,25 +110,10 @@ def sales_order_property_setter():
     make_property_setter("Sales Order", "posa_additional_notes_section", "hidden", "1", "Column Break")
     make_property_setter("Sales Order", "total_net_weight", "hidden", "1", "Float")
     make_property_setter("Sales Order", "rounding_adjustment", "hidden", "1", "Currency")
-    make_property_setter("Sales Order", "cost_center", "default", "Main - SKS", "Link")
-    #############
-    make_property_setter("Sales Order", "address_display", "hidden", "0", "Check")
-    make_property_setter("Sales Order", "contact_person", "hidden", "1", "Check")
-    make_property_setter("Sales Order", "contact_display", "hidden", "1", "Check")
-    make_property_setter("Sales Order", "contact_phone", "hidden", "1", "Check")
-    make_property_setter("Sales Order", "contact_mobile", "hidden", "1", "Check")
-    make_property_setter("Sales Order", "contact_email", "hidden", "1", "Check")
-    make_property_setter("Sales Order", "company_address", "hidden", "1", "Check")
-    make_property_setter("Sales Order", "company_gstin", "hidden", "1", "Check")
-    make_property_setter("Sales Order", "company_address_display", "1", "hidden", "Check")
-    make_property_setter("Sales Order", "col_break46", "1", "hidden", "Check")
-    make_property_setter("Sales Order", "shipping_address_name", "1", "hidden", "Check")
-    make_property_setter("Sales Order", "place_of_supply", "hidden", "1", "Check")
-    make_property_setter("Sales Order", "shipping_address", "hidden", "1", "Check")
-    make_property_setter("Sales Order", "dispatch_address_name", "hidden", "1", "Check")
-    make_property_setter("Sales Order", "dispatch_address", "hidden", "1", "Check")
-    make_property_setter("Sales Order", "customer_group", "hidden", "1", "Check")
-    make_property_setter("Sales Order", "customer_gstin", "hidden", "1", "Check")
+    make_property_setter("Sales Order", "cost_center", "default", "Main - SKSS", "Link")
+   
+
+
 
 
    

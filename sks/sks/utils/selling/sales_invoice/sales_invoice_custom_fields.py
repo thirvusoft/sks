@@ -248,7 +248,7 @@ def sales_invoice_property_setter():
     make_property_setter("Sales Invoice", "update_stock", "hidden", 1, "Check")
     make_property_setter("Sales Invoice", "currency_and_price_list", "hidden", 1, "Section Break")
     make_property_setter("Sales Invoice", "section_break_49", "hidden", 1, "Section Break")
-    make_property_setter("Sales Invoice", "cost_center", "default", "Main - SKSS", "Link")
+    make_property_setter("Sales Invoice", "cost_center", "default", "", "Link")
 
 
 

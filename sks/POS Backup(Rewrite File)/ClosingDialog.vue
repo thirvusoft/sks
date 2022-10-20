@@ -148,8 +148,8 @@ export default {
       var ts_stock_details=0
       var ts_pos_profile=data.pos_profile
       var pos_opening_shift=data.pos_opening_shift
-      frappe.db.get_value("POS Profile", {"name": ts_pos_profile}, ["ts_is_closing_stock_detail"], (r) => {
-          ts_stock_details=r["ts_is_closing_stock_detail"]
+      // frappe.db.get_value("POS Profile", {"name": ts_pos_profile}, ["ts_is_closing_stock_detail"], (r) => {
+      //     ts_stock_details=r["ts_is_closing_stock_detail"]
           if(ts_stock_details==0){
           frappe.call({
             method:"posawesome.posawesome.api.posapp.get_fields_for_denomination",
@@ -321,7 +321,7 @@ export default {
             }
           })
         } 
-			});
+			// });
     });
     // End
   },

@@ -1484,45 +1484,46 @@ def get_active_gift_coupons(customer, company):
 
 
 @frappe.whitelist()
-def get_customer_info(customer):
-    customer = frappe.get_doc("Customer", customer)
-    link_addr_doc = frappe.get_all("Dynamic Link",filters={'link_doctype':'Customer','link_name':customer.name,'parenttype':'Address'}, pluck='parent')
-    
+def get_customer_info(customer = None):
+    if customer:
+        customer = frappe.get_doc("Customer", customer)
+        link_addr_doc = frappe.get_all("Dynamic Link",filters={'link_doctype':'Customer','link_name':customer.name,'parenttype':'Address'}, pluck='parent')
+        
 
-    res = {"loyalty_points": None, "conversion_factor": None}
-    if(len(link_addr_doc)):
-        address = frappe.get_doc("Address",link_addr_doc[0])
-        res["address_line1"] = address.address_line1
-        res["address_line2"] = address.address_line2
-        res["city"] = address.city
+        res = {"loyalty_points": None, "conversion_factor": None}
+        if(len(link_addr_doc)):
+            address = frappe.get_doc("Address",link_addr_doc[0])
+            res["address_line1"] = address.address_line1
+            res["address_line2"] = address.address_line2
+            res["city"] = address.city
 
-    
-    res["mobile_no"] = customer.mobile_no
-    res["customer_name"] = customer.customer_name 
-    res["territory"] = customer.territory
-    res["customer_group"] = customer.customer_group
-    res['payment_terms'] = customer.payment_terms
-    
-    res["customer_price_list"] = customer.default_price_list
-    res["posa_discount"] = customer.posa_discount
-    res["name"] = customer.name
-    res['is_credit_customer'] = customer.is_credit_customer
-    res["loyalty_program"] = customer.loyalty_program
-    res["customer_group_price_list"] = frappe.get_value(
-        "Customer Group", customer.customer_group, "default_price_list"
-    )
-
-    if customer.loyalty_program:
-        lp_details = get_loyalty_program_details_with_points(
-            customer.name,
-            customer.loyalty_program,
-            silent=True,
-            include_expired_entry=False,
+        
+        res["mobile_no"] = customer.mobile_no
+        res["customer_name"] = customer.customer_name 
+        res["territory"] = customer.territory
+        res["customer_group"] = customer.customer_group
+        res['payment_terms'] = customer.payment_terms
+        
+        res["customer_price_list"] = customer.default_price_list
+        res["posa_discount"] = customer.posa_discount
+        res["name"] = customer.name
+        res['is_credit_customer'] = customer.is_credit_customer
+        res["loyalty_program"] = customer.loyalty_program
+        res["customer_group_price_list"] = frappe.get_value(
+            "Customer Group", customer.customer_group, "default_price_list"
         )
-        res["loyalty_points"] = lp_details.get("loyalty_points")
-        res["conversion_factor"] = lp_details.get("conversion_factor")
-    print(res,'\n'*5)
-    return res
+
+        if customer.loyalty_program:
+            lp_details = get_loyalty_program_details_with_points(
+                customer.name,
+                customer.loyalty_program,
+                silent=True,
+                include_expired_entry=False,
+            )
+            res["loyalty_points"] = lp_details.get("loyalty_points")
+            res["conversion_factor"] = lp_details.get("conversion_factor")
+        print(res,'\n'*5)
+        return res
 
 
 

@@ -186,6 +186,6 @@ def purchase_invoice_property_setter():
     make_property_setter("Purchase Invoice", "total_taxes_and_charges", "hidden", 1, "Check")
     make_property_setter("Purchase Invoice", "taxes_and_charges_deducted", "hidden", 1, "Check")
     make_property_setter("Purchase Invoice", "is_subcontracted", "hidden", 1, "Check")
-    make_property_setter("Purchase Invoice", "cost_center", "default", "Main - SKSS", "Link")
+    make_property_setter("Purchase Invoice", "cost_center", "default", "", "Link")
     make_property_setter("Purchase Invoice", "bill_no", "reqd", 1, "Check")
     make_property_setter("Purchase Invoice", "bill_date", "reqd", 1, "Check")

@@ -2399,56 +2399,66 @@ export default {
      evntBus.$on('add_item', (item) => {
       // Customized By Thirvusoft
       // Start
-      var ts_barcode=item.ts_matched_barcode
-      var ts_item=item.item_code
-      var out=this
-      frappe.call({
-        async:false,
-        method:"posawesome.posawesome.api.posapp.batch_finder",
-        args:{ts_barcode,
-              ts_item},
-        callback(ts_r){
-          if(ts_r.message === 0){
-            out.add_item(item);
-          }
-          if(typeof ts_r.message === 'string'){
-            item["ts_current_batch"]=ts_r.message
-            out.add_item(item);
-          }else{
-            if(ts_r.message.length>1){
-              const ls=[]
-              var ts_maping={}
-            for (var i = 0; i < ts_r.message.length; i++) {
-              ls.push("Batch No:- "+ts_r.message[i]["name"] +  " |MRP:- " + ts_r.message[i]["ts_mrp"])
-              ts_maping["Batch No:- "+ts_r.message[i]["name"] +  " |MRP:- " + ts_r.message[i]["ts_mrp"]]=ts_r.message[i]["name"]
-            }
-              let d = new frappe.ui.Dialog({
-              title: 'Batch Selection',
-              fields: [               
-                  {
-                      label: 'Batch No',
-                      fieldname: 'batch_no',
-                      fieldtype: "Select",
-                      options: ls
-                  },
-              ],
-              primary_action_label: 'OK',
-              primary_action(values) {
-                  item["ts_current_batch"]=ts_maping[values["batch_no"]]
-                  out.add_item(item);
-                  d.hide();
-                  evntBus.$emit('focus_on_search');
-              }
-          });
-          d.show();
-            }
-            else{
-              item["ts_current_batch"]=ts_r.message[0]["name"]
+      if (this$1.customer){
+        var ts_barcode=item.ts_matched_barcode
+        var ts_item=item.item_code
+        var out=this
+        frappe.call({
+          async:false,
+          method:"posawesome.posawesome.api.posapp.batch_finder",
+          args:{ts_barcode,
+                ts_item},
+          callback(ts_r){
+            if(ts_r.message === 0){
               out.add_item(item);
             }
+            if(typeof ts_r.message === 'string'){
+              item["ts_current_batch"]=ts_r.message
+              out.add_item(item);
+            }else{
+              if(ts_r.message.length>1){
+                const ls=[]
+                var ts_maping={}
+              for (var i = 0; i < ts_r.message.length; i++) {
+                ls.push("Batch No:- "+ts_r.message[i]["name"] +  " |MRP:- " + ts_r.message[i]["ts_mrp"])
+                ts_maping["Batch No:- "+ts_r.message[i]["name"] +  " |MRP:- " + ts_r.message[i]["ts_mrp"]]=ts_r.message[i]["name"]
+              }
+                let d = new frappe.ui.Dialog({
+                title: 'Batch Selection',
+                fields: [               
+                    {
+                        label: 'Batch No',
+                        fieldname: 'batch_no',
+                        fieldtype: "Select",
+                        options: ls
+                    },
+                ],
+                primary_action_label: 'OK',
+                primary_action(values) {
+                    item["ts_current_batch"]=ts_maping[values["batch_no"]]
+                    out.add_item(item);
+                    d.hide();
+                    evntBus.$emit('focus_on_search');
+                }
+            });
+            d.show();
+              }
+              else{
+                item["ts_current_batch"]=ts_r.message[0]["name"]
+                out.add_item(item);
+              }
+            }
           }
+        })
         }
-      })
+        else{
+          evntBus.$emit('show_mesage', {
+            text: __('Please Select Customer'),
+            color: 'error',
+          })
+        }
+      
+      
       // End
     });
       evntBus.$on('update_customer', function (customer) {

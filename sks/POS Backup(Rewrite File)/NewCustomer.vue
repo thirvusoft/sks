@@ -203,7 +203,7 @@ export default {
                   args.name = r.message.name;
                   frappe.utils.play_sound('submit');
                   evntBus.$emit('add_customer_to_list', args);
-                  evntBus.$emit('set_customer', r.message.name);
+                  evntBus.$emit('set_customer', r.message);
                   this.customer_name='',
                   this.mobile1=''
                   this.address1=''
@@ -243,11 +243,9 @@ export default {
     // Customized By Thirvusoft
     // Start
     evntBus.$on('open_new_customer', (a) => {
-      console.log(a,"kkkkkkkkkkkkkkkkkkkk")
       if(a.id != "a"){
       this.mobile1=a
       }
-      console.log("ffffffffffff",this.mobile1)
       // End
       this.customerDialog = true;
       var  groups, territorys, citys;

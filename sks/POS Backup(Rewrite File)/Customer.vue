@@ -360,7 +360,7 @@ export default {
       });
       // End
       evntBus.$on('add_customer_to_list', (customer) => {
-        this.customers.push(customer);
+        this.fetchcustomers.push(customer);
       });
       evntBus.$on('set_customer_readonly', (value) => {
         this.readonly = value;
